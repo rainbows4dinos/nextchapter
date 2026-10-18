@@ -155,3 +155,77 @@ test('stale reorder and network failures are surfaced without retry', async () =
   await assert.rejects(data.reorderColumn('prospects', [id], [id]), StaleProspectError);
   assert.equal(requests.length, 1);
 });
+
+test('local calendar dates near UTC midnight use the user timezone without shifting the day', async () => {
+  const { localCalendarDate } = await import('../data.js');
+  const previous = process.env.TZ;
+  try {
+    process.env.TZ = 'America/Los_Angeles';
+    assert.equal(localCalendarDate(new Date('2026-10-17T00:30:00Z')), '2026-10-16');
+    process.env.TZ = 'Asia/Tokyo';
+    assert.equal(localCalendarDate(new Date('2026-10-16T23:30:00Z')), '2026-10-17');
+    process.env.TZ = 'Pacific/Honolulu';
+    assert.equal(localCalendarDate(new Date('2024-03-01T00:30:00Z')), '2024-02-29');
+  } finally { if (previous === undefined) delete process.env.TZ; else process.env.TZ = previous; }
+});
+
+test('Applied creation fills only an absent date in its single insert', async () => {
+  const { localCalendarDate } = await import('../data.js');
+  for (const applied_on of [undefined, null, '', '2025-04-12']) {
+    const { data, requests } = harness([{ body: { ...row, status: 'applied', applied_on: applied_on || localCalendarDate() } }]);
+    await data.createProspect({ id, company: 'Example', title: 'Designer', status: 'applied', applied_on });
+    assert.equal(requests.length, 1);
+    assert.equal(requests[0].body.applied_on, applied_on || localCalendarDate());
+  }
+});
+
+test('entering Applied sends status and local date atomically at the exact revision', async () => {
+  const { localCalendarDate } = await import('../data.js');
+  const date = localCalendarDate();
+  const saved = { ...row, status: 'applied', applied_on: date, updated_at: '2026-10-16T12:00:01.000001+00:00' };
+  const { data, requests } = harness([{ body: [row] }, { body: [saved] }]);
+  assert.deepEqual(await data.changeStatus(id, 'applied', revision), saved);
+  assert.deepEqual(requests.map(r => r.method), ['GET','PATCH']);
+  assert.equal(requests[0].url.searchParams.get('select'), 'status,applied_on');
+  assert.ok(requests.every(r => r.url.searchParams.get('updated_at') === `eq.${revision}`));
+  assert.deepEqual(requests[1].body, { status: 'applied', applied_on: date });
+});
+
+test('existing dates and unchanged historical Applied status are not automatically stamped', async () => {
+  for (const [status, applied_on] of [['prospect','2025-04-12'], ['applied',null], ['applied','2025-04-12']]) {
+    const stored = { ...row, status, applied_on };
+    const { data, requests } = harness([{ body: [stored] }, { body: [{ ...stored, status: 'applied' }] }]);
+    await data.changeStatus(id, 'applied', revision);
+    assert.deepEqual(requests[1].body, { status: 'applied' });
+  }
+});
+
+test('failed Applied read/write and stale revisions do not issue a date-only write or retry', async () => {
+  const failure = { code: 'TEST_FAILURE', message: 'Synthetic network failure' };
+  for (const responses of [
+    [{ status: 403, body: failure }],
+    [{ body: [] }],
+    [{ body: [row] }, { body: [] }],
+    [{ body: [row] }, { status: 503, body: failure }]
+  ]) {
+    const count = responses.length;
+    const { data, requests } = harness(responses);
+    await assert.rejects(data.changeStatus(id, 'applied', revision));
+    assert.equal(requests.length, count);
+    for (const request of requests.filter(r => r.method === 'PATCH')) assert.equal(request.body.status, 'applied');
+  }
+});
+
+test('board Applied history is owner/RLS-scoped, paginated in batches and read-only', async () => {
+  const event = { id: 1, prospect_id: id, from_status: 'prospect', to_status: 'applied', recorded_at: revision };
+  const { data, requests } = harness([{ body: Array.from({ length: 500 }, (_, i) => ({ ...event, id: i+1 })) },{ body: [{ ...event, id:501 }] }]);
+  assert.equal((await data.listAppliedTransitions()).length,501);
+  assert.equal(requests.length,2);
+  assert.equal(requests[0].url.searchParams.get('to_status'),'eq.applied');
+  assert.deepEqual(requests[0].url.searchParams.getAll('from_status'),['not.is.null','neq.applied']);
+  assert.equal(requests[0].url.searchParams.get('order'),'recorded_at.asc,id.asc');
+  assert.deepEqual(requests.map(r=>r.url.searchParams.get('offset')),['0','500']);
+  assert.ok(requests.every(r=>r.method==='GET' && !r.url.searchParams.has('prospect_id')));
+  const failed = harness([{status:403,body:{message:'History unavailable'}}]);
+  await assert.rejects(failed.data.listAppliedTransitions(), error=>error.message==='History unavailable');
+});

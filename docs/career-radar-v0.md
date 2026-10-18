@@ -18,6 +18,10 @@ Desktop cards can also move across columns using native drag-and-drop. Prospects
 
 All loaded cards render in their columns. Desktop card lists scroll independently beneath persistent headers; mobile retains document and horizontal board scrolling. The toolbar searches company/title locally, retains query/scroll state across updates, Refresh and editor navigation, and shows active column counts as **X of Y**. See [board scrolling/search and validation](prospect-tracker-kanban.md#viewport-scrolling-and-search). Manual ordering now replaces ongoing date sorting in every column; new prospects appear at the top. Filtering retains the saved order and disables reordering until cleared. See [manual ordering and its migration status](prospect-tracker-kanban.md#manual-order--issue-1-local-october-16-2026) for persistence, keyboard controls and local release status. Every prospect is still fetched and remains available through its column or detail route.
 
+Date-range filtering is implemented locally for [Issue #28](prospect-tracker-date-filter.md): Added/Applied date bases, default Past 90 days, presets and inclusive custom dates, combined with search. Applied history fallbacks are explicitly identified and never written back. Date filtering needs no migration.
+
+Automatic Applied dates are implemented locally for [Issue #16](prospect-tracker-applied-date.md), with no database migration or historical backfill. Board and Details transitions share one guarded status/date write, and the returned date is reflected in Details without discarding manual drafts.
+
 Cards with a saved `applied_on` date show **Applied Oct 1, 2026** beneath the role/status, in any lifecycle column. The calendar date is formatted without a timezone shift. Unknown dates have no date label; discovery/creation timestamps are never displayed as application dates. Location and work arrangement remain editable in prospect details but are omitted from board cards.
 
 The [October 13 Prospect Details callouts](https://www.figma.com/design/hLBR7Nl3GelwM9hstQb3Ah/Career-Radar?node-id=141-13864) are implemented as a focused page view: the local Tracker heading/navigation is hidden on detail routes, the shared suite header remains, Back to board has 16px top/bottom margins, and the company uses the shared 38/48 H1 typography. At 1200px and above, details and Status/history use a 2:1 grid with 24px spacing; smaller screens stack the panels. A safe, nonempty Job URL exposes an **Open** link inside its control, updated as the URL changes or is ingested.
@@ -163,13 +167,14 @@ The SDK manages persistent Auth sessions. The UI signs in via `client.auth.signI
 | Function | Contract |
 | --- | --- |
 | `listProspects()` | All paginated board fields, including saved position and application/discovery dates; fetched by position ascending, creation time descending and ID ascending |
+| `listAppliedTransitions(signal?)` | Paginated owner/RLS-scoped genuine Applied history for date filtering; abortable, read-only, no per-card queries |
 | `listProspectIdentities()` | All paginated, owner-scoped UUID/company/title/job URL/location/status/application date/exact revision fields for duplicate review; independent of board search |
 | `getProspect(id)` | Full prospect including assessment and validated connections; null if missing/inaccessible |
 | `createProspect(input)` | Requires retained UUID, company, title; database supplies owner/timestamps; returns saved row |
 | `updateProspect(id, patch, expectedUpdatedAt)` | Whitelisted detail/assessment/connection patch; never changes status or ownership |
 | `updateAssessment(id, patch, expectedUpdatedAt)` | Scores/rationale/concerns only; no derived scoring |
 | `setConnections(id, connections, expectedUpdatedAt)` | Validates/replaces the embedded list with revision protection |
-| `changeStatus(id, status, expectedUpdatedAt)` | Updates current status only; trigger creates any event |
+| `changeStatus(id, status, expectedUpdatedAt)` | Guarded status save; entering Applied fills an absent date with the local calendar day atomically; trigger owns history |
 | `reorderColumn(columnId, expectedIds, orderedIds)` | Atomic owner-scoped manual ordering; rejects stale order/membership; no status/history writes |
 | `listStatusEvents(prospectId)` | Paginated, ordered by event ID; read-only |
 

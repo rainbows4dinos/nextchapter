@@ -1,3 +1,4 @@
+import { matchesDate } from './board-dates.js';
 import { normalizePatch, validateId } from './model.js';
 
 /** Presentation only: persisted statuses and the status editor stay canonical.
@@ -52,12 +53,14 @@ export function groupCards(cards) {
   });
 }
 /** Filter after central column ordering; never mutate or reorder the source data.
- * @param {import('./data.js').ProspectCard[]} cards @param {string} query */
-export function searchBoardGroups(cards, query) {
+ * @param {import('./data.js').ProspectCard[]} cards @param {string} query
+ * @param {import('./board-dates.js').DateFilter} [dateFilter] @param {ReadonlyMap<string,string>} [history] @param {Date} [today] */
+export function searchBoardGroups(cards, query, dateFilter, history = new Map(), today = new Date()) {
   const search = query.trim().toLowerCase();
   return groupCards(cards).map(group => ({
     ...group, total: group.cards.length,
-    cards: search ? group.cards.filter(card => card.company.toLowerCase().includes(search) || card.title.toLowerCase().includes(search)) : group.cards
+    cards: group.cards.filter(card => (!search || card.company.toLowerCase().includes(search) || card.title.toLowerCase().includes(search))
+      && (!dateFilter || matchesDate(card, dateFilter, history, today)))
   }));
 }
 /** Only core fields belong in this form; never clear assessments/connections.

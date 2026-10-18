@@ -37,7 +37,7 @@ async function wait(expression) {
 const url = 'http://127.0.0.1:8777/tools/prospect-tracker/index.html';
 const ids = Array.from({ length: 6 }, (_, i) => `${String(i + 1).repeat(8)}-aaaa-4aaa-8aaa-aaaaaaaaaaaa`);
 const order = () => evaluate("[...document.querySelectorAll('[data-column-id=prospects] .prospect-card')].map(card=>card.dataset.prospectId)");
-async function ready() { await wait("!!document.querySelector('.board') && document.querySelectorAll('.prospect-card').length===6"); }
+async function ready() { await wait("!!document.querySelector('.board') && document.querySelectorAll('.prospect-card').length===6"); await evaluate("(()=>{const range=document.getElementById('board-date-range');if(range){range.value='all';range.dispatchEvent(new Event('change',{bubbles:true}));}})()"); }
 async function refresh() { await evaluate('window.fixtureReloading=true'); await call('Page.reload', {}); await wait('!window.fixtureReloading'); await ready(); }
 async function key(id, key) {
   await evaluate(`document.querySelector('[data-prospect-id="${id}"]').focus()`);

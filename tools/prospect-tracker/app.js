@@ -9,7 +9,7 @@ import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261016-board-order';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261018-date-filter';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { mountIngestion } from './ingestion-ui.js?v=20261014-workable';
 
@@ -102,7 +102,7 @@ export async function startRadar(client) {
           if (!current()) return;
           if (boardViewController) boardViewController.update(cards);
           else {
-            boardViewController = boardView(workspace, cards, { canMove, move, reorder, state: boardState });
+            boardViewController = boardView(workspace, cards, { canMove, move, reorder, state: boardState, loadAppliedHistory: (/** @type {AbortSignal} */ signal) => data.listAppliedTransitions(signal) });
             boardCleanup = () => boardViewController?.dispose();
           }
         };
@@ -234,9 +234,12 @@ export async function startRadar(client) {
             const status = validateStatus(new FormData(statusForm).get('status'));
             if (status === row.status) { setAlert(feedback, { message: 'Already at this status.' }); return; }
             const restoreFocus = document.activeElement === statusSelect;
+            const appliedInput = /** @type {HTMLInputElement} */ (form.elements.namedItem('applied_on'));
+            const dateUnedited = appliedInput.value === (row.applied_on ?? '');
             setAlert(feedback, { message: 'Saving status…' });
             try {
               row = await saveProspectStatus(row, status);
+              if (current() && dateUnedited) appliedInput.value = row.applied_on ?? '';
               if (current()) { setProspectStatusBadge(node('current-status-badge'), row.status); setAlert(feedback, { message: '' }); showToast({ message: 'Status saved.', variant: 'success' }); void loadHistory(); }
             } catch (error) { if (current()) { statusSelect.value = row.status; showError(error, feedback); } }
             finally {
