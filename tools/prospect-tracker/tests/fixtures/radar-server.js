@@ -28,6 +28,7 @@ export async function startFixture(port = 0) {
   const encode = value => Buffer.from(JSON.stringify(value)).toString('base64url');
   const token = `${encode({ alg: 'HS256', typ: 'JWT' })}.${encode({ sub: owner, role: 'authenticated', aud: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600 })}.synthetic`;
   let failNextSave = false;
+  let failAppliedHistory = false;
   let failHistory=false, feedMode='completed', researchCalls=0;
   let retrieves = 0, attempts = 0;
   let origin = '';
@@ -64,6 +65,7 @@ export async function startFixture(port = 0) {
         const { rows } = await db.query('select (select count(*)::integer from prospects) as prospects, (select count(*)::integer from prospect_status_events) as events');
         send({ ...rows[0], retrieves, attempts }); return;
       }
+      if (url.pathname === '/__fixture/fail-next-history' && req.method === 'POST') { failAppliedHistory = true; send({ ok: true }); return; }
       if (url.pathname === '/__fixture/fail-next-save' && req.method === 'POST') { failNextSave = true; send({ ok: true }); return; }
       if (url.pathname === '/auth/v1/token') {
         const credentials = JSON.parse(text);
@@ -123,8 +125,19 @@ export async function startFixture(port = 0) {
       }
       if (url.pathname.startsWith('/rest/v1/')) {
         if (req.headers.authorization !== `Bearer ${token}`) { send({ message: 'Unauthorized', code: 'PGRST301' }, 401); return; }
+        if (url.pathname === '/rest/v1/rpc/reorder_prospect_column' && req.method === 'POST') {
+          if (failNextSave) { failNextSave = false; send({ message: 'Synthetic reorder failure', code: 'TEST_FAILURE' }, 503); return; }
+          const body = JSON.parse(text);
+          await db.transaction(async tx => {
+            await tx.exec('set local role authenticated');
+            await tx.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: owner })]);
+            await tx.query('select public.reorder_prospect_column($1,$2::uuid[],$3::uuid[])', [body.column_id, body.expected_ids, body.ordered_ids]);
+          });
+          send(null); return;
+        }
         const table = url.pathname.split('/').pop();
         if (!['prospects','prospect_status_events','career_profiles','radar_opportunities'].includes(table)) { send({}, 404); return; }
+        if (table === 'prospect_status_events' && req.method === 'GET' && failAppliedHistory) { failAppliedHistory = false; send({ message: 'Synthetic history failure' }, 403); return; }
         if(table==='radar_opportunities' && req.method==='GET' && failHistory){failHistory=false;send({message:'Synthetic history failure'},503);return;}
         if (req.method !== 'GET') {
           attempts++;
@@ -134,14 +147,18 @@ export async function startFixture(port = 0) {
           await tx.exec('set local role authenticated');
           await tx.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: owner })]);
           const values = []; const clauses = [];
-          for (const key of ['id','updated_at','prospect_id','owner_id']) {
+          for (const key of ['id','updated_at','prospect_id','owner_id','to_status']) {
             const value = url.searchParams.get(key);
             if (value?.startsWith('eq.')) { values.push(value.slice(3)); clauses.push(`"${key}" = $${values.length}`); }
+          }
+          if (table === 'prospect_status_events') for (const condition of url.searchParams.getAll('from_status')) {
+            if (condition === 'not.is.null') clauses.push('from_status is not null');
+            if (condition === 'neq.applied') clauses.push("from_status <> 'applied'");
           }
           const where = clauses.length ? ' where ' + clauses.join(' and ') : '';
           let query;
           if (req.method === 'GET') {
-            query = `select row_to_json(p)::text as value from public.${table} p${where} order by ${table === 'career_profiles' ? 'owner_id' : 'id'} limit ${Math.min(Number(url.searchParams.get('limit') || 500), 500)} offset ${Number(url.searchParams.get('offset') || 0)}`;
+            query = `select row_to_json(p)::text as value from public.${table} p${where} order by ${table === 'career_profiles' ? 'owner_id' : table === 'prospects' && url.searchParams.get('order')?.startsWith('board_position.') ? 'board_position, created_at desc, id' : table === 'prospect_status_events' && url.searchParams.get('order')?.startsWith('recorded_at.') ? 'recorded_at, id' : 'id'} limit ${Math.min(Number(url.searchParams.get('limit') || 500), 500)} offset ${Number(url.searchParams.get('offset') || 0)}`;
           } else {
             if (!['prospects','career_profiles','radar_opportunities'].includes(table) || !['POST','PATCH'].includes(req.method)) throw new Error('Unsupported fixture write');
             const body = JSON.parse(text);

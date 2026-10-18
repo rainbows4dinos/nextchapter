@@ -9,7 +9,7 @@ import {
 /** @typedef {import('./model.js').Connection} Connection */
 /** @typedef {import('./model.js').ProspectStatus} ProspectStatus */
 /** @typedef {import('./model.js').StatusEvent} StatusEvent */
-/** @typedef {Pick<Prospect, 'id'|'company'|'title'|'location'|'work_arrangement'|'status'|'applied_on'|'discovered_on'|'created_at'|'updated_at'>} ProspectCard */
+/** @typedef {Pick<Prospect, 'id'|'company'|'title'|'location'|'work_arrangement'|'status'|'applied_on'|'discovered_on'|'created_at'|'updated_at'|'board_position'>} ProspectCard */
 /** @typedef {Pick<Prospect, 'id'|'company'|'title'|'job_url'|'location'|'status'|'applied_on'|'updated_at'>} ProspectIdentity */
 
 export class StaleProspectError extends Error {
@@ -25,6 +25,12 @@ function validateRevision(value) {
     throw new Error('The exact updated_at returned by Supabase is required');
   }
   // Do not parse/reformat it: PostgreSQL may return microseconds, unlike JS Date.
+}
+
+/** Browser-local calendar date, matching the date input's YYYY-MM-DD value.
+ * @param {Date} [date] */
+export function localCalendarDate(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
 /**
@@ -55,8 +61,8 @@ export function createRadarDataAccess(client) {
     const pageSize = 500;
     for (let offset = 0; ; offset += pageSize) {
       const { data, error } = await client.from('prospects')
-        .select('id,company,title,location,work_arrangement,status,applied_on,discovered_on,created_at,updated_at')
-        .order('created_at', { ascending: false }).order('id', { ascending: true })
+        .select('id,company,title,location,work_arrangement,status,applied_on,discovered_on,created_at,updated_at,board_position')
+        .order('board_position', { ascending: true }).order('created_at', { ascending: false }).order('id', { ascending: true })
         .range(offset, offset + pageSize - 1);
       if (error) throw error;
       for (const row of data) {
@@ -88,6 +94,7 @@ export function createRadarDataAccess(client) {
     validateId(id);
     const values = normalizePatch(patch);
     if (!values.company || !values.title) throw new Error('company and title are required');
+    if (status === 'applied' && values.applied_on == null) values.applied_on = localCalendarDate();
     const { data, error } = await client.from('prospects').insert({
       ...values, ...(expectedOwner!==undefined ? { owner_id: validateId(expectedOwner) } : {}), id, status: validateStatus(status), company: values.company, title: values.title
     }).select('*').single();
@@ -133,7 +140,19 @@ export function createRadarDataAccess(client) {
 
   /** @param {string} id @param {ProspectStatus} status @param {string} expectedUpdatedAt */
   async function changeStatus(id, status, expectedUpdatedAt) {
-    return save(id, { status: validateStatus(status) }, expectedUpdatedAt);
+    validateId(id); validateRevision(expectedUpdatedAt); validateStatus(status);
+    /** @type {Database['public']['Tables']['prospects']['Update']} */
+    const values = { status };
+    if (status === 'applied') {
+      // Read at the caller's exact revision, then CAS the status/date in one write.
+      // A historical or deliberately cleared Applied date is not a new transition.
+      const { data, error } = await client.from('prospects').select('status,applied_on')
+        .eq('id', id).eq('updated_at', expectedUpdatedAt).maybeSingle();
+      if (error) throw error;
+      if (!data) throw new StaleProspectError();
+      if (data.status !== 'applied' && data.applied_on === null) values.applied_on = localCalendarDate();
+    }
+    return save(id, values, expectedUpdatedAt);
   }
 
   /** @param {string} prospectId @returns {Promise<StatusEvent[]>} */
@@ -154,5 +173,30 @@ export function createRadarDataAccess(client) {
     }
   }
 
-  return { listProspects, listProspectIdentities, getProspect, createProspect, updateProspect, updateAssessment, setConnections, changeStatus, listStatusEvents };
+  /** Owner-scoped via history RLS. Paginated batches, never one request per card.
+   * @param {AbortSignal} [signal] @returns {Promise<StatusEvent[]>} */
+  async function listAppliedTransitions(signal) {
+    /** @type {StatusEvent[]} */
+    const events = [];
+    for (let offset = 0; ; offset += 500) {
+      let query = client.from('prospect_status_events').select('id,prospect_id,from_status,to_status,recorded_at')
+        .eq('to_status', 'applied').not('from_status', 'is', null).neq('from_status', 'applied')
+        .order('recorded_at', { ascending: true }).order('id', { ascending: true }).range(offset, offset + 499);
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query;
+      if (error) throw error;
+      events.push(...data);
+      if (data.length < 500) return events;
+    }
+  }
+
+  /** @param {string} columnId @param {string[]} expectedIds @param {string[]} orderedIds */
+  async function reorderColumn(columnId, expectedIds, orderedIds) {
+    expectedIds.forEach(id => validateId(id)); orderedIds.forEach(id => validateId(id));
+    const { error } = await client.rpc('reorder_prospect_column', { column_id: columnId, expected_ids: expectedIds, ordered_ids: orderedIds });
+    if (error?.code === '40001') throw new StaleProspectError();
+    if (error) throw error;
+  }
+
+  return { listAppliedTransitions, reorderColumn, listProspects, listProspectIdentities, getProspect, createProspect, updateProspect, updateAssessment, setConnections, changeStatus, listStatusEvents };
 }

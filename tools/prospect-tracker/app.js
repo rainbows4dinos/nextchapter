@@ -9,7 +9,7 @@ import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261014-status-sidebar';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261018-date-filter';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { mountIngestion } from './ingestion-ui.js?v=20261014-workable';
 
@@ -102,7 +102,7 @@ export async function startRadar(client) {
           if (!current()) return;
           if (boardViewController) boardViewController.update(cards);
           else {
-            boardViewController = boardView(workspace, cards, { canMove, move, state: boardState });
+            boardViewController = boardView(workspace, cards, { canMove, move, reorder, state: boardState, loadAppliedHistory: (/** @type {AbortSignal} */ signal) => data.listAppliedTransitions(signal) });
             boardCleanup = () => boardViewController?.dispose();
           }
         };
@@ -136,6 +136,21 @@ export async function startRadar(client) {
             } else showToast({ message, variant: 'danger' });
             if (error && typeof error === 'object' && ('status' in error && error.status === 401 || 'code' in error && ['PGRST301','PGRST303'].includes(String(error.code)))) acceptSession(null);
           }
+        };
+        /** @param {string} columnId @param {string[]} expectedIds @param {string[]} orderedIds */
+        const reorder = async (columnId, expectedIds, orderedIds) => {
+          if (!canMove()) return;
+          busy(true);
+          try {
+            await data.reorderColumn(columnId, expectedIds, orderedIds);
+            const refreshed = await data.listProspects();
+            if (current()) { cards = refreshed; renderBoard(); showToast({ message: 'Card order saved.', variant: 'success' }); }
+          } catch (error) {
+            if (!current()) return;
+            showToast({ message: `Could not save card order. Reload the board before trying again. ${errorMessage(error)}`, variant: 'danger' });
+            // A response can be lost after the transaction commits. Never blindly replay it.
+            try { const refreshed = await data.listProspects(); if (current()) { cards = refreshed; renderBoard(); } } catch { /* retain last loaded order */ }
+          } finally { if (current()) busy(false); }
         };
         renderBoard();
       } else if (route.kind === 'new' || route.kind === 'detail') {
@@ -219,9 +234,12 @@ export async function startRadar(client) {
             const status = validateStatus(new FormData(statusForm).get('status'));
             if (status === row.status) { setAlert(feedback, { message: 'Already at this status.' }); return; }
             const restoreFocus = document.activeElement === statusSelect;
+            const appliedInput = /** @type {HTMLInputElement} */ (form.elements.namedItem('applied_on'));
+            const dateUnedited = appliedInput.value === (row.applied_on ?? '');
             setAlert(feedback, { message: 'Saving status…' });
             try {
               row = await saveProspectStatus(row, status);
+              if (current() && dateUnedited) appliedInput.value = row.applied_on ?? '';
               if (current()) { setProspectStatusBadge(node('current-status-badge'), row.status); setAlert(feedback, { message: '' }); showToast({ message: 'Status saved.', variant: 'success' }); void loadHistory(); }
             } catch (error) { if (current()) { statusSelect.value = row.status; showError(error, feedback); } }
             finally {

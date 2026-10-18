@@ -145,3 +145,25 @@ time { display:block; font-size:13px; color:var(--muted) }
 .loading-message { display:flex; align-items:center; gap:8px }
 
 .nc-field { margin-bottom:1rem }
+
+/* Insertion overlay preserves card geometry while making the exact slot visible. */
+.column-cards { position:relative }
+.board-insertion { position:absolute; left:0; right:0; height:3px; background:var(--nc-focus-ring); border-radius:var(--nc-radius-default); pointer-events:none; z-index:1 }
+.board-insertion::before, .board-insertion::after { content:""; position:absolute; top:-2px; width:7px; height:7px; border-radius:50%; background:inherit }
+.board-insertion::before { left:0 } .board-insertion::after { right:0 }
+.board-order-help { margin:0 0 12px; color:var(--muted); font-size:13px }
+.prospect-card:focus-visible { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
+
+/* Date filters extend the existing compact toolbar and shared input/select controls. */
+.board-date-controls { display:flex; flex-wrap:wrap; align-items:center; gap:12px; min-width:0 }
+.board-date-control { width:160px; max-width:100% }
+.board-date-control .nc-select { margin:0 }
+.board-date-details { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px }
+.board-custom-dates { display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-end }
+.board-custom-dates .nc-field { flex:1 1 150px; width:180px; max-width:100%; margin:0 }
+.board-custom-dates label { margin:0; font-size:13px }
+.board-date-summary { margin:0; color:var(--muted); font-size:13px }
+.board-date-summary--error { color:var(--nc-danger-fg) }
+.board-history-note { display:flex; align-items:center; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:13px; margin:0 }
+.board-search-results { white-space:normal }
+@media(max-width:899px) { .board-date-controls { flex-basis:100% } .board-custom-dates { justify-content:flex-start } }
