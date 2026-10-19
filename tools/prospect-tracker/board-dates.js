@@ -2,7 +2,7 @@ import { localCalendarDate } from './data.js';
 
 /** @typedef {{basis:'added'|'applied', preset:'7'|'30'|'90'|'year'|'all'|'custom', start:string, end:string}} DateFilter */
 /** @returns {DateFilter} */
-export const defaultDateFilter = () => ({ basis: 'added', preset: '90', start: '', end: '' });
+export const defaultDateFilter = () => ({ basis: 'added', preset: 'all', start: '', end: '' });
 /** @param {string} date */
 export function validCalendarDate(date) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;

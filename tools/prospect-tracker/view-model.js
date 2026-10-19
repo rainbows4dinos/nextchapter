@@ -69,12 +69,13 @@ export function reorderVisibleCards(expected, visible, movedId, beforeId) {
 }
 /** Filter after central column ordering; never mutate or reorder the source data.
  * @param {import('./data.js').ProspectCard[]} cards @param {string} query
- * @param {import('./board-dates.js').DateFilter} [dateFilter] @param {ReadonlyMap<string,string>} [history] @param {Date} [today] */
-export function searchBoardGroups(cards, query, dateFilter, history = new Map(), today = new Date()) {
+ * @param {import('./board-dates.js').DateFilter} [dateFilter] @param {ReadonlyMap<string,string>} [history] @param {Date} [today] @param {string} [status] */
+export function searchBoardGroups(cards, query, dateFilter, history = new Map(), today = new Date(), status = 'all') {
   const search = query.trim().toLowerCase();
   return groupCards(cards).map(group => ({
     ...group, total: group.cards.length,
     cards: group.cards.filter(card => (!search || card.company.toLowerCase().includes(search) || card.title.toLowerCase().includes(search))
+      && (!status || status === 'all' || card.status === status)
       && (!dateFilter || matchesDate(card, dateFilter, history, today)))
   }));
 }

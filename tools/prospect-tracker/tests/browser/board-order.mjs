@@ -37,7 +37,7 @@ async function wait(expression) {
 const url = 'http://127.0.0.1:8777/tools/prospect-tracker/index.html';
 const ids = Array.from({ length: 6 }, (_, i) => `${String(i + 1).repeat(8)}-aaaa-4aaa-8aaa-aaaaaaaaaaaa`);
 const order = () => evaluate("[...document.querySelectorAll('[data-column-id=prospects] .prospect-card')].map(card=>card.dataset.prospectId)");
-async function ready() { await wait("!!document.querySelector('.board') && document.querySelectorAll('.prospect-card').length===6"); await evaluate("(()=>{const range=document.getElementById('board-date-range');if(range){range.value='all';range.dispatchEvent(new Event('change',{bubbles:true}));}})()"); }
+async function ready() { await wait("!!document.querySelector('.board') && document.querySelectorAll('.prospect-card').length===6"); }
 async function refresh() { await evaluate('window.fixtureReloading=true'); await call('Page.reload', {}); await wait('!window.fixtureReloading'); await ready(); }
 async function key(id, key) {
   await evaluate(`document.querySelector('[data-prospect-id="${id}"]').focus()`);
@@ -86,9 +86,9 @@ try {
   assert.equal(await evaluate('document.activeElement.dataset.prospectId'), ids[0]);
   await refresh(); assert.deepEqual(await order(), [ids[3],ids[2],ids[0],ids[1]]);
   // Combined date/search filtering reorders visible slots, preserving hidden indices.
-  await evaluate("(()=>{const range=document.getElementById('board-date-range');range.value='90';range.dispatchEvent(new Event('change',{bubbles:true}));const input=document.getElementById('board-search');input.value='Match';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
+  await evaluate("(()=>{document.querySelector('[name=board-date-range][value=\"90\"]').click();const input=document.getElementById('board-search');input.value='Match';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
   assert.deepEqual(await order(), [ids[3],ids[1]]);
-  await evaluate("(()=>{const basis=document.getElementById('board-date-basis');basis.value='applied';basis.dispatchEvent(new Event('change',{bubbles:true}));})()");
+  await evaluate("(()=>{document.querySelector('[name=board-date-basis][value=applied]').click();})()");
   await wait("document.querySelector('.board-history-note').textContent.includes('Review/correct')");
   await key(ids[1], 'ArrowUp'); await settled();
   assert.deepEqual(await order(), [ids[1],ids[3]]);

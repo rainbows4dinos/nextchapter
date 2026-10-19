@@ -35,7 +35,7 @@ test('history selects the first genuine Applied transition, excludes initial eve
 
 test('all presets, default, leap-year clamp and invalid/incomplete custom ranges', () => {
   const today = new Date(2026, 9, 18, 12);
-  assert.deepEqual(defaultDateFilter(), { basis: 'added', preset: '90', start: '', end: '' });
+  assert.deepEqual(defaultDateFilter(), { basis: 'added', preset: 'all', start: '', end: '' });
   for (const [preset,start] of [['7','2026-10-12'],['30','2026-09-19'],['90','2026-07-21'],['year','2025-10-18']]) {
     const range = dateRange(filter({ preset }), today);
     assert.equal(range.start, start); assert.equal(range.end, '2026-10-18'); assert.equal(range.error, '');
@@ -74,4 +74,13 @@ test('search AND date filtering preserves manual order and clearing restores it 
   assert.deepEqual(searchBoardGroups(records,'',filter()).flatMap(g=>g.cards).map(c=>c.id), ['a','c']);
   assert.deepEqual(searchBoardGroups(records,'',filter({preset:'all'})).flatMap(g=>g.cards).map(c=>c.id), ['a','b','c']);
   assert.deepEqual(records.map(c=>c.id), ['c','a','b']);
+});
+
+
+test('current status composes with search and Applied dates without gating historical matches', () => {
+  const cards = [card({id:'a',status:'interviewing',applied_on:'2026-10-06'}),card({id:'b',status:'applied',applied_on:'2026-10-07'}),card({id:'c',status:'interviewing',applied_on:'2025-01-01'})];
+  const groups = searchBoardGroups(cards, 'Example', filter(), new Map(), new Date(), 'interviewing');
+  assert.deepEqual(groups.flatMap(group=>group.cards.map(card=>card.id)), ['a']);
+  assert.equal(groups.reduce((total,group)=>total+group.total,0),3);
+  assert.equal(searchBoardGroups(cards, 'missing', filter(), new Map(), new Date(), 'interviewing').flatMap(group=>group.cards).length,0);
 });

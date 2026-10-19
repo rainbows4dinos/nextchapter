@@ -36,7 +36,9 @@ async function wait(expression) {
 }
 const base = 'http://127.0.0.1:8781/tools/prospect-tracker/';
 const ids = Array.from({length:7},()=>crypto.randomUUID());
-async function select(id,value) { await evaluate(`(()=>{const input=document.getElementById('${id}');input.value='${value}';input.dispatchEvent(new Event('change',{bubbles:true}));})()`); }
+async function openDates() { await evaluate("(()=>{const panel=document.getElementById('board-date-popover');if(!panel.matches(':popover-open'))document.getElementById('board-date-trigger').click();})()"); await wait("document.getElementById('board-date-trigger').getAttribute('aria-expanded')==='true'"); }
+async function select(name,value) { await openDates(); await evaluate(`document.querySelector('[name="${name}"][value="${value}"]').click()`); }
+async function status(value) { await evaluate(`(()=>{const select=document.getElementById('board-status');select.value='${value}';select.dispatchEvent(new Event('change',{bubbles:true}));})()`); }
 async function dates(start,end) {
   await select('board-date-range','custom');
   await evaluate(`(()=>{const start=document.querySelector('[name=board-start]'),end=document.querySelector('[name=board-end]');start.value='${start}';end.value='${end}';end.dispatchEvent(new Event('input',{bubbles:true}));})()`);
@@ -67,8 +69,10 @@ try {
   })()`);
   await evaluate('window.fixtureReloading=true'); await call('Page.reload',{}); await wait('!window.fixtureReloading');
   await wait("document.querySelectorAll('.prospect-card').length===7");
-  assert.equal(await evaluate("document.getElementById('board-date-basis').value"),'added');
-  assert.equal(await evaluate("document.getElementById('board-date-range').value"),'90');
+  assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'added');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All dates');
+  assert.equal(await evaluate("document.querySelectorAll('.board-toolbar select').length"),1,'date filter uses no native selects');
+  assert.equal(await evaluate("!!document.querySelector('#tracker-heading a[href=\"#/prospects/new\"]')"),true);
   assert.equal(await evaluate("document.querySelectorAll('.board-custom-dates input')[0].closest('.board-custom-dates').hidden"),true);
   await wait("document.getElementById('workspace').getAttribute('aria-busy')!=='true'");
   const original = await shown();
@@ -77,6 +81,12 @@ try {
   assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').hasAttribute('aria-keyshortcuts')`),true);
   const dragAvailable = await evaluate(`(()=>{const card=document.querySelector('[data-prospect-id="${ids[1]}"]'),column=card.closest('.column'),dt=new DataTransfer();card.dispatchEvent(new DragEvent('dragstart',{bubbles:true,cancelable:true,dataTransfer:dt}));column.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:dt,clientY:column.getBoundingClientRect().top+30}));const available=!!document.querySelector('.board-insertion');card.dispatchEvent(new DragEvent('dragend',{bubbles:true,dataTransfer:dt}));return available;})()`);
   assert.equal(dragAvailable,true,'default date filter allows drag insertion');
+  for (const [value,label] of [['7','Last 7 days'],['30','Last 30 days'],['90','Last 90 days'],['year','Last year']]) {
+    await select('board-date-range',value);
+    assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"), `Added: ${label}`);
+    assert.equal((await shown()).length,7,'Added presets apply immediately');
+  }
+  await select('board-date-range','all');
   await evaluate("fetch('/__fixture/fail-next-history',{method:'POST'})");
   await select('board-date-basis','applied');
   await wait("document.querySelector('.board-history-note').textContent.includes('could not be loaded')");
@@ -86,9 +96,10 @@ try {
   await dates('2025-10-05','2025-10-11');
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1],ids[6]].sort());
   assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'3 of 7 matches');
-  assert.ok(await evaluate("document.getElementById('board-date-summary').textContent.includes('inclusive')"));
+  assert.ok(await evaluate("document.getElementById('board-date-trigger').textContent.includes('Applied: 2025-10-05')"));
   await evaluate("(()=>{const input=document.getElementById('board-search');input.value='Boundary';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1]].sort());
+  await evaluate("document.getElementById('board-date-popover').hidePopover()");
   // Open details and return without a full reload: range, basis and search remain.
   await wait("Number(document.querySelector('.board').dataset.suppressActivationUntil || 0)<=Date.now()");
   await evaluate(`document.querySelector('[data-prospect-id="${ids[0]}"]').click()`);
@@ -103,26 +114,61 @@ try {
   assert.deepEqual(await shown(),[ids[4]],'later-status record matches its historical Applied timestamp');
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[4]}"]').textContent.includes('Applied status recorded')`));
   assert.equal(await evaluate("document.querySelector('[data-column-id=done]').open"),true,'matching Done history is discoverable');
+  const lastValid = await shown();
   await dates('2026-10-12','2026-10-01');
-  assert.deepEqual(await shown(),[]);
-  assert.ok(await evaluate("document.getElementById('board-date-summary').textContent.includes('Start date must')"));
-  await dates('','2026-10-01'); assert.deepEqual(await shown(),[]);
+  assert.deepEqual(await shown(),lastValid,'invalid custom range retains applied filter');
+  assert.ok(await evaluate("document.getElementById('board-date-feedback').textContent.includes('Start date must')"));
+  await dates('','2026-10-01'); assert.deepEqual(await shown(),lastValid,'incomplete range retains applied filter');
   await dates('2001-01-01','2001-01-07');
   assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'No matches');
-  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==='Clear dates').click()");
-  assert.deepEqual(await shown(),original,'clearing restores underlying order across lifecycle columns');
+  await select('board-date-range','all');
+  assert.deepEqual(await shown(),original,'All dates restores underlying order across lifecycle columns');
+  assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'applied','clearing retains basis');
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[3]}"]').textContent.includes('Application date unknown')`));
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[5]}"]').textContent.includes('Application date unknown')`));
-  assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').hasAttribute('aria-keyshortcuts')`),true);
   assert.deepEqual(await evaluate("fetch('/__fixture').then(r=>r.json())"),statsBefore,'filtering did not write records/history');
+  // Status and search compose independently with dates, and survive clearing dates.
+  await dates('2025-10-05','2025-10-11'); await status('interviewing');
+  assert.deepEqual(await shown(),[ids[1]]);
+  await evaluate("(()=>{const input=document.getElementById('board-search');input.value='Boundary';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
+  await evaluate("document.getElementById('board-date-popover').hidePopover()");
+  await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').click()`);
+  await wait("!!document.getElementById('prospect-form')");
+  await evaluate("document.querySelector('.editor__back').click()");
+  await wait("!!document.querySelector('.board')");
+  assert.equal(await evaluate("document.getElementById('board-status').value"),'interviewing','status survives card navigation');
+  assert.equal(await evaluate("document.getElementById('board-search').value"),'Boundary');
+  await wait("document.querySelector('.board-history-note').textContent.includes('Review/correct')");
+  await select('board-date-range','all'); assert.deepEqual(await shown(),[ids[1]]);
+  assert.equal(await evaluate("document.getElementById('board-status').value"),'interviewing');
+  await status('all');
+  assert.deepEqual((await shown()).sort(),[ids[0],ids[1]].sort());
+  await evaluate("document.querySelector('[aria-label=\"Clear search\"]').click()");
+  // Escape restores trigger focus; a trusted outside click dismisses the popover.
+  await openDates();
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').getAttribute('aria-expanded')"),'false');
+  assert.equal(await evaluate('document.activeElement.id'),'board-date-trigger');
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r',unmodifiedText:'\r'});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+  await wait("document.getElementById('board-date-popover').matches(':popover-open')");
+  const outside = await evaluate("(()=>{const b=document.querySelector('#tracker-heading h1').getBoundingClientRect();return {x:b.left+10,y:b.top+10};})()");
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',...outside,button:'left',clickCount:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',...outside,button:'left',clickCount:1});
+  await wait("!document.getElementById('board-date-popover').matches(':popover-open')");
   const historyRequests = requests.filter(request=>{const u=new URL(request.url);return u.pathname.endsWith('/prospect_status_events') && u.searchParams.has('to_status');});
   assert.ok(historyRequests.length>=2);
   assert.ok(historyRequests.every(request=>request.method==='GET' && !new URL(request.url).searchParams.has('prospect_id')),'history was batched, not requested per-card');
   await dates('2025-10-05','2025-10-11');
+  await evaluate("document.getElementById('board-date-popover').hidePopover()");
   for(const light of [false,true])for(const width of [1440,900,600,390,320]){
     await call('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});
     await evaluate(`document.body.classList.toggle('light',${light})`); await settleVisuals();
     assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true,'no page-level horizontal overflow');
+    await openDates(); await settleVisuals();
+    assert.equal(await evaluate("(()=>{const b=document.getElementById('board-date-popover').getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight;})()"),true,'popover fits viewport');
+    await evaluate("document.getElementById('board-date-popover').hidePopover()");
   }
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
   await evaluate('document.body.classList.remove("light")'); await settleVisuals();
@@ -131,5 +177,7 @@ try {
   await settleVisuals();
   assert.equal(await evaluate("document.querySelector('.nextchapter-menu-toggle').getAttribute('aria-expanded')"),'false');
   await writeFile('/tmp/nextchapter-date-filter-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await openDates(); await settleVisuals();
+  await writeFile('/tmp/nextchapter-date-popover-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   console.log('Passed defaults, custom ranges, search composition, inclusive limits, incomplete-history retry, fallback/missing labels, Done discovery, navigation retention, filtered reorder availability, read-only filtering, both themes and five responsive widths.');
 } finally { await send('Target.closeTarget',{targetId});ws.close(); }

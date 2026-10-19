@@ -1,9 +1,11 @@
-import { applicationDate, appliedHistoryMap, dateRange, defaultDateFilter } from './board-dates.js';
+// @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
+import { createDateFilter } from './date-filter.js?v=20261019-toolbar';
+import { applicationDate, appliedHistoryMap, defaultDateFilter } from './board-dates.js';
 import { gravityIcon } from '../shared/icons.mjs';
 import { bindFieldValidation } from '../shared/fields.mjs';
 import { setAlert } from '../shared/status.mjs';
 import { BOARD_COLUMNS, formatAppliedDate, searchBoardGroups, statusLabel } from './view-model.js';
-import { SELECTABLE_STATUSES, WORK_ARRANGEMENTS, validateHttpUrl } from './model.js';
+import { STATUSES, SELECTABLE_STATUSES, WORK_ARRANGEMENTS, validateHttpUrl } from './model.js';
 import { createHandoff, HANDOFF_TTL } from '../shared/resume-handoff.mjs';
 import { STATUS_BADGE_TONES } from './prospect-status.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
@@ -48,7 +50,7 @@ export function messageView(root, message, retry) {
   if (retry) panel.append(button('Try again', retry, 'secondary nc-button nc-button--tertiary nc-button--lg'));
   root.replaceChildren(panel);
 }
-/** @typedef {{query:string, doneOpen:boolean, scrollLeft:number, scrollTop:Record<string,number>, date?:import('./board-dates.js').DateFilter}} BoardState */
+/** @typedef {{query:string, doneOpen:boolean, scrollLeft:number, scrollTop:Record<string,number>, status?:string, date?:import('./board-dates.js').DateFilter}} BoardState */
 /** @param {HTMLElement} root @param {import('./data.js').ProspectCard[]} cards
  * @param {Partial<import('./kanban.js').MoveOptions> & {state?:BoardState, loadAppliedHistory?:(signal:AbortSignal)=>Promise<import('./data.js').StatusEvent[]>}} [options] */
 export function boardView(root, cards, options = {}) {
@@ -57,7 +59,7 @@ export function boardView(root, cards, options = {}) {
   const controller = new AbortController();
   const listenerOptions = { signal: controller.signal };
   const heading = el('div', '', 'board-heading');
-  const title = el('h2'); heading.append(title);
+  const title = el('h2');
   const toolbar = el('div', '', 'board-toolbar');
   toolbar.setAttribute('role', 'group'); toolbar.setAttribute('aria-label', 'Board actions');
   const add = link('Add Prospect', '#/prospects/new');
@@ -72,39 +74,23 @@ export function boardView(root, cards, options = {}) {
   const clear = button('', () => { input.value = ''; state.query = ''; update(loadedCards); input.focus(); }, 'nc-button board-search-clear');
   clear.setAttribute('aria-label', 'Clear search'); clear.title = 'Clear search';
   clear.append(gravityIcon('xmark', { size: 16 }));
-  searchField.append(label, input, clear); search.append(results, searchField);
-  /** @param {string} id @param {string} label @param {readonly [string,string][]} choices */
-  function filterSelect(id, label, choices) {
-    const wrapper = el('div', '', 'board-date-control');
-    const caption = el('label', label, 'nc-visually-hidden'); caption.htmlFor = id;
-    const select = el('select', '', 'nc-select'); select.id = id;
-    for (const [value, text] of choices) { const option = el('option', text); option.value = value; select.append(option); }
-    const control = el('span', '', 'nc-select-wrap'); control.append(select, gravityIcon('chevron-down'));
-    wrapper.append(caption, control); return { wrapper, select };
+  searchField.append(label, input, clear); search.append(searchField);
+  const status = el('select', '', 'nc-select'); status.id = 'board-status'; status.setAttribute('aria-label', 'Current status');
+  for (const [value, text] of [['all','All statuses'], ...STATUSES.map(value => [value, statusLabel(value)])]) {
+    const option = el('option', text); option.value = value; status.append(option);
   }
-  const basis = filterSelect('board-date-basis', 'Date basis', [['added','Added date'],['applied','Applied date']]);
-  const range = filterSelect('board-date-range', 'Date range', [['7','Past 7 days'],['30','Past 30 days'],['90','Past 90 days'],['year','Past Year'],['all','All'],['custom','Custom range']]);
-  basis.select.value = dateFilter.basis; range.select.value = dateFilter.preset;
-  const dateControls = el('div', '', 'board-date-controls'); dateControls.setAttribute('role', 'group'); dateControls.setAttribute('aria-label', 'Date filters');
-  const clearDates = button('Clear dates', () => {
-    Object.assign(dateFilter, { preset: 'all', start: '', end: '' }); range.select.value = 'all'; start.value = ''; end.value = '';
-    update(loadedCards);
-  }, 'nc-button nc-button--tertiary nc-button--lg');
-  dateControls.append(basis.wrapper, range.wrapper, clearDates);
-  const custom = el('div', '', 'board-custom-dates');
-  const startField = field('board-start', 'Start date', dateFilter.start, 'date');
-  const endField = field('board-end', 'End date', dateFilter.end, 'date');
-  const start = /** @type {HTMLInputElement} */ (startField.querySelector('input'));
-  const end = /** @type {HTMLInputElement} */ (endField.querySelector('input'));
-  start.setAttribute('aria-describedby', 'board-date-summary'); end.setAttribute('aria-describedby', 'board-date-summary');
-  custom.append(startField, endField);
-  const summary = el('p', '', 'board-date-summary'); summary.id = 'board-date-summary'; summary.setAttribute('role', 'status');
+  status.value = state.status ?? 'all';
+  const statusControl = el('span', '', 'nc-select-wrap board-status'); statusControl.append(status, gravityIcon('chevron-down'));
+  const dateControl = createDateFilter(dateFilter, () => update(loadedCards), controller.signal);
   const historyNote = el('div', '', 'board-history-note');
   const historyMessage = el('span'); historyMessage.setAttribute('role', 'status');
   const retryHistory = button('Retry history', () => { historyState = 'idle'; update(loadedCards); }, 'nc-button nc-button--tertiary nc-button--sm');
   historyNote.append(historyMessage, retryHistory);
-  const dateDetails = el('div', '', 'board-date-details'); dateDetails.append(summary, custom);
-  toolbar.append(add, search, dateControls); heading.append(toolbar, dateDetails, historyNote);
+  toolbar.append(search, statusControl, dateControl);
+  const toolbarRow = el('div', '', 'board-toolbar-row'); toolbarRow.append(title, toolbar);
+  heading.append(toolbarRow, results, historyNote);
+  const headerActions = document.getElementById('tracker-add');
+  if (headerActions) headerActions.replaceChildren(add); else toolbarRow.prepend(add);
   const hint = el('p', '', 'nc-visually-hidden');
   hint.id = 'board-instructions';
   const board = el('div', '', 'board');
@@ -162,27 +148,15 @@ export function boardView(root, cards, options = {}) {
         historyState = 'error'; update(loadedCards);
       });
     }
-    const dates = dateRange(dateFilter);
-    const groups = searchBoardGroups(loadedCards, state.query, dateFilter, history);
-    const searching = !!state.query.trim() || dateFilter.preset !== 'all';
+    const groups = searchBoardGroups(loadedCards, state.query, dateFilter, history, new Date(), state.status);
+    const searching = !!state.query.trim() || dateFilter.preset !== 'all' || !!state.status && state.status !== 'all';
     const incomplete = dateFilter.basis === 'applied' && historyState !== 'ready';
-    custom.hidden = dateFilter.preset !== 'custom';
-    dateDetails.hidden = custom.hidden && !dates.error;
-    clearDates.hidden = dateFilter.preset === 'all';
-    start.max = end.value; end.min = start.value;
-    for (const control of [start, end]) {
-      if (dates.error) control.setAttribute('aria-invalid', 'true'); else control.removeAttribute('aria-invalid');
-    }
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    summary.textContent = dates.error || `${dateFilter.basis === 'added' ? 'Added date' : 'Applied date'} · ${dateFilter.preset === 'all' ? 'All dates' : `${formatAppliedDate(dates.start)} – ${formatAppliedDate(dates.end)} (inclusive)`} · ${timezone}`;
-    summary.classList.toggle('board-date-summary--error', !!dates.error);
-    summary.classList.toggle('nc-visually-hidden', !dates.error);
     historyNote.hidden = dateFilter.basis !== 'applied';
     historyMessage.textContent = historyState === 'error' ? 'Applied history could not be loaded. Results are incomplete.'
       : historyState === 'loading' ? 'Loading Applied history. Results are incomplete.'
         : '“Applied status recorded” is a history fallback. Review/correct the application date before reporting. Undated prospects appear under All.';
     retryHistory.hidden = historyState !== 'error';
-    const filterKey = JSON.stringify([state.query, dateFilter, historyState]);
+    const filterKey = JSON.stringify([state.query, state.status, dateFilter, historyState]);
     const changedFilters = filterKey !== previousFilters; previousFilters = filterKey;
     const matches = groups.reduce((sum, group) => sum + group.cards.length, 0);
     title.textContent = `Prospects (${loadedCards.length})`;
@@ -216,7 +190,7 @@ export function boardView(root, cards, options = {}) {
         }
         return node;
       }));
-      if (!group.cards.length) list.append(el('p', dates.error ? 'Choose a valid date range' : incomplete ? 'Results incomplete — check Applied history' : searching ? 'No matching prospects' : 'No prospects', 'empty-column'));
+      if (!group.cards.length) list.append(el('p', incomplete ? 'Results incomplete — check Applied history' : searching ? 'No matching prospects' : 'No prospects', 'empty-column'));
       list.scrollTop = state.scrollTop[group.id] ?? 0;
     }
     board.scrollLeft = state.scrollLeft;
@@ -224,9 +198,7 @@ export function boardView(root, cards, options = {}) {
     if (focused) (/** @type {HTMLElement|null} */ (board.querySelector(`[data-prospect-id="${focused}"]`)) ?? board).focus({ preventScroll: true });
     rendered = true;
   }
-  basis.select.addEventListener('change', () => { dateFilter.basis = /** @type {import('./board-dates.js').DateFilter['basis']} */ (basis.select.value); update(loadedCards); }, listenerOptions);
-  range.select.addEventListener('change', () => { dateFilter.preset = /** @type {import('./board-dates.js').DateFilter['preset']} */ (range.select.value); update(loadedCards); }, listenerOptions);
-  for (const control of [start, end]) control.addEventListener('input', () => { dateFilter.start = start.value; dateFilter.end = end.value; update(loadedCards); }, listenerOptions);
+  status.addEventListener('change', () => { state.status = status.value; update(loadedCards); }, listenerOptions);
   input.addEventListener('input', () => { state.query = input.value; update(loadedCards); }, listenerOptions);
   update(cards);
   return {
@@ -240,7 +212,7 @@ export function boardView(root, cards, options = {}) {
       if (column instanceof window.HTMLDetailsElement) column.open = true;
       card.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     },
-    dispose: () => { saveState(); controller.abort(); disposeDrag(); }
+    dispose: () => { saveState(); controller.abort(); disposeDrag(); add.remove(); }
   };
 }
 /** @param {string} name @param {string} label @param {string} value @param {string} [type] */
