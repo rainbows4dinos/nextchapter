@@ -70,12 +70,13 @@ try {
   assert.equal(await evaluate("document.getElementById('board-date-basis').value"),'added');
   assert.equal(await evaluate("document.getElementById('board-date-range').value"),'90');
   assert.equal(await evaluate("document.querySelectorAll('.board-custom-dates input')[0].closest('.board-custom-dates').hidden"),true);
+  await wait("document.getElementById('workspace').getAttribute('aria-busy')!=='true'");
   const original = await shown();
   const statsBefore = await evaluate("fetch('/__fixture').then(r=>r.json())");
-  await key(ids[0]); assert.deepEqual(await shown(),original,'default restrictive date range blocks keyboard reorder');
-  assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[0]}"]').hasAttribute('aria-keyshortcuts')`),false);
-  const dragLocked = await evaluate(`(()=>{const card=document.querySelector('[data-prospect-id="${ids[0]}"]'),column=card.closest('.column'),dt=new DataTransfer();card.dispatchEvent(new DragEvent('dragstart',{bubbles:true,cancelable:true,dataTransfer:dt}));column.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:dt,clientY:column.getBoundingClientRect().top+30}));const locked=!document.querySelector('.board-insertion');card.dispatchEvent(new DragEvent('dragend',{bubbles:true,dataTransfer:dt}));return locked;})()`);
-  assert.equal(dragLocked,true,'default restrictive date range blocks drag insertion');
+  await key(ids[1]); assert.deepEqual(await shown(),original,'single visible card cannot move past its column boundary');
+  assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').hasAttribute('aria-keyshortcuts')`),true);
+  const dragAvailable = await evaluate(`(()=>{const card=document.querySelector('[data-prospect-id="${ids[1]}"]'),column=card.closest('.column'),dt=new DataTransfer();card.dispatchEvent(new DragEvent('dragstart',{bubbles:true,cancelable:true,dataTransfer:dt}));column.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:dt,clientY:column.getBoundingClientRect().top+30}));const available=!!document.querySelector('.board-insertion');card.dispatchEvent(new DragEvent('dragend',{bubbles:true,dataTransfer:dt}));return available;})()`);
+  assert.equal(dragAvailable,true,'default date filter allows drag insertion');
   await evaluate("fetch('/__fixture/fail-next-history',{method:'POST'})");
   await select('board-date-basis','applied');
   await wait("document.querySelector('.board-history-note').textContent.includes('could not be loaded')");
@@ -112,7 +113,7 @@ try {
   assert.deepEqual(await shown(),original,'clearing restores underlying order across lifecycle columns');
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[3]}"]').textContent.includes('Application date unknown')`));
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[5]}"]').textContent.includes('Application date unknown')`));
-  assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[0]}"]').hasAttribute('aria-keyshortcuts')`),true);
+  assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').hasAttribute('aria-keyshortcuts')`),true);
   assert.deepEqual(await evaluate("fetch('/__fixture').then(r=>r.json())"),statsBefore,'filtering did not write records/history');
   const historyRequests = requests.filter(request=>{const u=new URL(request.url);return u.pathname.endsWith('/prospect_status_events') && u.searchParams.has('to_status');});
   assert.ok(historyRequests.length>=2);
@@ -130,5 +131,5 @@ try {
   await settleVisuals();
   assert.equal(await evaluate("document.querySelector('.nextchapter-menu-toggle').getAttribute('aria-expanded')"),'false');
   await writeFile('/tmp/nextchapter-date-filter-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
-  console.log('Passed defaults, custom ranges, search composition, inclusive limits, incomplete-history retry, fallback/missing labels, Done discovery, navigation retention, reorder lock, read-only filtering, both themes and five responsive widths.');
+  console.log('Passed defaults, custom ranges, search composition, inclusive limits, incomplete-history retry, fallback/missing labels, Done discovery, navigation retention, filtered reorder availability, read-only filtering, both themes and five responsive widths.');
 } finally { await send('Target.closeTarget',{targetId});ws.close(); }

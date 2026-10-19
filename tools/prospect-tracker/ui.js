@@ -7,7 +7,7 @@ import { SELECTABLE_STATUSES, WORK_ARRANGEMENTS, validateHttpUrl } from './model
 import { createHandoff, HANDOFF_TTL } from '../shared/resume-handoff.mjs';
 import { STATUS_BADGE_TONES } from './prospect-status.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { mountBoardDrag } from './kanban.js?v=20261016-board-order';
+import { mountBoardDrag } from './kanban.js?v=20261019-filtered-order';
 
 /** @param {HTMLElement} element @param {import('./model.js').ProspectStatus} status */
 export function setProspectStatusBadge(element, status) {
@@ -167,6 +167,7 @@ export function boardView(root, cards, options = {}) {
     const searching = !!state.query.trim() || dateFilter.preset !== 'all';
     const incomplete = dateFilter.basis === 'applied' && historyState !== 'ready';
     custom.hidden = dateFilter.preset !== 'custom';
+    dateDetails.hidden = custom.hidden && !dates.error;
     clearDates.hidden = dateFilter.preset === 'all';
     start.max = end.value; end.min = start.value;
     for (const control of [start, end]) {
@@ -175,6 +176,7 @@ export function boardView(root, cards, options = {}) {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     summary.textContent = dates.error || `${dateFilter.basis === 'added' ? 'Added date' : 'Applied date'} · ${dateFilter.preset === 'all' ? 'All dates' : `${formatAppliedDate(dates.start)} – ${formatAppliedDate(dates.end)} (inclusive)`} · ${timezone}`;
     summary.classList.toggle('board-date-summary--error', !!dates.error);
+    summary.classList.toggle('nc-visually-hidden', !dates.error);
     historyNote.hidden = dateFilter.basis !== 'applied';
     historyMessage.textContent = historyState === 'error' ? 'Applied history could not be loaded. Results are incomplete.'
       : historyState === 'loading' ? 'Loading Applied history. Results are incomplete.'
@@ -187,8 +189,8 @@ export function boardView(root, cards, options = {}) {
     clear.hidden = !input.value;
     results.hidden = !searching && !incomplete;
     results.textContent = incomplete ? `${matches} shown · history incomplete` : matches ? `${matches} of ${loadedCards.length} matches` : 'No matches';
-    hint.className = 'board-order-help';
-    hint.textContent = searching ? 'Clear filters to reorder cards. Drag between columns on desktop to change status.' : 'Drag to reorder or move between columns on desktop. Keyboard: focus a card and press Alt + ↑ or ↓ to reorder.';
+    hint.className = 'nc-visually-hidden';
+    hint.textContent = 'Drag to reorder or move between columns on desktop. Keyboard: focus a card and press Alt + ↑ or ↓ to reorder.' + (searching ? ' Hidden cards stay in place when you reorder filtered results.' : '');
     for (const group of groups) {
       const { count, list, column } = columns.find(column => column.id === group.id) ?? columns[0];
       if (group.id === 'done' && column instanceof window.HTMLDetailsElement && changedFilters && searching && group.cards.length) column.open = true;
@@ -197,7 +199,7 @@ export function boardView(root, cards, options = {}) {
         const node = link('', `#/prospects/${card.id}`); node.className = 'prospect-card';
         node.dataset.prospectId = card.id;
         node.setAttribute('aria-describedby', hint.id);
-        if (!searching) node.setAttribute('aria-keyshortcuts', 'Alt+ArrowUp Alt+ArrowDown');
+        node.setAttribute('aria-keyshortcuts', 'Alt+ArrowUp Alt+ArrowDown');
         node.append(el('strong', card.company), el('span', card.title));
         node.append(statusBadge(card.status));
         const appliedDate = formatAppliedDate(card.applied_on);
@@ -218,7 +220,7 @@ export function boardView(root, cards, options = {}) {
       list.scrollTop = state.scrollTop[group.id] ?? 0;
     }
     board.scrollLeft = state.scrollLeft;
-    if (options.move) disposeDrag = mountBoardDrag(board, loadedCards, { move: options.move, canMove: options.canMove ?? (() => true), reorder: options.reorder, canReorder: () => !state.query.trim() && dateFilter.preset === 'all' });
+    if (options.move) disposeDrag = mountBoardDrag(board, loadedCards, { move: options.move, canMove: options.canMove ?? (() => true), reorder: options.reorder });
     if (focused) (/** @type {HTMLElement|null} */ (board.querySelector(`[data-prospect-id="${focused}"]`)) ?? board).focus({ preventScroll: true });
     rendered = true;
   }

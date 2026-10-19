@@ -1,4 +1,4 @@
-import { BOARD_COLUMNS, groupCards, resolveBoardDrop, statusLabel } from './view-model.js';
+import { BOARD_COLUMNS, groupCards, reorderVisibleCards, resolveBoardDrop, statusLabel } from './view-model.js';
 
 /** @typedef {import('./data.js').ProspectCard} Card
  * @typedef {{canMove:()=>boolean, move:(card:Card,status:import('./model.js').ProspectStatus)=>Promise<void>, canReorder?:()=>boolean, reorder?:(columnId:string,expectedIds:string[],orderedIds:string[])=>Promise<void>}} MoveOptions */
@@ -22,7 +22,7 @@ export function mountBoardDrag(board, cards, options) {
   const marker = document.createElement('div'); marker.className = 'board-insertion'; marker.setAttribute('aria-hidden', 'true');
   /** @type {{columnId:string,beforeId:string|null}|null} */
   let insertion = null;
-  const canReorder = () => !!options.reorder && !!options.canReorder?.() && options.canMove();
+  const canReorder = () => !!options.reorder && (options.canReorder?.() ?? true) && options.canMove();
   /** @param {Card} card @param {string} columnId */
   const sameColumn = (card, columnId) => !!BOARD_COLUMNS.find(group => group.id === columnId)?.statuses.includes(card.status);
   function clearInsertion() { marker.remove(); insertion = null; }
@@ -43,14 +43,17 @@ export function mountBoardDrag(board, cards, options) {
     if (y < box.top + 32) list.scrollTop -= 12;
     else if (y > box.bottom - 32) list.scrollTop += 12;
   }
+  /** @param {string} columnId */
+  const visibleIds = columnId => [...board.querySelectorAll('.column')]
+    .find(column => /** @type {HTMLElement} */ (column).dataset.columnId === columnId)
+    ?.querySelectorAll('.prospect-card');
+  /** @param {string} columnId */
+  const visibleOrder = columnId => [...(visibleIds(columnId) ?? [])].map(element => element.getAttribute('data-prospect-id') ?? '');
   /** @param {Card} card @param {string} columnId @param {string|null} beforeId */
   function reorder(card, columnId, beforeId) {
     if (!canReorder()) return;
     const expected = groupCards(cards).find(group => group.id === columnId)?.cards.map(card => card.id) ?? [];
-    const ordered = expected.filter(id => id !== card.id);
-    const index = beforeId === null ? ordered.length : ordered.indexOf(beforeId);
-    if (index < 0) return;
-    ordered.splice(index, 0, card.id);
+    const ordered = reorderVisibleCards(expected, visibleOrder(columnId), card.id, beforeId);
     if (expected.some((id, index) => ordered[index] !== id)) void options.reorder?.(columnId, expected, ordered);
   }
 
@@ -191,10 +194,11 @@ export function mountBoardDrag(board, cards, options) {
     if (!canReorder()) return;
     const group = groupCards(cards).find(group => group.statuses.includes(card.status));
     if (!group) return;
-    const index = group.cards.findIndex(item => item.id === card.id);
+    const visible = visibleOrder(group.id);
+    const index = visible.indexOf(card.id);
     const next = index + (event.key === 'ArrowUp' ? -1 : 1);
-    if (next < 0 || next >= group.cards.length) return;
-    reorder(card, group.id, event.key === 'ArrowUp' ? group.cards[next].id : group.cards[next + 1]?.id ?? null);
+    if (next < 0 || next >= visible.length) return;
+    reorder(card, group.id, event.key === 'ArrowUp' ? visible[next] : visible[next + 1] ?? null);
   }, listenerOptions);
   return () => { controller.abort(); closeChooser(false); clearDrag(); };
 }

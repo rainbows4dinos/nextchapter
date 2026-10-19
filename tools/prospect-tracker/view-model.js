@@ -52,6 +52,21 @@ export function groupCards(cards) {
     return { ...column, cards: grouped };
   });
 }
+/** Move visible cards within their existing slots; hidden cards stay at the same indices.
+ * Invalid/stale visible IDs leave the full order unchanged.
+ * @param {string[]} expected @param {string[]} visible @param {string} movedId @param {string|null} beforeId
+ * @returns {string[]} */
+export function reorderVisibleCards(expected, visible, movedId, beforeId) {
+  const visibleSet = new Set(visible);
+  if (!visibleSet.has(movedId) || visibleSet.size !== visible.length
+    || expected.filter(id => visibleSet.has(id)).some((id, index) => visible[index] !== id)
+    || visible.some(id => !expected.includes(id))
+    || (beforeId !== null && (!visibleSet.has(beforeId) || beforeId === movedId))) return [...expected];
+  const ordered = visible.filter(id => id !== movedId);
+  ordered.splice(beforeId === null ? ordered.length : ordered.indexOf(beforeId), 0, movedId);
+  let index = 0;
+  return expected.map(id => visibleSet.has(id) ? ordered[index++] : id);
+}
 /** Filter after central column ordering; never mutate or reorder the source data.
  * @param {import('./data.js').ProspectCard[]} cards @param {string} query
  * @param {import('./board-dates.js').DateFilter} [dateFilter] @param {ReadonlyMap<string,string>} [history] @param {Date} [today] */

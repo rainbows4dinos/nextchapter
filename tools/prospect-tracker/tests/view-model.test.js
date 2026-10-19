@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseRoute, groupCards, searchBoardGroups, formatAppliedDate, readDetails, errorMessage } from '../view-model.js';
+import { reorderVisibleCards, parseRoute, groupCards, searchBoardGroups, formatAppliedDate, readDetails, errorMessage } from '../view-model.js';
 import { STATUSES } from '../model.js';
 
 const id = '11111111-1111-4111-8111-111111111111';
@@ -131,4 +131,29 @@ test('details form clears optional core fields without touching status, assessme
 test('network errors give an actionable draft-preservation message', () => {
   assert.match(errorMessage(new TypeError('Failed to fetch')), /draft is still here/);
   assert.equal(errorMessage({ message: 'Invalid login credentials' }), 'Invalid login credentials');
+});
+
+
+test('filtered ordering fills visible slots while hidden cards retain their indices', () => {
+  const full = ['hidden-first', 'a', 'hidden-middle', 'b', 'c', 'hidden-last'];
+  const visible = ['a', 'b', 'c'];
+  assert.deepEqual(reorderVisibleCards(full, visible, 'c', 'a'), ['hidden-first', 'c', 'hidden-middle', 'a', 'b', 'hidden-last']);
+  assert.deepEqual(reorderVisibleCards(full, visible, 'a', null), ['hidden-first', 'b', 'hidden-middle', 'c', 'a', 'hidden-last']);
+  assert.deepEqual(reorderVisibleCards(full, visible, 'b', 'a'), ['hidden-first', 'b', 'hidden-middle', 'a', 'c', 'hidden-last']);
+  assert.deepEqual(reorderVisibleCards(full, visible, 'b', 'c'), full, 'existing slot is a no-op');
+  assert.deepEqual(reorderVisibleCards(full, ['b'], 'b', null), full);
+  assert.deepEqual(reorderVisibleCards(full, [], 'b', null), full);
+  assert.deepEqual(full, ['hidden-first', 'a', 'hidden-middle', 'b', 'c', 'hidden-last']);
+  assert.deepEqual(visible, ['a', 'b', 'c']);
+  assert.deepEqual(reorderVisibleCards(['a','b','c'], ['a','b','c'], 'c', 'a'), ['c','a','b']);
+});
+
+test('invalid or stale visible order cannot submit a partial or corrupt permutation', () => {
+  const full = ['a','hidden','b'];
+  for (const visible of [['b','a'], ['a','missing'], ['a','a'], []]) {
+    assert.deepEqual(reorderVisibleCards(full, visible, 'a', null), full);
+  }
+  assert.deepEqual(reorderVisibleCards(full, ['a','b'], 'hidden', null), full);
+  assert.deepEqual(reorderVisibleCards(full, ['a','b'], 'a', 'hidden'), full);
+  assert.deepEqual(reorderVisibleCards(full, ['a','b'], 'a', 'a'), full);
 });

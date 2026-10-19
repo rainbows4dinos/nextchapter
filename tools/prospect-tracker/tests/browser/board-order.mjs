@@ -72,9 +72,9 @@ try {
   await evaluate(`(async()=>{
     const {getRadarClient}=await import('./supabase-client.js');window.fixtureClient=await getRadarClient();
     const {error}=await fixtureClient.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});if(error)throw error;
-    const {createRadarDataAccess}=await import('./data.js');window.fixtureData=createRadarDataAccess(fixtureClient);
+    const {createRadarDataAccess,localCalendarDate}=await import('./data.js');window.fixtureData=createRadarDataAccess(fixtureClient);
     const ids=${JSON.stringify(ids)};
-    for(let i=0;i<ids.length;i++){const existing=await fixtureData.getProspect(ids[i]);if(existing){await fixtureData.changeStatus(existing.id,['prospect','interested','applying','prospect','applied','closed'][i],existing.updated_at);continue;}await fixtureData.createProspect({id:ids[i],company:['Alpha','Beta','Gamma','Delta','Applied','Done'][i],title:'Designer',status:['prospect','interested','applying','prospect','applied','closed'][i]});}
+    for(let i=0;i<ids.length;i++){const existing=await fixtureData.getProspect(ids[i]);if(existing){await fixtureData.changeStatus(existing.id,['prospect','interested','applying','prospect','applied','closed'][i],existing.updated_at);continue;}await fixtureData.createProspect({id:ids[i],company:['Alpha','Beta','Gamma','Delta','Applied','Done'][i],title:i===1||i===3?'Match Designer':'Other Designer',applied_on:i===1||i===3?localCalendarDate():null,status:['prospect','interested','applying','prospect','applied','closed'][i]});}
     const current=(await fixtureData.listProspects()).filter(card=>['prospect','interested','applying'].includes(card.status)).map(card=>card.id);await fixtureData.reorderColumn('prospects',current,ids.slice(0,4).reverse());
   })()`);
   await refresh();
@@ -85,14 +85,29 @@ try {
   assert.deepEqual(await order(), [ids[3],ids[2],ids[0],ids[1]]);
   assert.equal(await evaluate('document.activeElement.dataset.prospectId'), ids[0]);
   await refresh(); assert.deepEqual(await order(), [ids[3],ids[2],ids[0],ids[1]]);
-  // Filtering preserves the saved subsequence and disables both reorder input paths.
-  await evaluate("const input=document.getElementById('board-search');input.value='a';input.dispatchEvent(new Event('input',{bubbles:true}))");
+  // Combined date/search filtering reorders visible slots, preserving hidden indices.
+  await evaluate("(()=>{const range=document.getElementById('board-date-range');range.value='90';range.dispatchEvent(new Event('change',{bubbles:true}));const input=document.getElementById('board-search');input.value='Match';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
+  assert.deepEqual(await order(), [ids[3],ids[1]]);
+  await evaluate("(()=>{const basis=document.getElementById('board-date-basis');basis.value='applied';basis.dispatchEvent(new Event('change',{bubbles:true}));})()");
+  await wait("document.querySelector('.board-history-note').textContent.includes('Review/correct')");
   await key(ids[1], 'ArrowUp'); await settled();
-  const filtered = await order();
-  const blocked = await drag(ids[1], 'prospects', ids[3]); assert.equal(blocked.feedback, false);
-  assert.deepEqual(await order(), filtered);
-  await evaluate("document.querySelector('[aria-label=\"Clear search\"]').click()");
-  assert.deepEqual(await order(), [ids[3],ids[2],ids[0],ids[1]]);
+  assert.deepEqual(await order(), [ids[1],ids[3]]);
+  assert.equal(await evaluate('document.activeElement.dataset.prospectId'), ids[1]);
+  const fullOrder = () => evaluate("(async()=>{const d=(await import('./data.js')).createRadarDataAccess(await (await import('./supabase-client.js')).getRadarClient());return (await d.listProspects()).filter(card=>['prospect','interested','applying'].includes(card.status)).map(card=>card.id)})()");
+  assert.deepEqual(await fullOrder(), [ids[1],ids[2],ids[0],ids[3]], 'hidden cards retain their indices');
+  await evaluate("fetch('/__fixture/fail-next-save',{method:'POST'})");
+  await key(ids[1], 'ArrowDown'); await settled();
+  assert.deepEqual(await order(), [ids[1],ids[3]], 'failed filtered save retains order');
+  assert.equal(await evaluate("document.getElementById('board-search').value"), 'Match');
+  await key(ids[1], 'ArrowUp'); await settled();
+  await key(ids[3], 'ArrowDown'); await settled();
+  assert.deepEqual(await fullOrder(), [ids[1],ids[2],ids[0],ids[3]], 'visible boundaries do not move hidden cards');
+  const filteredDrag = await drag(ids[1], 'prospects');
+  assert.equal(filteredDrag.feedback, true); await settled();
+  assert.deepEqual(await order(), [ids[3],ids[1]]);
+  assert.deepEqual(await fullOrder(), [ids[3],ids[2],ids[0],ids[1]]);
+  await refresh();
+  assert.deepEqual(await order(), [ids[3],ids[2],ids[0],ids[1]], 'filtered order persists after reload');
   const result = await drag(ids[1], 'prospects', ids[3]);
   assert.equal(result.started, true); assert.equal(result.feedback, true); assert.equal(result.suppressed, true);
   await settled(); assert.deepEqual(await order(), [ids[1],ids[3],ids[2],ids[0]]);
@@ -146,5 +161,5 @@ try {
 
   const shot = await call('Page.captureScreenshot', { format: 'png' });
   await writeFile('/tmp/nextchapter-board-order.png', Buffer.from(shot.data, 'base64'));
-  console.log('Passed persisted drag and keyboard ordering, filter lock, click suppression, history isolation, failure recovery, status moves, Done chooser, both themes and responsive widths.');
+  console.log('Passed persisted drag and keyboard ordering, filtered visible-slot ordering, click suppression, history isolation, failure recovery, status moves, Done chooser, both themes and responsive widths.');
 } finally { await send('Target.closeTarget', { targetId }); ws.close(); }
