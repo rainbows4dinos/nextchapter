@@ -47,13 +47,13 @@ button:disabled { opacity:.5; cursor:wait }
 .board-heading h2 { margin:0; font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family) }
 .board-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--nc-space-3) }
 .board-toolbar .nc-button { text-decoration:none }
-.board-search { display:flex; flex:0 1 228px; min-width:140px; margin-left:0 }
+.board-search { display:flex; align-items:center; gap:var(--nc-space-3); flex:0 1 auto; min-width:140px; margin-left:0 }
 .board-search-field { position:relative; flex:1; width:228px; max-width:100%; min-width:0 }
 .board-search .nc-input { padding-right:40px; border-radius:9999px }
 .board-search .nc-input::-webkit-search-cancel-button { display:none; -webkit-appearance:none }
 .board-search .board-search-clear { position:absolute; right:4px; top:4px; width:32px; height:32px; padding:0; border:0; border-radius:9999px; background:transparent; color:var(--nc-text-secondary) }
 .board-search .board-search-clear:hover { background:var(--nc-input-hover) }
-.board-search-results { flex:none; margin:0; white-space:nowrap; color:var(--nc-text-muted); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+.board-search-results { flex:none; margin:0; white-space:nowrap; color:var(--nc-text-secondary); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
 .column-cards:focus-visible { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
 .board { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; overflow-x:auto; padding:0px 0px 1rem; min-height:300px; align-items:start }
 .column { min-width:0; background:var(--surface); border:1px solid var(--border-subtle); border-radius:var(--radius); padding:12px }
@@ -168,10 +168,10 @@ time { display:block; font-size:13px; color:var(--muted) }
 .board-date-trigger.nc-button { height:40px; padding:8px 12px; gap:12px; justify-content:space-between; border-color:var(--border); border-radius:var(--nc-radius-default); background:var(--nc-input-bg); font-weight:300; max-width:100%; min-width:160px }
 .board-date-trigger span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
 .board-date-trigger[aria-expanded="true"] { border-color:var(--nc-focus-ring) }
-.board-date-popover { position:fixed; inset:auto; margin:0; width:300px; max-width:calc(100vw - 24px); max-height:calc(100dvh - 24px); overflow:auto; padding:12px; border:1px solid var(--border); border-radius:var(--nc-radius-panel); background:var(--surface); color:var(--text); box-shadow:0 8px 28px rgb(0 0 0 / .25); font:400 14px/1.5 var(--sans) }
+.board-date-popover { position:fixed; inset:auto; margin:0; width:300px; max-width:calc(100vw - 24px); max-height:calc(100dvh - 24px); overflow:auto; padding:var(--nc-space-3); border:1px solid var(--border); border-radius:var(--nc-radius-panel); background:var(--surface); color:var(--text); font:400 14px/1.5 var(--sans) }
 .board-date-popover::backdrop { background:transparent }
-.board-date-popover fieldset + fieldset { border-top:1px solid var(--border-subtle); padding-top:6px; margin-top:6px }
-.board-date-popover legend { color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-size:11px; font-weight:500; margin-bottom:4px }
+.board-date-popover fieldset + fieldset { border-top:1px solid var(--border-subtle); padding-top:var(--nc-space-2); margin-top:var(--nc-space-2) }
+.board-date-popover legend { color:var(--muted); text-transform:none; font-size:var(--nc-type-body-small-size); font-weight:500; margin-bottom:var(--nc-space-1) }
 .board-date-option { display:flex; align-items:center; gap:8px; min-height:32px; padding:4px 8px; margin:0; border-radius:var(--nc-radius-default); cursor:pointer; font-size:14px }
 .board-date-option:hover { background:var(--nc-selection-bg) }
 .board-date-option:has(:checked) { background:var(--nc-selection-bg) }
@@ -180,11 +180,6 @@ time { display:block; font-size:13px; color:var(--muted) }
 .board-custom-dates .nc-field { min-width:0; margin:0; font-size:12px }
 .board-custom-dates .nc-input { height:36px; padding:6px; font-size:12px; min-width:0 }
 .board-date-feedback { margin:8px 0 0; font-size:12px; color:var(--nc-danger-fg) }
-.board-date-type .board-date-options { display:flex; gap:2px; padding:2px; border:1px solid var(--border-subtle); border-radius:var(--nc-radius-default); background:var(--nc-surface-sunken) }
-.board-date-type .board-date-option { flex:1; justify-content:center; min-height:32px; padding:4px 8px; color:var(--muted) }
-.board-date-type .board-date-option:has(:checked) { background:var(--nc-selection-bg); color:var(--text) }
-.board-date-type[data-inactive="true"] .board-date-option:has(:checked) { background:var(--surface); color:var(--muted) }
-.board-date-type .board-date-option:has(:focus-visible) { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
 .board-date-type input:focus-visible { outline:none }
 /* Keep the disclosure ring on its keyboard target, without a pointer-focus halo. */
 .column-done > summary:focus:not(:focus-visible) { outline:none }

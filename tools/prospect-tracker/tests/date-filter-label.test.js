@@ -11,7 +11,7 @@ test('custom labels read as calendar dates and include years when ambiguous', ()
   assert.equal(customRangeLabel('2027-01-01','2027-01-07',today), 'Jan 1 – Jan 7, 2027');
   assert.equal(customRangeLabel('2026-10-19','2026-10-19',today), 'Oct 19');
   assert.equal(customRangeLabel('2024-02-29','2024-02-29',today), 'Feb 29, 2024');
-  assert.equal(customRangeLabel('','2026-10-19',today), 'Custom range');
+  assert.equal(customRangeLabel('','2026-10-19',today), 'Custom Range');
 });
 test('display formatting never shifts a calendar day across viewer timezones', () => {
   const previous = process.env.TZ;
@@ -22,10 +22,10 @@ test('display formatting never shifts a calendar day across viewer timezones', (
     }
   } finally { if (previous === undefined) delete process.env.TZ; else process.env.TZ = previous; }
 });
-test('All dates omits the remembered basis and presets retain their existing labels', () => {
+test('All Dates omits the remembered basis and presets retain their existing labels', () => {
   const filter = {...defaultDateFilter(),basis:'applied'};
-  assert.equal(dateFilterLabel(filter,today), 'All dates');
-  assert.equal(dateFilterLabel({...filter,preset:'90'},today), 'Applied: Last 90 days');
-  assert.equal(dateFilterLabel({...filter,basis:'added',preset:'30'},today), 'Added: Last 30 days');
+  assert.equal(dateFilterLabel(filter,today), 'All Dates');
+  assert.equal(dateFilterLabel({...filter,preset:'90'},today), 'Applied: Last 90 Days');
+  assert.equal(dateFilterLabel({...filter,basis:'added',preset:'30'},today), 'Added: Last 30 Days');
   assert.equal(dateFilterLabel({...filter,preset:'custom',start:'2025-12-28',end:'2026-01-10'},today), 'Applied: Dec 28, 2025 – Jan 10, 2026');
 });

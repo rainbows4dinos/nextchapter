@@ -2,11 +2,11 @@ import { dateRange, validCalendarDate } from './board-dates.js';
 import { gravityIcon } from '../shared/icons.mjs';
 
 /** @type {readonly [import('./board-dates.js').DateFilter['preset'],string][]} */
-export const DATE_RANGES = [['7','Last 7 days'], ['30','Last 30 days'], ['90','Last 90 days'], ['year','Last year'], ['custom','Custom range'], ['all','All dates']];
+export const DATE_RANGES = [['7','Last 7 Days'], ['30','Last 30 Days'], ['90','Last 90 Days'], ['year','Last Year'], ['custom','Custom Range'], ['all','All Dates']];
 /** Presentation only: calendar dates never shift with the viewer's timezone.
  * @param {string} start @param {string} end @param {Date} [today] */
 export function customRangeLabel(start, end, today = new Date()) {
-  if (!validCalendarDate(start) || !validCalendarDate(end)) return 'Custom range';
+  if (!validCalendarDate(start) || !validCalendarDate(end)) return 'Custom Range';
   const first = new Date(`${start}T00:00:00Z`), last = new Date(`${end}T00:00:00Z`);
   const firstYear = first.getUTCFullYear(), lastYear = last.getUTCFullYear();
   /** @param {Date} date @param {boolean} year */
@@ -16,7 +16,7 @@ export function customRangeLabel(start, end, today = new Date()) {
 }
 /** @param {import('./board-dates.js').DateFilter} filter @param {Date} [today] */
 export function dateFilterLabel(filter, today = new Date()) {
-  if (filter.preset === 'all') return 'All dates';
+  if (filter.preset === 'all') return 'All Dates';
   const range = filter.preset === 'custom' ? customRangeLabel(filter.start, filter.end, today) : DATE_RANGES.find(([value]) => value === filter.preset)?.[1];
   return `${filter.basis === 'added' ? 'Added' : 'Applied'}: ${range}`;
 }
@@ -30,7 +30,7 @@ export function createDateFilter(filter, onChange, signal) {
   trigger.className = 'nc-button board-date-trigger'; trigger.setAttribute('aria-haspopup', 'dialog');
   trigger.setAttribute('aria-controls', 'board-date-popover'); trigger.setAttribute('aria-expanded', 'false');
   const label = document.createElement('span'); trigger.append(label, gravityIcon('calendar', { size: 16 }));
-  const panel = document.createElement('div'); panel.id = 'board-date-popover'; panel.className = 'board-date-popover';
+  const panel = document.createElement('div'); panel.id = 'board-date-popover'; panel.className = 'board-date-popover nc-menu-elevation';
   panel.popover = 'auto'; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', 'Filter by date');
   trigger.popoverTargetElement = panel;
   let draft = { ...filter };
@@ -43,7 +43,7 @@ export function createDateFilter(filter, onChange, signal) {
     const input = document.createElement('input'); input.type = 'date'; input.name = name; input.className = 'nc-input';
     input.setAttribute('aria-describedby', 'board-date-feedback'); field.append(input); custom.append(field); return input;
   }
-  const start = dateInput('board-start', 'Start date'), end = dateInput('board-end', 'End date');
+  const start = dateInput('board-start', 'Start Date'), end = dateInput('board-end', 'End Date');
   start.value = draft.start; end.value = draft.end;
   const feedback = document.createElement('p'); feedback.id = 'board-date-feedback'; feedback.className = 'board-date-feedback';
   feedback.setAttribute('role', 'status');
@@ -66,11 +66,13 @@ export function createDateFilter(filter, onChange, signal) {
   });
   typeGroup.className = 'board-date-type';
   typeGroup.querySelector('legend')?.classList.add('nc-visually-hidden');
+  typeGroup.querySelector('.board-date-options')?.classList.add('nc-pill-tabs');
+  for (const option of typeGroup.querySelectorAll('label')) option.className = 'nc-pill-tab';
   for (const input of typeGroup.querySelectorAll('input')) input.classList.add('nc-visually-hidden');
   const typeNote = document.createElement('span'); typeNote.id = 'board-date-type-description'; typeNote.className = 'nc-visually-hidden';
   typeNote.textContent = 'Date type is remembered and used only when a date range is active.';
   typeGroup.setAttribute('aria-describedby', typeNote.id); typeGroup.append(typeNote);
-  const rangeGroup = group('Date range', 'board-date-range', DATE_RANGES, value => {
+  const rangeGroup = group('Date Range', 'board-date-range', DATE_RANGES, value => {
     draft.preset = /** @type {import('./board-dates.js').DateFilter['preset']} */ (value);
     if (value === 'all') { draft.start = ''; draft.end = ''; start.value = ''; end.value = ''; }
     commit();

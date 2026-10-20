@@ -1,5 +1,5 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { createDateFilter } from './date-filter.js?v=20261019-date-polish';
+import { createDateFilter } from './date-filter.js?v=20261019-date-system';
 import { applicationDate, appliedHistoryMap, defaultDateFilter } from './board-dates.js';
 import { gravityIcon } from '../shared/icons.mjs';
 import { bindFieldValidation } from '../shared/fields.mjs';
@@ -66,7 +66,7 @@ export function boardView(root, cards, options = {}) {
   add.className = 'nc-button nc-button--primary nc-button--lg';
   add.prepend(gravityIcon('plus', { size: 16 }));
   const search = el('div', '', 'board-search'); search.setAttribute('role', 'search');
-  const results = el('span', '', 'board-search-results');
+  const results = el('span', '', 'board-search-results'); results.setAttribute('role', 'status');
   const searchField = el('div', '', 'board-search-field');
   const label = el('label', 'Filter prospects', 'nc-visually-hidden'); label.htmlFor = 'board-search';
   const input = el('input', '', 'nc-input'); input.id = 'board-search'; input.type = 'search';
@@ -74,7 +74,7 @@ export function boardView(root, cards, options = {}) {
   const clear = button('', () => { input.value = ''; state.query = ''; update(loadedCards); input.focus(); }, 'nc-button board-search-clear');
   clear.setAttribute('aria-label', 'Clear search'); clear.title = 'Clear search';
   clear.append(gravityIcon('xmark', { size: 16 }));
-  searchField.append(label, input, clear); search.append(searchField);
+  searchField.append(label, input, clear); search.append(results, searchField);
   const status = el('select', '', 'nc-select'); status.id = 'board-status'; status.setAttribute('aria-label', 'Current status');
   for (const [value, text] of [['all','All statuses'], ...STATUSES.map(value => [value, statusLabel(value)])]) {
     const option = el('option', text); option.value = value; status.append(option);
@@ -88,7 +88,7 @@ export function boardView(root, cards, options = {}) {
   historyNote.append(historyMessage, retryHistory);
   toolbar.append(search, statusControl, dateControl);
   const toolbarRow = el('div', '', 'board-toolbar-row'); toolbarRow.append(title, toolbar);
-  heading.append(toolbarRow, results, historyNote);
+  heading.append(toolbarRow, historyNote);
   const headerActions = document.getElementById('tracker-add');
   if (headerActions) headerActions.replaceChildren(add); else toolbarRow.prepend(add);
   const hint = el('p', '', 'nc-visually-hidden');
@@ -161,8 +161,8 @@ export function boardView(root, cards, options = {}) {
     const matches = groups.reduce((sum, group) => sum + group.cards.length, 0);
     title.textContent = `Prospects (${loadedCards.length})`;
     clear.hidden = !input.value;
-    results.hidden = !searching && !incomplete;
-    results.textContent = incomplete ? `${matches} shown · history incomplete` : matches ? `${matches} of ${loadedCards.length} matches` : 'No matches';
+    results.hidden = matches === loadedCards.length;
+    results.textContent = `${matches} of ${loadedCards.length}`;
     hint.className = 'nc-visually-hidden';
     hint.textContent = 'Drag to reorder or move between columns on desktop. Keyboard: focus a card and press Alt + ↑ or ↓ to reorder.' + (searching ? ' Hidden cards stay in place when you reorder filtered results.' : '');
     for (const group of groups) {

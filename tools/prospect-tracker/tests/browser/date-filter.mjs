@@ -70,32 +70,37 @@ try {
   await evaluate('window.fixtureReloading=true'); await call('Page.reload',{}); await wait('!window.fixtureReloading');
   await wait("document.querySelectorAll('.prospect-card').length===7");
   assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'added');
-  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All dates');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All Dates');
   assert.equal(await evaluate("document.querySelectorAll('.board-toolbar select').length"),1,'date filter uses no native selects');
   assert.equal(await evaluate("!!document.querySelector('#tracker-heading a[href=\"#/prospects/new\"]')"),true);
   assert.equal(await evaluate("document.querySelectorAll('.board-custom-dates input')[0].closest('.board-custom-dates').hidden"),true);
   await wait("document.getElementById('workspace').getAttribute('aria-busy')!=='true'");
+  assert.equal(await evaluate("document.querySelector('.board-search-results').hidden"),true,'all visible: count hidden');
+  assert.equal(await evaluate("document.querySelector('.board-search-results').nextElementSibling.className"),'board-search-field','count immediately precedes search');
+  assert.equal(await evaluate("!!document.querySelector('.board-heading > .board-search-results')"),false,'no separate count row');
   const original = await shown();
   const statsBefore = await evaluate("fetch('/__fixture').then(r=>r.json())");
   await key(ids[1]); assert.deepEqual(await shown(),original,'single visible card cannot move past its column boundary');
   assert.equal(await evaluate(`document.querySelector('[data-prospect-id="${ids[1]}"]').hasAttribute('aria-keyshortcuts')`),true);
   const dragAvailable = await evaluate(`(()=>{const card=document.querySelector('[data-prospect-id="${ids[1]}"]'),column=card.closest('.column'),dt=new DataTransfer();card.dispatchEvent(new DragEvent('dragstart',{bubbles:true,cancelable:true,dataTransfer:dt}));column.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:dt,clientY:column.getBoundingClientRect().top+30}));const available=!!document.querySelector('.board-insertion');card.dispatchEvent(new DragEvent('dragend',{bubbles:true,dataTransfer:dt}));return available;})()`);
   assert.equal(dragAvailable,true,'default date filter allows drag insertion');
-  for (const [value,label] of [['7','Last 7 days'],['30','Last 30 days'],['90','Last 90 days'],['year','Last year']]) {
+  for (const [value,label] of [['7','Last 7 Days'],['30','Last 30 Days'],['90','Last 90 Days'],['year','Last Year']]) {
     await select('board-date-range',value);
     assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"), `Added: ${label}`);
     assert.equal((await shown()).length,7,'Added presets apply immediately');
+    assert.equal(await evaluate("document.querySelector('.board-search-results').hidden"),true,'active filter with all results still hides the count');
   }
   await select('board-date-range','all');
   await evaluate("fetch('/__fixture/fail-next-history',{method:'POST'})");
   await select('board-date-basis','applied');
   await wait("document.querySelector('.board-history-note').textContent.includes('could not be loaded')");
-  assert.ok(await evaluate("document.querySelector('.board-search-results').textContent.includes('incomplete')"));
+  assert.ok(await evaluate("document.querySelector('.board-history-note').textContent.includes('Results are incomplete')"));
   await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==='Retry history').click()");
   await wait("document.querySelector('.board-history-note').textContent.includes('Review/correct')");
   await dates('2025-10-05','2025-10-11');
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1],ids[6]].sort());
-  assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'3 of 7 matches');
+  assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'3 of 7');
+  assert.equal(await evaluate("document.querySelector('.board-search-results').hidden"),false);
   assert.ok(await evaluate("document.getElementById('board-date-trigger').textContent.includes('Applied: Oct 5 – Oct 11, 2025')"));
   await evaluate("(()=>{const input=document.getElementById('board-search');input.value='Boundary';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1]].sort());
@@ -120,13 +125,15 @@ try {
   assert.ok(await evaluate("document.getElementById('board-date-feedback').textContent.includes('Start date must')"));
   await dates('','2026-10-01'); assert.deepEqual(await shown(),lastValid,'incomplete range retains applied filter');
   await dates('2001-01-01','2001-01-07');
-  assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'No matches');
+  assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'0 of 7');
+  assert.equal(await evaluate("document.querySelector('.board-search-results').hidden"),false,'zero results count stays visible');
   await select('board-date-range','all');
-  assert.deepEqual(await shown(),original,'All dates restores underlying order across lifecycle columns');
+  assert.deepEqual(await shown(),original,'All Dates restores underlying order across lifecycle columns');
   assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'applied','clearing retains basis');
-  assert.equal(await evaluate("document.querySelector('.board-date-type').dataset.inactive"),'true','remembered type has neutral styling under All dates');
+  assert.equal(await evaluate("document.querySelector('.board-date-type').dataset.inactive"),'true','All Dates has no date restriction');
+  assert.notEqual(await evaluate("getComputedStyle(document.querySelector('[name=board-date-basis]:checked').closest('label')).backgroundColor"),'rgba(0, 0, 0, 0)','remembered date type stays visibly selected under All Dates');
   await select('board-date-range','90');
-  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'Applied: Last 90 days');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'Applied: Last 90 Days');
   assert.equal(await evaluate("document.querySelector('.board-date-type').dataset.inactive"),'false');
   await select('board-date-range','all');
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[3]}"]').textContent.includes('Application date unknown')`));
@@ -165,7 +172,7 @@ try {
   await call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowLeft',code:'ArrowLeft',windowsVirtualKeyCode:37});
   await call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowLeft',code:'ArrowLeft',windowsVirtualKeyCode:37});
   assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'added');
-  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All dates');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All Dates');
   await call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
   await call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
   assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'applied');
@@ -199,6 +206,24 @@ try {
     assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true,'no page-level horizontal overflow');
     await openDates(); await settleVisuals();
     assert.equal(await evaluate("(()=>{const b=document.getElementById('board-date-popover').getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight;})()"),true,'popover fits viewport');
+    if (width === 1440) {
+      const shadow = await evaluate("getComputedStyle(document.getElementById('board-date-popover')).boxShadow");
+      assert.ok(shadow.endsWith('1px 1px 0px 0px'),'canonical hard menu shadow in both themes');
+      const normal = await evaluate("(()=>{const pill=document.querySelector('[name=board-date-basis][value=added]').closest('label'),s=getComputedStyle(pill),g=getComputedStyle(pill.closest('.nc-pill-tabs'));return {color:s.color,bg:g.backgroundColor,radius:s.borderRadius,size:s.fontSize,height:pill.getBoundingClientRect().height,groupHeight:pill.closest('.nc-pill-tabs').getBoundingClientRect().height};})()");
+      assert.equal(normal.radius,'999px'); assert.equal(normal.height,22); assert.equal(normal.groupHeight,28,'canonical Pill Tabs geometry'); assert.equal(normal.size,'12px','canonical Pill Tabs typography');
+      function contrast(fg,bg) {
+        const luminance = color => color.match(/[\d.]+/g).slice(0,3).map(Number).map(value=>value/255).map(value=>value<=0.04045?value/12.92:((value+0.055)/1.055)**2.4).reduce((sum,value,index)=>sum+value*[0.2126,0.7152,0.0722][index],0);
+        const a=luminance(fg),b=luminance(bg); return (Math.max(a,b)+0.05)/(Math.min(a,b)+0.05);
+      }
+      assert.ok(contrast(normal.color,normal.bg)>=4.5,'unselected text contrast');
+      const hoverPoint = await evaluate("(()=>{const b=document.querySelector('[name=board-date-basis][value=added]').closest('label').getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2};})()");
+      await call('Input.dispatchMouseEvent',{type:'mouseMoved',...hoverPoint}); await settleVisuals();
+      const states = await evaluate("[...document.querySelectorAll('.board-date-type .nc-pill-tab')].map(pill=>({color:getComputedStyle(pill).color,bg:getComputedStyle(pill).backgroundColor}))");
+      assert.ok(states.every(state=>contrast(state.color,state.bg)>=4.5),'hovered and selected pills keep readable text');
+      assert.notEqual(states[0].bg,states[1].bg,'hover cannot masquerade as the selected date type');
+      await writeFile(`/tmp/nextchapter-date-system-${light?'light':'dark'}.png`,Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+      await call('Input.dispatchMouseEvent',{type:'mouseMoved',x:2,y:2});
+    }
     await evaluate("document.getElementById('board-date-popover').hidePopover()");
   }
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
@@ -211,7 +236,7 @@ try {
   await openDates(); await settleVisuals();
   console.log('Polished custom popover height:',await evaluate("document.getElementById('board-date-popover').getBoundingClientRect().height"));
   assert.equal(await evaluate("!!document.querySelector('.board-date-timezone')"),false,'no technical footer');
-  assert.equal(await evaluate("[...document.querySelectorAll('.board-date-option')].every(row=>row.getBoundingClientRect().height>=32)"),true,'comfortable option targets');
+  assert.equal(await evaluate("[...document.querySelectorAll('[name=board-date-range]')].map(input=>input.closest('label')).every(row=>row.getBoundingClientRect().height>=32)"),true,'comfortable option targets');
   await writeFile('/tmp/nextchapter-date-popover-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   console.log('Passed defaults, custom ranges, search composition, inclusive limits, incomplete-history retry, fallback/missing labels, Done discovery, navigation retention, filtered reorder availability, read-only filtering, both themes and five responsive widths.');
 } finally { await send('Target.closeTarget',{targetId});ws.close(); }
