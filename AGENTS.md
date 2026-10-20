@@ -19,7 +19,7 @@ Keep career facts and writing policy in their canonical files. This file directs
 
 Never invent career facts, metrics, or shipped outcomes. Respect role-specific scope notes, especially The Pattern's engagement boundaries. If sources disagree on a factual claim, surface the discrepancy rather than guessing. Keep generated applications and opportunity observations separate from canonical career facts.
 
-Edit only `docs/career-context/` career sources. Root files with the same names are generated compatibility copies for published raw/Pages URLs and cached clients. After editing canonical sources, run `node tools/prospect-tracker/scripts/sync-context.js`; verify with `node tools/prospect-tracker/scripts/sync-context.js --check`. Commit canonical sources and compatibility copies together.
+Edit canonical career sources in `docs/career-context/`. Applications and tests read these files directly; do not recreate root copies.
 
 ## Existing architecture
 
