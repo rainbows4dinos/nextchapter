@@ -18,6 +18,10 @@ Use the approved public role “Independent Design Consultant,” organization l
 
 The paid fractional contract ran Jun 2026 through Sep 2026. Its client stays unnamed; the engagement ended before launch, and shipped outcomes are unknown. The PDX Pop Now! project ran May 2026 through Jul 2026 and must be identified as volunteer work. Do not describe both projects as paid consulting, imply a continuing business, or duplicate PDX Pop Now! in a separate public volunteer entry. Preserve the underlying titles, dates, and scope in the master; keep private client-specific disclosure and departure guidance outside this public repository.
 
+### AI Tooling and Methods
+
+Under Self-Employed / Consulting, include the development of custom tools, workflows, and methodologies that use AI across product design and software development, from early exploration and rapid prototyping through implementation and delivery. Use the wording in resume-master.md as the factual source. Frame acceleration and enhancement as the purpose of this work; do not imply verified client results, measured time savings, or shipped client software. This independent practice does not change the documented project or contract dates. Follow voice-and-format.md when describing AI-assisted code contributions.
+
 ## Earlier History
 
 Vacasa is documented in resume-master.md, including its native consumer application, operational tooling, design systems, and rebrand work. Roles before Vacasa remain incomplete. Do not substitute guesses for missing history.

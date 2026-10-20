@@ -18,6 +18,10 @@ This repository is public. That is what lets the résumé builder fetch these fi
 | [rules.json](rules.json) | Structured application-document rules: bullet caps, word limits, banned words, code-credit language, and role locations |
 | [tone-and-positioning.md](tone-and-positioning.md) | Emphasis focus chips for the résumé UI; not the tone authority |
 
+### Self-Employed / Consulting
+
+The independent consulting context includes developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery. See [the master résumé](resume-master.md#ai-tooling-and-methods-self-employed--consulting) for the canonical wording and scope, and [experience framing](experience-framing.md#independent-consulting-and-creative-projects) for application guidance.
+
 Edit writing guidance in `voice-and-format.md` and countable constraints in `rules.json`. Preserve the emphasis-options format in `tone-and-positioning.md`, which the résumé tool parses.
 
 Career Radar can reuse career facts, positioning, and supporting evidence. Its search preferences, evaluation criteria, and opportunity records will be separate from résumé formatting rules and canonical career facts. Opportunity records will live in Supabase rather than in this repository, so that tracking a company does not mean publishing it.

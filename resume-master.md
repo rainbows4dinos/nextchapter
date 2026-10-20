@@ -128,6 +128,11 @@ Approved descriptive public framing for independent work spanning paid product d
 - Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping, and design systems.
 - Produced a promotional film for PDX Pop Now!'s 2026 compilation, combining visual concept development and motion design as a volunteer.
 
+## AI Tooling and Methods (Self-Employed / Consulting)
+Developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
+
+This describes independent practice and capability development. It does not extend the project or contract dates above or establish client delivery, measured improvements, or shipped outcomes.
+
 ## Underlying Facts and Scope Boundaries
 The paid engagement was Fractional Head of Design (contract), Jun 2026 through Sep 2026. It ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from that title alone. Keep the client unnamed and do not use the engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
 
