@@ -119,10 +119,10 @@ Comfortable moving between strategy and execution, including AI-assisted softwar
 
 # Product Design & Creative Projects
 Independent Design Consultant
-May 2026 – Sep 2026
+May 2026 – Present
 
 ## Public Framing
-Approved descriptive public framing for independent work spanning paid product design consulting and volunteer creative work. Use the role “Independent Design Consultant” and organization label “Product Design & Creative Projects.” The combined date range covers the projects below; it does not extend the paid contract dates or imply an ongoing business, multiple paid clients, or full-time employment. Do not use “Present.”
+Approved descriptive public framing for independent work spanning paid product design consulting and volunteer creative work. Use the role “Independent Design Consultant” and organization label “Product Design & Creative Projects.” The May 2026 – Present date range reflects an ongoing independent practice, including unpaid projects and continued AI tooling development. LinkedIn uses “Larry Jr. Design” as the organization label. Ongoing work does not require current income; do not infer an active paying client, multiple paid clients, or full-time employment. Preserve the completed projects’ own dates.
 
 ## Public Scope
 - Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping, and design systems.
@@ -131,7 +131,7 @@ Approved descriptive public framing for independent work spanning paid product d
 ## AI Tooling and Methods (Self-Employed / Consulting)
 Developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
 
-This describes independent practice and capability development. It does not extend the project or contract dates above or establish client delivery, measured improvements, or shipped outcomes.
+This is ongoing independent practice and capability development, including work that is not currently generating income. It does not extend the completed project or paid contract dates or establish client delivery, measured improvements, or shipped outcomes.
 
 ## Underlying Facts and Scope Boundaries
 The paid engagement was Fractional Head of Design (contract), Jun 2026 through Sep 2026. It ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from that title alone. Keep the client unnamed and do not use the engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
@@ -355,4 +355,4 @@ Emphasize:
 - Benefits from concise framing and structured storytelling
 
 ## Recent Contract and Complete-History Questions
-The recent paid fractional contract is part of the broader Independent Design Consultant entry above. Its own dates remain Jun 2026 through Sep 2026; the combined May 2026 through Sep 2026 range also includes volunteer work. Do not invent dates or extend other employment to cover it. If asked for the client or a complete history, answer accurately from the private record. Keep private departure explanations out of public resumes, LinkedIn, and cover letters.
+The recent paid fractional contract is part of the broader Independent Design Consultant entry above. Its own dates remain Jun 2026 through Sep 2026; the broader May 2026 – Present entry includes the completed volunteer project and ongoing independent AI tooling and project work. Do not invent dates or extend other employment to cover it. If asked for the client or a complete history, answer accurately from the private record. Keep private departure explanations out of public resumes, LinkedIn, and cover letters.

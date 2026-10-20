@@ -14,9 +14,9 @@ For Staff / Principal roles, emphasize strategic ownership, complex systems, cra
 
 ## Independent Consulting and Creative Projects
 
-Use the approved public role “Independent Design Consultant,” organization label “Product Design & Creative Projects,” and combined dates May 2026 through Sep 2026. Show broad design expertise through the paid consumer mobile app consulting and the volunteer PDX Pop Now! promotional film, within the cap in rules.json.
+Use the approved public role “Independent Design Consultant,” organization label “Product Design & Creative Projects,” and dates May 2026 – Present for the ongoing independent practice. LinkedIn uses “Larry Jr. Design” as the organization label. The practice includes continued project work and AI tooling development, even when it is not generating income. Show broad design expertise through the paid consumer mobile app consulting and the volunteer PDX Pop Now! promotional film, within the cap in rules.json.
 
-The paid fractional contract ran Jun 2026 through Sep 2026. Its client stays unnamed; the engagement ended before launch, and shipped outcomes are unknown. The PDX Pop Now! project ran May 2026 through Jul 2026 and must be identified as volunteer work. Do not describe both projects as paid consulting, imply a continuing business, or duplicate PDX Pop Now! in a separate public volunteer entry. Preserve the underlying titles, dates, and scope in the master; keep private client-specific disclosure and departure guidance outside this public repository.
+The paid fractional contract ran Jun 2026 through Sep 2026. Its client stays unnamed; the engagement ended before launch, and shipped outcomes are unknown. The PDX Pop Now! project ran May 2026 through Jul 2026 and must be identified as volunteer work. Do not describe both projects as paid consulting, imply a current paying client or continuous paid engagements, or duplicate PDX Pop Now! in a separate public volunteer entry. Preserve the underlying titles, dates, and scope in the master; keep private client-specific disclosure and departure guidance outside this public repository.
 
 ### AI Tooling and Methods
 
