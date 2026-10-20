@@ -1,12 +1,23 @@
-import { dateRange } from './board-dates.js';
+import { dateRange, validCalendarDate } from './board-dates.js';
 import { gravityIcon } from '../shared/icons.mjs';
 
 /** @type {readonly [import('./board-dates.js').DateFilter['preset'],string][]} */
 export const DATE_RANGES = [['7','Last 7 days'], ['30','Last 30 days'], ['90','Last 90 days'], ['year','Last year'], ['custom','Custom range'], ['all','All dates']];
-/** @param {import('./board-dates.js').DateFilter} filter */
-export function dateFilterLabel(filter) {
+/** Presentation only: calendar dates never shift with the viewer's timezone.
+ * @param {string} start @param {string} end @param {Date} [today] */
+export function customRangeLabel(start, end, today = new Date()) {
+  if (!validCalendarDate(start) || !validCalendarDate(end)) return 'Custom range';
+  const first = new Date(`${start}T00:00:00Z`), last = new Date(`${end}T00:00:00Z`);
+  const firstYear = first.getUTCFullYear(), lastYear = last.getUTCFullYear();
+  /** @param {Date} date @param {boolean} year */
+  const format = (date, year) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', ...(year ? {year:'numeric'} : {}), timeZone: 'UTC' });
+  if (start === end) return format(first, firstYear !== today.getFullYear());
+  return `${format(first, firstYear !== lastYear)} – ${format(last, firstYear !== lastYear || lastYear !== today.getFullYear())}`;
+}
+/** @param {import('./board-dates.js').DateFilter} filter @param {Date} [today] */
+export function dateFilterLabel(filter, today = new Date()) {
   if (filter.preset === 'all') return 'All dates';
-  const range = filter.preset === 'custom' ? `${filter.start} – ${filter.end}` : DATE_RANGES.find(([value]) => value === filter.preset)?.[1];
+  const range = filter.preset === 'custom' ? customRangeLabel(filter.start, filter.end, today) : DATE_RANGES.find(([value]) => value === filter.preset)?.[1];
   return `${filter.basis === 'added' ? 'Added' : 'Applied'}: ${range}`;
 }
 /** One date control with a native, light-dismiss popover and standard radio groups.
@@ -39,12 +50,13 @@ export function createDateFilter(filter, onChange, signal) {
   /** @param {string} title @param {string} name @param {readonly [string,string][]} values @param {(value:string)=>void} select */
   function group(title, name, values, select) {
     const fieldset = document.createElement('fieldset'); const legend = document.createElement('legend'); legend.textContent = title;
-    fieldset.append(legend);
+    const options = document.createElement('div'); options.className = 'board-date-options';
+    fieldset.append(legend, options);
     for (const [value, text] of values) {
       const option = document.createElement('label'); option.className = 'board-date-option';
       const input = document.createElement('input'); input.type = 'radio'; input.name = name; input.value = value;
       input.addEventListener('change', () => { if (input.checked) select(value); }, { signal });
-      choices.push(input); option.append(input, text); fieldset.append(option);
+      choices.push(input); option.append(input, text); options.append(option);
     }
     return fieldset;
   }
@@ -52,16 +64,21 @@ export function createDateFilter(filter, onChange, signal) {
     draft.basis = filter.basis = /** @type {import('./board-dates.js').DateFilter['basis']} */ (value);
     refresh(); onChange();
   });
+  typeGroup.className = 'board-date-type';
+  typeGroup.querySelector('legend')?.classList.add('nc-visually-hidden');
+  for (const input of typeGroup.querySelectorAll('input')) input.classList.add('nc-visually-hidden');
+  const typeNote = document.createElement('span'); typeNote.id = 'board-date-type-description'; typeNote.className = 'nc-visually-hidden';
+  typeNote.textContent = 'Date type is remembered and used only when a date range is active.';
+  typeGroup.setAttribute('aria-describedby', typeNote.id); typeGroup.append(typeNote);
   const rangeGroup = group('Date range', 'board-date-range', DATE_RANGES, value => {
     draft.preset = /** @type {import('./board-dates.js').DateFilter['preset']} */ (value);
     if (value === 'all') { draft.start = ''; draft.end = ''; start.value = ''; end.value = ''; }
     commit();
     if (value === 'custom') start.focus();
   });
-  const timezone = document.createElement('p'); timezone.className = 'board-date-timezone';
-  timezone.textContent = `Inclusive dates · ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
-  panel.append(typeGroup, rangeGroup, custom, feedback, timezone); wrapper.append(trigger, panel);
+  panel.append(typeGroup, rangeGroup, custom, feedback); wrapper.append(trigger, panel);
   function refresh() {
+    typeGroup.dataset.inactive = String(filter.preset === 'all');
     label.textContent = dateFilterLabel(filter); trigger.title = label.textContent;
     trigger.setAttribute('aria-label', `Date filter: ${label.textContent}`);
     for (const input of choices) input.checked = input.value === (input.name === 'board-date-basis' ? draft.basis : draft.preset);

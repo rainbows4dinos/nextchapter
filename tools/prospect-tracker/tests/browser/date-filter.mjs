@@ -60,7 +60,7 @@ try {
     const client=await (await import('./supabase-client.js')).getRadarClient();
     const auth=await client.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});if(auth.error)throw auth.error;
     const ids=${JSON.stringify(ids)};
-    const statuses=['applied','interviewing','rejected','applied','prospect','prospect','prospect'];
+    const statuses=['applied','interviewing','rejected','applied','prospect','prospect','rejected'];
     const dates=['2025-10-05','2025-10-11','2025-10-04',null,null,null,'2025-10-08'];
     const names=['Start Boundary','End Boundary','Outside','Initial Applied import','Historical fallback','Undated','Manual date'];
     for(let i=0;i<ids.length;i++){const result=await client.from('prospects').insert({id:ids[i],company:names[i],title:'Designer',status:statuses[i],applied_on:dates[i]}).select('*').single();if(result.error)throw result.error;}
@@ -96,7 +96,7 @@ try {
   await dates('2025-10-05','2025-10-11');
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1],ids[6]].sort());
   assert.equal(await evaluate("document.querySelector('.board-search-results').textContent"),'3 of 7 matches');
-  assert.ok(await evaluate("document.getElementById('board-date-trigger').textContent.includes('Applied: 2025-10-05')"));
+  assert.ok(await evaluate("document.getElementById('board-date-trigger').textContent.includes('Applied: Oct 5 – Oct 11, 2025')"));
   await evaluate("(()=>{const input=document.getElementById('board-search');input.value='Boundary';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
   assert.deepEqual((await shown()).sort(),[ids[0],ids[1]].sort());
   await evaluate("document.getElementById('board-date-popover').hidePopover()");
@@ -124,11 +124,18 @@ try {
   await select('board-date-range','all');
   assert.deepEqual(await shown(),original,'All dates restores underlying order across lifecycle columns');
   assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'applied','clearing retains basis');
+  assert.equal(await evaluate("document.querySelector('.board-date-type').dataset.inactive"),'true','remembered type has neutral styling under All dates');
+  await select('board-date-range','90');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'Applied: Last 90 days');
+  assert.equal(await evaluate("document.querySelector('.board-date-type').dataset.inactive"),'false');
+  await select('board-date-range','all');
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[3]}"]').textContent.includes('Application date unknown')`));
   assert.ok(await evaluate(`document.querySelector('[data-prospect-id="${ids[5]}"]').textContent.includes('Application date unknown')`));
   assert.deepEqual(await evaluate("fetch('/__fixture').then(r=>r.json())"),statsBefore,'filtering did not write records/history');
   // Status and search compose independently with dates, and survive clearing dates.
-  await dates('2025-10-05','2025-10-11'); await status('interviewing');
+  await dates('2025-10-05','2025-10-11'); await status('rejected');
+  assert.deepEqual(await shown(),[ids[6]],'Rejected prospect matches authoritative application date within the week');
+  await status('interviewing');
   assert.deepEqual(await shown(),[ids[1]]);
   await evaluate("(()=>{const input=document.getElementById('board-search');input.value='Boundary';input.dispatchEvent(new Event('input',{bubbles:true}));})()");
   await evaluate("document.getElementById('board-date-popover').hidePopover()");
@@ -153,10 +160,34 @@ try {
   await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r',unmodifiedText:'\r'});
   await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
   await wait("document.getElementById('board-date-popover').matches(':popover-open')");
+  await wait("document.activeElement.name==='board-date-basis'");
+  assert.equal(await evaluate("getComputedStyle(document.activeElement.closest('label')).outlineStyle"),'solid','segmented choice has visible keyboard focus');
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowLeft',code:'ArrowLeft',windowsVirtualKeyCode:37});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowLeft',code:'ArrowLeft',windowsVirtualKeyCode:37});
+  assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'added');
+  assert.equal(await evaluate("document.getElementById('board-date-trigger').textContent"),'All dates');
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+  assert.equal(await evaluate("document.querySelector('[name=board-date-basis]:checked').value"),'applied');
   const outside = await evaluate("(()=>{const b=document.querySelector('#tracker-heading h1').getBoundingClientRect();return {x:b.left+10,y:b.top+10};})()");
   await call('Input.dispatchMouseEvent',{type:'mousePressed',...outside,button:'left',clickCount:1});
   await call('Input.dispatchMouseEvent',{type:'mouseReleased',...outside,button:'left',clickCount:1});
   await wait("!document.getElementById('board-date-popover').matches(':popover-open')");
+  // Native pointer focus does not leave a ring; keyboard disclosure focus remains visible.
+  const donePoint = await evaluate("(()=>{const b=document.querySelector('.column-done summary').getBoundingClientRect();return {x:b.left+12,y:b.top+8};})()");
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',...donePoint,button:'left',clickCount:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',...donePoint,button:'left',clickCount:1});
+  assert.equal(await evaluate("document.querySelector('.column-done summary').matches(':focus-visible')"),false);
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('.column-done summary')).outlineStyle"),'none');
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});
+  await evaluate("document.querySelector('.column-done summary').focus()");
+  assert.equal(await evaluate("document.querySelector('.column-done summary').matches(':focus-visible')"),true);
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('.column-done summary')).outlineStyle"),'solid');
+  const doneOpen = await evaluate("document.querySelector('.column-done').open");
+  await call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r',unmodifiedText:'\r'});
+  await call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+  assert.equal(await evaluate("document.querySelector('.column-done').open"),!doneOpen,'keyboard toggle works');
   const historyRequests = requests.filter(request=>{const u=new URL(request.url);return u.pathname.endsWith('/prospect_status_events') && u.searchParams.has('to_status');});
   assert.ok(historyRequests.length>=2);
   assert.ok(historyRequests.every(request=>request.method==='GET' && !new URL(request.url).searchParams.has('prospect_id')),'history was batched, not requested per-card');
@@ -178,6 +209,9 @@ try {
   assert.equal(await evaluate("document.querySelector('.nextchapter-menu-toggle').getAttribute('aria-expanded')"),'false');
   await writeFile('/tmp/nextchapter-date-filter-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await openDates(); await settleVisuals();
+  console.log('Polished custom popover height:',await evaluate("document.getElementById('board-date-popover').getBoundingClientRect().height"));
+  assert.equal(await evaluate("!!document.querySelector('.board-date-timezone')"),false,'no technical footer');
+  assert.equal(await evaluate("[...document.querySelectorAll('.board-date-option')].every(row=>row.getBoundingClientRect().height>=32)"),true,'comfortable option targets');
   await writeFile('/tmp/nextchapter-date-popover-mobile.png',Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   console.log('Passed defaults, custom ranges, search composition, inclusive limits, incomplete-history retry, fallback/missing labels, Done discovery, navigation retention, filtered reorder availability, read-only filtering, both themes and five responsive widths.');
 } finally { await send('Target.closeTarget',{targetId});ws.close(); }

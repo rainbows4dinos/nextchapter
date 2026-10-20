@@ -58,3 +58,18 @@ Radar uses Supabase Auth + RLS. Supply `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_
 For documentation changes, check links, file responsibilities, duplicated instructions, and `git diff --check`. For application changes, validate the affected browser flow; for export changes, inspect generated documents; for proxy changes, check relevant request and streaming behavior. Report what was checked and any gaps. Do not introduce a test framework solely for documentation edits.
 
 Claude Code and Codex share this repository. Inspect the current working tree before editing, preserve others' in-progress changes, and avoid overwriting concurrent work. At handoff, report the files changed, decisions made, validation performed, and remaining work. Implementation authorization comes from the user's current task; planned Career Radar work is not blanket authorization to build it.
+
+
+## UI and Design System
+
+Before creating or modifying UI, read
+`docs/design-system/rules.md`.
+
+Use the linked nextchapter Figma foundations and canonical
+components as the visual source of truth.
+
+Inspect and reuse existing components and tokens before
+introducing new styles or patterns.
+
+If Figma and code differ, flag the discrepancy rather
+than silently changing unrelated components.

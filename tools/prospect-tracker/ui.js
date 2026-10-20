@@ -1,5 +1,5 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { createDateFilter } from './date-filter.js?v=20261019-toolbar';
+import { createDateFilter } from './date-filter.js?v=20261019-date-polish';
 import { applicationDate, appliedHistoryMap, defaultDateFilter } from './board-dates.js';
 import { gravityIcon } from '../shared/icons.mjs';
 import { bindFieldValidation } from '../shared/fields.mjs';
