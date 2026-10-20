@@ -117,15 +117,21 @@ Comfortable moving between strategy and execution, including AI-assisted softwar
 
 # Experience
 
-# Independent
-Fractional Head of Design (contract)
-Jun 2026 – Sep 2026
+# Product Design & Creative Projects
+Independent Design Consultant
+May 2026 – Sep 2026
 
 ## Public Framing
-Paid fractional contract engagement. Use a minimal entry with the role, dates, and contract arrangement; omit the client name and project details. “Independent” is a descriptive public label for this engagement, not evidence of multiple clients or a continuing consulting business. The engagement ended in Sep 2026; do not use “Present.”
+Approved descriptive public framing for independent work spanning paid product design consulting and volunteer creative work. Use the role “Independent Design Consultant” and organization label “Product Design & Creative Projects.” The combined date range covers the projects below; it does not extend the paid contract dates or imply an ongoing business, multiple paid clients, or full-time employment. Do not use “Present.”
 
-## Scope Boundaries
-Ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from this title alone. Do not use this engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
+## Public Scope
+- Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping, and design systems.
+- Produced a promotional film for PDX Pop Now!'s 2026 compilation, combining visual concept development and motion design as a volunteer.
+
+## Underlying Facts and Scope Boundaries
+The paid engagement was Fractional Head of Design (contract), Jun 2026 through Sep 2026. It ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from that title alone. Keep the client unnamed and do not use the engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
+
+PDX Pop Now! was volunteer work, May 2026 through Jul 2026. Its full source details remain in Volunteer Work below. In tailored public materials, include it in this combined entry or as a separate volunteer entry, not both. Always identify it as volunteer work. Do not apply the contract's before-launch limitation to the delivered PDX Pop Now! film.
 
 ---
 
@@ -233,6 +239,8 @@ Volunteer Video Producer / Editor
 May 2026 – Jul 2026
 
 ## Contributions
+Source detail for the volunteer project included in the combined consulting entry. Avoid duplicating it in public output.
+
 - Produced and edited a K-Tel-inspired promotional spot for PDX Pop Now!'s 2026 compilation.
 - Developed the retro space/analog visual concept and built the piece in After Effects, combining custom illustration assets, artist photography, motion graphics, character animation, and VHS-era effects to showcase 48 compilation artists.
 - Collaborated with the festival's art director, project manager, illustrator, and voice talent from concept through final delivery.
@@ -342,4 +350,4 @@ Emphasize:
 - Benefits from concise framing and structured storytelling
 
 ## Recent Contract and Complete-History Questions
-The recent paid fractional contract can be represented with the Independent entry above. Do not invent dates or extend other employment to cover it. If asked for the client or a complete history, answer accurately from the private record. Keep private departure explanations out of public resumes, LinkedIn, and cover letters.
+The recent paid fractional contract is part of the broader Independent Design Consultant entry above. Its own dates remain Jun 2026 through Sep 2026; the combined May 2026 through Sep 2026 range also includes volunteer work. Do not invent dates or extend other employment to cover it. If asked for the client or a complete history, answer accurately from the private record. Keep private departure explanations out of public resumes, LinkedIn, and cover letters.

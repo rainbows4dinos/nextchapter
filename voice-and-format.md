@@ -82,7 +82,9 @@ Give Director / Head of Design and Staff / Principal IC roles equal priority. Ta
 
 People management belongs explicitly in leadership positioning. Readiness to manage again is confirmed. Historical direct reports, hiring, performance management, and team size require role-specific facts; do not infer them from a Head or Director title or replace them with generic leadership claims.
 
-The recent paid fractional engagement may appear as Independent / Fractional Head of Design (contract), Jun 2026 through Sep 2026. Keep it to a minimal role-and-date entry without project bullets, client identification, or a cover-letter story. It ended before launch; claim no shipped outcomes or metrics. Do not imply that it is current or that Independent means multiple clients.
+Use “Independent Design Consultant” as the public role, “Product Design & Creative Projects” as the organization label, and May 2026 through Sep 2026 as the combined project period. Describe the product design consulting and PDX Pop Now! promotional film within the cap in rules.json. Explicitly identify the film as volunteer work. Include that project here or in a separate volunteer section, never both.
+
+The paid contract itself ran Jun 2026 through Sep 2026 and ended before launch; claim no shipped outcomes or metrics for it. Keep its client unnamed and do not make it the cover-letter story. The PDX Pop Now! volunteer work ran May 2026 through Jul 2026 and produced a delivered film. Do not imply multiple paid clients, an ongoing business, or a longer paid contract. The fractional title remains an underlying career fact, while the approved public role describes the broader independent work.
 
 Keep private client and departure context outside this public repository and out of application-generation inputs. Answer complete-history or direct client questions accurately using the private record. Do not manufacture continuity or move accomplishments to another employer.
 

@@ -12,9 +12,11 @@ For leadership roles, explicitly discuss people management, team development, an
 
 For Staff / Principal roles, emphasize strategic ownership, complex systems, craft, and influence across teams. Hands-on AI-assisted building supports both tracks.
 
-## Recent Fractional Work
+## Independent Consulting and Creative Projects
 
-The Jun 2026 through Sep 2026 engagement was paid fractional contract work. Public materials may use a minimal Independent / Fractional Head of Design (contract) entry. Leave the client and project details out; do not make this the headline case study. It ended before launch, and shipped outcomes are unknown. Keep client-specific disclosure and departure guidance outside this public repository.
+Use the approved public role “Independent Design Consultant,” organization label “Product Design & Creative Projects,” and combined dates May 2026 through Sep 2026. Show broad design expertise through the paid consumer mobile app consulting and the volunteer PDX Pop Now! promotional film, within the cap in rules.json.
+
+The paid fractional contract ran Jun 2026 through Sep 2026. Its client stays unnamed; the engagement ended before launch, and shipped outcomes are unknown. The PDX Pop Now! project ran May 2026 through Jul 2026 and must be identified as volunteer work. Do not describe both projects as paid consulting, imply a continuing business, or duplicate PDX Pop Now! in a separate public volunteer entry. Preserve the underlying titles, dates, and scope in the master; keep private client-specific disclosure and departure guidance outside this public repository.
 
 ## Earlier History
 
