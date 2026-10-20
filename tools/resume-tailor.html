@@ -160,7 +160,6 @@
 <div class="shell nc-content builder-shell">
   <section class="app-heading" aria-labelledby="builder-title">
     <h1 id="builder-title">Résumé Builder</h1>
-    <!-- <p style="max-width: 90%;">Custom resume and cover letter generator using my job-hunting context files, docx templates, and Claude. Learn more on my <a href="https://github.com/rainbows4dinos/nextchapter" target="_blank">GitHub page</a>.<span id="builderPortfolio" hidden> Check out my portfolio at <a id="builderPortfolioLink" target="_blank" rel="noopener"></a></span></p> -->
   </section>
 
   <ol class="step-bar nc-step-progress" aria-label="Application progress">
@@ -352,10 +351,20 @@ const DEFAULT_RULES = {
 const limit = (key, fallback) => ((RULES && RULES.limits && RULES.limits[key]) ?? fallback);
 const bannedWords = () => ((RULES && RULES.bannedWords) || []);
 let contextLoaded = false;
-let contextError = null;
+let contextPromise = null;
 
-async function loadContext() {
-  if (contextLoaded) return;
+function loadContext() {
+  if (contextLoaded) return Promise.resolve();
+  if (contextPromise) return contextPromise;
+  contextPromise = fetchContext().catch(error => {
+    contextPromise = null; // Allow another attempt after a failed load.
+    throw error;
+  });
+  return contextPromise;
+}
+
+// Fetch and parse data independently of page rendering.
+async function fetchContext() {
   const bust = '?v=' + Date.now();
   const files = [
     fetch(REPO_RAW + '/docs/career-context/resume-master.md' + bust).then(r => { if (!r.ok) throw new Error('resume-master.md ' + r.status); return r.text(); }),
@@ -368,14 +377,8 @@ async function loadContext() {
     [MASTER, FRAMING, TONE, VOICE, RULES] = await Promise.all(files);
     if (!RULES) RULES = DEFAULT_RULES;
     RESUME_CONTEXT = (await resumeContextUI).parseResumeContext(MASTER);
-    const portfolio = document.getElementById('builderPortfolioLink');
-    portfolio.href = RESUME_CONTEXT.website;
-    portfolio.textContent = contextUrlLabel(RESUME_CONTEXT.website);
-    document.getElementById('builderPortfolio').hidden = false;
     contextLoaded = true;
-    renderChips(TONE);
   } catch(e) {
-    contextError = e.message;
     throw new Error('Could not load context files: ' + e.message);
   }
 }
@@ -1544,7 +1547,7 @@ async function loadDocxCDN() {
 }
 
 // ─── Eager context load on page init (renders chips without waiting for Generate) ──
-loadContext().catch(e => {
+loadContext().then(() => renderChips(TONE)).catch(e => {
   document.getElementById('focusToggles').innerHTML =
     `<span style="font-size:13px;color:var(--muted);font-weight:300">Could not load focus options — ${e.message}</span>`;
 });
