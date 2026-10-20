@@ -127,6 +127,7 @@ Approved descriptive public framing for independent work spanning paid product d
 ## Public Scope
 - Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping, and design systems.
 - Produced a promotional film for PDX Pop Now!'s 2026 compilation, combining visual concept development and motion design as a volunteer.
+- Developing custom tools, workflows, and methodologies that use AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
 
 ## AI Tooling and Methods (Self-Employed / Consulting)
 Developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
