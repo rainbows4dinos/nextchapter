@@ -3,7 +3,7 @@
 ## Contact
 
 Larry Reynolds  
-Principal Product Designer  
+Product Design Leader
 
 Portland, OR  
 https://www.larryjr.design  
@@ -16,36 +16,39 @@ larry.jr.design@gmail.com
 # Professional Positioning
 
 ## Strategic Systems Designer
-Design leader focused on complex product ecosystems, workflow orchestration, AI-native product experiences, and human-centered systems thinking.
+Product design leader focused on complex product ecosystems, workflow orchestration, and human-centered systems thinking. Director / Head of Design and Staff / Principal IC roles have equal priority.
 
 ## Player / Coach
-Hands-on design leader who combines strategic thinking, mentorship, collaboration, and executional craft.
+Hands-on design leader ready to take on people management again. Combines product direction, mentorship, collaboration, and executional craft. Leadership roles should include clear people-management responsibility; IC roles offer strategic ownership and influence across teams.
 
-## AI-Native Product Design
-Explores how AI changes interaction models, onboarding, trust, workflow orchestration, and product behavior while maintaining strong human-centered principles.
+## Hands-on Software Building and AI
+Uses AI-assisted coding to build functional software and prototypes, then hand-edits and iterates on the results. Connects product design with frontend implementation and systems thinking. Separately explores how AI changes interaction models, onboarding, trust, and product behavior. Describe the actual work and release status; do not imply autonomous engineering or shipped outcomes from prototypes.
 
 ---
 
 # Target Roles
 
-## Primary Targets
+## Primary Targets: Equal Priority
+
+### Design Leadership
+- Director of Product Design / Director of Design
+- Head of Product Design / Head of Design
+- Scope sought: product direction, people management, team development, and hands-on design leadership.
+
+### Senior Individual Contributor
 - Staff Product Designer
 - Principal Product Designer
-- Lead Product Designer
-- Director, Product Design
-– Head of Product Design
+- Scope sought: strategic ownership, complex systems, design craft, and cross-functional influence.
 
+Evaluate both tracks by responsibilities and fit. Leadership is an active direction, not a selective fallback. Neither track takes priority by default.
 
-## Secondary Targets
-- Product Design Lead
+## Additional Roles to Evaluate by Scope
+- Lead Product Designer / Product Design Lead
 - Senior Staff Product Designer
 - AI Product Designer
 - Platform Product Designer
 
-## Selective Leadership Roles
-- Director of Product Design
-- Head of Product Design
-- Design Leadership
+Confirm whether Lead roles include people management rather than inferring it from the title.
 
 ## Specialized Focus Areas
 - AI-Native Product Design
@@ -61,11 +64,11 @@ Explores how AI changes interaction models, onboarding, trust, workflow orchestr
 
 Has built or matured a design system in every role he has held, across ecommerce, consumer genetics, DTC, B2B SaaS, and consumer mobile. Lead with this for any design systems or platform role. State it as every role, never with a start year or a span of years.
 
-Strategic product designer focused on systems thinking, AI-native workflows, and human-centered experiences. Experienced leading cross-functional initiatives across product, engineering, marketing, and data teams to transform fragmented platforms into cohesive, scalable ecosystems.
+Product design leader and hands-on builder focused on systems thinking, practical AI-assisted workflows, and human-centered experiences. Experienced leading cross-functional initiatives across product, engineering, marketing, and data teams to transform fragmented platforms into cohesive, scalable ecosystems.
 
 Combines UX strategy, interaction design, visual craft, design systems thinking, and functional prototyping to rapidly explore ideas and align teams under ambiguity.
 
-Comfortable moving between strategy and execution, including AI-assisted prototyping, frontend implementation, and systems-level product thinking.
+Comfortable moving between strategy and execution, including AI-assisted software building, functional prototyping, frontend implementation, and systems-level product thinking. Equally interested in Director / Head of Design roles with people management and Staff / Principal IC roles. Prior people-management details should be confirmed by employer before adding direct-report, hiring, or performance-management accomplishments.
 
 ---
 
@@ -84,8 +87,9 @@ Comfortable moving between strategy and execution, including AI-assisted prototy
 - Responsive web and mobile design
 
 ## Leadership
+- People management as an explicit responsibility sought in leadership roles
+- Team development and mentorship
 - Cross-functional alignment
-- Mentorship
 - Stakeholder facilitation
 - Strategic product thinking
 - Workshop facilitation
@@ -113,36 +117,15 @@ Comfortable moving between strategy and execution, including AI-assisted prototy
 
 # Experience
 
-# The Pattern
+# Independent
 Fractional Head of Design (contract)
 Jun 2026 – Sep 2026
 
-## Overview
-Short fractional engagement on a consumer mobile app rebuild. Owned the interaction model for the app's core personal experience and the design token foundation behind it.
+## Public Framing
+Paid fractional contract engagement. Use a minimal entry with the role, dates, and contract arrangement; omit the client name and project details. “Independent” is a descriptive public label for this engagement, not evidence of multiple clients or a continuing consulting business. The engagement ended in Sep 2026; do not use “Present.”
 
-## Key Initiatives
-
-### You Tab and Journey
-- Set the interaction model for the app's core personal experience: a journey wheel and carousel that opens into insight cards, which open into a long-form reader.
-- Designed each layer to stand on its own rather than tease the next, keeping context, sequence, and depth on separate navigation.
-- Built a working prototype of the content delivery flow and exported standalone builds for remote user testing.
-
-### Design System Foundation
-- Customized a HeroUI Pro Native theme into the app's design foundation, mapping brand type and color onto its token structure with a Tailwind v4 theme.
-- Built the tooling that keeps tokens in sync across Figma, HeroUI, and Claude Code, including a Figma plugin that applies values in place without duplicating variables.
-
-## Skills Demonstrated
-- Interaction design
-- Design systems and token architecture
-- Functional prototyping
-- AI-assisted workflows
-
-## Scope Notes (context only, never put on a resume)
-- The engagement ended in Sep 2026, before launch. No idea how much of the work shipped, so claim no launch credit, no metrics, no outcomes.
-- What survived review: the general direction and interaction model for the You tab, the journey wheel and carousel, the level 2 insight card interaction, and the basic level 3 reader interaction.
-- The brand evolution work was rejected. Never reference it.
-- Cap this role at 2 bullets. It was three months and should never outweigh G2 or Wisdom Panel.
-- Also done but not load-bearing: UX audit of the existing app, competitive analysis. Use only if a job description specifically asks for strategy or research work.
+## Scope Boundaries
+Ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from this title alone. Do not use this engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
 
 ---
 
@@ -239,7 +222,7 @@ Led product design across Vacasa's consumer platform, internal operational tooli
 ---
 
 # Additional Experience
-(Add earlier roles later)
+Roles before Vacasa remain incomplete. Add confirmed titles, employers, dates, responsibilities, and outcomes when available. Vacasa is documented below the later roles and must not be treated as missing history.
 
 ---
 
@@ -276,7 +259,7 @@ Straight Blast Gym International
 # Leadership Philosophy
 
 ## Player / Coach
-Strongly collaborative design leader who enjoys mentoring, facilitating alignment, and helping teams improve without needing heavy organizational hierarchy.
+Collaborative design leader ready to manage people again while staying close to product decisions and execution. Values clear expectations, useful feedback, and opportunities for designers to grow. In IC roles, contributes through strategic ownership, mentorship, and cross-functional influence. Role-specific evidence of prior formal people management still needs to be added; do not infer direct-report counts, hiring, or performance reviews from titles alone.
 
 ## Systems Thinking
 Believes the best product experiences emerge from understanding interconnected systems rather than isolated screens or flows.
@@ -310,14 +293,21 @@ Emphasize:
 - ambiguity navigation
 - AI trust boundaries
 
-## AI-Native Roles
+## AI Product and Hands-on Building Roles
 Emphasize:
-- functional prototyping
-- AI-assisted workflows
-- frontend fluency
-- systems orchestration
+- functional software and prototypes built with AI assistance and hand editing
+- frontend fluency and systems orchestration
+- concrete examples and accurate prototype, testing, or release status
+- human judgment about trust, quality, and user needs
 
-## Staff IC Roles
+## Director / Head of Design Roles
+Emphasize:
+- product direction and cross-functional leadership
+- readiness for people management and team development
+- confirmed management examples, once documented by employer
+- continued hands-on design and building
+
+## Staff / Principal IC Roles
 Emphasize:
 - strategic ownership
 - mentorship
@@ -326,8 +316,8 @@ Emphasize:
 
 ## Consumer / Mobile Roles
 Emphasize:
-- The Pattern interaction and content delivery work
-- making complex information approachable (Wisdom Panel, The Pattern)
+- Vacasa native consumer application work
+- making complex information approachable (Wisdom Panel)
 - subscription and retention experience (PetPlate)
 
 ## Creative / Brand-Adjacent Roles
@@ -351,5 +341,5 @@ Emphasize:
 - Can over-explain or become overly detailed
 - Benefits from concise framing and structured storytelling
 
-## The Pattern: Why It Ended
-Keep it short and about role structure, not people. "The scope expanded while the launch date stayed fixed, and design ownership became spread across several people. The engagement didn't have the decision rights and single source of truth I needed to be effective, so I handed off the work and chose to end the contract. It clarified what needs to be in place for fractional design leadership to work."
+## Recent Contract and Complete-History Questions
+The recent paid fractional contract can be represented with the Independent entry above. Do not invent dates or extend other employment to cover it. If asked for the client or a complete history, answer accurately from the private record. Keep private departure explanations out of public resumes, LinkedIn, and cover letters.

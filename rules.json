@@ -2,7 +2,7 @@
   "_comment": "Machine-readable rules. The tailor tool injects these into the prompt, checks output against them, and builds its repair pass from them. Prose reasoning lives in voice-and-format.md. Change a number here, not in the HTML.",
 
   "bulletCaps": {
-    "The Pattern": 3,
+    "Independent": 0,
     "G2": 4,
     "PetPlate": 2,
     "Wisdom Panel": 3,
@@ -36,7 +36,7 @@
   },
 
   "locations": {
-    "The Pattern":                    { "display": "(Remote)",                 "ats": "Remote" },
+    "Independent":                    { "display": "(Remote)",                 "ats": "Remote" },
     "G2":                             { "display": "(Remote)",                 "ats": "Remote" },
     "PetPlate":                       { "display": "(Remote)",                 "ats": "Remote" },
     "Wisdom Panel":                   { "display": "(Hybrid, Portland, OR)",   "ats": "Portland, OR" },

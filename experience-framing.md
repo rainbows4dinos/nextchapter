@@ -4,6 +4,22 @@ This document captures how to talk about the work, the why it mattered layer. Us
 
 ---
 
+# Current Role Direction
+
+Director / Head of Design and Staff / Principal IC roles have equal priority. Tailor the story to the responsibilities of the opportunity rather than presenting either track as a fallback.
+
+For leadership roles, explicitly discuss people management, team development, and product direction alongside hands-on judgment. Larry is ready to manage people again. Gather role-specific examples of direct reports, feedback, hiring, and performance responsibilities before claiming them as historical accomplishments. Leadership titles and mentorship alone do not establish those details.
+
+For Staff / Principal roles, emphasize strategic ownership, complex systems, craft, and influence across teams. Hands-on AI-assisted building supports both tracks.
+
+## Recent Fractional Work
+
+The Jun 2026 through Sep 2026 engagement was paid fractional contract work. Public materials may use a minimal Independent / Fractional Head of Design (contract) entry. Leave the client and project details out; do not make this the headline case study. It ended before launch, and shipped outcomes are unknown. Keep client-specific disclosure and departure guidance outside this public repository.
+
+## Earlier History
+
+Vacasa is documented in resume-master.md, including its native consumer application, operational tooling, design systems, and rebrand work. Roles before Vacasa remain incomplete. Do not substitute guesses for missing history.
+
 # Career Arc
 
 ## The Through Line
@@ -17,9 +33,11 @@ The accurate framing is not "I've always been ahead of the curve." It's "I've na
 Don't lead with specific tools or past specialties. Lead with the capability underneath them: thinking in systems, understanding how foundations enable everything downstream, knowing how design scales. That transfers. The artifacts don't.
 
 ## On AI and the Current Shift
-Design systems are more important than ever, they're the only way to keep AI-generated UI consistent. But what a design system entails is completely different now. It has to start with a code library and a context file an agent can actually read. The Figma library and Zeroheight docs are exploration tools, not the deliverable. The artifact is the code.
+Larry uses AI-assisted coding to build functional software and prototypes, then hand-edits, reviews, and iterates on the results. Talk about what the artifact does, what he contributed, and how it was tested. Designing AI product behavior and using AI to build software are distinct parts of the story.
 
-This isn't a settled opinion. It's an active observation from watching the tools change in real time, including watching a colleague rebuild months of design system work in a fraction of the time using Claude. The accurate position is: the approach is changing faster than anyone has figured out, and that's worth saying directly rather than pretending to have it solved.
+Design systems can help keep generated UI consistent when components, tokens, and readable implementation context stay aligned. Treat this as a working approach rather than a universal rule about how every team must work. Figma remains useful for exploration and collaboration; code needs enough structure and context to support implementation.
+
+A colleague's faster rebuild of design system work informed Larry's thinking. It is an observation, not a measured claim about Larry's productivity or proof that AI replaces design judgment.
 
 ---
 
@@ -35,7 +53,7 @@ When starting a design system now, there are two reasonable approaches:
 ## The Elevate Caveat
 Elevate was a real accomplishment, it redefined the visual and component foundation across all G2 products and had meaningful impact on design team velocity. But it was built too close to the Rails environment to age well into AI-assisted development workflows. A colleague rebuilt a lighter version with Claude in a fraction of the time.
 
-The lesson isn't that the effort was wasted. It's that the approach has to change: the artifact is the code, the documentation lives in a context file, and Figma is for exploration, not the source of truth.
+The lesson is to keep implementation, tokens, and readable context aligned, with Figma supporting exploration. Describe the colleague's rebuild as context for an evolving approach, not a quantified productivity result.
 
 Don't over-tell the Elevate story. It's table stakes territory. If it comes up, say plainly how the thinking has evolved.
 
@@ -100,3 +118,12 @@ Can spend too long on Elevate. It's table stakes. Lead with the evolution in thi
 
 ## G2 Confidence
 The work was real and the impact was real. The messiness of the context (fragmented squads, acquisition uncertainty, unfinished buyer intent work) doesn't diminish what was actually contributed. Don't undersell it.
+
+
+# Evidence and Public Copy
+
+Preserve the supplied G2 Solutions, Wisdom Panel, and Vacasa metrics with their original qualifiers. Describe revenue and engagement as product or business results, not outcomes caused solely by Larry. Do not invent measurement periods, baselines, or attribution. Clarify missing context when a specific claim requires it.
+
+Speculative G2 vision work remains distinct from the implemented Solutions patterns described here. Avoid portraying all AI exploration as shipped product work. Code credit follows voice-and-format.md and rules.json: AI-generated first, then hand-edited.
+
+LinkedIn changes are drafts until Larry approves the proposed copy. Approval to revise these canonical documents is not approval to publish profile changes.

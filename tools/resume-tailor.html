@@ -917,7 +917,7 @@ function qaWarnings(r) {
   (res.experience||[]).forEach(j => {
     const cap = caps[j.company];
     const n = (j.bullets||[]).length;
-    if (cap && n > cap) w.push(`${j.company}: ${n} bullets, cap is ${cap}`);
+    if (Number.isFinite(cap) && n > cap) w.push(`${j.company}: ${n} bullets, cap is ${cap}`);
     if (j.blurb) w.push(`${j.company}: has a blurb line, should be bullets only`);
     (j.bullets||[]).forEach(b => {
       const words = String(b).split(/\s+/).filter(Boolean).length;

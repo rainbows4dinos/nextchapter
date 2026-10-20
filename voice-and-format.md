@@ -76,6 +76,20 @@ Direct, plainspoken, a little dry. Concrete over conceptual. Comfortable saying 
 
 ---
 
-# The Pattern, Specifically
+# Role Positioning and Recent Contract Work
 
-Both documents are at risk of overstating this engagement. See the scope notes in resume-master.md. Short version: interaction model and token foundation, three months, ended before launch, no shipped outcomes, no brand work, and never a cover letter's main story. Its bullet cap is in rules.json.
+Give Director / Head of Design and Staff / Principal IC roles equal priority. Tailor the summary to the role being applied for. Do not frame leadership as a selective fallback or imply that an IC application is temporary.
+
+People management belongs explicitly in leadership positioning. Readiness to manage again is confirmed. Historical direct reports, hiring, performance management, and team size require role-specific facts; do not infer them from a Head or Director title or replace them with generic leadership claims.
+
+The recent paid fractional engagement may appear as Independent / Fractional Head of Design (contract), Jun 2026 through Sep 2026. Keep it to a minimal role-and-date entry without project bullets, client identification, or a cover-letter story. It ended before launch; claim no shipped outcomes or metrics. Do not imply that it is current or that Independent means multiple clients.
+
+Keep private client and departure context outside this public repository and out of application-generation inputs. Answer complete-history or direct client questions accurately using the private record. Do not manufacture continuity or move accomplishments to another employer.
+
+# Practical AI and Building Language
+
+Describe functional software, prototypes, and systems Larry built with AI assistance and hand editing. Name the artifact and contribution. Keep the code-credit policy above. Avoid claims of autonomous building, full-stack expertise, production ownership, or speed improvements without evidence. Distinguish speculative work, tested prototypes, and released features.
+
+# LinkedIn Approval
+
+Prepare proposed headline, About, and experience copy for Larry to review. Publish only after approval of the specific changes. Updating canonical documentation does not authorize a live profile update.
