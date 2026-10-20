@@ -188,7 +188,7 @@ export async function startFixture(port = 0) {
         res.writeHead(200, { 'content-type': 'text/html', 'cache-control': 'no-store' });
         res.end(bytes); return;
       }
-      if (url.pathname === '/resume-master.md' || url.pathname === '/tools/radar-feed.css' || url.pathname === '/tools/career-profile.css' || url.pathname === '/tools/resume-tailor.html' || url.pathname === '/tools/career-radar.html' || url.pathname === '/tools/about.html' || /^\/tools\/shared\/[\w-]+\.(css|mjs)$/.test(url.pathname) || /^\/tools\/shared\/assets\/career-profile\/(check|export)\.svg$/.test(url.pathname) || /^\/tools\/shared\/vendor\/gravity-icons\/(sprite\.svg|names\.mjs)$/.test(url.pathname)) {
+      if (url.pathname === '/docs/career-context/resume-master.md' || url.pathname === '/tools/radar-feed.css' || url.pathname === '/tools/career-profile.css' || url.pathname === '/tools/resume-tailor.html' || url.pathname === '/tools/career-radar.html' || url.pathname === '/tools/about.html' || /^\/tools\/shared\/[\w-]+\.(css|mjs)$/.test(url.pathname) || /^\/tools\/shared\/assets\/career-profile\/(check|export)\.svg$/.test(url.pathname) || /^\/tools\/shared\/vendor\/gravity-icons\/(sprite\.svg|names\.mjs)$/.test(url.pathname)) {
         const bytes = await readFile(resolve(root, '../..', url.pathname.slice(1)));
         res.writeHead(200, { 'content-type': url.pathname.endsWith('.html') ? 'text/html' : url.pathname.endsWith('.css') ? 'text/css' : url.pathname.endsWith('.svg') ? 'image/svg+xml' : 'text/javascript', 'cache-control': 'no-store' });
         res.end(bytes); return;

@@ -10,7 +10,7 @@ Compensation is a numeric minimum **base** amount, currency and annual/hourly pe
 
 ## Drafts, source of truth and privacy
 
-On first signed-in load, the app reads relative `resume-master.md` and suggests strengths, target roles and player-coach positioning. These are public career-context facts and positioning, not an approved search profile. Missing context falls back to blank fields. Canonical career files are read but never edited. Review is mandatory before the first save and after edits/imports; nothing is automatically inserted.
+On first signed-in load, the app reads relative `docs/career-context/resume-master.md` and suggests strengths, target roles and player-coach positioning. These are public career-context facts and positioning, not an approved search profile. Missing context falls back to blank fields. Canonical career files are read but never edited. Review is mandatory before the first save and after edits/imports; nothing is automatically inserted.
 
 A separate Consumer Design Watch draft is delivered privately outside this public repository. Import its JSON through **Import profile (JSON)**, review every value/importance, fill undecided constraints, check the review box and save. The private draft contains both confirmed context and explicitly labeled suggestions; it does not establish compensation, location requirements, working hours, employment type or dealbreakers. Do not commit personal seed files or copied chat excerpts. Export is a local download of the current form, including unsaved edits; importing does not save or change inferred signals.
 

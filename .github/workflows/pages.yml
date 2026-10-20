@@ -31,6 +31,9 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Verify career context compatibility copies
+        run: node tools/prospect-tracker/scripts/sync-context.js --check
+
       # Public browser settings only. Missing variables allow résumé deployment
       # and Radar shows its setup error. Invalid values fail the entire deploy;
       # Pages continues serving the last successful deployment.

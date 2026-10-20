@@ -8,23 +8,25 @@ This file is the tool-agnostic source of repository instructions. `CLAUDE.md` im
 
 ## Sources and authority
 
-- `resume-master.md`: career facts, roles, dates, capabilities, target roles, positioning, and scope boundaries.
-- `experience-framing.md`: supporting stories, evidence, metrics, and interview framing. Read alongside the master résumé when interpreting experience.
-- `voice-and-format.md`: authoritative writing policy for career communications, including résumé and cover-letter structure and editorial judgment. Where older tone notes overlap, use this file.
-- `rules.json`: authoritative structured application-document constraints, including bullet caps, word limits, banned words, code-credit language, and role locations. Change countable rules here rather than duplicating values in prose or application code.
-- `tone-and-positioning.md`: résumé UI emphasis options. Preserve the `## Emphasis Focus Options` heading and backtick-wrapped `value: Label` list format expected by the parser. This file is not the tone authority.
+- `docs/career-context/resume-master.md`: career facts, roles, dates, capabilities, target roles, positioning, and scope boundaries.
+- `docs/career-context/experience-framing.md`: supporting stories, evidence, metrics, and interview framing. Read alongside the master résumé when interpreting experience.
+- `docs/career-context/voice-and-format.md`: authoritative writing policy for career communications, including résumé and cover-letter structure and editorial judgment. Where older tone notes overlap, use this file.
+- `docs/career-context/rules.json`: authoritative structured application-document constraints, including bullet caps, word limits, banned words, code-credit language, and role locations. Change countable rules here rather than duplicating values in prose or application code.
+- `docs/career-context/tone-and-positioning.md`: résumé UI emphasis options. Preserve the `## Emphasis Focus Options` heading and backtick-wrapped `value: Label` list format expected by the parser. This file is not the tone authority.
 - `README.md`: human-facing project overview and consumption/deployment guidance.
 
 Keep career facts and writing policy in their canonical files. This file directs development work; it is not a career-data source or a runtime generation prompt. Do not copy career histories or application policies into agent entry points.
 
 Never invent career facts, metrics, or shipped outcomes. Respect role-specific scope notes, especially The Pattern's engagement boundaries. If sources disagree on a factual claim, surface the discrepancy rather than guessing. Keep generated applications and opportunity observations separate from canonical career facts.
 
+Edit only `docs/career-context/` career sources. Root files with the same names are generated compatibility copies for published raw/Pages URLs and cached clients. After editing canonical sources, run `node tools/prospect-tracker/scripts/sync-context.js`; verify with `node tools/prospect-tracker/scripts/sync-context.js --check`. Commit canonical sources and compatibility copies together.
+
 ## Existing architecture
 
 - `tools/resume-tailor.html` is a static application containing the UI, context loading, Claude prompts, streaming generation, revisions, QA warnings, and PDF/DOCX/ZIP exports.
 - `tools/shared/tokens.css` owns both applications' existing color foundations, dark/light semantic mappings, font families and minimal spacing/radius scales. Each app retains local legacy aliases and component styling. Builder's `--muted` is tertiary text; Radar's is secondary text. Keep aliases on `body` so `body.light` resolves correctly. The Builder HTML now requires its sibling shared stylesheet; résumé document-preview rules and export formatting remain local. See `docs/shared-design-tokens.md` for boundaries and validation.
 - `tools/shared/icons.mjs` and `icons.css` provide static Gravity UI icons for both apps. Radar's pinned dev dependency generates the committed SVG sprite, catalog, license and provenance in `tools/shared/vendor/gravity-icons/`. Run scoped `icons:generate` and `icons:check` when updating it; see `docs/shared-icons.md` for usage. No React runtime is used by the applications.
-- It fetches the five root context/configuration files above from `https://raw.githubusercontent.com/rainbows4dinos/nextchapter/main` at runtime. Local edits to those files do not affect the tool until pushed to `main`, even when the HTML is served locally.
+- It fetches the five canonical context/configuration files in `docs/career-context/` from `https://raw.githubusercontent.com/rainbows4dinos/nextchapter/main` at runtime. On localhost and loopback addresses, it reads `docs/career-context/` from the locally served checkout instead, so local edits can be tested before pushing.
 - `tools/proxy-worker.js` is a Cloudflare Worker proxy for Anthropic requests. It supports streaming, restricts origins and models, and uses the `ANTHROPIC_API_KEY` secret. Its optional `TAILOR_KEY` is a shared-key speed bump, not user authentication.
 - `tools/wrangler.toml` configures the Worker, deployed separately from the static site.
 - `.github/workflows/pages.yml` publishes the repository root to GitHub Pages on pushes to `main` or manual dispatch. `.nojekyll` supports static serving.

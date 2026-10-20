@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { parseResumeContext, applyCanonicalExperience } from '../../shared/resume-context.mjs';
 
-const master = await readFile(new URL('../../../resume-master.md', import.meta.url), 'utf8');
+const master = await readFile(new URL('../../../docs/career-context/resume-master.md', import.meta.url), 'utf8');
 
 test('Builder contains no literal fixed résumé facts from the current master', async () => {
   const builder = await readFile(new URL('../../resume-tailor.html', import.meta.url), 'utf8');

@@ -195,7 +195,7 @@ try {
       if (row) draft = validateProfile(row.explicit_profile);
       else {
         try {
-          const response = await fetch(new URL('../../resume-master.md', import.meta.url));
+          const response = await fetch(new URL('../../docs/career-context/resume-master.md', import.meta.url));
           if (!response.ok) throw new Error('Career context unavailable');
           draft = careerContextDraft(await response.text());
         } catch { notice.textContent = 'Career context could not load. Start with blank fields or import your draft.'; }

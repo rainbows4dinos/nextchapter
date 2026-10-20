@@ -320,7 +320,11 @@ function inlineMessage(id, message, variant = 'danger') {
 function notify(message) { notificationUI.then(ui => ui.showToast({ message, variant: 'success' })); }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const REPO_RAW = 'https://raw.githubusercontent.com/rainbows4dinos/nextchapter/main';
+// Local previews read this checkout; hosted pages keep the published GitHub source.
+const LOCAL_CONTEXT = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+const REPO_RAW = LOCAL_CONTEXT
+  ? new URL('../', location.href).href.replace(/\/$/, '')
+  : 'https://raw.githubusercontent.com/rainbows4dinos/nextchapter/main';
 // Proxy forwards requests to Anthropic API to work around CORS on GitHub Pages.
 // Set to null to call Anthropic directly (works locally or in Claude artifacts).
 const PROXY_URL = 'https://resume-tailor-proxy.larryjrdesign.workers.dev'; // Replace with your Cloudflare Worker URL once deployed
@@ -354,11 +358,11 @@ async function loadContext() {
   if (contextLoaded) return;
   const bust = '?v=' + Date.now();
   const files = [
-    fetch(REPO_RAW + '/resume-master.md' + bust).then(r => { if (!r.ok) throw new Error('resume-master.md ' + r.status); return r.text(); }),
-    fetch(REPO_RAW + '/experience-framing.md' + bust).then(r => { if (!r.ok) throw new Error('experience-framing.md ' + r.status); return r.text(); }),
-    fetch(REPO_RAW + '/tone-and-positioning.md' + bust).then(r => { if (!r.ok) throw new Error('tone-and-positioning.md ' + r.status); return r.text(); }),
-    fetch(REPO_RAW + '/voice-and-format.md' + bust).then(r => { if (!r.ok) throw new Error('voice-and-format.md ' + r.status); return r.text(); }),
-    fetch(REPO_RAW + '/rules.json' + bust).then(r => { if (!r.ok) throw new Error('rules.json ' + r.status); return r.json(); }),
+    fetch(REPO_RAW + '/docs/career-context/resume-master.md' + bust).then(r => { if (!r.ok) throw new Error('resume-master.md ' + r.status); return r.text(); }),
+    fetch(REPO_RAW + '/docs/career-context/experience-framing.md' + bust).then(r => { if (!r.ok) throw new Error('experience-framing.md ' + r.status); return r.text(); }),
+    fetch(REPO_RAW + '/docs/career-context/tone-and-positioning.md' + bust).then(r => { if (!r.ok) throw new Error('tone-and-positioning.md ' + r.status); return r.text(); }),
+    fetch(REPO_RAW + '/docs/career-context/voice-and-format.md' + bust).then(r => { if (!r.ok) throw new Error('voice-and-format.md ' + r.status); return r.text(); }),
+    fetch(REPO_RAW + '/docs/career-context/rules.json' + bust).then(r => { if (!r.ok) throw new Error('rules.json ' + r.status); return r.json(); }),
   ];
   try {
     [MASTER, FRAMING, TONE, VOICE, RULES] = await Promise.all(files);
@@ -372,7 +376,7 @@ async function loadContext() {
     renderChips(TONE);
   } catch(e) {
     contextError = e.message;
-    throw new Error('Could not load context files from GitHub: ' + e.message);
+    throw new Error('Could not load context files: ' + e.message);
   }
 }
 
@@ -525,9 +529,9 @@ async function goTailor() {
   const statusEl=document.getElementById('loadStatus');
   const subEl=document.getElementById('loadSub');
 
-  // Load context files from GitHub if not already cached
+  // Load context files if not already cached
   if (!contextLoaded) {
-    statusEl.textContent = 'Loading context from GitHub...';
+    statusEl.textContent = LOCAL_CONTEXT ? 'Loading local context...' : 'Loading context from GitHub...';
     subEl.textContent = 'Fetching resume-master.md, experience-framing.md, voice-and-format.md, rules.json';
     try {
       await loadContext();

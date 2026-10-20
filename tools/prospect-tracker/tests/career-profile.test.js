@@ -24,7 +24,7 @@ test('profile validates importance, unknown salary, bounds and schema; unreviewe
 });
 
 test('canonical draft contains strengths/roles but does not guess practical constraints', async () => {
-  const source = await readFile(new URL('../../../resume-master.md', import.meta.url), 'utf8');
+  const source = await readFile(new URL('../../../docs/career-context/resume-master.md', import.meta.url), 'utf8');
   const draft = careerContextDraft(source);
   assert.match(draft.factors.strengths.value, /Systems thinking/);
   assert.match(draft.factors.seniority.value, /Principal Product Designer/);

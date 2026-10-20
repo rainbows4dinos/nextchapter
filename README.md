@@ -6,23 +6,25 @@ nextchapter connects three applications: Career Radar for reviewing a structured
 
 ## Shared career context
 
-These files remain at the repository root so existing runtime URLs continue to work. Multiple tools can consume them without maintaining separate copies.
+Canonical sources live in `docs/career-context/`. The same-named root files are generated compatibility copies for existing raw GitHub/Pages URLs and cached clients. Edit the canonical files, run `node tools/prospect-tracker/scripts/sync-context.js`, and commit both together. Use `--check` to verify the copies; Pages deployment also checks them.
+
+Multiple tools consume the canonical sources; root compatibility copies preserve existing runtime URLs.
 
 This repository is public. That is what lets the résumé builder fetch these files without a key, and it means anything committed here is world-readable.
 
 | File | Responsibility |
 | --- | --- |
-| [resume-master.md](resume-master.md) | Career facts, roles, dates, scope notes, positioning, and target roles |
-| [experience-framing.md](experience-framing.md) | Why the work mattered, supporting stories, real metrics, and interview framing |
-| [voice-and-format.md](voice-and-format.md) | Authoritative writing policy for career communications, including résumé and cover-letter structure |
-| [rules.json](rules.json) | Structured application-document rules: bullet caps, word limits, banned words, code-credit language, and role locations |
-| [tone-and-positioning.md](tone-and-positioning.md) | Emphasis focus chips for the résumé UI; not the tone authority |
+| [resume-master.md](docs/career-context/resume-master.md) | Career facts, roles, dates, scope notes, positioning, and target roles |
+| [experience-framing.md](docs/career-context/experience-framing.md) | Why the work mattered, supporting stories, real metrics, and interview framing |
+| [voice-and-format.md](docs/career-context/voice-and-format.md) | Authoritative writing policy for career communications, including résumé and cover-letter structure |
+| [rules.json](docs/career-context/rules.json) | Structured application-document rules: bullet caps, word limits, banned words, code-credit language, and role locations |
+| [tone-and-positioning.md](docs/career-context/tone-and-positioning.md) | Emphasis focus chips for the résumé UI; not the tone authority |
 
 ### Self-Employed / Consulting
 
-The independent consulting context includes developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery. See [the master résumé](resume-master.md#ai-tooling-and-methods-self-employed--consulting) for the canonical wording and scope, and [experience framing](experience-framing.md#independent-consulting-and-creative-projects) for application guidance.
+The independent consulting context includes developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery. See [the master résumé](docs/career-context/resume-master.md#ai-tooling-and-methods-self-employed--consulting) for the canonical wording and scope, and [experience framing](docs/career-context/experience-framing.md#independent-consulting-and-creative-projects) for application guidance.
 
-Edit writing guidance in `voice-and-format.md` and countable constraints in `rules.json`. Preserve the emphasis-options format in `tone-and-positioning.md`, which the résumé tool parses.
+Edit writing guidance in `docs/career-context/voice-and-format.md` and countable constraints in `docs/career-context/rules.json`. Preserve the emphasis-options format in `docs/career-context/tone-and-positioning.md`, which the résumé tool parses.
 
 Career Radar can reuse career facts, positioning, and supporting evidence. Its search preferences, evaluation criteria, and opportunity records will be separate from résumé formatting rules and canonical career facts. Opportunity records will live in Supabase rather than in this repository, so that tracking a company does not mean publishing it.
 
@@ -70,7 +72,7 @@ For the current implementation baseline, validation commands, and continuation b
 
 The site, résumé Worker and Radar ingestion function deploy separately. Pushing to `main` publishes the repository root to GitHub Pages; the Worker ships on its own with `wrangler deploy`, and the ingestion function uses the Supabase CLI.
 
-The builder fetches the five shared files above from `main` at runtime, so editing one locally changes nothing until it is pushed — including when you serve the page from your own machine.
+The hosted builder fetches the five shared files above from `main` at runtime. When served on localhost or a loopback address, it loads `docs/career-context/` from the local checkout so changes can be tested before pushing.
 
 For Prospect Tracker deployment, configure GitHub repository **Variables** named `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` under **Settings → Secrets and variables → Actions**. Pages generates the public configuration during deployment. Sign in with your provisioned Supabase Auth user; the Supabase dashboard account is separate.
 
