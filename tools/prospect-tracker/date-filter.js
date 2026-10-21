@@ -54,7 +54,7 @@ export function createDateFilter(filter, onChange, signal) {
     fieldset.append(legend, options);
     for (const [value, text] of values) {
       const option = document.createElement('label'); option.className = 'board-date-option';
-      const input = document.createElement('input'); input.type = 'radio'; input.name = name; input.value = value;
+      const input = document.createElement('input'); input.type = 'radio'; input.className = 'nc-radio nc-radio--sm'; input.name = name; input.value = value;
       input.addEventListener('change', () => { if (input.checked) select(value); }, { signal });
       choices.push(input); option.append(input, text); options.append(option);
     }
@@ -68,7 +68,7 @@ export function createDateFilter(filter, onChange, signal) {
   typeGroup.querySelector('legend')?.classList.add('nc-visually-hidden');
   typeGroup.querySelector('.board-date-options')?.classList.add('nc-pill-tabs');
   for (const option of typeGroup.querySelectorAll('label')) option.className = 'nc-pill-tab';
-  for (const input of typeGroup.querySelectorAll('input')) input.classList.add('nc-visually-hidden');
+  for (const input of typeGroup.querySelectorAll('input')) input.className = 'nc-visually-hidden';
   const typeNote = document.createElement('span'); typeNote.id = 'board-date-type-description'; typeNote.className = 'nc-visually-hidden';
   typeNote.textContent = 'Date type is remembered and used only when a date range is active.';
   typeGroup.setAttribute('aria-describedby', typeNote.id); typeGroup.append(typeNote);

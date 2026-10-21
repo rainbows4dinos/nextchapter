@@ -6,6 +6,12 @@ Historical extraction snapshot. The October 11 [Phase 1 shared foundations](next
 
 Shared CSS token names now use `--nc-` (nextchapter). Definitions, application/component consumers, browser-test color probes and documentation references were renamed together. Token values, aliases, theme selectors and export logic are unchanged. Four-page comparisons in both themes confirmed identical resolved styles; all current namespace references are defined. Historical tables below use the current prefix for consistency.
 
+## Figma reconciliation — October 20, 2026
+
+Audited against the canonical Figma foundations and components; Figma is the source of truth for values. Changed: `Type/UI/Badge` is Light 16/24 (Alerts and Toasts; Alerts pad 8/12 with a 6px gap, Toasts pad 8 with an 8px gap, icons align in the 24px line box), `Type/UI/Title` weight is 600, and dark `surface/sunken` is `neutral/900`. Added Figma-named subsets for radius (`--nc-radius-sm/md/xl/2xl/full`; `--nc-radius-panel` aliases `xl`), spacing (`--nc-space-0-5`, `1-5`, `5`, `7`, `10`), `--nc-type-ui-label-sm-*`, `--nc-type-ui-status-*`, `--nc-shadow-sm`, `--nc-control-*` and `--nc-card-*`. Shared components and navigation now use these instead of literal radii and shadows. `--ds-badge-*` remains the Status-Badge contract and maps to Figma `status/*`.
+
+`.nc-checkbox` and `.nc-radio` (with `--sm`) implement Figma Checkbox 165:590 and Radio 165:618 on native inputs, including indeterminate and disabled states; labels stay with consumers. Prospect cards use the card tokens and Figma text styles. Focus rings intentionally keep the 2px offset rather than Figma's zero-offset input ring.
+
 ## Content card radii — October 14, 2026
 
 Outer content cards use `--nc-radius-panel`: Builder form/loading/document/feedback cards, Tracker panels and board columns, and the shared panel styling used by About and the Career Radar placeholder. Smaller internal surfaces use `--nc-radius-default`: prospect cards, inline Alerts, Toasts and legacy feedback surfaces. Existing local `--radius` aliases resolve to the panel token on the theme element.

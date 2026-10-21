@@ -50,7 +50,7 @@ try {
       await send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] }, builder.sessionId);
     }
     const alerts = await evaluate(builder, `(async()=>{const {setAlert}=await statusUI;return ['success','danger','warning','info'].map(variant=>{const alert=document.createElement('div');document.querySelector('.shell').append(alert);setAlert(alert,{variant,message:('Long contextual message '+variant+'\\n').repeat(12),announcement:variant==='danger'?'assertive':'off'});const c=getComputedStyle(alert);const result={variant,padding:c.padding,height:alert.getBoundingClientRect().height,color:c.color,expected:resolveColor(variant+'-fg'),role:alert.getAttribute('role'),stroke:c.borderTopWidth};alert.remove();return result;});})()`);
-    for (const alert of alerts) { assert.equal(alert.padding, '8px'); assert.ok(alert.height > 100); assert.equal(alert.color, alert.expected); assert.equal(alert.stroke, '1px'); assert.equal(alert.role, alert.variant === 'danger' ? 'alert' : null); }
+    for (const alert of alerts) { assert.equal(alert.padding, '8px 12px'); assert.ok(alert.height > 100); assert.equal(alert.color, alert.expected); assert.equal(alert.stroke, '1px'); assert.equal(alert.role, alert.variant === 'danger' ? 'alert' : null); }
   }
   await evaluate(builder, "(async()=>{const ui=await fieldUI;for(const input of document.querySelectorAll('#specimens input,#specimens textarea,#specimens select')){input.disabled=false;input.value='';ui.setFieldError(input,'');}document.getElementById('specimens').requestSubmit()})()");
   assert.equal(await evaluate(builder, "document.querySelectorAll('#specimens [aria-invalid=true]').length"), 3);

@@ -104,12 +104,17 @@
   --nc-type-ui-title-family: var(--nc-font-sans);
   --nc-type-ui-title-size: 21px;
   --nc-type-ui-title-line-height: 28px;
-  --nc-type-ui-title-weight: 500;
+  --nc-type-ui-title-weight: 600;
 
   --nc-type-ui-label-family: var(--nc-font-sans);
   --nc-type-ui-label-size: 16px;
   --nc-type-ui-label-line-height: 24px;
   --nc-type-ui-label-weight: 500;
+
+  --nc-type-ui-label-sm-family: var(--nc-font-sans);
+  --nc-type-ui-label-sm-size: 12px;
+  --nc-type-ui-label-sm-line-height: 20px;
+  --nc-type-ui-label-sm-weight: 500;
 
   --nc-type-ui-button-family: var(--nc-font-sans);
   --nc-type-ui-button-size: 16px;
@@ -122,22 +127,37 @@
   --nc-type-ui-button-small-weight: 500;
 
   --nc-type-ui-badge-family: var(--nc-font-sans);
-  --nc-type-ui-badge-size: 12px;
-  --nc-type-ui-badge-line-height: 20px;
-  --nc-type-ui-badge-weight: 500;
+  --nc-type-ui-badge-size: 16px;
+  --nc-type-ui-badge-line-height: 24px;
+  --nc-type-ui-badge-weight: 300;
+
+  --nc-type-ui-status-family: var(--nc-font-sans);
+  --nc-type-ui-status-size: 12px;
+  --nc-type-ui-status-line-height: 12px;
+  --nc-type-ui-status-weight: 500;
 
   --nc-type-meta-family: var(--nc-font-mono);
   --nc-type-meta-size: 12px;
   --nc-type-meta-line-height: 16px;
   --nc-type-meta-weight: 300;
 
-  /* Minimal spacing, current default radius and retained panel geometry. */
+  /* Figma Spacing/Radius subsets in use; add steps only when a consumer needs them. */
+  --nc-space-0-5: 2px;
   --nc-space-1: 4px;
+  --nc-space-1-5: 6px;
   --nc-space-2: 8px;
   --nc-space-3: 12px;
   --nc-space-4: 16px;
+  --nc-space-5: 20px;
+  --nc-space-7: 28px;
+  --nc-space-10: 40px;
+  --nc-radius-sm: 2px;
+  --nc-radius-md: 6px;
   --nc-radius-default: 8px;
-  --nc-radius-panel: 12px;
+  --nc-radius-xl: 12px;
+  --nc-radius-2xl: 16px;
+  --nc-radius-full: 9999px;
+  --nc-radius-panel: var(--nc-radius-xl);
   --nc-focus-width: 2px;
   --nc-focus-offset: 2px;
 }
@@ -155,7 +175,7 @@
   --nc-background-page: var(--nc-neutral-950);
   --nc-surface-default: var(--nc-surface-raised);
   --nc-surface-raised: var(--nc-neutral-900);
-  --nc-surface-sunken: var(--nc-neutral-950);
+  --nc-surface-sunken: var(--nc-neutral-900);
   --nc-border-subtle: var(--nc-neutral-700);
   --nc-border-control: var(--nc-neutral-500);
   --nc-text-primary: var(--nc-neutral-100);
@@ -202,8 +222,21 @@
   --nc-action-tertiary-bg: transparent;
   --nc-action-tertiary-fg: var(--nc-text-primary);
   --nc-action-tertiary-border: var(--nc-border-control);
-
-
+  /* Aliases are declared on body too, so they resolve against body.light. */
+  --nc-shadow-sm: 1px 1px 0 var(--nc-border-control);
+  --nc-control-bg: var(--nc-input-bg);
+  --nc-control-bg-hover: var(--nc-input-hover);
+  --nc-control-border: var(--nc-input-border);
+  --nc-control-selected-bg: var(--nc-action-primary-bg);
+  --nc-control-selected-fg: var(--nc-action-primary-fg);
+  --nc-control-selected-border: var(--nc-action-primary-border);
+  --nc-control-disabled-bg: var(--nc-action-disabled-bg);
+  --nc-control-disabled-fg: var(--nc-action-disabled-fg);
+  --nc-control-disabled-border: var(--nc-border-subtle);
+  --nc-card-bg: var(--nc-surface-raised);
+  --nc-card-fg: var(--nc-text-primary);
+  --nc-card-border: var(--nc-border-control);
+  --nc-card-hover: var(--nc-secondary-900);
 }
 
 body.light {
@@ -258,4 +291,5 @@ body.light {
   --nc-action-tertiary-bg: transparent;
   --nc-action-tertiary-fg: var(--nc-text-primary);
   --nc-action-tertiary-border: var(--nc-border-control);
+  --nc-card-hover: var(--nc-secondary-100);
 }

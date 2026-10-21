@@ -75,12 +75,14 @@ button:disabled { opacity:.5; cursor:wait }
 .column-done[open] summary { margin-bottom:1rem }
 .prospect-card strong { color:var(--muted) }
 .count { color:var(--muted) }
-.prospect-card { display:block; padding:12px; margin-bottom:10px; border:1px solid var(--border); border-radius:var(--nc-radius-default); background:var(--bg); color:var(--text); text-decoration:none; overflow-wrap:anywhere }
-.prospect-card:hover { text-decoration:none }
-.prospect-card strong { display:block; font-weight:500; color:var(--accent) }
+/* Figma Prospect Card 216:20442: card tokens, UI/Button company, Body Default title, Caption dates. */
+.prospect-card { display:block; padding:12px; margin-bottom:10px; border:1px solid var(--nc-card-border); border-radius:var(--nc-radius-default); background:var(--nc-card-bg); color:var(--nc-card-fg); text-decoration:none; overflow-wrap:anywhere; font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+.prospect-card:hover { text-decoration:none; background:var(--nc-card-hover) }
+.prospect-card strong { display:block; color:var(--accent); font:var(--nc-type-ui-button-weight) var(--nc-type-ui-button-size)/var(--nc-type-ui-button-line-height) var(--nc-type-ui-button-family) }
 .prospect-card span { display:block; margin-top:4px }
 .prospect-card .nc-status-badge { display:inline-flex; margin-top:8px }
-.prospect-card small { display:block; color:var(--muted); margin-top:8px }
+.prospect-card :is(small,time) { color:var(--muted); font:var(--nc-type-caption-weight) var(--nc-type-caption-size)/var(--nc-type-caption-line-height) var(--nc-type-caption-family) }
+.prospect-card small { display:block; margin-top:8px }
 .prospect-card time { margin-top:6px }
 label { display:block; font-size:13px; font-weight:400; margin-bottom:1rem }
 input,select,textarea { display:block; width:100%; margin-top:6px; padding:10px 12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-weight:300 }
@@ -175,7 +177,7 @@ time { display:block; font-size:13px; color:var(--muted) }
 .board-date-option { display:flex; align-items:center; gap:8px; min-height:32px; padding:4px 8px; margin:0; border-radius:var(--nc-radius-default); cursor:pointer; font-size:14px }
 .board-date-option:hover { background:var(--nc-selection-bg) }
 .board-date-option:has(:checked) { background:var(--nc-selection-bg) }
-.board-date-option input { width:16px; height:16px; padding:0; margin:0; accent-color:var(--accent); flex:none }
+.board-date-option input { flex:none }
 .board-custom-dates { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px }
 .board-custom-dates .nc-field { min-width:0; margin:0; font-size:12px }
 .board-custom-dates .nc-input { height:36px; padding:6px; font-size:12px; min-width:0 }

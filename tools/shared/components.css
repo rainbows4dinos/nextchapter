@@ -24,7 +24,7 @@
   font-size: var(--nc-type-ui-button-size); line-height: var(--nc-type-ui-button-line-height);
 }
 .nc-button--sm {
-  min-height: 28px; padding: 8px 8px; gap: 6px; border-radius: 6px;
+  min-height: 28px; padding: 8px 8px; gap: var(--nc-space-1-5); border-radius: var(--nc-radius-md);
   font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height);
 }
 .nc-button--primary {
@@ -55,7 +55,7 @@
   outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset);
 }
 .nc-chip {
-  border: 1px solid var(--nc-border-control); border-radius: 999px;
+  border: 1px solid var(--nc-border-control); border-radius: var(--nc-radius-full);
   background: transparent; color: var(--nc-text-secondary);
 }
 .nc-chip--lg {
@@ -74,10 +74,10 @@
 }
 .nc-pill-tabs {
   display: inline-flex; align-items: center; max-width: 100%; padding: 2px;
-  border: 1px solid var(--nc-input-border); border-radius: 999px; background: var(--nc-surface-default);
+  border: 1px solid var(--nc-input-border); border-radius: var(--nc-radius-full); background: var(--nc-surface-default);
 }
 .nc-pill-tab {
-  min-height: 22px; margin: 0; padding: 4px 20px; gap: 4px; border: 0; border-radius: 999px;
+  min-height: 22px; margin: 0; padding: 4px 20px; gap: 4px; border: 0; border-radius: var(--nc-radius-full);
   background: transparent; color: var(--nc-text-primary);
   font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height);
 }
@@ -88,7 +88,7 @@
   background: var(--nc-action-secondary-bg); color: var(--nc-action-secondary-fg);
 }
 /* Canonical menu shadow/sm; resolve the semantic border color in each theme. */
-.nc-menu-elevation { box-shadow:1px 1px 0 var(--nc-border-control); }
+.nc-menu-elevation { box-shadow:var(--nc-shadow-sm); }
 
 /* Step Progress Indicator composes the existing Step Progress Item states. */
 .nc-step-progress {
@@ -128,8 +128,9 @@
 /* Status-Badge — presentational labels; both themes follow Figma bindings. */
 .nc-status-badge {
   display:inline-flex; align-items:center; justify-content:center; height:20px;
-  padding:4px 6px; border:0; border-radius:2px; white-space:nowrap;
-  font:500 12px/12px var(--nc-font-sans); letter-spacing:var(--nc-type-letter-spacing);
+  padding:4px 6px; border:0; border-radius:var(--nc-radius-sm); white-space:nowrap;
+  font:var(--nc-type-ui-status-weight) var(--nc-type-ui-status-size)/var(--nc-type-ui-status-line-height) var(--nc-type-ui-status-family);
+  letter-spacing:var(--nc-type-letter-spacing);
 }
 .nc-status-badge--neutral { background:var(--ds-badge-neutral-bg); color:var(--ds-badge-neutral-fg) }
 .nc-status-badge--accent { background:var(--ds-badge-accent-bg); color:var(--ds-badge-accent-fg) }
@@ -181,9 +182,34 @@
 .nc-select-wrap:has(:disabled) > .gravity-icon { color: var(--nc-action-disabled-fg); }
 @media (forced-colors: active) { .nc-select { appearance: auto; } .nc-select-wrap > .gravity-icon { display: none; } }
 
+/* Checkbox / Radio — Figma 165:590, 165:618; native inputs, Lg 20px and Sm 16px. Labels stay with the consumer. */
+.nc-checkbox, .nc-radio {
+  appearance: none; display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
+  width: 20px; height: 20px; margin: 0; padding: 0; cursor: pointer;
+  border: 1px solid var(--nc-control-border); background: var(--nc-control-bg);
+  transition: background-color var(--nc-transition-general-sm), border-color var(--nc-transition-general-sm);
+}
+.nc-checkbox { border-radius: var(--nc-radius-sm); }
+.nc-radio { border-radius: var(--nc-radius-full); }
+.nc-checkbox--sm, .nc-radio--sm { width: 16px; height: 16px; }
+.nc-checkbox::after, .nc-radio::after { content: ''; background: var(--nc-control-selected-fg); visibility: hidden; }
+.nc-checkbox::after { width: 14px; height: 14px; mask: url('assets/career-profile/check.svg') center / 100% 100% no-repeat; }
+.nc-checkbox--sm::after { width: 12px; height: 12px; }
+.nc-checkbox:indeterminate::after { width: 10px; height: 2px; border-radius: 1px; mask: none; }
+.nc-checkbox--sm:indeterminate::after { width: 8px; }
+.nc-radio::after { width: 8px; height: 8px; border-radius: var(--nc-radius-full); }
+.nc-radio--sm::after { width: 6px; height: 6px; }
+.nc-checkbox:hover:not(:disabled):not(:checked):not(:indeterminate), .nc-radio:hover:not(:disabled):not(:checked) { background: var(--nc-control-bg-hover); }
+.nc-checkbox:is(:checked, :indeterminate), .nc-radio:checked { background: var(--nc-control-selected-bg); border-color: var(--nc-control-selected-border); }
+.nc-checkbox:is(:checked, :indeterminate)::after, .nc-radio:checked::after { visibility: visible; }
+.nc-checkbox:disabled, .nc-radio:disabled { background: var(--nc-control-disabled-bg); border-color: var(--nc-control-disabled-border); cursor: not-allowed; }
+.nc-checkbox:disabled::after, .nc-radio:disabled::after { background: var(--nc-control-disabled-fg); }
+.nc-checkbox:focus-visible, .nc-radio:focus-visible { outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset); }
+@media (forced-colors: active) { .nc-checkbox, .nc-radio { appearance: auto; } .nc-checkbox::after, .nc-radio::after { display: none; } }
+
 /* Alerts and Toasts share semantic vocabulary, but have distinct surfaces. */
 .nc-alert, .nc-toast {
-  display: flex; align-items: flex-start; gap: 4px; padding: 8px; border: 1px solid; border-radius: var(--nc-radius-default);
+  display: flex; align-items: flex-start; gap: var(--nc-space-1-5); padding: var(--nc-space-2) var(--nc-space-3); border: 1px solid; border-radius: var(--nc-radius-default);
   min-width: 0; max-width: 100%; text-align: left;
   font: var(--nc-type-ui-badge-weight) var(--nc-type-ui-badge-size)/var(--nc-type-ui-badge-line-height) var(--nc-type-ui-badge-family);
   letter-spacing: var(--nc-type-letter-spacing);
@@ -191,14 +217,16 @@
 .nc-alert { margin-block: 12px; }
 .nc-alert:empty, .nc-alert[hidden] { display: none; }
 .nc-alert__message, .nc-toast__message { flex: 1; min-width: 0; margin: 0; overflow-wrap: anywhere; white-space: pre-line; }
-.nc-alert > .gravity-icon, .nc-toast > .gravity-icon { flex-shrink: 0; margin-top: 2px; }
+/* Icons sit in a 24px line box (Figma Icon Frame: 4px vertical padding). */
+.nc-alert > .gravity-icon, .nc-toast > .gravity-icon { flex-shrink: 0; margin-top: var(--nc-space-1); }
 .nc-alert--success { background: var(--nc-success-bg); color: var(--nc-success-fg); border-color: var(--nc-success-border); }
 .nc-alert--danger { background: var(--nc-danger-bg); color: var(--nc-danger-fg); border-color: var(--nc-danger-border); }
 .nc-alert--warning { background: var(--nc-warning-bg); color: var(--nc-warning-fg); border-color: var(--nc-warning-border); }
 .nc-alert--info { background: var(--nc-info-bg); color: var(--nc-info-fg); border-color: var(--nc-info-border); }
 .nc-toast {
+  gap: var(--nc-space-2); padding: var(--nc-space-2);
   background: var(--nc-surface-raised); color: var(--nc-text-primary); border-color: var(--nc-border-control);
-  box-shadow: 1px 1px 0 var(--nc-border-control); pointer-events: auto;
+  box-shadow: var(--nc-shadow-sm); pointer-events: auto;
   opacity: 0; transform: translateY(4px); transition: opacity var(--nc-transition-general-sm), transform var(--nc-transition-general-sm);
 }
 .nc-toast.is-visible { opacity: 1; transform: translateY(0); }
@@ -209,8 +237,10 @@
 .nc-toast__dismiss, .nc-alert__dismiss {
   transition: background-color var(--nc-transition-general-sm), color var(--nc-transition-general-sm);
   display: inline-flex; align-items: center; justify-content: center; flex: 0 0 24px;
-  width: 24px; height: 24px; padding: 0; margin: -2px 0; border: 0; border-radius: 4px;
-  background: transparent; color: var(--nc-text-placeholder); cursor: pointer; opacity: 1;
+  width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px;
+  /* The 24px target overhangs Figma's 16px icon: 10px from the message, 8px from the edge in Toasts. */
+  margin: 0 -4px 0 -2px;
+  background: transparent; color: var(--nc-text-muted); cursor: pointer; opacity: 1;
 }
 .nc-toast__dismiss:hover, .nc-alert__dismiss:hover { background: var(--nc-input-hover); color: var(--nc-text-primary); border: 0; }
 .nc-toast__dismiss:focus-visible, .nc-alert__dismiss:focus-visible { outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset); }

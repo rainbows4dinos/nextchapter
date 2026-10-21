@@ -135,7 +135,7 @@ function render(profile, draft, resetBaseline = false) {
   }
   const signals = element('section', '', 'panel'); signals.append(element('h2', 'Inferred signals'), element('p', 'Signals are separate from your explicit settings. AI-assisted proposals will require your approval; conversational editing is planned for later.'));
   const list = document.createElement('pre'); list.textContent = saved && JSON.stringify(saved.inferred_signals) !== '[]' ? JSON.stringify(saved.inferred_signals, null, 2) : 'No inferred signals.'; signals.append(list); form.append(signals);
-  const footer = element('section', '', 'panel profile-save'); review = document.createElement('input'); review.type = 'checkbox'; review.id = 'profile-reviewed'; review.required = true;
+  const footer = element('section', '', 'panel profile-save'); review = document.createElement('input'); review.type = 'checkbox'; review.className = 'nc-checkbox'; review.id = 'profile-reviewed'; review.required = true;
   review.checked = !draft && !!saved?.reviewed_at;
   const label = document.createElement('label'); label.htmlFor = review.id; label.className = 'profile-acknowledgment'; label.append(review, document.createTextNode('I have reviewed this profile, including suggested values and undecided constraints.'));
   const submit = document.createElement('button'); submit.type = 'submit'; submit.textContent = 'Save Reviewed Profile'; submit.className = 'nc-button nc-button--primary nc-button--lg';
