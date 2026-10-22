@@ -151,10 +151,10 @@ export function boardView(root, cards, options = {}) {
     const groups = searchBoardGroups(loadedCards, state.query, dateFilter, history, new Date(), state.status);
     const searching = !!state.query.trim() || dateFilter.preset !== 'all' || !!state.status && state.status !== 'all';
     const incomplete = dateFilter.basis === 'applied' && historyState !== 'ready';
-    historyNote.hidden = dateFilter.basis !== 'applied';
+    historyNote.hidden = dateFilter.basis !== 'applied' || !incomplete;
     historyMessage.textContent = historyState === 'error' ? 'Applied history could not be loaded. Results are incomplete.'
       : historyState === 'loading' ? 'Loading Applied history. Results are incomplete.'
-        : '“Applied status recorded” is a history fallback. Review/correct the application date before reporting. Undated prospects appear under All.';
+        : '';
     retryHistory.hidden = historyState !== 'error';
     const filterKey = JSON.stringify([state.query, state.status, dateFilter, historyState]);
     const changedFilters = filterKey !== previousFilters; previousFilters = filterKey;
