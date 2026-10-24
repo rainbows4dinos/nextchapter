@@ -18,5 +18,9 @@
  {
   "date": "2026-10-24",
   "entry": "Component sync batch 1 (C-01 Load Spinner, C-02 Status-Badge, C-04 Input Label): components.css padding and offsets tokenized, .nc-field__label--sm added, components.css cache revision bumped to 20261024-component-sync. Added design-sync/preview.html and scripts/shot.mjs; evidence in design-sync/evidence/batch-1.*. Measured sizes within 1px of Figma in both themes."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Browser check on localhost: Inter 300 loads from Google Fonts and renders on the Resume Builder. Fixed two off-scale weights found there: the app heading and loading status (DM Serif Display at 600, faux bold) now use --nc-type-h1-weight and --nc-type-h3-weight (400); .nc-field__description now uses --nc-type-body-default-weight (300) instead of 400. Resume document and export serif weights left as-is (document formatting stays local). components.css cache revision bumped to 20261024-label-weight. Re-check: no visible text on the page at an off-scale weight."
  }
 ]
