@@ -27,6 +27,9 @@ out += ["", "Status totals: " + ', '.join('%s %d' % kv for kv in sorted(Counter(
  "| ID | Category | Item | Figma ref | Code ref | Class | Status | Notes |", "|---|---|---|---|---|---|---|---|"]
 for r in L:
     out.append('| %(id)s | %(cat)s | %(item)s | %(fref)s | `%(cref)s` | %(cls)s | %(status)s | %(notes)s |' % r)
-out += ["", "## Component checklists", "", "Filled in during component sync, one section per component (C rows), with verification evidence."]
-open('ledger.md', 'w').write('\n'.join(out) + '\n')
+out += ["", "## Component checklists", ""]
+for r in L:
+    if r.get('checklist'):
+        out += ["### %(id)s %(item)s" % r, ""] + ["- " + c for c in r['checklist']] + ["", "Evidence: " + r.get('evidence', '-'), ""]
+open('ledger.md', 'w').write('\n'.join(out).rstrip('\n') + '\n')
 print('\n'.join(out[:22]))

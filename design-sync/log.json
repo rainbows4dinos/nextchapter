@@ -14,5 +14,9 @@
  {
   "date": "2026-10-24",
   "entry": "Designer updated Figma Typography: font-weight/normal (300) renamed to light, new normal (400); serif styles rebound to normal (closes H-08); Type/Meta changed from Plex Mono Light to Regular. Code follows: --nc-font-weight-light 300 and --nc-font-weight-normal 400, serif and Meta weights reference normal, Plex Mono URL back to 400 only. Checks: token-diff 174/174; text-style-check 17/17 including loaded weights; versus HEAD the only resolved value change is --nc-type-meta-weight 300 to 400."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 1 (C-01 Load Spinner, C-02 Status-Badge, C-04 Input Label): components.css padding and offsets tokenized, .nc-field__label--sm added, components.css cache revision bumped to 20261024-component-sync. Added design-sync/preview.html and scripts/shot.mjs; evidence in design-sync/evidence/batch-1.*. Measured sizes within 1px of Figma in both themes."
  }
 ]

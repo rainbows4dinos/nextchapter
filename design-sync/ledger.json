@@ -524,10 +524,17 @@
   "item": "Load Spinner",
   "fref": "81:1063",
   "cref": ".nc-spinner",
-  "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-01"
+  "cls": "match",
+  "status": "synced",
+  "notes": "No structural drift: 28px ring, 2px loading/bg track, loading/fg quarter arc. Spin animation and reduced-motion handling are code-owned.",
+  "id": "C-01",
+  "checklist": [
+   "[x] Size 28x28 matches",
+   "[x] Track 2px @loading/bg matches border",
+   "[x] Arc @loading/fg matches border-top-color (quarter arc; arc end caps differ: Figma flat, CSS mitered; accepted)",
+   "[x] No edits needed"
+  ],
+  "evidence": "design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)"
  },
  {
   "cat": "Components",
@@ -535,9 +542,19 @@
   "fref": "134:13529",
   "cref": ".nc-status-badge",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-02"
+  "status": "synced",
+  "notes": "Values already matched; padding now uses spacing tokens and gap added to mirror Figma auto layout.",
+  "id": "C-02",
+  "checklist": [
+   "[x] Height 20 fixed matches",
+   "[x] Padding 4/6 -> var(--nc-space-1) var(--nc-space-1-5) (was raw px)",
+   "[x] Gap @spacing/1 added (single child today; keeps parity if an icon is added)",
+   "[x] Radius @radius/sm matches",
+   "[x] Text Type/UI/Status matches",
+   "[x] All 6 tones match in both themes (Figma binds the same primitives in both modes)",
+   "[x] Measured 48.3x20 vs Figma 49x20 (text rendering)"
+  ],
+  "evidence": "design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)"
  },
  {
   "cat": "Components",
@@ -555,9 +572,18 @@
   "fref": "168:610",
   "cref": ".nc-field__label",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
-  "id": "C-04"
+  "status": "synced",
+  "notes": "Added .nc-field__label--sm (Figma Size=Sm); 2px offsets now use --nc-space-0-5. Label bottom margin belongs to TextField and is checked in C-16.",
+  "id": "C-04",
+  "checklist": [
+   "[x] Size=Lg: Type/UI/Label, text/primary, 24px line box matches",
+   "[x] Size=Sm: new modifier .nc-field__label--sm with Type/UI/Label Sm tokens (additive, no consumer changed)",
+   "[x] Left padding 2 -> var(--nc-space-0-5)",
+   "[x] Required * gap 2 -> margin-left var(--nc-space-0-5), text/secondary matches",
+   "[x] Kept display:block instead of Figma horizontal auto layout: code labels include inline .nc-field__description text that flex would break; visual result matches",
+   "[-] margin-bottom 4px is TextField spacing, deferred to C-16"
+  ],
+  "evidence": "design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)"
  },
  {
   "cat": "Components",

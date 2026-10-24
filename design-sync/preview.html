@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design sync preview</title>
+<!-- Component preview for lr-design-system-sync. Not linked from the app; serve the repo root locally and open design-sync/preview.html (add ?theme=light for light mode). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tools/shared/tokens.css">
+<link rel="stylesheet" href="../tools/shared/icons.css">
+<link rel="stylesheet" href="../tools/shared/components.css">
+<style>
+  body { margin: 0; background: var(--nc-background-page); color: var(--nc-text-primary); font-family: var(--nc-font-sans); }
+  .pv { padding: 32px; display: grid; gap: 32px; }
+  .pv h2 { margin: 0 0 12px; font: var(--nc-type-ui-label-sm-weight) var(--nc-type-ui-label-sm-size)/var(--nc-type-ui-label-sm-line-height) var(--nc-font-mono); color: var(--nc-text-muted); }
+  .pv-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .pv-cell { display: inline-flex; padding: 8px; background: var(--nc-surface-default); }
+</style>
+</head>
+<body>
+<main class="pv">
+  <section id="load-spinner">
+    <h2>C-01 Load Spinner (81:1063)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="spinner"><span class="nc-spinner" aria-hidden="true"></span></span></div>
+  </section>
+  <section id="status-badge">
+    <h2>C-02 Status-Badge (134:13529)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="badge-accent"><span class="nc-status-badge nc-status-badge--accent">badge</span></span>
+      <span class="pv-cell" data-shot="badge-active"><span class="nc-status-badge nc-status-badge--active">badge</span></span>
+      <span class="pv-cell" data-shot="badge-positive"><span class="nc-status-badge nc-status-badge--positive">badge</span></span>
+      <span class="pv-cell" data-shot="badge-negative"><span class="nc-status-badge nc-status-badge--negative">badge</span></span>
+      <span class="pv-cell" data-shot="badge-highlight"><span class="nc-status-badge nc-status-badge--highlight">badge</span></span>
+      <span class="pv-cell" data-shot="badge-neutral"><span class="nc-status-badge nc-status-badge--neutral">badge</span></span>
+    </div>
+  </section>
+  <section id="input-label">
+    <h2>C-04 Input Label (168:610)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="label-lg"><label class="nc-field__label">Label</label></span>
+      <span class="pv-cell" data-shot="label-lg-required"><label class="nc-field__label">Label<span class="nc-field__required" aria-hidden="true">*</span></label></span>
+      <span class="pv-cell" data-shot="label-sm"><label class="nc-field__label nc-field__label--sm">Label</label></span>
+      <span class="pv-cell" data-shot="label-sm-required"><label class="nc-field__label nc-field__label--sm">Label<span class="nc-field__required" aria-hidden="true">*</span></label></span>
+    </div>
+  </section>
+</main>
+<script>
+  if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('light');
+</script>
+</body>
+</html>

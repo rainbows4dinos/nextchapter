@@ -15,7 +15,7 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 0 | 24 |
+| Components | 24 | 24 | 3 | 21 |
 | Figma hygiene | - | 8 | 0 | 0 |
 
 ## Log
@@ -24,8 +24,9 @@
 - 2026-10-24: Decisions: add typography primitives; build Avatar, Avatar Badge, Company Avatar and Paddle Button; sync full spacing and radius scales; radius changes and proposed component map accepted.
 - 2026-10-24: Token sync: tokens.css gains 50 tokens (typography primitives, full spacing and radius); text tokens reference primitives; surface/default aliases match Figma; Inter and IBM Plex Mono 300 added to the font URL on 4 entry pages; tokens.css cache revision bumped to 20261024-token-sync. Checks: token-diff 173/173 Figma variables match; resolve-tokens shows no resolved value change for any of the 198 existing tokens in either theme; lint passes; npm test 190/191 with the one failure pre-existing (resume-context date fixture); typecheck could not run in the agent's Linux shell. Not verified: Google Fonts response and rendered weight in a browser.
 - 2026-10-24: Designer updated Figma Typography: font-weight/normal (300) renamed to light, new normal (400); serif styles rebound to normal (closes H-08); Type/Meta changed from Plex Mono Light to Regular. Code follows: --nc-font-weight-light 300 and --nc-font-weight-normal 400, serif and Meta weights reference normal, Plex Mono URL back to 400 only. Checks: token-diff 174/174; text-style-check 17/17 including loaded weights; versus HEAD the only resolved value change is --nc-type-meta-weight 300 to 400.
+- 2026-10-24: Component sync batch 1 (C-01 Load Spinner, C-02 Status-Badge, C-04 Input Label): components.css padding and offsets tokenized, .nc-field__label--sm added, components.css cache revision bumped to 20261024-component-sync. Added design-sync/preview.html and scripts/shot.mjs; evidence in design-sync/evidence/batch-1.*. Measured sizes within 1px of Figma in both themes.
 
-Status totals: fixed-in-figma 8, pending 24, synced 52
+Status totals: fixed-in-figma 8, pending 21, synced 55
 
 ## Rows
 
@@ -83,10 +84,10 @@ Status totals: fixed-in-figma 8, pending 24, synced 52
 | T-16 | Text styles | Type/Meta | text style | `--nc-type-meta-*` | value-drift | synced | Figma changed Meta from IBM Plex Mono Light (300) to Regular (400) on 2026-10-24; code follows (--nc-font-weight-normal). Plex Mono 300 dropped from the font URL again. Only resolved value change in this sync. |
 | T-17 | Text styles | Type/UI/Status | text style | `--nc-type-ui-status-*` | match | synced | Size, line height and weight reference typography primitives. |
 | E-01 | Effect styles | shadow/sm | effect style | `--nc-shadow-sm` | match | synced | 1px 1px 0 var(--nc-border-control); color binding preserved |
-| C-01 | Components | Load Spinner | 81:1063 | `.nc-spinner` | structure-drift | pending |  |
-| C-02 | Components | Status-Badge | 134:13529 | `.nc-status-badge` | structure-drift | pending |  |
+| C-01 | Components | Load Spinner | 81:1063 | `.nc-spinner` | match | synced | No structural drift: 28px ring, 2px loading/bg track, loading/fg quarter arc. Spin animation and reduced-motion handling are code-owned. |
+| C-02 | Components | Status-Badge | 134:13529 | `.nc-status-badge` | structure-drift | synced | Values already matched; padding now uses spacing tokens and gap added to mirror Figma auto layout. |
 | C-03 | Components | Avatar Badge | 205:665 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
-| C-04 | Components | Input Label | 168:610 | `.nc-field__label` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
+| C-04 | Components | Input Label | 168:610 | `.nc-field__label` | structure-drift | synced | Added .nc-field__label--sm (Figma Size=Sm); 2px offsets now use --nc-space-0-5. Label bottom margin belongs to TextField and is checked in C-16. |
 | C-05 | Components | Pill Tab Item | 92:5012 | `.nc-pill-tab` | structure-drift | pending | Figma Size Sm/Lg; code has no size modifier |
 | C-06 | Components | Step Progress Item | 77:137 | `.nc-step` | structure-drift | pending | Figma Size Lg/Sm; code has no size modifier |
 | C-07 | Components | Chip | 62:285 | `.nc-chip` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
@@ -118,4 +119,34 @@ Status totals: fixed-in-figma 8, pending 24, synced 52
 
 ## Component checklists
 
-Filled in during component sync, one section per component (C rows), with verification evidence.
+### C-01 Load Spinner
+
+- [x] Size 28x28 matches
+- [x] Track 2px @loading/bg matches border
+- [x] Arc @loading/fg matches border-top-color (quarter arc; arc end caps differ: Figma flat, CSS mitered; accepted)
+- [x] No edits needed
+
+Evidence: design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)
+
+### C-02 Status-Badge
+
+- [x] Height 20 fixed matches
+- [x] Padding 4/6 -> var(--nc-space-1) var(--nc-space-1-5) (was raw px)
+- [x] Gap @spacing/1 added (single child today; keeps parity if an icon is added)
+- [x] Radius @radius/sm matches
+- [x] Text Type/UI/Status matches
+- [x] All 6 tones match in both themes (Figma binds the same primitives in both modes)
+- [x] Measured 48.3x20 vs Figma 49x20 (text rendering)
+
+Evidence: design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)
+
+### C-04 Input Label
+
+- [x] Size=Lg: Type/UI/Label, text/primary, 24px line box matches
+- [x] Size=Sm: new modifier .nc-field__label--sm with Type/UI/Label Sm tokens (additive, no consumer changed)
+- [x] Left padding 2 -> var(--nc-space-0-5)
+- [x] Required * gap 2 -> margin-left var(--nc-space-0-5), text/secondary matches
+- [x] Kept display:block instead of Figma horizontal auto layout: code labels include inline .nc-field__description text that flex would break; visual result matches
+- [-] margin-bottom 4px is TextField spacing, deferred to C-16
+
+Evidence: design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)

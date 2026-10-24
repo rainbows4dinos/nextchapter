@@ -128,7 +128,7 @@
 /* Status-Badge — presentational labels; both themes follow Figma bindings. */
 .nc-status-badge {
   display:inline-flex; align-items:center; justify-content:center; height:20px;
-  padding:4px 6px; border:0; border-radius:var(--nc-radius-sm); white-space:nowrap;
+  gap:var(--nc-space-1); padding:var(--nc-space-1) var(--nc-space-1-5); border:0; border-radius:var(--nc-radius-sm); white-space:nowrap;
   font:var(--nc-type-ui-status-weight) var(--nc-type-ui-status-size)/var(--nc-type-ui-status-line-height) var(--nc-type-ui-status-family);
   letter-spacing:var(--nc-type-letter-spacing);
 }
@@ -142,12 +142,17 @@
 /* Inputs — native controls; entered text stays primary in every enabled state. */
 .nc-field { display: block; min-width: 0; }
 .nc-field__label {
-  display: block; margin: 0 0 4px; padding-left: 2px; color: var(--nc-text-primary);
+  display: block; margin: 0 0 4px; padding-left: var(--nc-space-0-5); color: var(--nc-text-primary);
   font-family: var(--nc-type-ui-label-family); font-size: var(--nc-type-ui-label-size);
   font-weight: var(--nc-type-ui-label-weight); line-height: var(--nc-type-ui-label-line-height);
   letter-spacing: var(--nc-type-letter-spacing); text-transform: none;
 }
-.nc-field__required { color: var(--nc-text-secondary); margin-left: 2px; }
+/* Figma Input Label Sm (168:610). */
+.nc-field__label--sm {
+  font-family: var(--nc-type-ui-label-sm-family); font-size: var(--nc-type-ui-label-sm-size);
+  font-weight: var(--nc-type-ui-label-sm-weight); line-height: var(--nc-type-ui-label-sm-line-height);
+}
+.nc-field__required { color: var(--nc-text-secondary); margin-left: var(--nc-space-0-5); }
 .nc-field__description { font-weight: 400; color: var(--nc-text-secondary); }
 .nc-input, .nc-textarea, .nc-select {
   transition: background-color var(--nc-transition-general-sm), color var(--nc-transition-general-sm), border-color var(--nc-transition-general-sm);
