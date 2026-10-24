@@ -107,9 +107,6 @@ details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-b
 .editor__status .history li:last-child { margin-bottom:0 }
 .editor__status .history time { margin-top:4px }
 .editor__status #history > .panel { padding:0; margin:0; border:0; border-radius:0; background:transparent }
-.job-url-control { position:relative }
-.job-url-control--linked .nc-input { padding-right:76px }
-.job-url-control__open { position:absolute; right:12px; top:8px; line-height:24px; font-weight:500 }
 @media(min-width:1200px) {
   .editor--detail { max-width:none }
   .editor--detail .editor__panels { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,1fr); gap:24px }

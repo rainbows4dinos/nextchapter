@@ -255,8 +255,8 @@ export function editorView(root, row) {
   grid.append(field('company', 'Company *', row?.company ?? ''), field('title', 'Role / title *', row?.title ?? ''));
   const jobUrl = field('job_url', 'Job URL', row?.job_url ?? '', 'url');
   const urlInput = /** @type {HTMLInputElement} */ (jobUrl.querySelector('input'));
-  const urlControl = el('div', '', 'job-url-control');
-  const open = link('Open', ''); open.className = 'job-url-control__open'; open.target = '_blank'; open.rel = 'noopener noreferrer'; open.setAttribute('aria-label', 'Open job posting');
+  const urlControl = el('div', '', 'nc-input-group job-url-control');
+  const open = link('Open', ''); open.className = 'nc-input-group__action job-url-control__open'; open.target = '_blank'; open.rel = 'noopener noreferrer'; open.setAttribute('aria-label', 'Open job posting');
   const updateOpen = () => {
     const value = urlInput.value.trim();
     try { if (!value) throw new Error('Empty URL'); validateHttpUrl(value); open.href = value; open.hidden = false; }

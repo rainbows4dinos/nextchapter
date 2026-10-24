@@ -38,5 +38,33 @@
  {
   "date": "2026-10-24",
   "entry": "Component sync batch 3 (C-08 Button, C-09 Switch-Mode, C-10 MainNavItem): buttons now 40/28px (were 42/30) with side padding minus the border, new .nc-button--icon-only; Switch-Mode already matched; nav item padding tokenized. components.css and navigation.css cache revisions 20261024-batch-3. New Figma item H-10. Evidence in design-sync/evidence/batch-3.*; Resume Builder checked at 1280px."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 4 (C-15 Step Progress Indicator, C-16 TextField, C-17 TextArea): shared input padding corrected for the inside stroke, disabled inputs get @action/disabled/bg with no border, error border uses @danger/border, input radius and border tokens match Figma bindings, field spacing tokenized. components.css cache revision 20261024-batch-4. New Figma item H-11. Evidence in design-sync/evidence/batch-4.*; Resume Builder fields checked in the browser."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "TextField Action R: the audit had marked it unused, but Prospect Tracker's Job URL field implements it locally (user caught this). Promoted to shared .nc-input-group / .nc-input-group__action (Action L and R), switched ui.js to it and removed the local job-url-control CSS. Prospect Tracker styles.css, bootstrap.js, app.js and ui.js cache revisions 20261024-input-action; components.css 20261024-input-action. Tests 190/191 (pre-existing failure), lint clean."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Built TextField Icon R at the user's request: shared .nc-input-group__icon with padding and position rules for icon alone and icon plus Action R, disabled color. components.css cache revision 20261024-input-icon. New Figma item H-12 (icon color unbound)."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer direction: Icon R sits to the right of Action R. Code updated (icon always at the end, link shifts left 8px past it). Figma variants disagree on the order; added to H-12."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer fixed TextField content order (Icon R after Action R in all five variants, verified). Icon R color could not be verified through the API. H-10 (mobile nav padding) and H-11 (TextArea 98 vs 96) re-checked: unchanged, still open."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer fixed H-11 (TextArea 98px in all states; code min-height 96 -> 98) and partly H-10 (mobile nav radius/md in all states; code mobile default radius set to md, padding tokenized). Selected mobile padding 6 vs 4 still open pending designer confirmation. components.css and navigation.css cache revisions 20261024-figma-fixes."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer fixed H-10 (mobile nav items 6px padding and radius/md in all states); code follows for mobile and the compact account menu. H-12 closed as a false positive: Icon R is bound to text/secondary (action/disabled/fg when disabled), which the API could not read inside the instance. navigation.css cache revision 20261024-nav-mobile."
  }
 ]

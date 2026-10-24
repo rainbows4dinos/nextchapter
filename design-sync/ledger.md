@@ -15,8 +15,8 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 10 | 14 |
-| Figma hygiene | - | 10 | 0 | 1 |
+| Components | 24 | 24 | 13 | 11 |
+| Figma hygiene | - | 12 | 0 | 0 |
 
 ## Log
 
@@ -30,8 +30,15 @@
 - 2026-10-24: Designer set Pill Tab Item Lg to 34px (closes H-09). Code now derives pill tab height from a --nc-pill-tabs-height group variable (28px Sm, 40px Lg) so the group height is the single spec; verified 28/22 and 40/34 at 1280px.
 - 2026-10-24: Designer excluded the Pill-Tabs border from layout; tab items are now 24px (Sm) and 36px (Lg) inside 28/40px groups. Code follows: group padding is 2px minus the 1px border, tabs are group height minus 4px, and tab labels no longer wrap (user request). Verified Sm 28/24 and Lg 40/36 in the browser, including at 385px. components.css cache revision 20261024-pill-tabs; batch-2 evidence re-captured.
 - 2026-10-24: Component sync batch 3 (C-08 Button, C-09 Switch-Mode, C-10 MainNavItem): buttons now 40/28px (were 42/30) with side padding minus the border, new .nc-button--icon-only; Switch-Mode already matched; nav item padding tokenized. components.css and navigation.css cache revisions 20261024-batch-3. New Figma item H-10. Evidence in design-sync/evidence/batch-3.*; Resume Builder checked at 1280px.
+- 2026-10-24: Component sync batch 4 (C-15 Step Progress Indicator, C-16 TextField, C-17 TextArea): shared input padding corrected for the inside stroke, disabled inputs get @action/disabled/bg with no border, error border uses @danger/border, input radius and border tokens match Figma bindings, field spacing tokenized. components.css cache revision 20261024-batch-4. New Figma item H-11. Evidence in design-sync/evidence/batch-4.*; Resume Builder fields checked in the browser.
+- 2026-10-24: TextField Action R: the audit had marked it unused, but Prospect Tracker's Job URL field implements it locally (user caught this). Promoted to shared .nc-input-group / .nc-input-group__action (Action L and R), switched ui.js to it and removed the local job-url-control CSS. Prospect Tracker styles.css, bootstrap.js, app.js and ui.js cache revisions 20261024-input-action; components.css 20261024-input-action. Tests 190/191 (pre-existing failure), lint clean.
+- 2026-10-24: Built TextField Icon R at the user's request: shared .nc-input-group__icon with padding and position rules for icon alone and icon plus Action R, disabled color. components.css cache revision 20261024-input-icon. New Figma item H-12 (icon color unbound).
+- 2026-10-24: Designer direction: Icon R sits to the right of Action R. Code updated (icon always at the end, link shifts left 8px past it). Figma variants disagree on the order; added to H-12.
+- 2026-10-24: Designer fixed TextField content order (Icon R after Action R in all five variants, verified). Icon R color could not be verified through the API. H-10 (mobile nav padding) and H-11 (TextArea 98 vs 96) re-checked: unchanged, still open.
+- 2026-10-24: Designer fixed H-11 (TextArea 98px in all states; code min-height 96 -> 98) and partly H-10 (mobile nav radius/md in all states; code mobile default radius set to md, padding tokenized). Selected mobile padding 6 vs 4 still open pending designer confirmation. components.css and navigation.css cache revisions 20261024-figma-fixes.
+- 2026-10-24: Designer fixed H-10 (mobile nav items 6px padding and radius/md in all states); code follows for mobile and the compact account menu. H-12 closed as a false positive: Icon R is bound to text/secondary (action/disabled/fg when disabled), which the API could not read inside the instance. navigation.css cache revision 20261024-nav-mobile.
 
-Status totals: fixed-in-figma 9, needs-figma-fix 1, pending 14, synced 62
+Status totals: fixed-in-figma 12, pending 11, synced 65
 
 ## Rows
 
@@ -98,14 +105,14 @@ Status totals: fixed-in-figma 9, needs-figma-fix 1, pending 14, synced 62
 | C-07 | Components | Chip | 62:285 | `.nc-chip` | structure-drift | synced | Padding now subtracts the 1px border (Figma measures padding from the outer edge with an inside stroke). Sm width 70 -> 68, Lg horizontal padding 12 -> 16. |
 | C-08 | Components | Button | 53:220 | `.nc-button` | structure-drift | synced | Buttons were 2px too tall and wide (42/30px); now fixed 40/28px with no vertical padding and side padding minus the border. Added .nc-button--icon-only (40x40, 28x28). |
 | C-09 | Components | Switch-Mode | 81:397 | `.theme-toggle` | match | synced | No structural drift: 48x28 track, 20px thumb at 4px and 24px, 12px sun and moon at 6px and 30px, colors per theme all match. |
-| C-10 | Components | MainNavItem | 92:9731 | `.nextchapter-nav-item` | structure-drift | synced | Desktop item already matched (92x32); padding now uses spacing tokens. Mobile variants follow Figma, including its 4px-wider selected item (see H-10). |
+| C-10 | Components | MainNavItem | 92:9731 | `.nextchapter-nav-item` | structure-drift | synced | Desktop item matched (92x32); padding tokenized. Mobile now 6px side inset and radius md in every state, matching Figma after H-10. |
 | C-11 | Components | Company Avatar | 206:18776 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. Needed by Prospect Card (C-23). |
 | C-12 | Components | Avatar | 205:679 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
 | C-13 | Components | Paddle Button | 216:20314 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
 | C-14 | Components | Pill-Tabs | 279:1161 | `.nc-pill-tabs` | structure-drift | synced | Group height is the spec (Sm 28px, Lg 40px via --nc-pill-tabs-height); the 1px border sits inside the 2px padding, so tabs are group - 4px. Group grows with its tabs instead of wrapping. |
-| C-15 | Components | Step Progress Indicator | 102:11781 | `.nc-step-progress` | structure-drift | pending | Narrow-screen rule now applies Figma Sm label size (batch 2). Connector, gap and orientation still to check. |
-| C-16 | Components | TextField | 53:589 | `.nc-field .nc-input` | structure-drift | pending |  |
-| C-17 | Components | TextArea | 61:183 | `.nc-field .nc-textarea` | structure-drift | pending |  |
+| C-15 | Components | Step Progress Indicator | 102:11781 | `.nc-step-progress` | match | synced | Already matched (16px gaps, 1px @border/control connectors, Lg and Sm widths 719 and 300); spacing now uses tokens. |
+| C-16 | Components | TextField | 53:589 | `.nc-field .nc-input` | structure-drift | synced | Side padding 1px too wide fixed; disabled gets the gray fill and no border; error border @danger/border; Action L/R and Icon R now shared (.nc-input-group); Prospect Tracker Job URL uses Action R. |
+| C-17 | Components | TextArea | 61:183 | `.nc-field .nc-textarea` | structure-drift | synced | Shares the TextField fixes. Height now 98px in all states, matching Figma after H-11. Native resize handle kept instead of Figma's drawn handle. |
 | C-18 | Components | Select | 92:9223 | `.nc-select-wrap .nc-select` | structure-drift | pending |  |
 | C-19 | Components | Checkbox | 165:590 | `.nc-checkbox` | structure-drift | pending | implemented Oct 20 per docs |
 | C-20 | Components | Radio | 165:618 | `.nc-radio` | structure-drift | pending | implemented Oct 20 per docs |
@@ -122,7 +129,9 @@ Status totals: fixed-in-figma 9, needs-figma-fix 1, pending 14, synced 62
 | H-07 | Figma hygiene | Input Label | 168:610 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: gap 2 -> spacing/0_5 on both sizes. Values unchanged, binding only. |
 | H-08 | Figma hygiene | Serif text styles weight binding | Type/Display, Type/Heading/H1-H4 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: renamed font-weight/normal (300) to font-weight/light, added font-weight/normal (400), rebound the 5 serif styles to it. |
 | H-09 | Figma hygiene | Pill Tab Item Lg height | 92:5012 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: Pill Tab Item Lg is now 34px, matching its use in Pill-Tabs Lg. The spec that matters is the 40px group height. |
-| H-10 | Figma hygiene | MainNavItem mobile variants | 92:9731 | `-` | hygiene | needs-figma-fix | Mobile variants disagree: Default has 4px side padding, radius full and right alignment; Hover has 4px and radius md; Selected has 6px and radius md (4px wider, so the label shifts on selection) and a secondary/fg label on a primary/bg fill. Pick one padding and radius for all three. |
+| H-10 | Figma hygiene | MainNavItem mobile variants | 92:9731 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: all mobile states use 6px side padding and radius/md (80x32). Code: every mobile and compact-menu state now uses calc(var(--nc-space-1-5) - 1px) side padding, so the item no longer changes width on hover or selection. |
+| H-11 | Figma hygiene | TextArea input height | 61:183 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: TextArea input is 98px in all five states. Code min-height updated from 96 to 98. |
+| H-12 | Figma hygiene | TextField Icon R color | 53:589 | `-` | false-positive | fixed-in-figma | False positive (designer confirmed 2026-10-24): Icon R is bound to text/secondary, and action/disabled/fg in the disabled state; the API could not read inside the icon instance. Order fix (icon after Action R) verified in all five variants. Code matches. |
 
 ## Component checklists
 
@@ -212,8 +221,8 @@ Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Buil
 - [x] Default size: padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 91.9x32 vs Figma 92x32
 - [x] Hover stroke @action/primary/border; Selected fill @action/primary/bg with @action/primary/fg label
 - [x] UI/Button label, radius full
-- [-] Mobile: code mirrors Figma (4px side inset, 6px when selected, radius md on hover and selected); Figma inconsistency logged as H-10
 - [x] Browser: all header nav items 32px tall at 1280px
+- [x] Mobile (and compact account menu): 6px side inset in every state -> calc(var(--nc-space-1-5) - 1px), radius md, 32px tall; no width change on hover or selection (H-10 fixed in Figma)
 
 Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px
 
@@ -226,3 +235,35 @@ Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Buil
 - [ ] Enhancement requested: animated sliding selection pill (not in Figma yet)
 
 Evidence: design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px
+
+### C-15 Step Progress Indicator
+
+- [x] Gap between items and connectors 16 -> var(--nc-space-4) (indicator gap and connector margin)
+- [x] Connector 1px, fills remaining width, @border/control
+- [x] Lg measured 719x32 and Sm 300x32 at Figma widths
+- [x] Sm below 600px handled in batch 2
+
+Evidence: design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser
+
+### C-16 TextField
+
+- [x] Field: label, input, message stacked with 4px gaps -> var(--nc-space-1); measured 280x68 (92 with message) vs Figma 280x68 and 280x92
+- [x] Input 40px, radius @radius/lg, border @input/border, fill @input/bg; padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px) (was 7px 12px)
+- [x] Hover @input/hover; placeholder @text/placeholder; value Body/Default
+- [x] Error border @danger/border (was @danger/fg, same color); error text Body/Small @danger/fg
+- [x] Disabled: fill @action/disabled/bg, no border, @action/disabled/fg text, label and helper (was input background with a visible border)
+- [x] Focus ring 2px @focus/ring, 2px outside the edge, matches outline and offset
+- [x] Helper and error text 2px side inset -> var(--nc-space-0-5)
+- [x] Action R / Action L: new shared .nc-input-group with .nc-input-group__action (UI/Button, @link/default, @link/hover on hover, 12px from the edge, 8px gap; --nc-input-action-size reserves room). Prospect Tracker Job URL "Open" link moved from local CSS to it: now 16/16 instead of inherited size with a 24px line, and no hover background. Measured: 12px inset, 8.8px gap, vertically centered
+- [x] Icon R: new .nc-input-group__icon (16px, 12px from the edge, 8px gap, vertically centered; always last, with Action R moved 8px to its left when both show, per designer direction; @text/secondary, @action/disabled/fg when disabled). Decorative only (pointer-events: none); use an Action for anything clickable
+
+Evidence: design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser
+
+### C-17 TextArea
+
+- [x] Same padding, border, radius, hover, error and disabled rules as TextField
+- [-] Native resize handle kept; Figma draws a custom 3-line handle in @border/control
+- [x] Pages that set their own textarea height (Resume Builder) are unaffected
+- [x] min-height 98 matches all Figma states (was 96; Figma Error state fixed to 98, H-11)
+
+Evidence: design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser

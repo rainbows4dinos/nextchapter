@@ -681,14 +681,14 @@
   "cref": ".nextchapter-nav-item",
   "cls": "structure-drift",
   "status": "synced",
-  "notes": "Desktop item already matched (92x32); padding now uses spacing tokens. Mobile variants follow Figma, including its 4px-wider selected item (see H-10).",
+  "notes": "Desktop item matched (92x32); padding tokenized. Mobile now 6px side inset and radius md in every state, matching Figma after H-10.",
   "id": "C-10",
   "checklist": [
    "[x] Default size: padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 91.9x32 vs Figma 92x32",
    "[x] Hover stroke @action/primary/border; Selected fill @action/primary/bg with @action/primary/fg label",
    "[x] UI/Button label, radius full",
-   "[-] Mobile: code mirrors Figma (4px side inset, 6px when selected, radius md on hover and selected); Figma inconsistency logged as H-10",
-   "[x] Browser: all header nav items 32px tall at 1280px"
+   "[x] Browser: all header nav items 32px tall at 1280px",
+   "[x] Mobile (and compact account menu): 6px side inset in every state -> calc(var(--nc-space-1-5) - 1px), radius md, 32px tall; no width change on hover or selection (H-10 fixed in Figma)"
   ],
   "evidence": "design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px"
  },
@@ -745,10 +745,17 @@
   "item": "Step Progress Indicator",
   "fref": "102:11781",
   "cref": ".nc-step-progress",
-  "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Narrow-screen rule now applies Figma Sm label size (batch 2). Connector, gap and orientation still to check.",
-  "id": "C-15"
+  "cls": "match",
+  "status": "synced",
+  "notes": "Already matched (16px gaps, 1px @border/control connectors, Lg and Sm widths 719 and 300); spacing now uses tokens.",
+  "id": "C-15",
+  "checklist": [
+   "[x] Gap between items and connectors 16 -> var(--nc-space-4) (indicator gap and connector margin)",
+   "[x] Connector 1px, fills remaining width, @border/control",
+   "[x] Lg measured 719x32 and Sm 300x32 at Figma widths",
+   "[x] Sm below 600px handled in batch 2"
+  ],
+  "evidence": "design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser"
  },
  {
   "cat": "Components",
@@ -756,9 +763,21 @@
   "fref": "53:589",
   "cref": ".nc-field .nc-input",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-16"
+  "status": "synced",
+  "notes": "Side padding 1px too wide fixed; disabled gets the gray fill and no border; error border @danger/border; Action L/R and Icon R now shared (.nc-input-group); Prospect Tracker Job URL uses Action R.",
+  "id": "C-16",
+  "checklist": [
+   "[x] Field: label, input, message stacked with 4px gaps -> var(--nc-space-1); measured 280x68 (92 with message) vs Figma 280x68 and 280x92",
+   "[x] Input 40px, radius @radius/lg, border @input/border, fill @input/bg; padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px) (was 7px 12px)",
+   "[x] Hover @input/hover; placeholder @text/placeholder; value Body/Default",
+   "[x] Error border @danger/border (was @danger/fg, same color); error text Body/Small @danger/fg",
+   "[x] Disabled: fill @action/disabled/bg, no border, @action/disabled/fg text, label and helper (was input background with a visible border)",
+   "[x] Focus ring 2px @focus/ring, 2px outside the edge, matches outline and offset",
+   "[x] Helper and error text 2px side inset -> var(--nc-space-0-5)",
+   "[x] Action R / Action L: new shared .nc-input-group with .nc-input-group__action (UI/Button, @link/default, @link/hover on hover, 12px from the edge, 8px gap; --nc-input-action-size reserves room). Prospect Tracker Job URL \"Open\" link moved from local CSS to it: now 16/16 instead of inherited size with a 24px line, and no hover background. Measured: 12px inset, 8.8px gap, vertically centered",
+   "[x] Icon R: new .nc-input-group__icon (16px, 12px from the edge, 8px gap, vertically centered; always last, with Action R moved 8px to its left when both show, per designer direction; @text/secondary, @action/disabled/fg when disabled). Decorative only (pointer-events: none); use an Action for anything clickable"
+  ],
+  "evidence": "design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser"
  },
  {
   "cat": "Components",
@@ -766,9 +785,16 @@
   "fref": "61:183",
   "cref": ".nc-field .nc-textarea",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-17"
+  "status": "synced",
+  "notes": "Shares the TextField fixes. Height now 98px in all states, matching Figma after H-11. Native resize handle kept instead of Figma's drawn handle.",
+  "id": "C-17",
+  "checklist": [
+   "[x] Same padding, border, radius, hover, error and disabled rules as TextField",
+   "[-] Native resize handle kept; Figma draws a custom 3-line handle in @border/control",
+   "[x] Pages that set their own textarea height (Resume Builder) are unaffected",
+   "[x] min-height 98 matches all Figma states (was 96; Figma Error state fixed to 98, H-11)"
+  ],
+  "evidence": "design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser"
  },
  {
   "cat": "Components",
@@ -937,7 +963,27 @@
   "fref": "92:9731",
   "cref": "-",
   "cls": "hygiene",
-  "status": "needs-figma-fix",
-  "notes": "Mobile variants disagree: Default has 4px side padding, radius full and right alignment; Hover has 4px and radius md; Selected has 6px and radius md (4px wider, so the label shifts on selection) and a secondary/fg label on a primary/bg fill. Pick one padding and radius for all three."
+  "status": "fixed-in-figma",
+  "notes": "Fixed by designer 2026-10-24: all mobile states use 6px side padding and radius/md (80x32). Code: every mobile and compact-menu state now uses calc(var(--nc-space-1-5) - 1px) side padding, so the item no longer changes width on hover or selection."
+ },
+ {
+  "id": "H-11",
+  "cat": "Figma hygiene",
+  "item": "TextArea input height",
+  "fref": "61:183",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by designer 2026-10-24: TextArea input is 98px in all five states. Code min-height updated from 96 to 98."
+ },
+ {
+  "id": "H-12",
+  "cat": "Figma hygiene",
+  "item": "TextField Icon R color",
+  "fref": "53:589",
+  "cref": "-",
+  "cls": "false-positive",
+  "status": "fixed-in-figma",
+  "notes": "False positive (designer confirmed 2026-10-24): Icon R is bound to text/secondary, and action/disabled/fg in the disabled state; the API could not read inside the icon instance. Order fix (icon after Action R) verified in all five variants. Code matches."
  }
 ]

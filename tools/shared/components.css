@@ -107,12 +107,12 @@
 
 /* Step Progress Indicator composes the existing Step Progress Item states. */
 .nc-step-progress {
-  display: flex; align-items: center; gap: 16px; width: 100%; padding: 0; margin: 0; list-style: none;
+  display: flex; align-items: center; gap: var(--nc-space-4); width: 100%; padding: 0; margin: 0; list-style: none;
 }
 .nc-step-progress__stage { display: flex; align-items: center; flex: 1 0 auto; min-width: 0; }
 .nc-step-progress__stage:last-child { flex: 0 1 auto; }
 .nc-step-progress__stage:not(:last-child)::after {
-  content: ''; height: 1px; min-width: 1px; flex: 1; margin-left: 16px; background: var(--nc-border-control);
+  content: ''; height: 1px; min-width: 1px; flex: 1; margin-left: var(--nc-space-4); background: var(--nc-border-control);
 }
 .nc-step-progress .nc-step { color: var(--nc-text-primary); }
 .nc-step-progress__stage > .nc-step { flex-shrink: 0; }
@@ -170,7 +170,7 @@
 /* Inputs — native controls; entered text stays primary in every enabled state. */
 .nc-field { display: block; min-width: 0; }
 .nc-field__label {
-  display: block; margin: 0 0 4px; padding-left: var(--nc-space-0-5); color: var(--nc-text-primary);
+  display: block; margin: 0 0 var(--nc-space-1); padding-left: var(--nc-space-0-5); color: var(--nc-text-primary);
   font-family: var(--nc-type-ui-label-family); font-size: var(--nc-type-ui-label-size);
   font-weight: var(--nc-type-ui-label-weight); line-height: var(--nc-type-ui-label-line-height);
   letter-spacing: var(--nc-type-letter-spacing); text-transform: none;
@@ -182,28 +182,64 @@
 }
 .nc-field__required { color: var(--nc-text-secondary); margin-left: var(--nc-space-0-5); }
 .nc-field__description { font-weight: var(--nc-type-body-default-weight); color: var(--nc-text-secondary); }
+/* Figma TextField (53:589) / TextArea (61:183): padding 8/12 from the outer edge with an inside stroke, so subtract the 1px border. */
 .nc-input, .nc-textarea, .nc-select {
   transition: background-color var(--nc-transition-general-sm), color var(--nc-transition-general-sm), border-color var(--nc-transition-general-sm);
   display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0;
-  border: 1px solid var(--nc-border-control); border-radius: var(--nc-radius-default);
-  background: var(--nc-input-bg); color: var(--nc-text-primary); padding: 7px 12px;
+  border: 1px solid var(--nc-input-border); border-radius: var(--nc-radius-lg);
+  background: var(--nc-input-bg); color: var(--nc-text-primary); padding: calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px);
   font-family: var(--nc-type-body-default-family); font-size: var(--nc-type-body-default-size);
   font-weight: var(--nc-type-body-default-weight); line-height: var(--nc-type-body-default-line-height);
   letter-spacing: var(--nc-type-letter-spacing);
 }
 .nc-input, .nc-select { height: 40px; }
-.nc-textarea { min-height: 96px; resize: vertical; }
+.nc-textarea { min-height: 98px; resize: vertical; }
 .nc-input::placeholder, .nc-textarea::placeholder { color: var(--nc-text-placeholder); opacity: 1; }
 .nc-input:hover:not(:disabled), .nc-textarea:hover:not(:disabled), .nc-select:hover:not(:disabled) { background: var(--nc-input-hover); }
 .nc-input:focus, .nc-textarea:focus, .nc-select:focus {
   background: var(--nc-input-bg); border-color: var(--nc-border-control);
   outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset);
 }
-.nc-input[aria-invalid="true"], .nc-textarea[aria-invalid="true"], .nc-select[aria-invalid="true"] { border-color: var(--nc-danger-fg); }
-.nc-input:disabled, .nc-textarea:disabled, .nc-select:disabled { color: var(--nc-action-disabled-fg); opacity: 1; }
+.nc-input[aria-invalid="true"], .nc-textarea[aria-invalid="true"], .nc-select[aria-invalid="true"] { border-color: var(--nc-danger-border); }
+.nc-input:disabled, .nc-textarea:disabled, .nc-select:disabled { background: var(--nc-action-disabled-bg); border-color: transparent; color: var(--nc-action-disabled-fg); opacity: 1; }
 .nc-field:has(:disabled) .nc-field__label, .nc-field:has(:disabled) .nc-field__description, .nc-field:has(:disabled) .nc-field__required, .nc-field:has(:disabled) .nc-field__helper { color: var(--nc-action-disabled-fg); }
+/* TextField Action L / Action R (Figma 53:589): a link inside the input, UI/Button in @link/default,
+   12px from the edge with an 8px gap to the value. --nc-input-action-size reserves room for the link text. */
+.nc-input-group { display: block; position: relative; --nc-input-action-size: 42px; } /* fits a short label such as "Open"; set it per field for longer text */
+.nc-input-group__action {
+  position: absolute; top: 50%; right: var(--nc-space-3); transform: translateY(-50%);
+  margin: 0; padding: 0; border: 0; background: none; color: var(--nc-link-default); text-decoration: none; cursor: pointer;
+  font-family: var(--nc-type-ui-button-family); font-size: var(--nc-type-ui-button-size);
+  font-weight: var(--nc-type-ui-button-weight); line-height: var(--nc-type-ui-button-line-height);
+  transition: color var(--nc-transition-general-sm);
+}
+.nc-input-group__action--start { left: var(--nc-space-3); right: auto; }
+.nc-input-group__action:hover { color: var(--nc-link-hover); background: none; }
+.nc-input-group__action:focus-visible { outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset); border-radius: var(--nc-radius-sm); }
+.nc-input-group:has(> .nc-input-group__action:not(.nc-input-group__action--start):not([hidden])) > .nc-input {
+  padding-right: calc(var(--nc-space-3) + var(--nc-input-action-size) + var(--nc-space-2) - 1px);
+}
+.nc-input-group:has(> .nc-input-group__action--start:not([hidden])) > .nc-input {
+  padding-left: calc(var(--nc-space-3) + var(--nc-input-action-size) + var(--nc-space-2) - 1px);
+}
+/* TextField Icon R (Figma 53:589): a decorative 16px icon at the end of the field, 12px from the edge, 8px gap.
+   It is always last: when Action R is also shown, the link sits to its left. Use an Action for anything clickable. */
+.nc-input-group__icon {
+  position: absolute; top: 50%; right: var(--nc-space-3); transform: translateY(-50%);
+  width: 16px; height: 16px; color: var(--nc-text-secondary); pointer-events: none;
+}
+.nc-input-group:has(> .nc-input:disabled) > .nc-input-group__icon { color: var(--nc-action-disabled-fg); }
+.nc-input-group:has(> .nc-input-group__icon) > .nc-input {
+  padding-right: calc(var(--nc-space-3) + 16px + var(--nc-space-2) - 1px);
+}
+.nc-input-group:has(> .nc-input-group__icon) > .nc-input-group__action:not(.nc-input-group__action--start) {
+  right: calc(var(--nc-space-3) + 16px + var(--nc-space-2));
+}
+.nc-input-group:has(> .nc-input-group__icon):has(> .nc-input-group__action:not(.nc-input-group__action--start):not([hidden])) > .nc-input {
+  padding-right: calc(var(--nc-space-3) + var(--nc-input-action-size) + var(--nc-space-2) + 16px + var(--nc-space-2) - 1px);
+}
 .nc-field__error, .nc-field__helper {
-  display: block; margin: 4px 0 0; padding: 0 2px; overflow-wrap: anywhere;
+  display: block; margin: var(--nc-space-1) 0 0; padding: 0 var(--nc-space-0-5); overflow-wrap: anywhere;
   font: var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family);
 }
 .nc-field__helper { color: var(--nc-text-muted); }

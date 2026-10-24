@@ -29,7 +29,7 @@ for (const theme of ['dark', 'light']) {
     await target.screenshot({ path: `${out}/${name}-${theme}.png`, omitBackground: false });
     metrics[`${name}-${theme}`] = await target.evaluate(n => {
       const c = getComputedStyle(n), r = n.getBoundingClientRect();
-      const kids = [...n.children].map(k => { const kc = getComputedStyle(k), kr = k.getBoundingClientRect(); return { cls: k.className, x: Math.round(kr.left - r.left), w: +kr.width.toFixed(1), h: +kr.height.toFixed(1), color: kc.color, font: kc.fontWeight + ' ' + kc.fontSize + '/' + kc.lineHeight }; });
+      const kids = [...n.children].map(k => { const kc = getComputedStyle(k), kr = k.getBoundingClientRect(); return { cls: String(k.className && k.className.baseVal !== undefined ? k.className.baseVal : k.className), x: Math.round(kr.left - r.left), y: Math.round(kr.top - r.top), w: +kr.width.toFixed(1), h: +kr.height.toFixed(1), color: kc.color, bg: kc.backgroundColor, border: kc.borderTopWidth + ' ' + kc.borderTopColor, padding: kc.padding, radius: kc.borderRadius, font: kc.fontWeight + ' ' + kc.fontSize + '/' + kc.lineHeight }; });
       return { w: +r.width.toFixed(1), h: +r.height.toFixed(1), padding: c.padding, gap: c.gap, radius: c.borderRadius, bg: c.backgroundColor, color: c.color, border: c.borderWidth + ' ' + c.borderColor + ' ' + c.borderTopColor, font: c.fontWeight + ' ' + c.fontSize + '/' + c.lineHeight + ' ' + c.fontFamily.split(',')[0], kids };
     });
   }
