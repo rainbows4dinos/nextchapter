@@ -15,7 +15,7 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 13 | 11 |
+| Components | 24 | 24 | 16 | 8 |
 | Figma hygiene | - | 12 | 0 | 0 |
 
 ## Log
@@ -37,8 +37,10 @@
 - 2026-10-24: Designer fixed TextField content order (Icon R after Action R in all five variants, verified). Icon R color could not be verified through the API. H-10 (mobile nav padding) and H-11 (TextArea 98 vs 96) re-checked: unchanged, still open.
 - 2026-10-24: Designer fixed H-11 (TextArea 98px in all states; code min-height 96 -> 98) and partly H-10 (mobile nav radius/md in all states; code mobile default radius set to md, padding tokenized). Selected mobile padding 6 vs 4 still open pending designer confirmation. components.css and navigation.css cache revisions 20261024-figma-fixes.
 - 2026-10-24: Designer fixed H-10 (mobile nav items 6px padding and radius/md in all states); code follows for mobile and the compact account menu. H-12 closed as a false positive: Icon R is bound to text/secondary (action/disabled/fg when disabled), which the API could not read inside the instance. navigation.css cache revision 20261024-nav-mobile.
+- 2026-10-24: Component sync batch 5 (C-18 Select, C-19 Checkbox, C-20 Radio): Select chevron positioned and padded like TextField Icon R; new .nc-choice label composite for Checkbox and Radio (gap 8/6, Input Label type, disabled label color). Controls already matched. components.css cache revision 20261024-batch-5. Open question: Prospect Tracker date filter radio labels. Evidence in design-sync/evidence/batch-5.*.
+- 2026-10-24: Prospect Tracker date filter range radios switched to the shared Radio Sm label (.nc-choice--sm); local font-size and gap removed from .board-date-option. Cache revisions: date-filter.js, ui.js, app.js, bootstrap.js and styles.css 20261024-radio-label. Tests 190/191 (pre-existing failure), lint clean.
 
-Status totals: fixed-in-figma 12, pending 11, synced 65
+Status totals: fixed-in-figma 12, pending 8, synced 68
 
 ## Rows
 
@@ -113,9 +115,9 @@ Status totals: fixed-in-figma 12, pending 11, synced 65
 | C-15 | Components | Step Progress Indicator | 102:11781 | `.nc-step-progress` | match | synced | Already matched (16px gaps, 1px @border/control connectors, Lg and Sm widths 719 and 300); spacing now uses tokens. |
 | C-16 | Components | TextField | 53:589 | `.nc-field .nc-input` | structure-drift | synced | Side padding 1px too wide fixed; disabled gets the gray fill and no border; error border @danger/border; Action L/R and Icon R now shared (.nc-input-group); Prospect Tracker Job URL uses Action R. |
 | C-17 | Components | TextArea | 61:183 | `.nc-field .nc-textarea` | structure-drift | synced | Shares the TextField fixes. Height now 98px in all states, matching Figma after H-11. Native resize handle kept instead of Figma's drawn handle. |
-| C-18 | Components | Select | 92:9223 | `.nc-select-wrap .nc-select` | structure-drift | pending |  |
-| C-19 | Components | Checkbox | 165:590 | `.nc-checkbox` | structure-drift | pending | implemented Oct 20 per docs |
-| C-20 | Components | Radio | 165:618 | `.nc-radio` | structure-drift | pending | implemented Oct 20 per docs |
+| C-18 | Components | Select | 92:9223 | `.nc-select-wrap .nc-select` | structure-drift | synced | Shares the TextField fixes. Chevron is now positioned like TextField Icon R (12px inset, centered, 8px gap); right padding corrected for the border (36 -> 35px). |
+| C-19 | Components | Checkbox | 165:590 | `.nc-checkbox` | structure-drift | synced | Control already matched (20/16px, check 14/12px, all state colors). Added .nc-choice, the Figma Checkbox/Radio label composite: 8px gap (6px Sm), Input Label type, disabled label @control/disabled-fg. |
+| C-20 | Components | Radio | 165:618 | `.nc-radio` | structure-drift | synced | Control already matched; uses the new .nc-choice label. Prospect Tracker date filter radios switched to it (12px medium, 6px gap). |
 | C-21 | Components | Alert | 53:638 | `.nc-alert` | structure-drift | pending |  |
 | C-22 | Components | Toast | 125:11817 | `.nc-toast` | structure-drift | pending |  |
 | C-23 | Components | Prospect Card | 216:20442 | `.prospect-card` | structure-drift | pending | Figma nests Company Avatar; no avatar in code |
@@ -267,3 +269,31 @@ Evidence: design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Buil
 - [x] min-height 98 matches all Figma states (was 96; Figma Error state fixed to 98, H-11)
 
 Evidence: design-sync/evidence/batch-4.png and batch-4-metrics.json; Resume Builder form fields checked in the browser
+
+### C-18 Select
+
+- [x] Field, input, hover, error and disabled rules shared with TextField (batch 4)
+- [x] Chevron: 16px, right var(--nc-space-3), vertically centered; padding-right calc(var(--nc-space-3) + 16px + var(--nc-space-2) - 1px) (was 36px). Measured 12px inset, 8px gap, centered
+- [x] Chevron @text/secondary, @action/disabled/fg when disabled
+- [x] Placeholder option uses @text/placeholder
+- [-] Icon L slot not implemented; no current consumer
+
+Evidence: design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser
+
+### C-19 Checkbox
+
+- [x] Control 20x20 (Sm 16x16), radius sm, @control/* bindings for default, hover, selected, indeterminate, disabled match
+- [x] Check 14px (Sm 12px); indeterminate bar matches the Figma minus glyph
+- [x] New .nc-choice / .nc-choice__label / .nc-choice--sm: control then Input Label, gap 8 (Sm 6), UI/Label (Sm UI/Label Sm), label inset 2px; measured label at x28 (Sm x22) and control at y2, matching Figma
+- [x] Disabled label @control/disabled-fg (Figma binding)
+- [x] Career profile review checkbox already follows the Lg pattern locally (multi-line, top aligned); left as is
+
+Evidence: design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser
+
+### C-20 Radio
+
+- [x] Control 20x20 (Sm 16x16), radius full, dot 8px (Sm 6px), @control/* bindings match
+- [x] Label via .nc-choice (same as Checkbox); measured 97x24 vs Figma 98x24
+- [x] Prospect Tracker date filter range options now use .nc-choice--sm (user decision 2026-10-24): label 12/20 500 with a 6px gap (was 14px/400, 8px); row hit area and selected highlight kept locally. Verified with the tracker stylesheet in the browser: 274x32 rows, label at 22px, 12/20 500
+
+Evidence: design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser

@@ -66,5 +66,13 @@
  {
   "date": "2026-10-24",
   "entry": "Designer fixed H-10 (mobile nav items 6px padding and radius/md in all states); code follows for mobile and the compact account menu. H-12 closed as a false positive: Icon R is bound to text/secondary (action/disabled/fg when disabled), which the API could not read inside the instance. navigation.css cache revision 20261024-nav-mobile."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 5 (C-18 Select, C-19 Checkbox, C-20 Radio): Select chevron positioned and padded like TextField Icon R; new .nc-choice label composite for Checkbox and Radio (gap 8/6, Input Label type, disabled label color). Controls already matched. components.css cache revision 20261024-batch-5. Open question: Prospect Tracker date filter radio labels. Evidence in design-sync/evidence/batch-5.*."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Prospect Tracker date filter range radios switched to the shared Radio Sm label (.nc-choice--sm); local font-size and gap removed from .board-date-option. Cache revisions: date-filter.js, ui.js, app.js, bootstrap.js and styles.css 20261024-radio-label. Tests 190/191 (pre-existing failure), lint clean."
  }
 ]

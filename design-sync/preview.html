@@ -109,16 +109,29 @@
     <h2>C-17 TextArea (61:183)</h2>
     <div class="pv-row"><span class="pv-cell" data-shot="textarea-placeholder"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><textarea class="nc-textarea" placeholder="Value"></textarea></div></span><span class="pv-cell" data-shot="textarea-filled"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><textarea class="nc-textarea" placeholder="Value">Value</textarea></div></span><span class="pv-cell" data-shot="textarea-error"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><textarea class="nc-textarea" placeholder="Value" aria-invalid="true" aria-describedby="e">Value</textarea><span class="nc-field__error" id="e">Error text</span></div></span></div>
   </section>
+  <section id="select">
+    <h2>C-18 Select (92:9223)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="select-placeholder"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><span class="nc-select-wrap"><select class="nc-select"><option value="" selected>Value</option><option value="a">Value</option></select><span data-icon="chevron-down" data-size="16"></span></span></div></span><span class="pv-cell" data-shot="select-filled"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><span class="nc-select-wrap"><select class="nc-select"><option value="">Value</option><option value="a" selected>Value</option></select><span data-icon="chevron-down" data-size="16"></span></span></div></span><span class="pv-cell" data-shot="select-disabled"><div class="nc-field" style="width:280px"><label class="nc-field__label">Label</label><span class="nc-select-wrap"><select class="nc-select" disabled><option value="">Value</option><option value="a" selected>Value</option></select><span data-icon="chevron-down" data-size="16"></span></span></div></span></div>
+  </section>
+  <section id="checkbox">
+    <h2>C-19 Checkbox (165:590)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="checkbox-lg-default"><label class="nc-choice"><input type="checkbox" class="nc-checkbox"><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-lg-selected"><label class="nc-choice"><input type="checkbox" class="nc-checkbox" checked><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-lg-indeterminate"><label class="nc-choice"><input type="checkbox" class="nc-checkbox" data-indeterminate><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-lg-disabled"><label class="nc-choice"><input type="checkbox" class="nc-checkbox" disabled><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-lg-selected-disabled"><label class="nc-choice"><input type="checkbox" class="nc-checkbox" checked disabled><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-lg-indeterminate-disabled"><label class="nc-choice"><input type="checkbox" class="nc-checkbox" data-indeterminate disabled><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-sm-default"><label class="nc-choice nc-choice--sm"><input type="checkbox" class="nc-checkbox nc-checkbox--sm"><span class="nc-choice__label">Remote only</span></label></span><span class="pv-cell" data-shot="checkbox-sm-selected"><label class="nc-choice nc-choice--sm"><input type="checkbox" class="nc-checkbox nc-checkbox--sm" checked><span class="nc-choice__label">Remote only</span></label></span></div>
+  </section>
+  <section id="radio">
+    <h2>C-20 Radio (165:618)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="radio-lg-default"><label class="nc-choice"><input type="radio" class="nc-radio"><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-selected"><label class="nc-choice"><input type="radio" class="nc-radio" checked><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-disabled"><label class="nc-choice"><input type="radio" class="nc-radio" disabled><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-selected-disabled"><label class="nc-choice"><input type="radio" class="nc-radio" checked disabled><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-sm-default"><label class="nc-choice nc-choice--sm"><input type="radio" class="nc-radio nc-radio--sm"><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-sm-selected"><label class="nc-choice nc-choice--sm"><input type="radio" class="nc-radio nc-radio--sm" checked><span class="nc-choice__label">Full-time</span></label></span></div>
+  </section>
 </main>
 <script type="module">
   import { gravityIcon } from '../tools/shared/icons.mjs';
   for (const el of document.querySelectorAll('[data-icon]')) {
     const icon = gravityIcon(el.dataset.icon, { size: Number(el.dataset.size || 20) });
     if (el.dataset.class) icon.classList.add(el.dataset.class);
-    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group')) el.replaceWith(icon); else el.append(icon);
+    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group, .nc-select-wrap')) el.replaceWith(icon); else el.append(icon);
   }
 </script>
 <script>
+  for (const el of document.querySelectorAll('[data-indeterminate]')) el.indeterminate = true;
   if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('light');
 </script>
 </body>

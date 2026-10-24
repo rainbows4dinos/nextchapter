@@ -47,23 +47,25 @@ export function createDateFilter(filter, onChange, signal) {
   start.value = draft.start; end.value = draft.end;
   const feedback = document.createElement('p'); feedback.id = 'board-date-feedback'; feedback.className = 'board-date-feedback';
   feedback.setAttribute('role', 'status');
-  /** @param {string} title @param {string} name @param {readonly [string,string][]} values @param {(value:string)=>void} select */
-  function group(title, name, values, select) {
+  /** @param {string} title @param {string} name @param {readonly [string,string][]} values @param {(value:string)=>void} select @param {boolean} [choice] shared Radio Sm label (Figma 165:618) */
+  function group(title, name, values, select, choice = true) {
     const fieldset = document.createElement('fieldset'); const legend = document.createElement('legend'); legend.textContent = title;
     const options = document.createElement('div'); options.className = 'board-date-options';
     fieldset.append(legend, options);
     for (const [value, text] of values) {
-      const option = document.createElement('label'); option.className = 'board-date-option';
+      const option = document.createElement('label'); option.className = choice ? 'board-date-option nc-choice nc-choice--sm' : 'board-date-option';
       const input = document.createElement('input'); input.type = 'radio'; input.className = 'nc-radio nc-radio--sm'; input.name = name; input.value = value;
       input.addEventListener('change', () => { if (input.checked) select(value); }, { signal });
-      choices.push(input); option.append(input, text); options.append(option);
+      let label = /** @type {Node} */ (document.createTextNode(text));
+      if (choice) { const span = document.createElement('span'); span.className = 'nc-choice__label'; span.textContent = text; label = span; }
+      choices.push(input); option.append(input, label); options.append(option);
     }
     return fieldset;
   }
   const typeGroup = group('Date type', 'board-date-basis', [['added','Added'],['applied','Applied']], value => {
     draft.basis = filter.basis = /** @type {import('./board-dates.js').DateFilter['basis']} */ (value);
     refresh(); onChange();
-  });
+  }, false);
   typeGroup.className = 'board-date-type';
   typeGroup.querySelector('legend')?.classList.add('nc-visually-hidden');
   typeGroup.querySelector('.board-date-options')?.classList.add('nc-pill-tabs');

@@ -802,9 +802,17 @@
   "fref": "92:9223",
   "cref": ".nc-select-wrap .nc-select",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-18"
+  "status": "synced",
+  "notes": "Shares the TextField fixes. Chevron is now positioned like TextField Icon R (12px inset, centered, 8px gap); right padding corrected for the border (36 -> 35px).",
+  "id": "C-18",
+  "checklist": [
+   "[x] Field, input, hover, error and disabled rules shared with TextField (batch 4)",
+   "[x] Chevron: 16px, right var(--nc-space-3), vertically centered; padding-right calc(var(--nc-space-3) + 16px + var(--nc-space-2) - 1px) (was 36px). Measured 12px inset, 8px gap, centered",
+   "[x] Chevron @text/secondary, @action/disabled/fg when disabled",
+   "[x] Placeholder option uses @text/placeholder",
+   "[-] Icon L slot not implemented; no current consumer"
+  ],
+  "evidence": "design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser"
  },
  {
   "cat": "Components",
@@ -812,9 +820,17 @@
   "fref": "165:590",
   "cref": ".nc-checkbox",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "implemented Oct 20 per docs",
-  "id": "C-19"
+  "status": "synced",
+  "notes": "Control already matched (20/16px, check 14/12px, all state colors). Added .nc-choice, the Figma Checkbox/Radio label composite: 8px gap (6px Sm), Input Label type, disabled label @control/disabled-fg.",
+  "id": "C-19",
+  "checklist": [
+   "[x] Control 20x20 (Sm 16x16), radius sm, @control/* bindings for default, hover, selected, indeterminate, disabled match",
+   "[x] Check 14px (Sm 12px); indeterminate bar matches the Figma minus glyph",
+   "[x] New .nc-choice / .nc-choice__label / .nc-choice--sm: control then Input Label, gap 8 (Sm 6), UI/Label (Sm UI/Label Sm), label inset 2px; measured label at x28 (Sm x22) and control at y2, matching Figma",
+   "[x] Disabled label @control/disabled-fg (Figma binding)",
+   "[x] Career profile review checkbox already follows the Lg pattern locally (multi-line, top aligned); left as is"
+  ],
+  "evidence": "design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser"
  },
  {
   "cat": "Components",
@@ -822,9 +838,15 @@
   "fref": "165:618",
   "cref": ".nc-radio",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "implemented Oct 20 per docs",
-  "id": "C-20"
+  "status": "synced",
+  "notes": "Control already matched; uses the new .nc-choice label. Prospect Tracker date filter radios switched to it (12px medium, 6px gap).",
+  "id": "C-20",
+  "checklist": [
+   "[x] Control 20x20 (Sm 16x16), radius full, dot 8px (Sm 6px), @control/* bindings match",
+   "[x] Label via .nc-choice (same as Checkbox); measured 97x24 vs Figma 98x24",
+   "[x] Prospect Tracker date filter range options now use .nc-choice--sm (user decision 2026-10-24): label 12/20 500 with a 6px gap (was 14px/400, 8px); row hit area and selected highlight kept locally. Verified with the tracker stylesheet in the browser: 274x32 rows, label at 22px, 12/20 500"
+  ],
+  "evidence": "design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser"
  },
  {
   "cat": "Components",

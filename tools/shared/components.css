@@ -245,9 +245,10 @@
 .nc-field__helper { color: var(--nc-text-muted); }
 .nc-field__error { color: var(--nc-danger-fg); }
 .nc-select-wrap { display: block; position: relative; }
-.nc-select { appearance: none; padding-right: 36px; }
+/* Figma Select (92:9223): chevron is a 16px Icon R, 12px from the edge with an 8px gap, as in TextField. */
+.nc-select { appearance: none; padding-right: calc(var(--nc-space-3) + 16px + var(--nc-space-2) - 1px); }
 .nc-select:has(option[value=""]:checked):not(:disabled) { color:var(--nc-text-placeholder) }
-.nc-select-wrap > .gravity-icon { position: absolute; right: 12px; top: 12px; color: var(--nc-text-secondary); pointer-events: none; }
+.nc-select-wrap > .gravity-icon { position: absolute; right: var(--nc-space-3); top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--nc-text-secondary); pointer-events: none; }
 .nc-select-wrap:has(:disabled) > .gravity-icon { color: var(--nc-action-disabled-fg); }
 @media (forced-colors: active) { .nc-select { appearance: auto; } .nc-select-wrap > .gravity-icon { display: none; } }
 
@@ -275,6 +276,21 @@
 .nc-checkbox:disabled::after, .nc-radio:disabled::after { background: var(--nc-control-disabled-fg); }
 .nc-checkbox:focus-visible, .nc-radio:focus-visible { outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset); }
 @media (forced-colors: active) { .nc-checkbox, .nc-radio { appearance: auto; } .nc-checkbox::after, .nc-radio::after { display: none; } }
+/* Figma Checkbox (165:590) / Radio (165:618) with their label: control, 8px gap (6px Sm), Input Label.
+   <label class="nc-choice"><input type="checkbox" class="nc-checkbox"><span class="nc-choice__label">Remote only</span></label> */
+.nc-choice {
+  display: inline-flex; align-items: center; gap: var(--nc-space-2); margin: 0; cursor: pointer; color: var(--nc-text-primary);
+  font-family: var(--nc-type-ui-label-family); font-size: var(--nc-type-ui-label-size);
+  font-weight: var(--nc-type-ui-label-weight); line-height: var(--nc-type-ui-label-line-height);
+  letter-spacing: var(--nc-type-letter-spacing); text-transform: none;
+}
+.nc-choice__label { padding-left: var(--nc-space-0-5); }
+.nc-choice--sm {
+  gap: var(--nc-space-1-5);
+  font-family: var(--nc-type-ui-label-sm-family); font-size: var(--nc-type-ui-label-sm-size);
+  font-weight: var(--nc-type-ui-label-sm-weight); line-height: var(--nc-type-ui-label-sm-line-height);
+}
+.nc-choice:has(> :disabled) { color: var(--nc-control-disabled-fg); cursor: not-allowed; }
 
 /* Alerts and Toasts share semantic vocabulary, but have distinct surfaces. */
 .nc-alert, .nc-toast {

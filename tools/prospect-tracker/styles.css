@@ -171,7 +171,8 @@ time { display:block; font-size:13px; color:var(--muted) }
 .board-date-popover::backdrop { background:transparent }
 .board-date-popover fieldset + fieldset { border-top:1px solid var(--border-subtle); padding-top:var(--nc-space-2); margin-top:var(--nc-space-2) }
 .board-date-popover legend { color:var(--muted); text-transform:none; font-size:var(--nc-type-body-small-size); font-weight:500; margin-bottom:var(--nc-space-1) }
-.board-date-option { display:flex; align-items:center; gap:8px; min-height:32px; padding:4px 8px; margin:0; border-radius:var(--nc-radius-default); cursor:pointer; font-size:14px }
+/* Range options use the shared Radio Sm label (.nc-choice--sm); this keeps only the row's hit area and highlight. */
+.board-date-option { display:flex; align-items:center; min-height:32px; padding:4px 8px; margin:0; border-radius:var(--nc-radius-default); cursor:pointer }
 .board-date-option:hover { background:var(--nc-selection-bg) }
 .board-date-option:has(:checked) { background:var(--nc-selection-bg) }
 .board-date-option input { flex:none }
