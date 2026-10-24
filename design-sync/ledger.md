@@ -15,8 +15,8 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 7 | 17 |
-| Figma hygiene | - | 9 | 0 | 0 |
+| Components | 24 | 24 | 10 | 14 |
+| Figma hygiene | - | 10 | 0 | 1 |
 
 ## Log
 
@@ -29,8 +29,9 @@
 - 2026-10-24: Component sync batch 2 (C-05 Pill Tab Item, C-14 Pill-Tabs, C-06 Step Progress Item, C-07 Chip): pill tabs gain .nc-pill-tabs--lg; step items default to Figma Lg with .nc-step--sm and Sm below 600px in the indicator; chip padding corrected for Figma inside strokes. Pill-Tabs (C-14) done early since its Lg size lives on the group. New Figma item H-09. components.css cache revision 20261024-batch-2. Evidence in design-sync/evidence/batch-2.*; Resume Builder step bar checked in the browser at 385px and 1280px.
 - 2026-10-24: Designer set Pill Tab Item Lg to 34px (closes H-09). Code now derives pill tab height from a --nc-pill-tabs-height group variable (28px Sm, 40px Lg) so the group height is the single spec; verified 28/22 and 40/34 at 1280px.
 - 2026-10-24: Designer excluded the Pill-Tabs border from layout; tab items are now 24px (Sm) and 36px (Lg) inside 28/40px groups. Code follows: group padding is 2px minus the 1px border, tabs are group height minus 4px, and tab labels no longer wrap (user request). Verified Sm 28/24 and Lg 40/36 in the browser, including at 385px. components.css cache revision 20261024-pill-tabs; batch-2 evidence re-captured.
+- 2026-10-24: Component sync batch 3 (C-08 Button, C-09 Switch-Mode, C-10 MainNavItem): buttons now 40/28px (were 42/30) with side padding minus the border, new .nc-button--icon-only; Switch-Mode already matched; nav item padding tokenized. components.css and navigation.css cache revisions 20261024-batch-3. New Figma item H-10. Evidence in design-sync/evidence/batch-3.*; Resume Builder checked at 1280px.
 
-Status totals: fixed-in-figma 9, pending 17, synced 59
+Status totals: fixed-in-figma 9, needs-figma-fix 1, pending 14, synced 62
 
 ## Rows
 
@@ -95,9 +96,9 @@ Status totals: fixed-in-figma 9, pending 17, synced 59
 | C-05 | Components | Pill Tab Item | 92:5012 | `.nc-pill-tab` | structure-drift | synced | Padding and gap use spacing tokens; tabs are group height minus 4px (Sm 24, Lg 36) and stay on one line. Lg via .nc-pill-tabs--lg. |
 | C-06 | Components | Step Progress Item | 77:137 | `.nc-step` | structure-drift | synced | Lg is now the default (UI/Button labels); .nc-step--sm added (UI/Button Sm, only the active label shown). The indicator switches to Sm below 600px. Resume Builder desktop step labels go from 12px to 16px. |
 | C-07 | Components | Chip | 62:285 | `.nc-chip` | structure-drift | synced | Padding now subtracts the 1px border (Figma measures padding from the outer edge with an inside stroke). Sm width 70 -> 68, Lg horizontal padding 12 -> 16. |
-| C-08 | Components | Button | 53:220 | `.nc-button` | structure-drift | pending | Figma has Icon Only variant; code has no icon-only modifier |
-| C-09 | Components | Switch-Mode | 81:397 | `.theme-toggle` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
-| C-10 | Components | MainNavItem | 92:9731 | `.nextchapter-nav-item` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
+| C-08 | Components | Button | 53:220 | `.nc-button` | structure-drift | synced | Buttons were 2px too tall and wide (42/30px); now fixed 40/28px with no vertical padding and side padding minus the border. Added .nc-button--icon-only (40x40, 28x28). |
+| C-09 | Components | Switch-Mode | 81:397 | `.theme-toggle` | match | synced | No structural drift: 48x28 track, 20px thumb at 4px and 24px, 12px sun and moon at 6px and 30px, colors per theme all match. |
+| C-10 | Components | MainNavItem | 92:9731 | `.nextchapter-nav-item` | structure-drift | synced | Desktop item already matched (92x32); padding now uses spacing tokens. Mobile variants follow Figma, including its 4px-wider selected item (see H-10). |
 | C-11 | Components | Company Avatar | 206:18776 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. Needed by Prospect Card (C-23). |
 | C-12 | Components | Avatar | 205:679 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
 | C-13 | Components | Paddle Button | 216:20314 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
@@ -121,6 +122,7 @@ Status totals: fixed-in-figma 9, pending 17, synced 59
 | H-07 | Figma hygiene | Input Label | 168:610 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: gap 2 -> spacing/0_5 on both sizes. Values unchanged, binding only. |
 | H-08 | Figma hygiene | Serif text styles weight binding | Type/Display, Type/Heading/H1-H4 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: renamed font-weight/normal (300) to font-weight/light, added font-weight/normal (400), rebound the 5 serif styles to it. |
 | H-09 | Figma hygiene | Pill Tab Item Lg height | 92:5012 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: Pill Tab Item Lg is now 34px, matching its use in Pill-Tabs Lg. The spec that matters is the 40px group height. |
+| H-10 | Figma hygiene | MainNavItem mobile variants | 92:9731 | `-` | hygiene | needs-figma-fix | Mobile variants disagree: Default has 4px side padding, radius full and right alignment; Hover has 4px and radius md; Selected has 6px and radius md (4px wider, so the label shifts on selection) and a secondary/fg label on a primary/bg fill. Pick one padding and radius for all three. |
 
 ## Component checklists
 
@@ -184,6 +186,36 @@ Evidence: design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Buil
 - [-] Gap kept at 6/8px: chips have a single child, so it has no effect
 
 Evidence: design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px
+
+### C-08 Button
+
+- [x] Lg: min-height 40, padding 0 calc(var(--nc-space-3) - 1px), gap var(--nc-space-2); was padding 12px 12px (rendered 42px tall). Measured 121.7x40 vs Figma 123x40 (label width), icon at 12px matches
+- [x] Sm: min-height 28, padding 0 calc(var(--nc-space-2) - 1px), gap 6; was padding 8px (rendered 30px). Measured 89.3x28 vs Figma 91x28, icon at 8px matches
+- [x] Icon Only: new .nc-button--icon-only, 40x40 and 28x28, icon centered (aria-label required)
+- [x] Primary, Secondary, Tertiary: default, hover, pressed and disabled bindings match Figma (Tertiary hover/pressed use secondary tokens in both)
+- [x] Icons 16px (Lg) and 12px (Sm) match
+- [x] Browser: Resume Builder primary button now 40px tall at 1280px; local overrides (board-date-trigger, board-search-clear) keep their own padding
+
+Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px
+
+### C-09 Switch-Mode
+
+- [x] Track 48x28, radius full, 1px border; Light @action/primary, Dark @action/secondary bg and border
+- [x] Thumb 20px at x4 (light) and x24 (dark) from the outer edge; fill @action/primary/fg or @action/secondary/fg
+- [x] Moon at x30 (light, @action/secondary/fg) and sun at x6 (dark, @action/primary/fg), 12px
+- [x] No edits needed
+
+Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px
+
+### C-10 MainNavItem
+
+- [x] Default size: padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 91.9x32 vs Figma 92x32
+- [x] Hover stroke @action/primary/border; Selected fill @action/primary/bg with @action/primary/fg label
+- [x] UI/Button label, radius full
+- [-] Mobile: code mirrors Figma (4px side inset, 6px when selected, radius md on hover and selected); Figma inconsistency logged as H-10
+- [x] Browser: all header nav items 32px tall at 1280px
+
+Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px
 
 ### C-14 Pill-Tabs
 

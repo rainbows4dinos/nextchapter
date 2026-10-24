@@ -34,5 +34,9 @@
  {
   "date": "2026-10-24",
   "entry": "Designer excluded the Pill-Tabs border from layout; tab items are now 24px (Sm) and 36px (Lg) inside 28/40px groups. Code follows: group padding is 2px minus the 1px border, tabs are group height minus 4px, and tab labels no longer wrap (user request). Verified Sm 28/24 and Lg 40/36 in the browser, including at 385px. components.css cache revision 20261024-pill-tabs; batch-2 evidence re-captured."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 3 (C-08 Button, C-09 Switch-Mode, C-10 MainNavItem): buttons now 40/28px (were 42/30) with side padding minus the border, new .nc-button--icon-only; Switch-Mode already matched; nav item padding tokenized. components.css and navigation.css cache revisions 20261024-batch-3. New Figma item H-10. Evidence in design-sync/evidence/batch-3.*; Resume Builder checked at 1280px."
  }
 ]

@@ -11,12 +11,14 @@
 <link rel="stylesheet" href="../tools/shared/tokens.css">
 <link rel="stylesheet" href="../tools/shared/icons.css">
 <link rel="stylesheet" href="../tools/shared/components.css">
+<link rel="stylesheet" href="../tools/shared/navigation.css">
 <style>
   body { margin: 0; background: var(--nc-background-page); color: var(--nc-text-primary); font-family: var(--nc-font-sans); }
   .pv { padding: 32px; display: grid; gap: 32px; }
   .pv h2 { margin: 0 0 12px; font: var(--nc-type-ui-label-sm-weight) var(--nc-type-ui-label-sm-size)/var(--nc-type-ui-label-sm-line-height) var(--nc-font-mono); color: var(--nc-text-muted); }
   .pv-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
   .pv-cell { display: inline-flex; padding: 8px; background: var(--nc-surface-default); }
+  .nextchapter-header .pv-cell { background: var(--nc-action-secondary-bg); }
 </style>
 </head>
 <body>
@@ -72,10 +74,37 @@
       <span class="pv-cell" data-shot="chip-lg-selected"><button type="button" class="nc-chip nc-chip--lg" aria-pressed="true">Remote</button></span>
     </div>
   </section>
+  <section id="button">
+    <h2>C-08 Button (53:220)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="button-lg-primary"><button type="button" class="nc-button nc-button--primary nc-button--lg"><span data-icon="heart" data-size="16"></span>Button<span data-icon="heart" data-size="16"></span></button></span>
+      <span class="pv-cell" data-shot="button-lg-secondary"><button type="button" class="nc-button nc-button--secondary nc-button--lg"><span data-icon="heart" data-size="16"></span>Button<span data-icon="heart" data-size="16"></span></button></span>
+      <span class="pv-cell" data-shot="button-lg-tertiary"><button type="button" class="nc-button nc-button--tertiary nc-button--lg"><span data-icon="heart" data-size="16"></span>Button<span data-icon="heart" data-size="16"></span></button></span>
+      <span class="pv-cell" data-shot="button-lg-disabled"><button type="button" class="nc-button nc-button--primary nc-button--lg" disabled><span data-icon="heart" data-size="16"></span>Button<span data-icon="heart" data-size="16"></span></button></span>
+      <span class="pv-cell" data-shot="button-lg-icon-only"><button type="button" class="nc-button nc-button--primary nc-button--lg nc-button--icon-only" aria-label="Like"><span data-icon="heart" data-size="16"></span></button></span>
+      <span class="pv-cell" data-shot="button-sm-primary"><button type="button" class="nc-button nc-button--primary nc-button--sm"><span data-icon="heart" data-size="12"></span>Button<span data-icon="heart" data-size="12"></span></button></span>
+      <span class="pv-cell" data-shot="button-sm-secondary"><button type="button" class="nc-button nc-button--secondary nc-button--sm"><span data-icon="heart" data-size="12"></span>Button<span data-icon="heart" data-size="12"></span></button></span>
+      <span class="pv-cell" data-shot="button-sm-tertiary"><button type="button" class="nc-button nc-button--tertiary nc-button--sm"><span data-icon="heart" data-size="12"></span>Button<span data-icon="heart" data-size="12"></span></button></span>
+      <span class="pv-cell" data-shot="button-sm-disabled"><button type="button" class="nc-button nc-button--primary nc-button--sm" disabled><span data-icon="heart" data-size="12"></span>Button<span data-icon="heart" data-size="12"></span></button></span>
+      <span class="pv-cell" data-shot="button-sm-icon-only"><button type="button" class="nc-button nc-button--primary nc-button--sm nc-button--icon-only" aria-label="Like"><span data-icon="heart" data-size="12"></span></button></span>
+    </div>
+  </section>
+  <section id="nav">
+    <h2>C-09 Switch-Mode (81:397) and C-10 MainNavItem (92:9731), inside .nextchapter-header</h2>
+    <div class="pv-row nextchapter-header" style="margin:0;border:0;padding:8px">
+      <span class="pv-cell" data-shot="nav-default"><a class="nextchapter-nav-item" href="#">Nav Item</a></span>
+      <span class="pv-cell" data-shot="nav-selected"><a class="nextchapter-nav-item" href="#" aria-current="page">Nav Item</a></span>
+      <span class="pv-cell" data-shot="switch"><button type="button" class="theme-toggle" aria-label="Theme"><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span><span data-icon="sun" data-size="12" data-class="toggle-icon-sun"></span><span data-icon="moon" data-size="12" data-class="toggle-icon-moon"></span></span></button></span>
+    </div>
+  </section>
 </main>
 <script type="module">
   import { gravityIcon } from '../tools/shared/icons.mjs';
-  for (const el of document.querySelectorAll('[data-icon]')) el.append(gravityIcon(el.dataset.icon, { size: 20 }));
+  for (const el of document.querySelectorAll('[data-icon]')) {
+    const icon = gravityIcon(el.dataset.icon, { size: Number(el.dataset.size || 20) });
+    if (el.dataset.class) icon.classList.add(el.dataset.class);
+    if (el.parentElement.matches('.nc-button, .toggle-track')) el.replaceWith(icon); else el.append(icon);
+  }
 </script>
 <script>
   if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('light');
