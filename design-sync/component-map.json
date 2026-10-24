@@ -1,0 +1,467 @@
+{
+  "figmaFileKey": "hLBR7Nl3GelwM9hstQb3Ah",
+  "note": "Vanilla CSS: 'code.selector' is the BEM block; props map Figma properties to modifier classes or native states.",
+  "components": [
+    {
+      "figma": {
+        "name": "Load Spinner",
+        "key": "e491e27534c9a908db7cfe27959b6aca19830505",
+        "nodeId": "81:1063"
+      },
+      "code": {
+        "selector": ".nc-spinner",
+        "path": "tools/shared/components.css"
+      },
+      "props": {},
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Status-Badge",
+        "key": "22f01488681a7a190dd9ec6f9106ec2e1b069f1e",
+        "nodeId": "134:13529"
+      },
+      "code": {
+        "selector": ".nc-status-badge",
+        "path": "tools/shared/components.css, tools/shared/status.mjs"
+      },
+      "props": {
+        "Tone": {
+          "modifier": {
+            "accent": "--accent",
+            "active": "--active",
+            "positive": "--positive",
+            "negative": "--negative",
+            "highlight": "--highlight",
+            "neutral": "--neutral"
+          }
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Input Label",
+        "key": "2315114a449c62dfec3cb2c869c489f520eb2495",
+        "nodeId": "168:610"
+      },
+      "code": {
+        "selector": ".nc-field__label",
+        "path": ".nc-field__required in tools/shared/components.css"
+      },
+      "props": {},
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Pill Tab Item",
+        "key": "3c7e74d967d29ba8ba08d53859a088361a191220",
+        "nodeId": "92:5012"
+      },
+      "code": {
+        "selector": ".nc-pill-tab",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Size": {
+          "modifier": null,
+          "note": "no size modifier in code"
+        },
+        "State": {
+          "modifier": null,
+          "note": "selected via aria-selected/aria-pressed, check markup"
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Step Progress Item",
+        "key": "b01c2716bd3cb18dfddc7b3b101dc2de078c854c",
+        "nodeId": "77:137"
+      },
+      "code": {
+        "selector": ".nc-step",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "State": {
+          "modifier": {
+            "Active": "--active",
+            "Completed": "--completed",
+            "Upcoming": null
+          }
+        },
+        "Size": {
+          "modifier": null,
+          "note": "no size modifier in code"
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Chip",
+        "key": "2ff8b61dfc46f5b5e60f3a90aa96df6c9ffaa28e",
+        "nodeId": "62:285"
+      },
+      "code": {
+        "selector": ".nc-chip",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Size": {
+          "modifier": {
+            "Sm": "--sm",
+            "Lg": "--lg"
+          }
+        },
+        "State": {
+          "modifier": {
+            "Selected": "--selected"
+          },
+          "note": "Hover -> :hover"
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Button",
+        "key": "2b06b5c751a6f665a18d1b509b372fc30efae272",
+        "nodeId": "53:220"
+      },
+      "code": {
+        "selector": ".nc-button",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Variant": {
+          "modifier": {
+            "Primary": "--primary",
+            "Secondary": "--secondary",
+            "Tertiary": "--tertiary"
+          }
+        },
+        "Size": {
+          "modifier": {
+            "Lg": "--lg",
+            "Sm": "--sm"
+          }
+        },
+        "State": {
+          "modifier": null,
+          "note": "Hover/Pressed -> :hover/:active, Disabled -> :disabled"
+        },
+        "Icon Only": {
+          "modifier": null,
+          "note": "no code equivalent yet"
+        },
+        "Show Icon L": {
+          "modifier": null,
+          "note": "presence of leading icon element"
+        },
+        "Show Icon R": {
+          "modifier": null,
+          "note": "presence of trailing icon element"
+        },
+        "Label": {
+          "modifier": null,
+          "note": "text content"
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Switch-Mode",
+        "key": "1e413bf9bcfaa9851444abc2f4bf48dff64bab3b",
+        "nodeId": "81:397"
+      },
+      "code": {
+        "selector": ".theme-toggle",
+        "path": "tools/shared/navigation.css, tools/shared/navigation.mjs"
+      },
+      "props": {},
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "MainNavItem",
+        "key": "ee4dca8bc16570257c427fea02badced2687f697",
+        "nodeId": "92:9731"
+      },
+      "code": {
+        "selector": ".nextchapter-nav-item",
+        "path": "tools/shared/navigation.css"
+      },
+      "props": {},
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Pill-Tabs",
+        "key": "e586f26806eee9de3467288e4701c5ee8cbda506",
+        "nodeId": "279:1161"
+      },
+      "code": {
+        "selector": ".nc-pill-tabs",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Size": {
+          "modifier": null,
+          "note": "no size modifier in code"
+        }
+      },
+      "dependsOn": [
+        "Pill Tab Item"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Step Progress Indicator",
+        "key": "7ae4c1ac44be80afc5c63e9d6b95b5126171f1da",
+        "nodeId": "102:11781"
+      },
+      "code": {
+        "selector": ".nc-step-progress",
+        "path": "tools/shared/components.css"
+      },
+      "props": {},
+      "dependsOn": [
+        "Step Progress Item"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "TextField",
+        "key": "ae024ad4f4aa7c00667f3dbea471926a489200b2",
+        "nodeId": "53:589"
+      },
+      "code": {
+        "selector": ".nc-field .nc-input",
+        "path": "tools/shared/components.css, tools/shared/fields.mjs"
+      },
+      "props": {},
+      "dependsOn": [
+        "Input Label"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "TextArea",
+        "key": "6a8c718cf1b0e1a9f926b3f8c8d0d2f51132a2dc",
+        "nodeId": "61:183"
+      },
+      "code": {
+        "selector": ".nc-field .nc-textarea",
+        "path": "tools/shared/components.css, tools/shared/fields.mjs"
+      },
+      "props": {},
+      "dependsOn": [
+        "Input Label"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Select",
+        "key": "96bf62d2c19a4f5b9d6c7edd78db4c82af000bdf",
+        "nodeId": "92:9223"
+      },
+      "code": {
+        "selector": ".nc-select-wrap .nc-select",
+        "path": "tools/shared/components.css, tools/shared/fields.mjs"
+      },
+      "props": {},
+      "dependsOn": [
+        "Input Label"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Checkbox",
+        "key": "cea7eb9ded91159edeeae57ae7473a10ebe7d0ca",
+        "nodeId": "165:590"
+      },
+      "code": {
+        "selector": ".nc-checkbox",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Size": {
+          "modifier": {
+            "Sm": "--sm",
+            "Lg": null
+          }
+        },
+        "State": {
+          "modifier": null,
+          "note": "native :checked, :indeterminate, :disabled, :hover"
+        }
+      },
+      "dependsOn": [
+        "Input Label"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Radio",
+        "key": "223b06d1282a84abd1677497f057882912b51558",
+        "nodeId": "165:618"
+      },
+      "code": {
+        "selector": ".nc-radio",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Size": {
+          "modifier": {
+            "Sm": "--sm",
+            "Lg": null
+          }
+        },
+        "State": {
+          "modifier": null,
+          "note": "native :checked, :disabled, :hover"
+        }
+      },
+      "dependsOn": [
+        "Input Label"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Alert",
+        "key": "dec09a3bce59688253960ea8e7766f91da651a5d",
+        "nodeId": "53:638"
+      },
+      "code": {
+        "selector": ".nc-alert",
+        "path": "tools/shared/components.css"
+      },
+      "props": {
+        "Variant": {
+          "modifier": {
+            "Success": "--success",
+            "Danger": "--danger",
+            "Warning": "--warning",
+            "Info": "--info"
+          }
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Toast",
+        "key": "adb21d999c908a6abb35c07cff4070826bab521c",
+        "nodeId": "125:11817"
+      },
+      "code": {
+        "selector": ".nc-toast",
+        "path": "tools/shared/components.css, tools/shared/notifications.mjs"
+      },
+      "props": {
+        "Variant": {
+          "modifier": {
+            "Success": "--success",
+            "Danger": "--danger",
+            "Warning": "--warning",
+            "Info": "--info"
+          }
+        },
+        "Show Close": {
+          "modifier": null,
+          "note": "presence of .nc-toast__dismiss"
+        }
+      },
+      "dependsOn": [],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Prospect Card",
+        "key": "f8081ee2db083bd610072aa20a19be9a95183415",
+        "nodeId": "216:20442"
+      },
+      "code": {
+        "selector": ".prospect-card",
+        "path": "tools/prospect-tracker/styles.css, tools/prospect-tracker/kanban.js"
+      },
+      "props": {},
+      "dependsOn": [
+        "Company Avatar",
+        "Status-Badge"
+      ],
+      "mapping": "proposed, confirm"
+    },
+    {
+      "figma": {
+        "name": "Main Navigation Header",
+        "key": "5e5c7aed0194793713e8cf361fc8eccb7209f845",
+        "nodeId": "125:12294"
+      },
+      "code": {
+        "selector": ".nextchapter-header",
+        "path": "tools/shared/navigation.css, tools/shared/navigation.mjs"
+      },
+      "props": {},
+      "dependsOn": [
+        "MainNavItem",
+        "Switch-Mode",
+        "Button"
+      ],
+      "mapping": "proposed, confirm"
+    }
+  ],
+  "unmatched": {
+    "figmaOnly": [
+      {
+        "name": "Avatar Badge",
+        "key": "b3599cd89500b3bd53ba31b7bf1cf28de0e7c297",
+        "nodeId": "205:665"
+      },
+      {
+        "name": "Company Avatar",
+        "key": "1596b1723892067efe77680a2df8ea0312533982",
+        "nodeId": "206:18776"
+      },
+      {
+        "name": "Avatar",
+        "key": "ccddebe1a923847671677ac9a72ea5f0a113d563",
+        "nodeId": "205:679"
+      },
+      {
+        "name": "Paddle Button",
+        "key": "bd03d5326e5517c6b005e040c5166fe4b698e872",
+        "nodeId": "216:20314"
+      }
+    ],
+    "codeOnly": [
+      ".nc-menu-elevation",
+      ".nc-toast-stack",
+      ".nc-visually-hidden",
+      ".nextchapter-menu-toggle",
+      ".nextchapter-wordmark",
+      ".nextchapter-account-links"
+    ]
+  }
+}

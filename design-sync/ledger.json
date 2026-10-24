@@ -1,0 +1,832 @@
+[
+ {
+  "cat": "Variables",
+  "item": "Primitives primary/* (3)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-01"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives secondary/* (6)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-02"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives neutral/* (11)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-03"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives peach/* (1)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-04"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives success/* (3)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-05"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives danger/* (3)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-06"
+ },
+ {
+  "cat": "Variables",
+  "item": "Primitives warning/* (3)",
+  "fref": "Primitives",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-07"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme background/* (1)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-08"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme surface/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "value-drift",
+  "status": "pending",
+  "notes": "surface/default: Figma aliases neutral/50 and neutral/900 directly, code aliases --nc-surface-raised. Same resolved color; alias chain differs.",
+  "id": "V-09"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme border/* (2)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-10"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme text/* (4)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-11"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme action/primary/* (5)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-12"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme input/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-13"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme action/secondary/* (5)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-14"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme action/tertiary/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-15"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme loading/* (2)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-16"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme link/* (2)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-17"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme focus/* (1)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-18"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme selection/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-19"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme action/disabled/* (2)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-20"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme supporting/* (2)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-21"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme success/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-22"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme danger/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-23"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme warning/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-24"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme info/* (3)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-25"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme status/* (12)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "--ds-badge-* names (code-owned contract)",
+  "id": "V-26"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme control/* (9)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-27"
+ },
+ {
+  "cat": "Variables",
+  "item": "Theme card/* (4)",
+  "fref": "Theme",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "",
+  "id": "V-28"
+ },
+ {
+  "cat": "Variables",
+  "item": "Spacing in use (9)",
+  "fref": "Spacing",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "0_5, 1, 1_5, 2, 3, 4, 5, 7, 10",
+  "id": "V-29"
+ },
+ {
+  "cat": "Variables",
+  "item": "Spacing not in code (26)",
+  "fref": "Spacing",
+  "cref": "tokens.css",
+  "cls": "missing-in-code",
+  "status": "skipped",
+  "notes": "Code adds steps only when a consumer needs them (tokens.css comment). Confirm or sync full scale.",
+  "id": "V-30"
+ },
+ {
+  "cat": "Variables",
+  "item": "Radius in use (6)",
+  "fref": "Radius",
+  "cref": "tokens.css",
+  "cls": "match",
+  "status": "synced",
+  "notes": "--nc-radius-panel is a code-only alias of xl",
+  "id": "V-31"
+ },
+ {
+  "cat": "Variables",
+  "item": "Radius not in code (3)",
+  "fref": "Radius",
+  "cref": "tokens.css",
+  "cls": "missing-in-code",
+  "status": "skipped",
+  "notes": "none, lg, 3xl. Same subset rule. lg duplicates default (8).",
+  "id": "V-32"
+ },
+ {
+  "cat": "Variables",
+  "item": "Typography font-family (3)",
+  "fref": "Typography",
+  "cref": "--nc-font-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "named --nc-font-serif|sans|mono",
+  "id": "V-33"
+ },
+ {
+  "cat": "Variables",
+  "item": "Typography size, line height, weight (21)",
+  "fref": "Typography",
+  "cref": "none",
+  "cls": "missing-in-code",
+  "status": "needs-decision",
+  "notes": "All 17 text styles bind these variables, but code text tokens use raw px. Add --nc-font-size-*, --nc-line-height-*, --nc-font-weight-* and point --nc-type-* at them? font-size/6xl (67) and line-height/20 (80) are unused by any style.",
+  "id": "V-34"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Display",
+  "fref": "text style",
+  "cref": "--nc-type-display-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-01"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Heading/H1",
+  "fref": "text style",
+  "cref": "--nc-type-h1-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-02"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Heading/H2",
+  "fref": "text style",
+  "cref": "--nc-type-h2-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-03"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Heading/H3",
+  "fref": "text style",
+  "cref": "--nc-type-h3-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-04"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Heading/H4",
+  "fref": "text style",
+  "cref": "--nc-type-h4-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-05"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Body/Large",
+  "fref": "text style",
+  "cref": "--nc-type-body-large-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-06"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Body/Default",
+  "fref": "text style",
+  "cref": "--nc-type-body-default-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-07"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Body/Small",
+  "fref": "text style",
+  "cref": "--nc-type-body-small-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-08"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Caption",
+  "fref": "text style",
+  "cref": "--nc-type-caption-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-09"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Title",
+  "fref": "text style",
+  "cref": "--nc-type-ui-title-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-10"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Label",
+  "fref": "text style",
+  "cref": "--nc-type-ui-label-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-11"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Label Sm",
+  "fref": "text style",
+  "cref": "--nc-type-ui-label-sm-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-12"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Button",
+  "fref": "text style",
+  "cref": "--nc-type-ui-button-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-13"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Button Sm",
+  "fref": "text style",
+  "cref": "--nc-type-ui-button-small-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-14"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Badge",
+  "fref": "text style",
+  "cref": "--nc-type-ui-badge-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-15"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/Meta",
+  "fref": "text style",
+  "cref": "--nc-type-meta-*",
+  "cls": "match",
+  "status": "blocked",
+  "notes": "IBM Plex Mono Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "id": "T-16"
+ },
+ {
+  "cat": "Text styles",
+  "item": "Type/UI/Status",
+  "fref": "text style",
+  "cref": "--nc-type-ui-status-*",
+  "cls": "match",
+  "status": "synced",
+  "notes": "values match; raw px, see Typography row",
+  "id": "T-17"
+ },
+ {
+  "cat": "Effect styles",
+  "item": "shadow/sm",
+  "fref": "effect style",
+  "cref": "--nc-shadow-sm",
+  "cls": "match",
+  "status": "synced",
+  "notes": "1px 1px 0 var(--nc-border-control); color binding preserved",
+  "id": "E-01"
+ },
+ {
+  "cat": "Components",
+  "item": "Load Spinner",
+  "fref": "81:1063",
+  "cref": ".nc-spinner",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-01"
+ },
+ {
+  "cat": "Components",
+  "item": "Status-Badge",
+  "fref": "134:13529",
+  "cref": ".nc-status-badge",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-02"
+ },
+ {
+  "cat": "Components",
+  "item": "Avatar Badge",
+  "fref": "205:665",
+  "cref": "none",
+  "cls": "missing-in-code",
+  "status": "needs-decision",
+  "notes": "Build in code or skip?",
+  "id": "C-03"
+ },
+ {
+  "cat": "Components",
+  "item": "Input Label",
+  "fref": "168:610",
+  "cref": ".nc-field__label",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-04"
+ },
+ {
+  "cat": "Components",
+  "item": "Pill Tab Item",
+  "fref": "92:5012",
+  "cref": ".nc-pill-tab",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma Size Sm/Lg; code has no size modifier",
+  "id": "C-05"
+ },
+ {
+  "cat": "Components",
+  "item": "Step Progress Item",
+  "fref": "77:137",
+  "cref": ".nc-step",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma Size Lg/Sm; code has no size modifier",
+  "id": "C-06"
+ },
+ {
+  "cat": "Components",
+  "item": "Chip",
+  "fref": "62:285",
+  "cref": ".nc-chip",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-07"
+ },
+ {
+  "cat": "Components",
+  "item": "Button",
+  "fref": "53:220",
+  "cref": ".nc-button",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma has Icon Only variant; code has no icon-only modifier",
+  "id": "C-08"
+ },
+ {
+  "cat": "Components",
+  "item": "Switch-Mode",
+  "fref": "81:397",
+  "cref": ".theme-toggle",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-09"
+ },
+ {
+  "cat": "Components",
+  "item": "MainNavItem",
+  "fref": "92:9731",
+  "cref": ".nextchapter-nav-item",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-10"
+ },
+ {
+  "cat": "Components",
+  "item": "Company Avatar",
+  "fref": "206:18776",
+  "cref": "none",
+  "cls": "missing-in-code",
+  "status": "needs-decision",
+  "notes": "Build in code or skip? Used by Prospect Card.",
+  "id": "C-11"
+ },
+ {
+  "cat": "Components",
+  "item": "Avatar",
+  "fref": "205:679",
+  "cref": "none",
+  "cls": "missing-in-code",
+  "status": "needs-decision",
+  "notes": "Build in code or skip?",
+  "id": "C-12"
+ },
+ {
+  "cat": "Components",
+  "item": "Paddle Button",
+  "fref": "216:20314",
+  "cref": "none",
+  "cls": "missing-in-code",
+  "status": "needs-decision",
+  "notes": "Build in code or skip?",
+  "id": "C-13"
+ },
+ {
+  "cat": "Components",
+  "item": "Pill-Tabs",
+  "fref": "279:1161",
+  "cref": ".nc-pill-tabs",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma Size Sm/Lg; code has no size modifier. Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-14"
+ },
+ {
+  "cat": "Components",
+  "item": "Step Progress Indicator",
+  "fref": "102:11781",
+  "cref": ".nc-step-progress",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma Size Lg/Sm; code has no size modifier",
+  "id": "C-15"
+ },
+ {
+  "cat": "Components",
+  "item": "TextField",
+  "fref": "53:589",
+  "cref": ".nc-field .nc-input",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-16"
+ },
+ {
+  "cat": "Components",
+  "item": "TextArea",
+  "fref": "61:183",
+  "cref": ".nc-field .nc-textarea",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-17"
+ },
+ {
+  "cat": "Components",
+  "item": "Select",
+  "fref": "92:9223",
+  "cref": ".nc-select-wrap .nc-select",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-18"
+ },
+ {
+  "cat": "Components",
+  "item": "Checkbox",
+  "fref": "165:590",
+  "cref": ".nc-checkbox",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "implemented Oct 20 per docs",
+  "id": "C-19"
+ },
+ {
+  "cat": "Components",
+  "item": "Radio",
+  "fref": "165:618",
+  "cref": ".nc-radio",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "implemented Oct 20 per docs",
+  "id": "C-20"
+ },
+ {
+  "cat": "Components",
+  "item": "Alert",
+  "fref": "53:638",
+  "cref": ".nc-alert",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-21"
+ },
+ {
+  "cat": "Components",
+  "item": "Toast",
+  "fref": "125:11817",
+  "cref": ".nc-toast",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "",
+  "id": "C-22"
+ },
+ {
+  "cat": "Components",
+  "item": "Prospect Card",
+  "fref": "216:20442",
+  "cref": ".prospect-card",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma nests Company Avatar; no avatar in code",
+  "id": "C-23"
+ },
+ {
+  "cat": "Components",
+  "item": "Main Navigation Header",
+  "fref": "125:12294",
+  "cref": ".nextchapter-header",
+  "cls": "structure-drift",
+  "status": "pending",
+  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
+  "id": "C-24"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Paddle Button",
+  "fref": "216:20314",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: gap 8 -> spacing/2 on both variants (215:20115, 216:20310). Values unchanged, binding only.",
+  "id": "H-01"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Chip",
+  "fref": "62:285",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: padding on all 6 variants: Sm 12/8 -> spacing/3, spacing/2; Lg 16/12 -> spacing/4, spacing/3. Values unchanged, binding only.",
+  "id": "H-02"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Pill-Tabs",
+  "fref": "279:1161",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: padding 2 -> spacing/0_5 on both sizes; radius 999 -> radius/full (9999, renders the same pill). Radius value changed (999/10 -> 9999), visual result identical; review.",
+  "id": "H-03"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Switch-Mode",
+  "fref": "81:397",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: track radius 999 -> radius/full on both states; thumb radius 10 -> radius/full (20x20 circle, renders the same). Header instances inherit it. Radius value changed (999/10 -> 9999), visual result identical; review.",
+  "id": "H-04"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "MainNavItem",
+  "fref": "92:9731",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: horizontal padding 12 -> spacing/3 on 3 default-size variants. Values unchanged, binding only.",
+  "id": "H-05"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Main Navigation Header",
+  "fref": "125:12294",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: gaps 40/24/20/12/4 -> spacing/10, 6, 5, 3, 1; Sm padding 20 -> spacing/5; Sm-Open util menu top padding 20 -> spacing/5. Thumb radius fixed via Switch-Mode. Values unchanged, binding only.",
+  "id": "H-06"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Input Label",
+  "fref": "168:610",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by agent 2026-10-24: gap 2 -> spacing/0_5 on both sizes. Values unchanged, binding only.",
+  "id": "H-07"
+ }
+]

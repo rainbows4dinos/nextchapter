@@ -1,0 +1,42 @@
+{
+  "fileKey": "hLBR7Nl3GelwM9hstQb3Ah",
+  "readAt": "2026-10-24",
+  "variables": {
+    "Primitives": {"modes": ["Base"], "vars": {
+      "primary/200": "#f8e1b6", "primary/300": "#f1cc88", "primary/400": "#e5ae54",
+      "secondary/100": "#eee9fd", "secondary/200": "#d7cdfb", "secondary/300": "#b3a5f5", "secondary/400": "#9782eb", "secondary/700": "#523394", "secondary/900": "#35245b",
+      "neutral/50": "#ffffff", "neutral/100": "#faf9f7", "neutral/200": "#efebe7", "neutral/300": "#d4d0dc", "neutral/400": "#a098ab", "neutral/500": "#837a90", "neutral/600": "#68616f", "neutral/700": "#504759", "neutral/800": "#352d40", "neutral/900": "#231d2b", "neutral/950": "#15111b",
+      "peach/300": "#ffab8d", "success/50": "#effaf3", "success/300": "#87cfa5", "success/700": "#195e3d", "danger/50": "#fff1f4", "danger/300": "#f79bb3", "danger/700": "#9b1f43", "warning/50": "#fff7ed", "warning/300": "#fdba74", "warning/800": "#9a3412"}},
+    "Theme": {"modes": ["Light", "Dark"], "vars": {
+      "background/page": ["@neutral/100", "@neutral/950"], "surface/default": ["@neutral/50", "@neutral/900"], "surface/raised": ["@neutral/50", "@neutral/900"], "surface/sunken": ["@neutral/200", "@neutral/900"],
+      "border/subtle": ["@neutral/300", "@neutral/700"], "border/control": ["@neutral/400", "@neutral/500"],
+      "text/primary": ["@neutral/900", "@neutral/100"], "text/secondary": ["@neutral/700", "@neutral/200"], "text/muted": ["@neutral/600", "@neutral/400"], "text/placeholder": ["@neutral/600", "@neutral/400"],
+      "action/primary/bg": ["@primary/200", "@primary/200"], "action/primary/fg": ["@neutral/900", "@neutral/900"], "action/primary/hover": ["@primary/300", "@primary/300"], "action/primary/pressed": ["@primary/400", "@primary/400"], "action/primary/border": ["@neutral/700", "@neutral/700"],
+      "input/bg": ["@neutral/100", "@neutral/950"], "input/hover": ["@neutral/200 80%", "@neutral/800 80%"],
+      "action/secondary/bg": ["@secondary/200", "@secondary/200"], "action/tertiary/bg": ["transparent", "transparent"], "action/tertiary/fg": ["@text/primary", "@text/primary"], "action/tertiary/border": ["@border/control", "@border/control"],
+      "action/secondary/fg": ["@neutral/900", "@neutral/900"], "action/secondary/hover": ["@secondary/300", "@secondary/300"], "input/border": ["@border/control", "@border/control"], "action/secondary/pressed": ["@secondary/400", "@secondary/400"], "action/secondary/border": ["@secondary/700", "@secondary/700"],
+      "loading/fg": ["@secondary/700", "@primary/200"], "loading/bg": ["@neutral/200", "@neutral/700"],
+      "link/default": ["@secondary/700", "@secondary/200"], "link/hover": ["@secondary/700", "@secondary/100"], "focus/ring": ["@secondary/700", "@secondary/300"],
+      "selection/bg": ["@secondary/100", "@secondary/900"], "selection/fg": ["@secondary/700", "@secondary/100"], "selection/border": ["@secondary/700", "@secondary/300"],
+      "action/disabled/bg": ["@neutral/200", "@neutral/800"], "action/disabled/fg": ["@neutral/500", "@neutral/400"],
+      "supporting/bg": ["@peach/300", "@peach/300"], "supporting/fg": ["@neutral/900", "@neutral/900"],
+      "success/fg": ["@success/700", "@success/300"], "success/bg": ["@success/50", "@neutral/900"], "success/border": ["@success/700", "@success/300"],
+      "danger/fg": ["@danger/700", "@danger/300"], "danger/bg": ["@danger/50", "@neutral/900"], "danger/border": ["@danger/700", "@danger/300"],
+      "warning/fg": ["@warning/800", "@warning/300"], "warning/bg": ["@warning/50", "@neutral/900"], "warning/border": ["@warning/800", "@warning/300"],
+      "info/fg": ["@neutral/950", "@secondary/300"], "info/bg": ["@secondary/100", "@neutral/900"], "info/border": ["@secondary/700", "@secondary/300"],
+      "status/neutral-bg": ["@neutral/200", "@neutral/200"], "status/neutral-fg": ["@neutral/900", "@neutral/900"], "status/accent-bg": ["@secondary/100", "@secondary/100"], "status/accent-fg": ["@neutral/900", "@neutral/900"], "status/active-bg": ["@primary/200", "@primary/200"], "status/active-fg": ["@neutral/900", "@neutral/900"], "status/positive-bg": ["@success/50", "@success/50"], "status/positive-fg": ["@neutral/900", "@neutral/900"], "status/negative-bg": ["@danger/50", "@danger/50"], "status/negative-fg": ["@neutral/900", "@neutral/900"], "status/highlight-bg": ["@warning/50", "@warning/50"], "status/highlight-fg": ["@neutral/900", "@neutral/900"],
+      "control/bg": ["@input/bg", "@input/bg"], "control/bg-hover": ["@input/hover", "@input/hover"], "control/border": ["@input/border", "@input/border"], "control/selected-bg": ["@action/primary/bg", "@action/primary/bg"], "control/selected-border": ["@action/primary/border", "@action/primary/border"], "control/selected-fg": ["@action/primary/fg", "@action/primary/fg"], "control/disabled-bg": ["@action/disabled/bg", "@action/disabled/bg"], "control/disabled-border": ["@border/subtle", "@border/subtle"], "control/disabled-fg": ["@action/disabled/fg", "@action/disabled/fg"],
+      "card/bg": ["@surface/raised", "@surface/raised"], "card/fg": ["@text/primary", "@text/primary"], "card/hover": ["@secondary/100", "@secondary/900"], "card/border": ["@border/control", "@border/control"]}},
+    "Spacing": {"modes": ["Base"], "vars": {"spacing/0": 0, "spacing/px": 1, "spacing/0_5": 2, "spacing/1": 4, "spacing/1_5": 6, "spacing/2": 8, "spacing/2_5": 10, "spacing/3": 12, "spacing/3_5": 14, "spacing/4": 16, "spacing/5": 20, "spacing/6": 24, "spacing/7": 28, "spacing/8": 32, "spacing/9": 36, "spacing/10": 40, "spacing/11": 44, "spacing/12": 48, "spacing/14": 56, "spacing/16": 64, "spacing/20": 80, "spacing/24": 96, "spacing/28": 112, "spacing/32": 128, "spacing/36": 144, "spacing/40": 160, "spacing/44": 176, "spacing/48": 192, "spacing/52": 208, "spacing/56": 224, "spacing/60": 240, "spacing/64": 256, "spacing/72": 288, "spacing/80": 320, "spacing/96": 384}},
+    "Radius": {"modes": ["Base"], "vars": {"radius/none": 0, "radius/default": 8, "radius/sm": 2, "radius/md": 6, "radius/lg": 8, "radius/xl": 12, "radius/2xl": 16, "radius/3xl": 24, "radius/full": 9999}},
+    "Typography": {"modes": ["Base"], "vars": {"font-family/serif": "DM Serif Display", "font-family/sans": "Inter", "font-family/mono": "IBM Plex Mono", "font-weight/normal": 300, "font-weight/medium": 500, "font-weight/semibold": 600, "font-size/6xl": 67, "font-size/5xl": 50, "font-size/4xl": 38, "font-size/3xl": 28, "font-size/xl": 21, "font-size/xl-title": 21, "font-size/base": 16, "font-size/xs": 12, "line-height/20": 80, "line-height/16": 64, "line-height/12": 48, "line-height/9": 36, "line-height/8": 32, "line-height/7": 28, "line-height/6": 24, "line-height/5": 20, "line-height/4": 16, "line-height/3": 12}}
+  },
+  "textStyles": {
+    "Type/Display": ["DM Serif Display", "Regular", 50, 64], "Type/Heading/H1": ["DM Serif Display", "Regular", 38, 48], "Type/Heading/H2": ["DM Serif Display", "Regular", 28, 36], "Type/Heading/H3": ["DM Serif Display", "Regular", 21, 32], "Type/Heading/H4": ["DM Serif Display", "Regular", 16, 24],
+    "Type/Body/Large": ["Inter", "Light", 21, 32], "Type/Body/Default": ["Inter", "Light", 16, 24], "Type/Body/Small": ["Inter", "Light", 12, 20], "Type/Caption": ["Inter", "Light", 12, 16],
+    "Type/UI/Title": ["Inter", "Semi Bold", 21, 28], "Type/UI/Label": ["Inter", "Medium", 16, 24], "Type/UI/Label Sm": ["Inter", "Medium", 12, 20], "Type/UI/Button": ["Inter", "Medium", 16, 16], "Type/UI/Button Sm": ["Inter", "Medium", 12, 12], "Type/UI/Badge": ["Inter", "Light", 16, 24], "Type/Meta": ["IBM Plex Mono", "Light", 12, 16], "Type/UI/Status": ["Inter", "Medium", 12, 12]
+  },
+  "textStyleNote": "All 17 styles bind fontFamily, fontSize, lineHeight and fontWeight to Typography variables; letter spacing 0%, case original.",
+  "effectStyles": {"shadow/sm": "drop 1 1 0 0, color bound to border/control"},
+  "paintStyles": {}
+}

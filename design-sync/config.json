@@ -1,0 +1,53 @@
+{
+  "figma": {
+    "fileKey": "hLBR7Nl3GelwM9hstQb3Ah",
+    "libraryPages": {
+      "foundations": "45:3",
+      "components": "92:5175",
+      "icons": "45:2384"
+    }
+  },
+  "direction": "figma-to-code",
+  "code": {
+    "tokens": "tools/shared/tokens.css",
+    "components": [
+      "tools/shared/components.css",
+      "tools/shared/navigation.css",
+      "tools/prospect-tracker/styles.css"
+    ],
+    "markup": [
+      "tools/shared/*.mjs",
+      "tools/prospect-tracker/ui.js",
+      "tools/prospect-tracker/kanban.js"
+    ],
+    "framework": "vanilla HTML, CSS, ES modules (BEM classes, no component framework)",
+    "preview": "entry pages tools/resume-tailor.html, tools/prospect-tracker/index.html, tools/career-radar.html, tools/about.html served over local HTTP"
+  },
+  "conventions": {
+    "tokenNaming": "figma a/b/c -> --nc-a-b-c",
+    "namingExceptions": {
+      "status/<tone>-<bg|fg>": "--ds-badge-<tone>-<bg|fg> (public Status-Badge contract)",
+      "spacing/X_Y": "--nc-space-X-Y",
+      "font-family/<x>": "--nc-font-<x>",
+      "Type/UI/Button Sm": "--nc-type-ui-button-small-*"
+    },
+    "modes": {
+      "Dark": ":root, body (default)",
+      "Light": "body.light"
+    },
+    "units": "px",
+    "typography": "per-property custom properties --nc-type-<style>-family|size|line-height|weight",
+    "subsetRule": "tokens.css: 'Figma Spacing/Radius subsets in use; add steps only when a consumer needs them'",
+    "aliasWithOpacity": "color-mix(in srgb, var(--token) N%, transparent)"
+  },
+  "batchSize": 3,
+  "mirror": true,
+  "mirrorTarget": {
+    "page": "Sync status",
+    "frame": "Design sync ledger"
+  },
+  "ownership": {
+    "focusRing": "code keeps 2px offset (docs/shared-design-tokens.md, Oct 20)",
+    "--ds-badge-*": "code-owned public name for Figma status/*"
+  }
+}
