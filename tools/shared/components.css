@@ -58,12 +58,13 @@
   border: 1px solid var(--nc-border-control); border-radius: var(--nc-radius-full);
   background: transparent; color: var(--nc-text-secondary);
 }
+/* Figma Chip (62:285): padding is measured from the outer edge with an inside stroke, so subtract the 1px border. */
 .nc-chip--lg {
-  min-height: 40px; padding: 10px 12px; gap: 8px;
+  min-height: 40px; padding: calc(var(--nc-space-3) - 1px) calc(var(--nc-space-4) - 1px); gap: 8px;
   font-size: var(--nc-type-ui-button-size); line-height: var(--nc-type-ui-button-line-height);
 }
 .nc-chip--sm {
-  min-height: 28px; padding: 6px 12px; gap: 6px;
+  min-height: 28px; padding: calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); gap: 6px;
   font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height);
 }
 .nc-chip:hover:not(:disabled) {
@@ -72,14 +73,22 @@
 .nc-chip--selected, .nc-chip[aria-pressed="true"] {
   background: var(--nc-action-primary-bg); color: var(--nc-action-primary-fg); border-color: var(--nc-action-primary-border);
 }
+/* Figma Pill-Tabs (279:1161): the group height is the spec (Sm 28px, Lg 40px); tab height is derived from it.
+   The 1px border sits inside the 2px padding (Figma stroke excluded from layout), so tabs are group - 4px. */
 .nc-pill-tabs {
-  display: inline-flex; align-items: center; max-width: 100%; padding: 2px;
+  --nc-pill-tabs-height: 28px;
+  display: inline-flex; align-items: center; padding: calc(var(--nc-space-0-5) - 1px);
   border: 1px solid var(--nc-input-border); border-radius: var(--nc-radius-full); background: var(--nc-surface-default);
 }
 .nc-pill-tab {
-  min-height: 22px; margin: 0; padding: 4px 20px; gap: 4px; border: 0; border-radius: var(--nc-radius-full);
+  min-height: calc(var(--nc-pill-tabs-height, 28px) - 2 * var(--nc-space-0-5)); flex-shrink: 0; white-space: nowrap; margin: 0; padding: var(--nc-space-1) var(--nc-space-5); gap: var(--nc-space-1); border: 0; border-radius: var(--nc-radius-full);
   background: transparent; color: var(--nc-text-primary);
   font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height);
+}
+/* Size=Lg: 40px group, UI/Button type. Default stays Sm. */
+.nc-pill-tabs--lg { --nc-pill-tabs-height: 40px; }
+.nc-pill-tabs--lg .nc-pill-tab {
+  font-size: var(--nc-type-ui-button-size); line-height: var(--nc-type-ui-button-line-height);
 }
 .nc-pill-tab:hover {
   background: var(--nc-action-secondary-hover); color: var(--nc-action-secondary-fg);
@@ -101,13 +110,18 @@
 }
 .nc-step-progress .nc-step { color: var(--nc-text-primary); }
 .nc-step-progress__stage > .nc-step { flex-shrink: 0; }
+/* The indicator switches to Figma's Sm steps on narrow screens. */
 @media (max-width: 600px) {
+  .nc-step-progress .nc-step__label {
+    font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height);
+  }
   .nc-step-progress .nc-step:not(.nc-step--active) .nc-step__label {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
   }
 }
-.nc-step { display: flex; align-items: center; gap: 8px; color: var(--nc-text-muted); }
+/* Figma Step Progress Item (77:137): Lg shows every label in UI/Button; Sm uses UI/Button Sm and shows only the active label. */
+.nc-step { display: flex; align-items: center; gap: var(--nc-space-2); color: var(--nc-text-muted); }
 .nc-step__badge {
   display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0;
   border-radius: 50%; background: var(--nc-action-disabled-bg); color: var(--nc-text-secondary);
@@ -116,8 +130,16 @@
 }
 .nc-step__badge .gravity-icon { width: 20px; height: 20px; }
 .nc-step__label {
+  font-family: var(--nc-type-ui-button-family); font-size: var(--nc-type-ui-button-size);
+  font-weight: var(--nc-type-ui-button-weight); line-height: var(--nc-type-ui-button-line-height);
+}
+.nc-step--sm .nc-step__label {
   font-family: var(--nc-type-ui-button-small-family); font-size: var(--nc-type-ui-button-small-size);
   font-weight: var(--nc-type-ui-button-small-weight); line-height: var(--nc-type-ui-button-small-line-height);
+}
+.nc-step--sm:not(.nc-step--active) .nc-step__label {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
 }
 .nc-step--active, .nc-step--completed { color: var(--nc-text-primary); }
 .nc-step--active .nc-step__badge, .nc-step--completed .nc-step__badge {

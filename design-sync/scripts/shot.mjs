@@ -1,7 +1,9 @@
 // Screenshot and measure every [data-shot] element in design-sync/preview.html, dark and light.
 // Setup (once, in any scratch folder): npm i playwright @fontsource/inter @fontsource/ibm-plex-mono @fontsource/dm-serif-display
-// Run from that folder: node shot.mjs <path to preview.html> <outDir>
-// Google Fonts are blocked and replaced with the same families from @fontsource so results do not depend on network access.
+// Serve the repo root (python3 -m http.server 8000), then run from the scratch folder:
+//   node shot.mjs http://localhost:8000/design-sync/preview.html <outDir>
+// Use an http URL: file:// cannot load the icon module. Google Fonts are blocked and replaced with the same
+// families from @fontsource so results do not depend on network access.
 import { chromium } from 'playwright';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -16,7 +18,9 @@ const metrics = {};
 for (const theme of ['dark', 'light']) {
   const p = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1200, height: 900 } });
   await p.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
-  await p.goto('file://' + resolve(page_) + (theme === 'light' ? '?theme=light' : ''));
+  const base = page_.startsWith('http') ? page_ : 'file://' + resolve(page_);
+  await p.goto(base + (theme === 'light' ? '?theme=light' : ''));
+  await p.waitForLoadState('networkidle');
   await p.addStyleTag({ content: fontCss + '\n*{animation-play-state:paused!important;animation-delay:-0.19s!important}' });
   await p.evaluate(() => document.fonts.ready);
   for (const el of await p.$$('[data-shot]')) {

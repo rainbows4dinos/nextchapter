@@ -22,5 +22,17 @@
  {
   "date": "2026-10-24",
   "entry": "Browser check on localhost: Inter 300 loads from Google Fonts and renders on the Resume Builder. Fixed two off-scale weights found there: the app heading and loading status (DM Serif Display at 600, faux bold) now use --nc-type-h1-weight and --nc-type-h3-weight (400); .nc-field__description now uses --nc-type-body-default-weight (300) instead of 400. Resume document and export serif weights left as-is (document formatting stays local). components.css cache revision bumped to 20261024-label-weight. Re-check: no visible text on the page at an off-scale weight."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 2 (C-05 Pill Tab Item, C-14 Pill-Tabs, C-06 Step Progress Item, C-07 Chip): pill tabs gain .nc-pill-tabs--lg; step items default to Figma Lg with .nc-step--sm and Sm below 600px in the indicator; chip padding corrected for Figma inside strokes. Pill-Tabs (C-14) done early since its Lg size lives on the group. New Figma item H-09. components.css cache revision 20261024-batch-2. Evidence in design-sync/evidence/batch-2.*; Resume Builder step bar checked in the browser at 385px and 1280px."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer set Pill Tab Item Lg to 34px (closes H-09). Code now derives pill tab height from a --nc-pill-tabs-height group variable (28px Sm, 40px Lg) so the group height is the single spec; verified 28/22 and 40/34 at 1280px."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Designer excluded the Pill-Tabs border from layout; tab items are now 24px (Sm) and 36px (Lg) inside 28/40px groups. Code follows: group padding is 2px minus the 1px border, tabs are group height minus 4px, and tab labels no longer wrap (user request). Verified Sm 28/24 and Lg 40/36 in the browser, including at 385px. components.css cache revision 20261024-pill-tabs; batch-2 evidence re-captured."
  }
 ]

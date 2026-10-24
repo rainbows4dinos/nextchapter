@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Design sync preview</title>
-<!-- Component preview for lr-design-system-sync. Not linked from the app; serve the repo root locally and open design-sync/preview.html (add ?theme=light for light mode). -->
+<!-- Component preview for lr-design-system-sync. Not linked from the app; serve the repo root locally (python3 -m http.server) and open /design-sync/preview.html; file:// cannot load the icon module (add ?theme=light for light mode). -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -45,7 +45,38 @@
       <span class="pv-cell" data-shot="label-sm-required"><label class="nc-field__label nc-field__label--sm">Label<span class="nc-field__required" aria-hidden="true">*</span></label></span>
     </div>
   </section>
+  <section id="pill-tabs">
+    <h2>C-05 Pill Tab Item (92:5012) and C-14 Pill-Tabs (279:1161)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="pilltabs-sm"><span class="nc-pill-tabs" role="tablist"><button type="button" class="nc-pill-tab" role="tab" aria-selected="true">Tab Item</button><button type="button" class="nc-pill-tab" role="tab" aria-selected="false">Tab Item</button><button type="button" class="nc-pill-tab" role="tab" aria-selected="false">Tab Item</button></span></span>
+      <span class="pv-cell" data-shot="pilltabs-lg"><span class="nc-pill-tabs nc-pill-tabs--lg" role="tablist"><button type="button" class="nc-pill-tab" role="tab" aria-selected="true">Tab Item</button><button type="button" class="nc-pill-tab" role="tab" aria-selected="false">Tab Item</button><button type="button" class="nc-pill-tab" role="tab" aria-selected="false">Tab Item</button></span></span>
+    </div>
+  </section>
+  <section id="step-item">
+    <h2>C-06 Step Progress Item (77:137)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="step-lg-active"><span class="nc-step nc-step--active"><span class="nc-step__badge">1</span><span class="nc-step__label">Job Details</span></span></span>
+      <span class="pv-cell" data-shot="step-lg-upcoming"><span class="nc-step nc-step--upcoming"><span class="nc-step__badge">1</span><span class="nc-step__label">Job Details</span></span></span>
+      <span class="pv-cell" data-shot="step-lg-completed"><span class="nc-step nc-step--completed"><span class="nc-step__badge" data-icon="check"></span><span class="nc-step__label">Job Details</span></span></span>
+      <span class="pv-cell" data-shot="step-sm-active"><span class="nc-step nc-step--sm nc-step--active"><span class="nc-step__badge">1</span><span class="nc-step__label">Job Details</span></span></span>
+      <span class="pv-cell" data-shot="step-sm-upcoming"><span class="nc-step nc-step--sm nc-step--upcoming"><span class="nc-step__badge">1</span><span class="nc-step__label">Job Details</span></span></span>
+      <span class="pv-cell" data-shot="step-sm-completed"><span class="nc-step nc-step--sm nc-step--completed"><span class="nc-step__badge" data-icon="check"></span><span class="nc-step__label">Job Details</span></span></span>
+    </div>
+  </section>
+  <section id="chip">
+    <h2>C-07 Chip (62:285)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="chip-sm"><button type="button" class="nc-chip nc-chip--sm" aria-pressed="false">Remote</button></span>
+      <span class="pv-cell" data-shot="chip-sm-selected"><button type="button" class="nc-chip nc-chip--sm" aria-pressed="true">Remote</button></span>
+      <span class="pv-cell" data-shot="chip-lg"><button type="button" class="nc-chip nc-chip--lg" aria-pressed="false">Remote</button></span>
+      <span class="pv-cell" data-shot="chip-lg-selected"><button type="button" class="nc-chip nc-chip--lg" aria-pressed="true">Remote</button></span>
+    </div>
+  </section>
 </main>
+<script type="module">
+  import { gravityIcon } from '../tools/shared/icons.mjs';
+  for (const el of document.querySelectorAll('[data-icon]')) el.append(gravityIcon(el.dataset.icon, { size: 20 }));
+</script>
 <script>
   if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('light');
 </script>

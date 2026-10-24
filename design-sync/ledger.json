@@ -591,9 +591,16 @@
   "fref": "92:5012",
   "cref": ".nc-pill-tab",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma Size Sm/Lg; code has no size modifier",
-  "id": "C-05"
+  "status": "synced",
+  "notes": "Padding and gap use spacing tokens; tabs are group height minus 4px (Sm 24, Lg 36) and stay on one line. Lg via .nc-pill-tabs--lg.",
+  "id": "C-05",
+  "checklist": [
+   "[x] Padding 4/20 -> var(--nc-space-1) var(--nc-space-5); gap 4 -> var(--nc-space-1)",
+   "[x] Sm 24px, Lg 36px tall (Figma updated 2026-10-24 after the group stroke was excluded from layout); measured 90x24 and 106x36 vs Figma 90x24 and 107x36",
+   "[x] Labels stay on one line (white-space: nowrap, flex-shrink: 0), as requested",
+   "[x] Default, Hover (@action/secondary/hover) and Selected (@action/secondary/bg) bindings match"
+  ],
+  "evidence": "design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px"
  },
  {
   "cat": "Components",
@@ -601,9 +608,18 @@
   "fref": "77:137",
   "cref": ".nc-step",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma Size Lg/Sm; code has no size modifier",
-  "id": "C-06"
+  "status": "synced",
+  "notes": "Lg is now the default (UI/Button labels); .nc-step--sm added (UI/Button Sm, only the active label shown). The indicator switches to Sm below 600px. Resume Builder desktop step labels go from 12px to 16px.",
+  "id": "C-06",
+  "checklist": [
+   "[x] Gap 8 -> var(--nc-space-2)",
+   "[x] Badge 32px, radius full, @action/primary/bg (active, completed) and @action/disabled/bg with @text/secondary (upcoming) match",
+   "[x] Lg label UI/Button (16/16), @text/primary or @text/muted; measured 125.3x32 vs Figma 126x32",
+   "[x] Sm label UI/Button Sm; non-active labels visually hidden (kept for screen readers); measured 104x32 and 32x32 match Figma",
+   "[x] Completed check icon 20px matches",
+   "[x] Browser: 1280px all labels 16px, no overflow; 385px only the active label at 12px"
+  ],
+  "evidence": "design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px"
  },
  {
   "cat": "Components",
@@ -611,9 +627,16 @@
   "fref": "62:285",
   "cref": ".nc-chip",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
-  "id": "C-07"
+  "status": "synced",
+  "notes": "Padding now subtracts the 1px border (Figma measures padding from the outer edge with an inside stroke). Sm width 70 -> 68, Lg horizontal padding 12 -> 16.",
+  "id": "C-07",
+  "checklist": [
+   "[x] Sm padding 8/12 from edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 67.6x28 vs Figma 68x28 (was 2px wider)",
+   "[x] Lg padding 12/16 from edge -> calc(var(--nc-space-3) - 1px) calc(var(--nc-space-4) - 1px); measured 90.1x40 vs Figma 91x40 (horizontal padding was 12)",
+   "[x] Default @border/control stroke and @text/secondary; Hover and Selected @action/primary bindings match",
+   "[-] Gap kept at 6/8px: chips have a single child, so it has no effect"
+  ],
+  "evidence": "design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px"
  },
  {
   "cat": "Components",
@@ -681,9 +704,17 @@
   "fref": "279:1161",
   "cref": ".nc-pill-tabs",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma Size Sm/Lg; code has no size modifier. Figma hygiene fixed 2026-10-24, see H rows",
-  "id": "C-14"
+  "status": "synced",
+  "notes": "Group height is the spec (Sm 28px, Lg 40px via --nc-pill-tabs-height); the 1px border sits inside the 2px padding, so tabs are group - 4px. Group grows with its tabs instead of wrapping.",
+  "id": "C-14",
+  "checklist": [
+   "[x] Padding 2 from the outer edge with the 1px border inside it -> calc(var(--nc-space-0-5) - 1px), matching Figma stroke excluded from layout",
+   "[x] Border 1px @input/border, fill @surface/default, radius full match",
+   "[x] --nc-pill-tabs-height (28px Sm, 40px Lg) drives tab min-height = group - 2 x space-0-5. Browser: Sm 28/24, Lg 40/36, no wrapping at 385px",
+   "[x] Removed max-width: 100% so the group grows with one-line tabs instead of wrapping them",
+   "[ ] Enhancement requested: animated sliding selection pill (not in Figma yet)"
+  ],
+  "evidence": "design-sync/evidence/batch-2.png and batch-2-metrics.json; Resume Builder step bar checked in the browser at 385px and 1280px"
  },
  {
   "cat": "Components",
@@ -692,7 +723,7 @@
   "cref": ".nc-step-progress",
   "cls": "structure-drift",
   "status": "pending",
-  "notes": "Figma Size Lg/Sm; code has no size modifier",
+  "notes": "Narrow-screen rule now applies Figma Sm label size (batch 2). Connector, gap and orientation still to check.",
   "id": "C-15"
  },
  {
@@ -864,5 +895,15 @@
   "status": "fixed-in-figma",
   "notes": "Fixed by designer 2026-10-24: renamed font-weight/normal (300) to font-weight/light, added font-weight/normal (400), rebound the 5 serif styles to it.",
   "id": "H-08"
+ },
+ {
+  "id": "H-09",
+  "cat": "Figma hygiene",
+  "item": "Pill Tab Item Lg height",
+  "fref": "92:5012",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by designer 2026-10-24: Pill Tab Item Lg is now 34px, matching its use in Pill-Tabs Lg. The spec that matters is the 40px group height."
  }
 ]
