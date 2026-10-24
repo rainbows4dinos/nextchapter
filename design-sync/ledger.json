@@ -85,8 +85,8 @@
   "fref": "Theme",
   "cref": "tokens.css",
   "cls": "value-drift",
-  "status": "pending",
-  "notes": "surface/default: Figma aliases neutral/50 and neutral/900 directly, code aliases --nc-surface-raised. Same resolved color; alias chain differs.",
+  "status": "synced",
+  "notes": "Token sync 2026-10-24: --nc-surface-default now aliases neutral/50 (light) and neutral/900 (dark) directly, matching Figma. Resolved color unchanged.",
   "id": "V-09"
  },
  {
@@ -281,42 +281,42 @@
  },
  {
   "cat": "Variables",
-  "item": "Spacing in use (9)",
+  "item": "Spacing original subset (9)",
   "fref": "Spacing",
   "cref": "tokens.css",
   "cls": "match",
   "status": "synced",
-  "notes": "0_5, 1, 1_5, 2, 3, 4, 5, 7, 10",
+  "notes": "All 35 steps in tokens.css (decision 2026-10-24: sync full scale).",
   "id": "V-29"
  },
  {
   "cat": "Variables",
-  "item": "Spacing not in code (26)",
+  "item": "Spacing added (26)",
   "fref": "Spacing",
   "cref": "tokens.css",
   "cls": "missing-in-code",
-  "status": "skipped",
-  "notes": "Code adds steps only when a consumer needs them (tokens.css comment). Confirm or sync full scale.",
+  "status": "synced",
+  "notes": "Added 2026-10-24 after decision to sync the full scale.",
   "id": "V-30"
  },
  {
   "cat": "Variables",
-  "item": "Radius in use (6)",
+  "item": "Radius original subset (6)",
   "fref": "Radius",
   "cref": "tokens.css",
   "cls": "match",
   "status": "synced",
-  "notes": "--nc-radius-panel is a code-only alias of xl",
+  "notes": "All 9 steps in tokens.css; --nc-radius-panel stays a code-only alias of xl.",
   "id": "V-31"
  },
  {
   "cat": "Variables",
-  "item": "Radius not in code (3)",
+  "item": "Radius added (3)",
   "fref": "Radius",
   "cref": "tokens.css",
   "cls": "missing-in-code",
-  "status": "skipped",
-  "notes": "none, lg, 3xl. Same subset rule. lg duplicates default (8).",
+  "status": "synced",
+  "notes": "Added none, lg, 3xl 2026-10-24 (full scale decision).",
   "id": "V-32"
  },
  {
@@ -331,12 +331,12 @@
  },
  {
   "cat": "Variables",
-  "item": "Typography size, line height, weight (21)",
+  "item": "Typography size, line height, weight (22)",
   "fref": "Typography",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "needs-decision",
-  "notes": "All 17 text styles bind these variables, but code text tokens use raw px. Add --nc-font-size-*, --nc-line-height-*, --nc-font-weight-* and point --nc-type-* at them? font-size/6xl (67) and line-height/20 (80) are unused by any style.",
+  "status": "synced",
+  "notes": "Added --nc-font-size-*, --nc-line-height-*, --nc-font-weight-* (light 300, normal 400, medium 500, semibold 600); every --nc-type-* size, line height and weight references them. Figma renamed normal (300) to light and added normal (400) on 2026-10-24.",
   "id": "V-34"
  },
  {
@@ -346,7 +346,7 @@
   "cref": "--nc-type-display-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives; weight is --nc-font-weight-normal (400), matching the corrected Figma binding (H-08).",
   "id": "T-01"
  },
  {
@@ -356,7 +356,7 @@
   "cref": "--nc-type-h1-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives; weight is --nc-font-weight-normal (400), matching the corrected Figma binding (H-08).",
   "id": "T-02"
  },
  {
@@ -366,7 +366,7 @@
   "cref": "--nc-type-h2-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives; weight is --nc-font-weight-normal (400), matching the corrected Figma binding (H-08).",
   "id": "T-03"
  },
  {
@@ -376,7 +376,7 @@
   "cref": "--nc-type-h3-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives; weight is --nc-font-weight-normal (400), matching the corrected Figma binding (H-08).",
   "id": "T-04"
  },
  {
@@ -386,7 +386,7 @@
   "cref": "--nc-type-h4-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives; weight is --nc-font-weight-normal (400), matching the corrected Figma binding (H-08).",
   "id": "T-05"
  },
  {
@@ -394,9 +394,9 @@
   "item": "Type/Body/Large",
   "fref": "text style",
   "cref": "--nc-type-body-large-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "font-not-loaded",
+  "status": "synced",
+  "notes": "Inter 300 now loaded on all 4 entry pages (token sync 2026-10-24). Weight references --nc-font-weight-light. Confirm in a browser that this text renders Light.",
   "id": "T-06"
  },
  {
@@ -404,9 +404,9 @@
   "item": "Type/Body/Default",
   "fref": "text style",
   "cref": "--nc-type-body-default-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "font-not-loaded",
+  "status": "synced",
+  "notes": "Inter 300 now loaded on all 4 entry pages (token sync 2026-10-24). Weight references --nc-font-weight-light. Confirm in a browser that this text renders Light.",
   "id": "T-07"
  },
  {
@@ -414,9 +414,9 @@
   "item": "Type/Body/Small",
   "fref": "text style",
   "cref": "--nc-type-body-small-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "font-not-loaded",
+  "status": "synced",
+  "notes": "Inter 300 now loaded on all 4 entry pages (token sync 2026-10-24). Weight references --nc-font-weight-light. Confirm in a browser that this text renders Light.",
   "id": "T-08"
  },
  {
@@ -424,9 +424,9 @@
   "item": "Type/Caption",
   "fref": "text style",
   "cref": "--nc-type-caption-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "font-not-loaded",
+  "status": "synced",
+  "notes": "Inter 300 now loaded on all 4 entry pages (token sync 2026-10-24). Weight references --nc-font-weight-light. Confirm in a browser that this text renders Light.",
   "id": "T-09"
  },
  {
@@ -436,7 +436,7 @@
   "cref": "--nc-type-ui-title-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-10"
  },
  {
@@ -446,7 +446,7 @@
   "cref": "--nc-type-ui-label-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-11"
  },
  {
@@ -456,7 +456,7 @@
   "cref": "--nc-type-ui-label-sm-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-12"
  },
  {
@@ -466,7 +466,7 @@
   "cref": "--nc-type-ui-button-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-13"
  },
  {
@@ -476,7 +476,7 @@
   "cref": "--nc-type-ui-button-small-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-14"
  },
  {
@@ -484,9 +484,9 @@
   "item": "Type/UI/Badge",
   "fref": "text style",
   "cref": "--nc-type-ui-badge-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "Inter Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "font-not-loaded",
+  "status": "synced",
+  "notes": "Inter 300 now loaded on all 4 entry pages (token sync 2026-10-24). Weight references --nc-font-weight-light. Confirm in a browser that this text renders Light.",
   "id": "T-15"
  },
  {
@@ -494,9 +494,9 @@
   "item": "Type/Meta",
   "fref": "text style",
   "cref": "--nc-type-meta-*",
-  "cls": "match",
-  "status": "blocked",
-  "notes": "IBM Plex Mono Light (300) is not loaded: Google Fonts URL requests Inter 400;500;600 and default-weight Plex Mono, so the browser falls back to 400. Add wght 300 to the font URL on all 4 entry pages.",
+  "cls": "value-drift",
+  "status": "synced",
+  "notes": "Figma changed Meta from IBM Plex Mono Light (300) to Regular (400) on 2026-10-24; code follows (--nc-font-weight-normal). Plex Mono 300 dropped from the font URL again. Only resolved value change in this sync.",
   "id": "T-16"
  },
  {
@@ -506,7 +506,7 @@
   "cref": "--nc-type-ui-status-*",
   "cls": "match",
   "status": "synced",
-  "notes": "values match; raw px, see Typography row",
+  "notes": "Size, line height and weight reference typography primitives.",
   "id": "T-17"
  },
  {
@@ -545,8 +545,8 @@
   "fref": "205:665",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "needs-decision",
-  "notes": "Build in code or skip?",
+  "status": "pending",
+  "notes": "Decision 2026-10-24: build in code.",
   "id": "C-03"
  },
  {
@@ -625,8 +625,8 @@
   "fref": "206:18776",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "needs-decision",
-  "notes": "Build in code or skip? Used by Prospect Card.",
+  "status": "pending",
+  "notes": "Decision 2026-10-24: build in code. Needed by Prospect Card (C-23).",
   "id": "C-11"
  },
  {
@@ -635,8 +635,8 @@
   "fref": "205:679",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "needs-decision",
-  "notes": "Build in code or skip?",
+  "status": "pending",
+  "notes": "Decision 2026-10-24: build in code.",
   "id": "C-12"
  },
  {
@@ -645,8 +645,8 @@
   "fref": "216:20314",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "needs-decision",
-  "notes": "Build in code or skip?",
+  "status": "pending",
+  "notes": "Decision 2026-10-24: build in code.",
   "id": "C-13"
  },
  {
@@ -828,5 +828,15 @@
   "status": "fixed-in-figma",
   "notes": "Fixed by agent 2026-10-24: gap 2 -> spacing/0_5 on both sizes. Values unchanged, binding only.",
   "id": "H-07"
+ },
+ {
+  "cat": "Figma hygiene",
+  "item": "Serif text styles weight binding",
+  "fref": "Type/Display, Type/Heading/H1-H4",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by designer 2026-10-24: renamed font-weight/normal (300) to font-weight/light, added font-weight/normal (400), rebound the 5 serif styles to it.",
+  "id": "H-08"
  }
 ]

@@ -14,7 +14,7 @@
       },
       "props": {},
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -39,7 +39,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -53,7 +53,7 @@
       },
       "props": {},
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -76,7 +76,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -102,7 +102,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -129,7 +129,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -177,7 +177,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -191,7 +191,7 @@
       },
       "props": {},
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -205,7 +205,7 @@
       },
       "props": {},
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -226,7 +226,7 @@
       "dependsOn": [
         "Pill Tab Item"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -242,7 +242,7 @@
       "dependsOn": [
         "Step Progress Item"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -258,7 +258,7 @@
       "dependsOn": [
         "Input Label"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -274,7 +274,7 @@
       "dependsOn": [
         "Input Label"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -290,7 +290,7 @@
       "dependsOn": [
         "Input Label"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -317,7 +317,7 @@
       "dependsOn": [
         "Input Label"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -344,7 +344,7 @@
       "dependsOn": [
         "Input Label"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -367,7 +367,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -394,7 +394,7 @@
         }
       },
       "dependsOn": [],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -411,7 +411,7 @@
         "Company Avatar",
         "Status-Badge"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     },
     {
       "figma": {
@@ -429,7 +429,7 @@
         "Switch-Mode",
         "Button"
       ],
-      "mapping": "proposed, confirm"
+      "mapping": "confirmed 2026-10-24"
     }
   ],
   "unmatched": {
@@ -437,22 +437,26 @@
       {
         "name": "Avatar Badge",
         "key": "b3599cd89500b3bd53ba31b7bf1cf28de0e7c297",
-        "nodeId": "205:665"
+        "nodeId": "205:665",
+        "decision": "build (2026-10-24)"
       },
       {
         "name": "Company Avatar",
         "key": "1596b1723892067efe77680a2df8ea0312533982",
-        "nodeId": "206:18776"
+        "nodeId": "206:18776",
+        "decision": "build (2026-10-24)"
       },
       {
         "name": "Avatar",
         "key": "ccddebe1a923847671677ac9a72ea5f0a113d563",
-        "nodeId": "205:679"
+        "nodeId": "205:679",
+        "decision": "build (2026-10-24)"
       },
       {
         "name": "Paddle Button",
         "key": "bd03d5326e5517c6b005e040c5166fe4b698e872",
-        "nodeId": "216:20314"
+        "nodeId": "216:20314",
+        "decision": "build (2026-10-24)"
       }
     ],
     "codeOnly": [

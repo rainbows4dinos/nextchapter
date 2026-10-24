@@ -1,4 +1,4 @@
-/* Live Figma foundations, October 11, 2026. See docs/nextchapter-shared-foundations-phase1.md. */
+/* Live Figma foundations, October 11, 2026; token sync October 24, 2026 (design-sync/ledger.md). See docs/nextchapter-shared-foundations-phase1.md. */
 /* Figma inside strokes: borders and padding never enlarge specified dimensions. */
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -56,106 +56,159 @@
   --nc-font-mono: 'IBM Plex Mono', monospace;
   --nc-type-letter-spacing: 0;
 
+  /* Figma Typography collection primitives. Text tokens below reference these. */
+  --nc-font-weight-light: 300;
+  --nc-font-weight-normal: 400;
+  --nc-font-weight-medium: 500;
+  --nc-font-weight-semibold: 600;
+  --nc-font-size-xs: 12px;
+  --nc-font-size-base: 16px;
+  --nc-font-size-xl: 21px;
+  --nc-font-size-xl-title: 21px;
+  --nc-font-size-3xl: 28px;
+  --nc-font-size-4xl: 38px;
+  --nc-font-size-5xl: 50px;
+  --nc-font-size-6xl: 67px;
+  --nc-line-height-3: 12px;
+  --nc-line-height-4: 16px;
+  --nc-line-height-5: 20px;
+  --nc-line-height-6: 24px;
+  --nc-line-height-7: 28px;
+  --nc-line-height-8: 32px;
+  --nc-line-height-9: 36px;
+  --nc-line-height-12: 48px;
+  --nc-line-height-16: 64px;
+  --nc-line-height-20: 80px;
+
   --nc-type-display-family: var(--nc-font-serif);
-  --nc-type-display-size: 50px;
-  --nc-type-display-line-height: 64px;
-  --nc-type-display-weight: 400;
+  --nc-type-display-size: var(--nc-font-size-5xl);
+  --nc-type-display-line-height: var(--nc-line-height-16);
+  --nc-type-display-weight: var(--nc-font-weight-normal);
 
   --nc-type-h1-family: var(--nc-font-serif);
-  --nc-type-h1-size: 38px;
-  --nc-type-h1-line-height: 48px;
-  --nc-type-h1-weight: 400;
+  --nc-type-h1-size: var(--nc-font-size-4xl);
+  --nc-type-h1-line-height: var(--nc-line-height-12);
+  --nc-type-h1-weight: var(--nc-font-weight-normal);
 
   --nc-type-h2-family: var(--nc-font-serif);
-  --nc-type-h2-size: 28px;
-  --nc-type-h2-line-height: 36px;
-  --nc-type-h2-weight: 400;
+  --nc-type-h2-size: var(--nc-font-size-3xl);
+  --nc-type-h2-line-height: var(--nc-line-height-9);
+  --nc-type-h2-weight: var(--nc-font-weight-normal);
 
   --nc-type-h3-family: var(--nc-font-serif);
-  --nc-type-h3-size: 21px;
-  --nc-type-h3-line-height: 32px;
-  --nc-type-h3-weight: 400;
+  --nc-type-h3-size: var(--nc-font-size-xl);
+  --nc-type-h3-line-height: var(--nc-line-height-8);
+  --nc-type-h3-weight: var(--nc-font-weight-normal);
 
   --nc-type-h4-family: var(--nc-font-serif);
-  --nc-type-h4-size: 16px;
-  --nc-type-h4-line-height: 24px;
-  --nc-type-h4-weight: 400;
+  --nc-type-h4-size: var(--nc-font-size-base);
+  --nc-type-h4-line-height: var(--nc-line-height-6);
+  --nc-type-h4-weight: var(--nc-font-weight-normal);
 
   --nc-type-body-large-family: var(--nc-font-sans);
-  --nc-type-body-large-size: 21px;
-  --nc-type-body-large-line-height: 32px;
-  --nc-type-body-large-weight: 300;
+  --nc-type-body-large-size: var(--nc-font-size-xl);
+  --nc-type-body-large-line-height: var(--nc-line-height-8);
+  --nc-type-body-large-weight: var(--nc-font-weight-light);
 
   --nc-type-body-default-family: var(--nc-font-sans);
-  --nc-type-body-default-size: 16px;
-  --nc-type-body-default-line-height: 24px;
-  --nc-type-body-default-weight: 300;
+  --nc-type-body-default-size: var(--nc-font-size-base);
+  --nc-type-body-default-line-height: var(--nc-line-height-6);
+  --nc-type-body-default-weight: var(--nc-font-weight-light);
 
   --nc-type-body-small-family: var(--nc-font-sans);
-  --nc-type-body-small-size: 12px;
-  --nc-type-body-small-line-height: 20px;
-  --nc-type-body-small-weight: 300;
+  --nc-type-body-small-size: var(--nc-font-size-xs);
+  --nc-type-body-small-line-height: var(--nc-line-height-5);
+  --nc-type-body-small-weight: var(--nc-font-weight-light);
 
   --nc-type-caption-family: var(--nc-font-sans);
-  --nc-type-caption-size: 12px;
-  --nc-type-caption-line-height: 16px;
-  --nc-type-caption-weight: 300;
+  --nc-type-caption-size: var(--nc-font-size-xs);
+  --nc-type-caption-line-height: var(--nc-line-height-4);
+  --nc-type-caption-weight: var(--nc-font-weight-light);
 
   --nc-type-ui-title-family: var(--nc-font-sans);
-  --nc-type-ui-title-size: 21px;
-  --nc-type-ui-title-line-height: 28px;
-  --nc-type-ui-title-weight: 600;
+  --nc-type-ui-title-size: var(--nc-font-size-xl-title);
+  --nc-type-ui-title-line-height: var(--nc-line-height-7);
+  --nc-type-ui-title-weight: var(--nc-font-weight-semibold);
 
   --nc-type-ui-label-family: var(--nc-font-sans);
-  --nc-type-ui-label-size: 16px;
-  --nc-type-ui-label-line-height: 24px;
-  --nc-type-ui-label-weight: 500;
+  --nc-type-ui-label-size: var(--nc-font-size-base);
+  --nc-type-ui-label-line-height: var(--nc-line-height-6);
+  --nc-type-ui-label-weight: var(--nc-font-weight-medium);
 
   --nc-type-ui-label-sm-family: var(--nc-font-sans);
-  --nc-type-ui-label-sm-size: 12px;
-  --nc-type-ui-label-sm-line-height: 20px;
-  --nc-type-ui-label-sm-weight: 500;
+  --nc-type-ui-label-sm-size: var(--nc-font-size-xs);
+  --nc-type-ui-label-sm-line-height: var(--nc-line-height-5);
+  --nc-type-ui-label-sm-weight: var(--nc-font-weight-medium);
 
   --nc-type-ui-button-family: var(--nc-font-sans);
-  --nc-type-ui-button-size: 16px;
-  --nc-type-ui-button-line-height: 16px;
-  --nc-type-ui-button-weight: 500;
+  --nc-type-ui-button-size: var(--nc-font-size-base);
+  --nc-type-ui-button-line-height: var(--nc-line-height-4);
+  --nc-type-ui-button-weight: var(--nc-font-weight-medium);
 
   --nc-type-ui-button-small-family: var(--nc-font-sans);
-  --nc-type-ui-button-small-size: 12px;
-  --nc-type-ui-button-small-line-height: 12px;
-  --nc-type-ui-button-small-weight: 500;
+  --nc-type-ui-button-small-size: var(--nc-font-size-xs);
+  --nc-type-ui-button-small-line-height: var(--nc-line-height-3);
+  --nc-type-ui-button-small-weight: var(--nc-font-weight-medium);
 
   --nc-type-ui-badge-family: var(--nc-font-sans);
-  --nc-type-ui-badge-size: 16px;
-  --nc-type-ui-badge-line-height: 24px;
-  --nc-type-ui-badge-weight: 300;
+  --nc-type-ui-badge-size: var(--nc-font-size-base);
+  --nc-type-ui-badge-line-height: var(--nc-line-height-6);
+  --nc-type-ui-badge-weight: var(--nc-font-weight-light);
 
   --nc-type-ui-status-family: var(--nc-font-sans);
-  --nc-type-ui-status-size: 12px;
-  --nc-type-ui-status-line-height: 12px;
-  --nc-type-ui-status-weight: 500;
+  --nc-type-ui-status-size: var(--nc-font-size-xs);
+  --nc-type-ui-status-line-height: var(--nc-line-height-3);
+  --nc-type-ui-status-weight: var(--nc-font-weight-medium);
 
   --nc-type-meta-family: var(--nc-font-mono);
-  --nc-type-meta-size: 12px;
-  --nc-type-meta-line-height: 16px;
-  --nc-type-meta-weight: 300;
+  --nc-type-meta-size: var(--nc-font-size-xs);
+  --nc-type-meta-line-height: var(--nc-line-height-4);
+  --nc-type-meta-weight: var(--nc-font-weight-normal);
 
-  /* Figma Spacing/Radius subsets in use; add steps only when a consumer needs them. */
+  /* Figma Spacing and Radius collections, full scales. */
+  --nc-space-0: 0;
+  --nc-space-px: 1px;
   --nc-space-0-5: 2px;
   --nc-space-1: 4px;
   --nc-space-1-5: 6px;
   --nc-space-2: 8px;
+  --nc-space-2-5: 10px;
   --nc-space-3: 12px;
+  --nc-space-3-5: 14px;
   --nc-space-4: 16px;
   --nc-space-5: 20px;
+  --nc-space-6: 24px;
   --nc-space-7: 28px;
+  --nc-space-8: 32px;
+  --nc-space-9: 36px;
   --nc-space-10: 40px;
+  --nc-space-11: 44px;
+  --nc-space-12: 48px;
+  --nc-space-14: 56px;
+  --nc-space-16: 64px;
+  --nc-space-20: 80px;
+  --nc-space-24: 96px;
+  --nc-space-28: 112px;
+  --nc-space-32: 128px;
+  --nc-space-36: 144px;
+  --nc-space-40: 160px;
+  --nc-space-44: 176px;
+  --nc-space-48: 192px;
+  --nc-space-52: 208px;
+  --nc-space-56: 224px;
+  --nc-space-60: 240px;
+  --nc-space-64: 256px;
+  --nc-space-72: 288px;
+  --nc-space-80: 320px;
+  --nc-space-96: 384px;
+  --nc-radius-none: 0;
   --nc-radius-sm: 2px;
   --nc-radius-md: 6px;
   --nc-radius-default: 8px;
+  --nc-radius-lg: 8px;
   --nc-radius-xl: 12px;
   --nc-radius-2xl: 16px;
+  --nc-radius-3xl: 24px;
   --nc-radius-full: 9999px;
   --nc-radius-panel: var(--nc-radius-xl);
   --nc-focus-width: 2px;
@@ -173,7 +226,7 @@
 :root, body {
   color-scheme: dark;
   --nc-background-page: var(--nc-neutral-950);
-  --nc-surface-default: var(--nc-surface-raised);
+  --nc-surface-default: var(--nc-neutral-900);
   --nc-surface-raised: var(--nc-neutral-900);
   --nc-surface-sunken: var(--nc-neutral-900);
   --nc-border-subtle: var(--nc-neutral-700);
@@ -242,7 +295,7 @@
 body.light {
   color-scheme: light;
   --nc-background-page: var(--nc-neutral-100);
-  --nc-surface-default: var(--nc-surface-raised);
+  --nc-surface-default: var(--nc-neutral-50);
   --nc-surface-raised: var(--nc-neutral-50);
   --nc-surface-sunken: var(--nc-neutral-200);
   --nc-border-subtle: var(--nc-neutral-300);

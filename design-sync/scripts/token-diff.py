@@ -43,7 +43,7 @@ for col, d in inv['variables'].items():
                 if not ok: cls += ' (code %s / %s)' % (norm(cl or '-'), norm(cd or '-'))
         else:
             c = allroot.get(cn)
-            if col == 'Typography': cls = 'missing-in-code' if c is None else 'match'
+            if col == 'Typography' and name.startswith('font-family/'): cls = 'missing-in-code' if c is None else 'match'
             elif c is None: cls = 'missing-in-code'
             else: cls = 'match' if norm(c) == fexp(val) else 'value-drift (code %s)' % norm(c)
         rows.append((col, name, cn, cls))

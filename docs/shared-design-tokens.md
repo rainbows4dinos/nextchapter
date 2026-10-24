@@ -2,6 +2,18 @@
 
 Historical extraction snapshot. The October 11 [Phase 1 shared foundations](nextchapter-shared-foundations-phase1.md) supersede the palette, font families, semantic values and native-control behavior described below; the ownership and export boundaries still apply.
 
+## Design sync token update: October 24, 2026
+
+Token sync from the first `lr-design-system-sync` run; row-level detail is in [design-sync/ledger.md](../design-sync/ledger.md).
+
+- **Font weights.** Inter Light (300) was specified by Body, Caption and Badge but never requested, so browsers rendered it at 400. All four entry pages now load Inter 300 to 600.
+- **Typography primitives.** Added `--nc-font-size-*`, `--nc-line-height-*` and `--nc-font-weight-*` (light 300, normal 400, medium 500, semibold 600) from the Figma Typography collection. Every `--nc-type-*` size, line height and weight references them. Serif styles and Meta use `normal` (400); Figma's Meta style moved from Plex Mono Light to Regular in the same update.
+- **Full scales.** All 35 Figma spacing steps and 9 radius steps are now defined, replacing the in-use subsets. `--nc-radius-panel` still aliases `xl`.
+- **Surface alias.** `--nc-surface-default` aliases `neutral/50` and `neutral/900` directly, as in Figma, instead of `--nc-surface-raised`. The resolved color is unchanged.
+- **Cache revision.** `tokens.css` links carry `?v=20261024-token-sync`.
+
+Apart from `--nc-type-meta-weight` (300 to 400, following Figma), no existing token changed its resolved value in either theme (checked with `design-sync/scripts/resolve-tokens.py`). Browser rendering of the new font weights still needs a visual check.
+
 ## Current namespace — October 12, 2026
 
 Shared CSS token names now use `--nc-` (nextchapter). Definitions, application/component consumers, browser-test color probes and documentation references were renamed together. Token values, aliases, theme selectors and export logic are unchanged. Four-page comparisons in both themes confirmed identical resolved styles; all current namespace references are defined. Historical tables below use the current prefix for consistency.

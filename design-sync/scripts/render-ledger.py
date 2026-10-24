@@ -5,12 +5,12 @@ out = ["# Design sync ledger", "",
  "- Figma file: nextchapter (hLBR7Nl3GelwM9hstQb3Ah), library pages Brand 45:3, Components 92:5175",
  "- Figma last modified: not exposed by the plugin API; inventory read 2026-10-24",
  "- Code baseline: 66eac22 (2026-10-22)",
- "- Audit run: 2026-10-24 with lr-design-system-sync (audit, mapping, and approved Figma hygiene fixes; no code changed)",
+ "- Audit run: 2026-10-24 with lr-design-system-sync (see Log)",
  "- Direction: Figma to code",
  "- Machine-readable copy: ledger.json (source for the Figma mirror)", "",
  "## Inventory", "",
  "| Category | Figma count | Ledger rows | Synced | Open |", "|---|---|---|---|---|"]
-FIXLOG = ["", "## Figma fixes applied", "", "- 2026-10-24: agent bound 59 unbound padding, gap and radius values in 7 components to existing Spacing and Radius variables (user-approved). Only exact value matches were bound, except 6 pill and circle radii (999 or 10) moved to radius/full (9999), which renders identically. Re-scan of all 24 library components found 0 unbound padding, gap or radius values."]
+FIXLOG = ["", "## Log", ""] + ["- %(date)s: %(entry)s" % e for e in json.load(open("log.json"))]
 for c, n in cats:
     rs = [r for r in L if r['cat'] == c]
     if c == 'Variables':
