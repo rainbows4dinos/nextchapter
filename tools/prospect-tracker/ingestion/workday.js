@@ -1,3 +1,4 @@
+import { addEmployerLogo } from './company-logo.js';
 import { IngestionError } from './errors.js';
 import { recognizeWorkday, sameWorkdayPosting } from './workday-url.js';
 import { retrievePosting } from './bounded-fetch.js';
@@ -149,6 +150,7 @@ export function normalizeWorkday(root, identity, metadata, originalUrl, now, war
     } catch { warnings.push('Workday publication metadata contains an invalid or ambiguous date; complete it manually.'); }
   }
   if (info.canApply === false) warnings.push('Workday reports that application is not currently available. This does not change Radar status.');
+  addEmployerLogo(draft, sources, [root.hiringOrganization, metadata.hiringOrganization]);
   const result = finishPreview(draft, identity, originalUrl, now, sources, warnings, 'workday-cxs-detail');
   result.identity.requisition_id = text(info.jobReqId);
   return result;

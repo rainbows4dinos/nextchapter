@@ -1,3 +1,5 @@
+import { companyAvatar } from './company-avatar.js';
+import { logoUrl } from './company-logo.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { createDateFilter } from './date-filter.js?v=20261024-radio-label';
 import { applicationDate, appliedHistoryMap, defaultDateFilter } from './board-dates.js';
@@ -21,13 +23,6 @@ function statusBadge(status) {
   const badge = el('span'); setProspectStatusBadge(badge, status); return badge;
 }
 
-/** Figma Company Avatar Sm (206:18776): the company's first letter or digit; decorative, the name follows it.
- * @param {string} company @param {boolean} [large] */
-function companyAvatar(company, large = false) {
-  const initial = (company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
-  const avatar = el('span', initial, `nc-avatar nc-avatar--company nc-avatar--${large ? 'lg' : 'sm'}`); avatar.setAttribute('aria-hidden', 'true');
-  return avatar;
-}
 /** @template {keyof HTMLElementTagNameMap} T @param {T} tag @param {string} [text] @param {string} [className] */
 export function el(tag, text = '', className = '') {
   const node = document.createElement(tag);
@@ -182,7 +177,7 @@ export function boardView(root, cards, options = {}) {
         node.setAttribute('aria-describedby', hint.id);
         node.setAttribute('aria-keyshortcuts', 'Alt+ArrowUp Alt+ArrowDown');
         const header = el('span', '', 'prospect-card__header');
-        header.append(companyAvatar(card.company), el('strong', card.company, 'prospect-card__company'));
+        header.append(companyAvatar(card.company, false, card.company_logo_url), el('strong', card.company, 'prospect-card__company'));
         const meta = el('span', '', 'prospect-card__meta');
         meta.append(statusBadge(card.status));
         const grip = gravityIcon('grip'); grip.classList.add('prospect-card__grip');
@@ -263,7 +258,7 @@ export function editorView(root, row) {
     const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
     arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
     back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
-    const title = el('div', '', 'editor__title'); title.append(companyAvatar(row.company, true), heading);
+    const title = el('div', '', 'editor__title'); title.append(companyAvatar(row.company, true, row.company_logo_url), heading);
     const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
   } else editor.append(back, heading);
   const panels = el('div', '', 'editor__panels'); editor.append(panels);
@@ -283,7 +278,25 @@ export function editorView(root, row) {
   };
   urlControl.append(urlInput, open); jobUrl.append(urlControl);
   urlInput.addEventListener('input', updateOpen); urlInput.addEventListener('change', updateOpen); updateOpen();
-  fields.append(grid, jobUrl, field('job_description', 'Job description', row?.job_description ?? '', 'textarea'));
+  const logo = field('company_logo_url', 'Company Logo URL', row?.company_logo_url ?? '', 'url');
+  const logoInput = /** @type {HTMLInputElement} */ (logo.querySelector('input'));
+  logoInput.maxLength = 2048;
+  const override = el('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row?.company_logo_override ?? false);
+  const logoPreview = el('div', '', 'editor__logo-preview');
+  const updateLogo = () => {
+    try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); }
+    catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); }
+    logoPreview.replaceChildren(companyAvatar(/** @type {HTMLInputElement} */ (grid.querySelector('[name="company"]')).value, false, logoInput.value));
+  };
+  logoInput.addEventListener('input', () => { override.value = 'true'; try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); } catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); } });
+  logoInput.addEventListener('change', updateLogo);
+  logoInput.addEventListener('logo-candidate', updateLogo);
+  const clearLogo = button('Clear Logo', () => { logoInput.value = ''; logoInput.dispatchEvent(new window.Event('input', { bubbles: true })); updateLogo(); logoInput.focus(); }, 'nc-button nc-button--tertiary nc-button--sm');
+  logoPreview.append(companyAvatar(row?.company ?? '', false, row?.company_logo_url));
+  const logoActions = el('div', '', 'editor__logo-actions'); logoActions.append(logoPreview, clearLogo);
+  const logoHelp = el('small', 'Optional public HTTPS image URL. Your replacement or clear is kept when retrieving the posting again. Some hosts block external images; initials remain available.', 'nc-field__helper'); logoHelp.id = 'company-logo-help'; logoInput.setAttribute('aria-describedby', logoHelp.id);
+  logo.append(override, logoActions, logoHelp);
+  fields.append(grid, logo, jobUrl, field('job_description', 'Job description', row?.job_description ?? '', 'textarea'));
   const details = el('details'); details.append(el('summary', 'More job details'));
   const extra = el('div', '', 'field-grid');
   for (const [name, label] of /** @type {const} */ ([['source','Source'], ['location','Location'], ['employment_type','Employment type'], ['compensation_text','Compensation range / type']])) {

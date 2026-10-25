@@ -1,3 +1,4 @@
+import { addEmployerLogo } from './company-logo.js';
 import { IngestionError } from './errors.js';
 import { recognizePosting, samePosting } from './posting-url.js';
 import { retrievePosting, POSTING_BYTE_LIMIT } from './bounded-fetch.js';
@@ -105,6 +106,7 @@ export function normalizeAshby(raw, identity, metadata, originalUrl, now, warnin
   const pay = compensation(raw.compensation, warnings);
   if (pay) { draft.compensation_text = pay; sources.compensation_text = 'All supplied compensation tiers/components; explicit intervals only'; }
   if (text(raw.publishedAt)) warnings.push(`Ashby reports last published at ${String(raw.publishedAt)}. This can be republication; Posted date is left blank rather than treating it as the original posting date.`);
+  addEmployerLogo(draft, sources, [metadata.hiringOrganization]);
   return finishPreview(draft, identity, originalUrl, now, sources, warnings, 'ashby-job-posting-api');
 }
 

@@ -1,3 +1,4 @@
+import { addEmployerLogo } from './company-logo.js';
 import { IngestionError } from './errors.js';
 import { recognizePosting, samePosting } from './posting-url.js';
 import { retrievePosting } from './bounded-fetch.js';
@@ -79,6 +80,7 @@ export function normalizeLever(raw, identity, metadata, originalUrl, now, warnin
     try { normalizePatch({ posted_on: posted.slice(0, 10) }); draft.posted_on = posted.slice(0, 10); sources.posted_on = 'Matched hosted JobPosting.datePosted (source calendar date)'; }
     catch { warnings.push('Lever posting metadata has an invalid publication date; complete it manually.'); }
   } else if (posted) warnings.push('Lever posting metadata has an ambiguous publication date; complete it manually.');
+  addEmployerLogo(draft, sources, [metadata.hiringOrganization]);
   return finishPreview(draft, identity, originalUrl, now, sources, warnings, 'lever-postings-api');
 }
 

@@ -26,6 +26,8 @@ For URL import, see [Greenhouse configuration and hosted results](docs/career-ra
 
 For Workable, see [supported links, validation and deployment](docs/prospect-tracker-workable-ingestion.md) and the preceding [compatibility spike](docs/prospect-tracker-workable-spike.md).
 
+For company avatars, see [logo detection, manual overrides, privacy and deployment](docs/prospect-tracker-company-logos.md).
+
 ## Repository instructions
 
 [AGENTS.md](AGENTS.md) is the canonical, tool-agnostic source of development instructions. [CLAUDE.md](CLAUDE.md) imports it for Claude Code compatibility. Keep shared instructions in `AGENTS.md`.

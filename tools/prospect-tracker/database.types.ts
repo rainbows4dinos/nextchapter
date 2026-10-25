@@ -83,6 +83,8 @@ export type Database = {
           assessment_rationale: string | null
           board_position: number
           company: string
+          company_logo_override: boolean
+          company_logo_url: string | null
           compensation_fit: number | null
           compensation_text: string | null
           connections: Json
@@ -119,6 +121,8 @@ export type Database = {
           assessment_rationale?: string | null
           board_position?: number
           company: string
+          company_logo_override?: boolean
+          company_logo_url?: string | null
           compensation_fit?: number | null
           compensation_text?: string | null
           connections?: Json
@@ -155,6 +159,8 @@ export type Database = {
           assessment_rationale?: string | null
           board_position?: number
           company?: string
+          company_logo_override?: boolean
+          company_logo_url?: string | null
           compensation_fit?: number | null
           compensation_text?: string | null
           connections?: Json

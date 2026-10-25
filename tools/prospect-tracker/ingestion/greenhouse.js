@@ -1,3 +1,4 @@
+import { addEmployerLogo } from './company-logo.js';
 import { descriptionText } from './posting-facts.js';
 export { descriptionText } from './posting-facts.js';
 import { normalizePatch } from '../model.js';
@@ -34,6 +35,7 @@ export function normalizeGreenhouse(input, identity, originalUrl, now, discovere
   if (arrangements.length === 1 && !/\b(?:not|no)\s+(?:remote|hybrid|onsite)\b/i.test(location ?? '')) {
     draft.work_arrangement = /** @type {import('../model.js').WorkArrangement} */ (arrangements[0]); fieldSources.work_arrangement = 'Explicit location label';
   }
+  addEmployerLogo(draft, fieldSources, [raw.hiringOrganization]);
   // Custom employer-defined metadata has no standardized semantics: do not guess.
   const firstPublished = text(raw.first_published);
   if (firstPublished && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(firstPublished) && Number.isFinite(Date.parse(firstPublished))) {

@@ -1,3 +1,4 @@
+import { mergeLogo } from './company-logo.js';
 import { bindFieldValidation, setFieldError } from '../shared/fields.mjs';
 import { setAlert } from '../shared/status.mjs';
 import { retrieveJob } from './ingestion-client.js';
@@ -75,6 +76,15 @@ export function mountIngestion(form, options) {
         origin.id = `${control.id}-origin`; control.closest('.nc-field')?.append(origin);
         const described = new Set((control.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)); described.add(origin.id);
         control.setAttribute('aria-describedby', [...described].join(' ')); setFieldError(control, '');
+      }
+      const logo = /** @type {HTMLInputElement|null} */ (form.elements.namedItem('company_logo_url'));
+      const override = /** @type {HTMLInputElement|null} */ (form.elements.namedItem('company_logo_override'));
+      if (logo && override) {
+        const merged = mergeLogo({ company_logo_url: logo.value, company_logo_override: override.value === 'true' }, preview.draft.company_logo_url);
+        logo.value = merged.company_logo_url ?? ''; override.value = String(merged.company_logo_override);
+        logo.dispatchEvent(new window.Event('logo-candidate'));
+        const wrapper = logo.closest('.nc-field'); wrapper?.querySelector('.field-origin')?.remove();
+        wrapper?.append(el('small', merged.company_logo_override ? 'Your logo override was kept.' : merged.company_logo_url ? 'Detected employer logo — review before saving.' : 'No unambiguous employer logo supplied; initials will be used.', 'field-origin nc-field__helper'));
       }
       const details = form.querySelector('details'); if (details) details.open = true;
       const save = form.querySelector('button[type="submit"]'); if (save) save.textContent = 'Save prospect';

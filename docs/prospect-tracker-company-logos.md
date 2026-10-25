@@ -1,0 +1,46 @@
+# Prospect Tracker Company Logos
+
+Issue #29 adds optional `company_logo_url` and `company_logo_override` fields to prospects. A manual URL replacement or explicit clear sets the override flag. Repeated retrieval in the existing new-prospect preview respects that flag. A database trigger also preserves saved manual choices when an automatic refresh write explicitly supplies `company_logo_override: false`; other refreshed facts still save. Manual edits always supply `true`. There is no new existing-prospect refresh workflow, backfill, upload service, or employer crawl.
+
+## Detection and review
+
+Detection consumes only responses already fetched under the supported provider identity, size, timeout and outbound-request rules:
+
+- Ashby and Lever: the existing uniquely matched hosted `JobPosting.hiringOrganization.logo`.
+- Workday: explicit CXS hiring-organization branding and uniquely matched hosted JobPosting branding, only when employer names agree. Conflicting candidate URLs remain absent.
+- Workable: `logo` on the account already bound to the posting's `accountUid` and requested subdomain.
+- Greenhouse: explicit hiring-organization metadata if present in the existing job response and matching `company_name`. The usual public response often has no employer logo; no additional hosted-page request was added.
+
+Employer metadata follows the [JobPosting hiringOrganization convention](https://developers.google.com/search/docs/appearance/structured-data/job-posting#hiring-organization). Plain HTTPS logo strings and single ImageObject `url`/`contentUrl` values are supported. Arrays, conflicting URLs/names, known ATS/recruiting labels, platform origins, known platform-branding paths, and generic page/publisher/social images are excluded. No website/domain is inferred from a company name. This is conservative metadata extraction, not independent verification of an employer's identity or artwork. Missing logos do not discard posting facts.
+
+The candidate appears in the existing editable form with a preview and provenance message. Users can replace it or use **Clear Logo**. Existing prospects receive logos through the same Details form and normal guarded save path. Blank legacy records keep their initials.
+
+## Rendering and URL policy
+
+The shared avatar renderer composes the existing Company Avatar classes: 28px on cards and field previews, 56px in the Details title. Adjacent company text remains the accessible label. Images are decorative, non-draggable, and pointer-inert. Logos fit within the avatar without changing layout.
+
+URLs must be absolute public HTTPS references of at most 2,048 characters, with no credentials, custom port, query parameters or fragment. Literal IP addresses and local/reserved hostnames are rejected. Query-based and signed image URLs are intentionally unsupported, so they cannot carry prospect payloads. No server retrieves image bytes or follows image redirects. The browser uses `referrerpolicy="no-referrer"` and anonymous CORS; credentialed/hotlink-protected hosts may therefore fall back.
+
+Remote content is assigned only to an `img` URL, never inline SVG, HTML, an iframe, or a link to executable content. Initials remain visible until a decoded image loads. Failed/blocked images are removed; pending images time out after eight seconds. A bounded page-session failure cache avoids retry loops across rerenders. Reloading the page permits another attempt.
+
+## Validation and release
+
+Automated coverage includes safe and unsafe URLs, all provider normalization paths, ambiguous/ATS metadata, manual replacement/clear precedence, real SDK create/edit/reload, revision conflicts, database refresh protection, unchanged status history, and owner RLS. `tests/browser/company-logo.mjs` creates a disposable fixture and intercepts synthetic image responses. It checks review/retrieval, manual overrides, clearing, save/reload, keyboard validation/Clear Logo, card activation, responsive themes, geometry, broken/slow images and request privacy. It uses isolated Chrome CDP at port 9242; no hosted records or real employer images are required. Screenshots go to the OS temporary directory.
+
+From `tools/prospect-tracker/`:
+
+```sh
+npm run typecheck
+npm run lint
+npm test
+npm run functions:typecheck
+npm run functions:lint
+npm run test:functions
+node tests/browser/company-logo.mjs
+```
+
+Local application typecheck/lint, six logo tests, six Deno function tests, and the browser checks passed. The full Node suite reports 196 passing tests and one pre-existing `resume-context.test.js` date expectation failure (`May 2026 to Aug 2026` versus current canonical `May 2026 to Present`).
+
+The company-logo migration was applied to the hosted `career-radar` project (`liwszkldtfxihoyipbai`) on October 24, 2026 through the authenticated Supabase SQL Editor because the CLI has no operator login. The exact migration SQL and its `20261025000000` history registration were executed atomically. Read-only verification confirmed both columns, the URL constraint, manual-override trigger, authenticated column write grants, and enabled RLS. No prospect records were created or edited.
+
+Hosted database types were regenerated through the scoped `types:generate` script after CLI sign-in. `job-ingest` was redeployed as active version 9 with `verify_jwt: true`; an unauthenticated POST returned 401. Frontend publication uses the existing Pages workflow on `main`. Hosted application acceptance and current live provider-logo coverage remain unverified; a public Workable metadata probe returned 404 during implementation.

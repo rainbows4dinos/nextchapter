@@ -2,7 +2,7 @@ import { normalizePatch } from './model.js';
 import { IngestionError } from './ingestion/errors.js';
 import { recognizePosting, INGESTION_METHODS } from './ingestion/posting-url.js';
 
-const FIELDS = ['company','title','job_url','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on'];
+const FIELDS = ['company_logo_url','company','title','job_url','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on'];
 
 /** Validate the server boundary instead of passing an arbitrary object to insert.
  * @param {unknown} input @param {string} originalUrl

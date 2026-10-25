@@ -162,7 +162,7 @@ export async function startFixture(port = 0) {
           } else {
             if (!['prospects','career_profiles','radar_opportunities'].includes(table) || !['POST','PATCH'].includes(req.method)) throw new Error('Unsupported fixture write');
             const body = JSON.parse(text);
-            const allowed = table === 'radar_opportunities' ? ['id','owner_id','identity_key','snapshot','decision','pass_reason','pass_note','prospect_id'] : table === 'career_profiles' ? ['explicit_profile','reviewed_at'] : ['id','owner_id','company','title','job_url','source','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on','applied_on','notes','status'];
+            const allowed = table === 'radar_opportunities' ? ['id','owner_id','identity_key','snapshot','decision','pass_reason','pass_note','prospect_id'] : table === 'career_profiles' ? ['explicit_profile','reviewed_at'] : ['company_logo_url','company_logo_override','id','owner_id','company','title','job_url','source','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on','applied_on','notes','status'];
             const keys = Object.keys(body);
             if (keys.some(key => !allowed.includes(key))) throw new Error('Unsupported fixture column');
             if (req.method === 'POST') {

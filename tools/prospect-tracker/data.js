@@ -9,7 +9,7 @@ import {
 /** @typedef {import('./model.js').Connection} Connection */
 /** @typedef {import('./model.js').ProspectStatus} ProspectStatus */
 /** @typedef {import('./model.js').StatusEvent} StatusEvent */
-/** @typedef {Pick<Prospect, 'id'|'company'|'title'|'location'|'work_arrangement'|'status'|'applied_on'|'discovered_on'|'created_at'|'updated_at'|'board_position'>} ProspectCard */
+/** @typedef {Pick<Prospect, 'company_logo_url'|'id'|'company'|'title'|'location'|'work_arrangement'|'status'|'applied_on'|'discovered_on'|'created_at'|'updated_at'|'board_position'>} ProspectCard */
 /** @typedef {Pick<Prospect, 'id'|'company'|'title'|'job_url'|'location'|'status'|'applied_on'|'updated_at'>} ProspectIdentity */
 
 export class StaleProspectError extends Error {
@@ -61,7 +61,7 @@ export function createRadarDataAccess(client) {
     const pageSize = 500;
     for (let offset = 0; ; offset += pageSize) {
       const { data, error } = await client.from('prospects')
-        .select('id,company,title,location,work_arrangement,status,applied_on,discovered_on,created_at,updated_at,board_position')
+        .select('company_logo_url,id,company,title,location,work_arrangement,status,applied_on,discovered_on,created_at,updated_at,board_position')
         .order('board_position', { ascending: true }).order('created_at', { ascending: false }).order('id', { ascending: true })
         .range(offset, offset + pageSize - 1);
       if (error) throw error;

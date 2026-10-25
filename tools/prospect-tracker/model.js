@@ -1,3 +1,4 @@
+import { logoUrl } from './company-logo.js';
 /** @typedef {import('./database.types.ts').Database} Database */
 /** @typedef {Database['public']['Tables']['prospects']['Row']} ProspectRow */
 /** @typedef {Database['public']['Tables']['prospect_status_events']['Row']} StatusEvent */
@@ -25,7 +26,7 @@ export const SCORE_FIELDS = Object.freeze([
 ]);
 /** @typedef {typeof SCORE_FIELDS[number]} ScoreField */
 /** @typedef {Partial<Record<ScoreField, Score|null>> & {assessment_rationale?: string|null, assessment_concerns?: string|null}} AssessmentPatch */
-/** @typedef {{company?: string, title?: string, job_url?: string|null, source?: string|null, location?: string|null, work_arrangement?: WorkArrangement|null, employment_type?: string|null, compensation_text?: string|null, job_description?: string|null, posted_on?: string|null, discovered_on?: string|null, applied_on?: string|null, notes?: string|null}} DetailsPatch */
+/** @typedef {{company_logo_url?: string|null, company_logo_override?: boolean, company?: string, title?: string, job_url?: string|null, source?: string|null, location?: string|null, work_arrangement?: WorkArrangement|null, employment_type?: string|null, compensation_text?: string|null, job_description?: string|null, posted_on?: string|null, discovered_on?: string|null, applied_on?: string|null, notes?: string|null}} DetailsPatch */
 /** @typedef {DetailsPatch & AssessmentPatch & {connections?: Connection[]}} ProspectPatch */
 /** @typedef {ProspectPatch & {id: string, company: string, title: string, status?: ProspectStatus}} NewProspect */
 
@@ -34,7 +35,7 @@ const TEXT_FIELDS = [
   'compensation_text', 'job_description', 'notes', 'assessment_rationale', 'assessment_concerns'
 ];
 const DATE_FIELDS = ['posted_on', 'discovered_on', 'applied_on'];
-const EDITABLE_FIELDS = new Set([...TEXT_FIELDS, ...DATE_FIELDS, ...SCORE_FIELDS, 'work_arrangement', 'connections']);
+const EDITABLE_FIELDS = new Set([...TEXT_FIELDS, ...DATE_FIELDS, ...SCORE_FIELDS, 'work_arrangement', 'connections', 'company_logo_url', 'company_logo_override']);
 
 /** @param {unknown} value @param {string} [field] @returns {string} */
 export function validateId(value, field = 'id') {
@@ -106,7 +107,12 @@ export function normalizePatch(patch) {
   for (const [key, value] of Object.entries(patch)) {
     if (!EDITABLE_FIELDS.has(key)) throw new Error(`Field cannot be edited: ${key}`);
     if (value === undefined) continue;
-    if (TEXT_FIELDS.includes(key)) {
+    if (key === 'company_logo_url') {
+      result[key] = logoUrl(value);
+    } else if (key === 'company_logo_override') {
+      if (typeof value !== 'boolean') throw new Error('Invalid logo override');
+      result[key] = value;
+    } else if (TEXT_FIELDS.includes(key)) {
       const text = optionalText(value, key);
       if (['company', 'title'].includes(key) && !text) throw new Error(`${key} is required`);
       if (key === 'job_url' && text) validateHttpUrl(text);

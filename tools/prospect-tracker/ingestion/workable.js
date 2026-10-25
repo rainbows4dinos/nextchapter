@@ -1,3 +1,4 @@
+import { addEmployerLogo } from './company-logo.js';
 import { IngestionError } from './errors.js';
 import { recognizeWorkable } from './workable-url.js';
 import { retrievePosting } from './bounded-fetch.js';
@@ -65,6 +66,7 @@ export function normalizeWorkable(raw, identity, account, originalUrl, now, warn
   if (raw.type === 'full') { draft.employment_type = 'Full-time'; sources.employment_type = 'type=full'; }
   else if (text(raw.type)) warnings.push('Workable supplied an unsupported employment type. Complete it manually.');
   if (text(raw.published)) warnings.push(`Workable reports published at ${String(raw.published)}. This may be a republication; Posted date is left blank for review.`);
+  addEmployerLogo(draft, sources, [{ name: account.name, logo: account.logo }]);
   return finishPreview(draft, identity, originalUrl, now, sources, warnings, 'workable-public-job-detail');
 }
 

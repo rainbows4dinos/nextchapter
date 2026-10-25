@@ -89,7 +89,8 @@ export function readDetails(form) {
     'employment_type', 'compensation_text', 'job_description', 'posted_on', 'discovered_on', 'applied_on', 'notes']) {
     patch[key] = String(form.get(key) ?? '');
   }
-  return /** @type {import('./model.js').DetailsPatch} */ (normalizePatch(patch));
+  const logo = form.has('company_logo_url') ? { company_logo_url: String(form.get('company_logo_url') ?? ''), company_logo_override: form.get('company_logo_override') === 'true' } : {};
+  return /** @type {import('./model.js').DetailsPatch} */ (normalizePatch({ ...patch, ...logo }));
 }
 /** @param {unknown} error */
 export function errorMessage(error) {
