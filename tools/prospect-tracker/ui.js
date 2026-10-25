@@ -1,3 +1,4 @@
+import { companyLogoEditor } from './company-logo-editor.js';
 import { companyAvatar } from './company-avatar.js';
 import { logoUrl } from './company-logo.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
@@ -253,12 +254,13 @@ export function editorView(root, row) {
   const editor = el('div', '', row ? 'editor editor--detail' : 'editor');
   const back = link('← Back to board', '#/board'); back.className = 'editor__back';
   const heading = el(row ? 'h1' : 'h2', row ? row.company : 'Add prospect', 'editor__heading');
-  if (row) {
+  const logoEditor = row ? companyLogoEditor(row) : null;
+  if (row && logoEditor) {
     back.className = 'editor__back nc-paddle'; back.textContent = '';
     const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
     arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
     back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
-    const title = el('div', '', 'editor__title'); title.append(companyAvatar(row.company, true, row.company_logo_url), heading);
+    const title = el('div', '', 'editor__title'); title.append(logoEditor.trigger, heading, logoEditor.panel);
     const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
   } else editor.append(back, heading);
   const panels = el('div', '', 'editor__panels'); editor.append(panels);
@@ -278,25 +280,30 @@ export function editorView(root, row) {
   };
   urlControl.append(urlInput, open); jobUrl.append(urlControl);
   urlInput.addEventListener('input', updateOpen); urlInput.addEventListener('change', updateOpen); updateOpen();
-  const logo = field('company_logo_url', 'Company Logo URL', row?.company_logo_url ?? '', 'url');
-  const logoInput = /** @type {HTMLInputElement} */ (logo.querySelector('input'));
-  logoInput.maxLength = 2048;
-  const override = el('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row?.company_logo_override ?? false);
-  const logoPreview = el('div', '', 'editor__logo-preview');
-  const updateLogo = () => {
-    try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); }
-    catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); }
-    logoPreview.replaceChildren(companyAvatar(/** @type {HTMLInputElement} */ (grid.querySelector('[name="company"]')).value, false, logoInput.value));
-  };
-  logoInput.addEventListener('input', () => { override.value = 'true'; try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); } catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); } });
-  logoInput.addEventListener('change', updateLogo);
-  logoInput.addEventListener('logo-candidate', updateLogo);
-  const clearLogo = button('Clear Logo', () => { logoInput.value = ''; logoInput.dispatchEvent(new window.Event('input', { bubbles: true })); updateLogo(); logoInput.focus(); }, 'nc-button nc-button--tertiary nc-button--sm');
-  logoPreview.append(companyAvatar(row?.company ?? '', false, row?.company_logo_url));
-  const logoActions = el('div', '', 'editor__logo-actions'); logoActions.append(logoPreview, clearLogo);
-  const logoHelp = el('small', 'Optional public HTTPS image URL. Your replacement or clear is kept when retrieving the posting again. Some hosts block external images; initials remain available.', 'nc-field__helper'); logoHelp.id = 'company-logo-help'; logoInput.setAttribute('aria-describedby', logoHelp.id);
-  logo.append(override, logoActions, logoHelp);
-  fields.append(grid, logo, jobUrl, field('job_description', 'Job description', row?.job_description ?? '', 'textarea'));
+  fields.append(grid);
+  if (logoEditor) fields.append(logoEditor.value, logoEditor.override);
+  else {
+    const logo = field('company_logo_url', 'Company Logo URL', row?.company_logo_url ?? '', 'url');
+    const logoInput = /** @type {HTMLInputElement} */ (logo.querySelector('input'));
+    logoInput.maxLength = 2048;
+    const override = el('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row?.company_logo_override ?? false);
+    const logoPreview = el('div', '', 'editor__logo-preview');
+    const updateLogo = () => {
+      try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); }
+      catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); }
+      logoPreview.replaceChildren(companyAvatar(/** @type {HTMLInputElement} */ (grid.querySelector('[name="company"]')).value, false, logoInput.value));
+    };
+    logoInput.addEventListener('input', () => { override.value = 'true'; try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); } catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); } });
+    logoInput.addEventListener('change', updateLogo);
+    logoInput.addEventListener('logo-candidate', updateLogo);
+    const clearLogo = button('Clear Logo', () => { logoInput.value = ''; logoInput.dispatchEvent(new window.Event('input', { bubbles: true })); updateLogo(); logoInput.focus(); }, 'nc-button nc-button--tertiary nc-button--sm');
+    logoPreview.append(companyAvatar(row?.company ?? '', false, row?.company_logo_url));
+    const logoActions = el('div', '', 'editor__logo-actions'); logoActions.append(logoPreview, clearLogo);
+    const logoHelp = el('small', 'Optional public HTTPS image URL. Your replacement or clear is kept when retrieving the posting again. Some hosts block external images; initials remain available.', 'nc-field__helper'); logoHelp.id = 'company-logo-help'; logoInput.setAttribute('aria-describedby', logoHelp.id);
+    logo.append(override, logoActions, logoHelp);
+    fields.append(logo);
+  }
+  fields.append(jobUrl, field('job_description', 'Job description', row?.job_description ?? '', 'textarea'));
   const details = el('details'); details.append(el('summary', 'More job details'));
   const extra = el('div', '', 'field-grid');
   for (const [name, label] of /** @type {const} */ ([['source','Source'], ['location','Location'], ['employment_type','Employment type'], ['compensation_text','Compensation range / type']])) {

@@ -13,7 +13,7 @@ Detection consumes only responses already fetched under the supported provider i
 
 Employer metadata follows the [JobPosting hiringOrganization convention](https://developers.google.com/search/docs/appearance/structured-data/job-posting#hiring-organization). Plain HTTPS logo strings and single ImageObject `url`/`contentUrl` values are supported. Arrays, conflicting URLs/names, known ATS/recruiting labels, platform origins, known platform-branding paths, and generic page/publisher/social images are excluded. No website/domain is inferred from a company name. This is conservative metadata extraction, not independent verification of an employer's identity or artwork. Missing logos do not discard posting facts.
 
-The candidate appears in the existing editable form with a preview and provenance message. Users can replace it or use **Clear Logo**. Existing prospects receive logos through the same Details form and normal guarded save path. Blank legacy records keep their initials.
+The candidate appears in the existing editable form with a preview and provenance message. Users can replace it or use **Clear Logo**. On existing prospects, activate the title avatar to open a compact Company Logo popover. It offers an Image URL field, Use Logo, and Remove Logo. Accepted selections update the draft avatar and persist through Save Details; Escape or light dismissal discards uncommitted popover edits. Logo metadata stays out of the main Details fields. The normal guarded save path is unchanged. Blank legacy records keep their initials.
 
 ## Rendering and URL policy
 
@@ -44,3 +44,5 @@ Local application typecheck/lint, six logo tests, six Deno function tests, and t
 The company-logo migration was applied to the hosted `career-radar` project (`liwszkldtfxihoyipbai`) on October 24, 2026 through the authenticated Supabase SQL Editor because the CLI has no operator login. The exact migration SQL and its `20261025000000` history registration were executed atomically. Read-only verification confirmed both columns, the URL constraint, manual-override trigger, authenticated column write grants, and enabled RLS. No prospect records were created or edited.
 
 Hosted database types were regenerated through the scoped `types:generate` script after CLI sign-in. `job-ingest` was redeployed as active version 9 with `verify_jwt: true`; an unauthenticated POST returned 401. Frontend publication uses the existing Pages workflow on `main`. Hosted application acceptance and current live provider-logo coverage remain unverified; a public Workable metadata probe returned 404 during implementation.
+
+The avatar-editing UX refinement is local and has not been published. Its browser coverage also checks removal of the main Details logo section, popover sizing in both themes, keyboard opening/focus/Escape, invalid URLs without draft mutation, and removal persistence.
