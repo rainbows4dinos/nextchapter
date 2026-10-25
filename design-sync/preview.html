@@ -121,13 +121,25 @@
     <h2>C-20 Radio (165:618)</h2>
     <div class="pv-row"><span class="pv-cell" data-shot="radio-lg-default"><label class="nc-choice"><input type="radio" class="nc-radio"><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-selected"><label class="nc-choice"><input type="radio" class="nc-radio" checked><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-disabled"><label class="nc-choice"><input type="radio" class="nc-radio" disabled><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-lg-selected-disabled"><label class="nc-choice"><input type="radio" class="nc-radio" checked disabled><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-sm-default"><label class="nc-choice nc-choice--sm"><input type="radio" class="nc-radio nc-radio--sm"><span class="nc-choice__label">Full-time</span></label></span><span class="pv-cell" data-shot="radio-sm-selected"><label class="nc-choice nc-choice--sm"><input type="radio" class="nc-radio nc-radio--sm" checked><span class="nc-choice__label">Full-time</span></label></span></div>
   </section>
+  <section id="alert">
+    <h2>C-21 Alert (53:638)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="alert-success"><div class="nc-alert nc-alert--success"><span data-icon="circle-check" data-size="16"></span><span class="nc-alert__message">Message</span></div></span><span class="pv-cell" data-shot="alert-danger"><div class="nc-alert nc-alert--danger"><span data-icon="circle-xmark" data-size="16"></span><span class="nc-alert__message">Message</span></div></span><span class="pv-cell" data-shot="alert-warning"><div class="nc-alert nc-alert--warning"><span data-icon="triangle-exclamation" data-size="16"></span><span class="nc-alert__message">Message</span></div></span><span class="pv-cell" data-shot="alert-info"><div class="nc-alert nc-alert--info"><span data-icon="circle-info" data-size="16"></span><span class="nc-alert__message">Message</span></div></span></div>
+  </section>
+  <section id="toast">
+    <h2>C-22 Toast (125:11817)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="toast-success"><div class="nc-toast nc-toast--success is-visible"><span data-icon="circle-check" data-size="16"></span><span class="nc-toast__message">Message</span><button type="button" class="nc-toast__dismiss" aria-label="Dismiss"><span data-icon="xmark" data-size="16"></span></button></div></span><span class="pv-cell" data-shot="toast-danger"><div class="nc-toast nc-toast--danger is-visible"><span data-icon="circle-xmark" data-size="16"></span><span class="nc-toast__message">Message</span><button type="button" class="nc-toast__dismiss" aria-label="Dismiss"><span data-icon="xmark" data-size="16"></span></button></div></span><span class="pv-cell" data-shot="toast-warning"><div class="nc-toast nc-toast--warning is-visible"><span data-icon="triangle-exclamation" data-size="16"></span><span class="nc-toast__message">Message</span><button type="button" class="nc-toast__dismiss" aria-label="Dismiss"><span data-icon="xmark" data-size="16"></span></button></div></span><span class="pv-cell" data-shot="toast-info"><div class="nc-toast nc-toast--info is-visible"><span data-icon="circle-info" data-size="16"></span><span class="nc-toast__message">Message</span><button type="button" class="nc-toast__dismiss" aria-label="Dismiss"><span data-icon="xmark" data-size="16"></span></button></div></span></div>
+  </section>
+  <section id="avatar-badge">
+    <h2>C-03 Avatar Badge (205:665)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="avatar-badge" style="padding:12px"><span class="nc-avatar-badge"></span></span></div>
+  </section>
 </main>
 <script type="module">
   import { gravityIcon } from '../tools/shared/icons.mjs';
   for (const el of document.querySelectorAll('[data-icon]')) {
     const icon = gravityIcon(el.dataset.icon, { size: Number(el.dataset.size || 20) });
     if (el.dataset.class) icon.classList.add(el.dataset.class);
-    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group, .nc-select-wrap')) el.replaceWith(icon); else el.append(icon);
+    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group, .nc-select-wrap, .nc-alert, .nc-toast, .nc-toast__dismiss')) el.replaceWith(icon); else el.append(icon);
   }
 </script>
 <script>

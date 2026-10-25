@@ -562,9 +562,15 @@
   "fref": "205:665",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "pending",
-  "notes": "Decision 2026-10-24: build in code.",
-  "id": "C-03"
+  "status": "synced",
+  "notes": "New .nc-avatar-badge: 8px @warning/fg dot with a 1px @surface/default ring outside. Positioning on the avatar comes with Avatar (C-12).",
+  "id": "C-03",
+  "checklist": [
+   "[x] New .nc-avatar-badge, 8x8, radius full, @warning/fg",
+   "[x] 1px outside ring via box-shadow in @surface/default, matching the Figma binding (H-13 fixed)",
+   "[ ] Placement on Avatar: batch 7 (C-12)"
+  ],
+  "evidence": "design-sync/evidence/batch-6.png and batch-6-metrics.json"
  },
  {
   "cat": "Components",
@@ -854,9 +860,17 @@
   "fref": "53:638",
   "cref": ".nc-alert",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-21"
+  "status": "synced",
+  "notes": "Alerts were 42px tall (border added to Figma padding); now 40px with padding minus the border. Radius uses @radius/lg as bound in Figma.",
+  "id": "C-21",
+  "checklist": [
+   "[x] Padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 40px tall (was 42) vs Figma 40",
+   "[x] Gap 6, icon 16px at y12 (4px inset in the 24px line), message at x34, matching Figma",
+   "[x] @success/@danger/@warning/@info bg, fg and border bindings; UI/Badge text",
+   "[x] Radius @radius/lg (same 8px value as before)",
+   "[x] Local overrides on pages only change margins"
+  ],
+  "evidence": "design-sync/evidence/batch-6.png and batch-6-metrics.json"
  },
  {
   "cat": "Components",
@@ -864,9 +878,16 @@
   "fref": "125:11817",
   "cref": ".nc-toast",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "",
-  "id": "C-22"
+  "status": "synced",
+  "notes": "Toasts were 2px too large; padding now subtracts the border (134x40 like Figma). Close icon lands 10px after the message and 8px from the edge.",
+  "id": "C-22",
+  "checklist": [
+   "[x] Padding 8 from the outer edge -> calc(var(--nc-space-2) - 1px); measured 133.9x40 vs Figma 134x40",
+   "[x] Gap 8; icon at x8, message at x32; close icon at x110 (24px target with negative margins), matching Figma",
+   "[x] @surface/raised fill, @border/control stroke, shadow/sm, @text/primary message; icons in the variant fg color",
+   "[x] Radius @radius/lg; dismiss radius uses @radius/sm"
+  ],
+  "evidence": "design-sync/evidence/batch-6.png and batch-6-metrics.json"
  },
  {
   "cat": "Components",
@@ -1007,5 +1028,15 @@
   "cls": "false-positive",
   "status": "fixed-in-figma",
   "notes": "False positive (designer confirmed 2026-10-24): Icon R is bound to text/secondary, and action/disabled/fg in the disabled state; the API could not read inside the icon instance. Order fix (icon after Action R) verified in all five variants. Code matches."
+ },
+ {
+  "id": "H-13",
+  "cat": "Figma hygiene",
+  "item": "Avatar Badge ring variable",
+  "fref": "205:665",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "fixed-in-figma",
+  "notes": "Fixed by designer 2026-10-24: the badge ring is now bound to surface/default (verified), matching the code."
  }
 ]

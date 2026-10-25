@@ -15,8 +15,8 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 16 | 8 |
-| Figma hygiene | - | 12 | 0 | 0 |
+| Components | 24 | 24 | 19 | 5 |
+| Figma hygiene | - | 13 | 0 | 0 |
 
 ## Log
 
@@ -39,8 +39,10 @@
 - 2026-10-24: Designer fixed H-10 (mobile nav items 6px padding and radius/md in all states); code follows for mobile and the compact account menu. H-12 closed as a false positive: Icon R is bound to text/secondary (action/disabled/fg when disabled), which the API could not read inside the instance. navigation.css cache revision 20261024-nav-mobile.
 - 2026-10-24: Component sync batch 5 (C-18 Select, C-19 Checkbox, C-20 Radio): Select chevron positioned and padded like TextField Icon R; new .nc-choice label composite for Checkbox and Radio (gap 8/6, Input Label type, disabled label color). Controls already matched. components.css cache revision 20261024-batch-5. Open question: Prospect Tracker date filter radio labels. Evidence in design-sync/evidence/batch-5.*.
 - 2026-10-24: Prospect Tracker date filter range radios switched to the shared Radio Sm label (.nc-choice--sm); local font-size and gap removed from .board-date-option. Cache revisions: date-filter.js, ui.js, app.js, bootstrap.js and styles.css 20261024-radio-label. Tests 190/191 (pre-existing failure), lint clean.
+- 2026-10-24: Component sync batch 6 (C-21 Alert, C-22 Toast, C-03 Avatar Badge): alert and toast padding corrected for the inside stroke (alerts were 42px tall), radius @radius/lg; new .nc-avatar-badge. components.css cache revision 20261024-batch-6. New Figma item H-13 (badge ring bound to a deleted variable). Evidence in design-sync/evidence/batch-6.*.
+- 2026-10-24: Designer rebound the Avatar Badge ring to surface/default (closes H-13, verified).
 
-Status totals: fixed-in-figma 12, pending 8, synced 68
+Status totals: fixed-in-figma 13, pending 5, synced 71
 
 ## Rows
 
@@ -100,7 +102,7 @@ Status totals: fixed-in-figma 12, pending 8, synced 68
 | E-01 | Effect styles | shadow/sm | effect style | `--nc-shadow-sm` | match | synced | 1px 1px 0 var(--nc-border-control); color binding preserved |
 | C-01 | Components | Load Spinner | 81:1063 | `.nc-spinner` | match | synced | No structural drift: 28px ring, 2px loading/bg track, loading/fg quarter arc. Spin animation and reduced-motion handling are code-owned. |
 | C-02 | Components | Status-Badge | 134:13529 | `.nc-status-badge` | structure-drift | synced | Values already matched; padding now uses spacing tokens and gap added to mirror Figma auto layout. |
-| C-03 | Components | Avatar Badge | 205:665 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
+| C-03 | Components | Avatar Badge | 205:665 | `none` | missing-in-code | synced | New .nc-avatar-badge: 8px @warning/fg dot with a 1px @surface/default ring outside. Positioning on the avatar comes with Avatar (C-12). |
 | C-04 | Components | Input Label | 168:610 | `.nc-field__label` | structure-drift | synced | Added .nc-field__label--sm (Figma Size=Sm); 2px offsets now use --nc-space-0-5. Label bottom margin belongs to TextField and is checked in C-16. |
 | C-05 | Components | Pill Tab Item | 92:5012 | `.nc-pill-tab` | structure-drift | synced | Padding and gap use spacing tokens; tabs are group height minus 4px (Sm 24, Lg 36) and stay on one line. Lg via .nc-pill-tabs--lg. |
 | C-06 | Components | Step Progress Item | 77:137 | `.nc-step` | structure-drift | synced | Lg is now the default (UI/Button labels); .nc-step--sm added (UI/Button Sm, only the active label shown). The indicator switches to Sm below 600px. Resume Builder desktop step labels go from 12px to 16px. |
@@ -118,8 +120,8 @@ Status totals: fixed-in-figma 12, pending 8, synced 68
 | C-18 | Components | Select | 92:9223 | `.nc-select-wrap .nc-select` | structure-drift | synced | Shares the TextField fixes. Chevron is now positioned like TextField Icon R (12px inset, centered, 8px gap); right padding corrected for the border (36 -> 35px). |
 | C-19 | Components | Checkbox | 165:590 | `.nc-checkbox` | structure-drift | synced | Control already matched (20/16px, check 14/12px, all state colors). Added .nc-choice, the Figma Checkbox/Radio label composite: 8px gap (6px Sm), Input Label type, disabled label @control/disabled-fg. |
 | C-20 | Components | Radio | 165:618 | `.nc-radio` | structure-drift | synced | Control already matched; uses the new .nc-choice label. Prospect Tracker date filter radios switched to it (12px medium, 6px gap). |
-| C-21 | Components | Alert | 53:638 | `.nc-alert` | structure-drift | pending |  |
-| C-22 | Components | Toast | 125:11817 | `.nc-toast` | structure-drift | pending |  |
+| C-21 | Components | Alert | 53:638 | `.nc-alert` | structure-drift | synced | Alerts were 42px tall (border added to Figma padding); now 40px with padding minus the border. Radius uses @radius/lg as bound in Figma. |
+| C-22 | Components | Toast | 125:11817 | `.nc-toast` | structure-drift | synced | Toasts were 2px too large; padding now subtracts the border (134x40 like Figma). Close icon lands 10px after the message and 8px from the edge. |
 | C-23 | Components | Prospect Card | 216:20442 | `.prospect-card` | structure-drift | pending | Figma nests Company Avatar; no avatar in code |
 | C-24 | Components | Main Navigation Header | 125:12294 | `.nextchapter-header` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
 | H-01 | Figma hygiene | Paddle Button | 216:20314 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: gap 8 -> spacing/2 on both variants (215:20115, 216:20310). Values unchanged, binding only. |
@@ -134,6 +136,7 @@ Status totals: fixed-in-figma 12, pending 8, synced 68
 | H-10 | Figma hygiene | MainNavItem mobile variants | 92:9731 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: all mobile states use 6px side padding and radius/md (80x32). Code: every mobile and compact-menu state now uses calc(var(--nc-space-1-5) - 1px) side padding, so the item no longer changes width on hover or selection. |
 | H-11 | Figma hygiene | TextArea input height | 61:183 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: TextArea input is 98px in all five states. Code min-height updated from 96 to 98. |
 | H-12 | Figma hygiene | TextField Icon R color | 53:589 | `-` | false-positive | fixed-in-figma | False positive (designer confirmed 2026-10-24): Icon R is bound to text/secondary, and action/disabled/fg in the disabled state; the API could not read inside the icon instance. Order fix (icon after Action R) verified in all five variants. Code matches. |
+| H-13 | Figma hygiene | Avatar Badge ring variable | 205:665 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: the badge ring is now bound to surface/default (verified), matching the code. |
 
 ## Component checklists
 
@@ -157,6 +160,14 @@ Evidence: design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.htm
 - [x] Measured 48.3x20 vs Figma 49x20 (text rendering)
 
 Evidence: design-sync/evidence/batch-1.png and batch-1-metrics.json (preview.html, dark and light, Inter/Plex/DM Serif from @fontsource)
+
+### C-03 Avatar Badge
+
+- [x] New .nc-avatar-badge, 8x8, radius full, @warning/fg
+- [x] 1px outside ring via box-shadow in @surface/default, matching the Figma binding (H-13 fixed)
+- [ ] Placement on Avatar: batch 7 (C-12)
+
+Evidence: design-sync/evidence/batch-6.png and batch-6-metrics.json
 
 ### C-04 Input Label
 
@@ -297,3 +308,22 @@ Evidence: design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chev
 - [x] Prospect Tracker date filter range options now use .nc-choice--sm (user decision 2026-10-24): label 12/20 500 with a 6px gap (was 14px/400, 8px); row hit area and selected highlight kept locally. Verified with the tracker stylesheet in the browser: 274x32 rows, label at 22px, 12/20 500
 
 Evidence: design-sync/evidence/batch-5.png and batch-5-metrics.json; Select chevron measured in the browser
+
+### C-21 Alert
+
+- [x] Padding 8/12 from the outer edge -> calc(var(--nc-space-2) - 1px) calc(var(--nc-space-3) - 1px); measured 40px tall (was 42) vs Figma 40
+- [x] Gap 6, icon 16px at y12 (4px inset in the 24px line), message at x34, matching Figma
+- [x] @success/@danger/@warning/@info bg, fg and border bindings; UI/Badge text
+- [x] Radius @radius/lg (same 8px value as before)
+- [x] Local overrides on pages only change margins
+
+Evidence: design-sync/evidence/batch-6.png and batch-6-metrics.json
+
+### C-22 Toast
+
+- [x] Padding 8 from the outer edge -> calc(var(--nc-space-2) - 1px); measured 133.9x40 vs Figma 134x40
+- [x] Gap 8; icon at x8, message at x32; close icon at x110 (24px target with negative margins), matching Figma
+- [x] @surface/raised fill, @border/control stroke, shadow/sm, @text/primary message; icons in the variant fg color
+- [x] Radius @radius/lg; dismiss radius uses @radius/sm
+
+Evidence: design-sync/evidence/batch-6.png and batch-6-metrics.json
