@@ -56,7 +56,7 @@ button:disabled { opacity:.5; cursor:wait }
 .board-search-results { flex:none; margin:0; white-space:nowrap; color:var(--nc-text-secondary); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
 .column-cards:focus-visible { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
 .board { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; overflow-x:auto; padding:0px 0px 1rem; min-height:300px; align-items:start }
-.column { min-width:0; background:var(--surface); border:1px solid var(--border-subtle); border-radius:var(--radius); padding:12px }
+.column { min-width:0; background:var(--surface); border-radius:var(--radius); padding:12px }
 .column h3 { font:500 14px var(--sans); display:flex; justify-content:space-between; margin-bottom:1rem }
 .column { transition:border-color var(--nc-transition-general-sm),background-color var(--nc-transition-general-sm) }
 .column--drop-valid { border-color:var(--nc-focus-ring) }
@@ -97,7 +97,22 @@ fieldset { padding:0; border:0; margin:0; min-width:0 }
 details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-bottom:1rem }
 .editor { max-width:860px; margin:auto }
 .editor__back { display:inline-block; margin-block:var(--nc-space-4) }
-.editor--detail .editor__heading { font:var(--nc-type-h1-weight) var(--nc-type-h1-size)/var(--nc-type-h1-line-height) var(--nc-type-h1-family); margin-bottom:var(--nc-space-4); overflow-wrap:anywhere }
+.editor--detail .editor__heading { font:var(--nc-type-h2-weight) var(--nc-type-h2-size)/var(--nc-type-h2-line-height) var(--nc-type-h2-family); margin:0; min-width:0; overflow-wrap:anywhere }
+.editor--detail .editor__header { display:flex; flex-direction:column; align-items:flex-start; gap:var(--nc-space-8); padding-block:var(--nc-space-7) }
+.editor--detail .editor__back { display:inline-flex; margin:0 }
+.editor--detail .editor__back:hover { background:transparent }
+.editor__title { display:flex; align-items:center; gap:var(--nc-space-4); min-width:0; max-width:100% }
+.editor--detail .field-grid { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--nc-space-4) }
+.editor--detail .nc-field { min-width:0; margin-bottom:var(--nc-space-4) }
+.editor--detail details { margin:0 }
+.editor--detail summary { margin:0 0 var(--nc-space-4); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+.editor--detail .actions { padding-top:var(--nc-space-4); gap:var(--nc-space-4) }
+.editor--detail .actions .nc-button { min-height:var(--nc-space-10); height:auto; padding:var(--nc-space-2) var(--nc-space-3); white-space:normal }
+/* Figma field group is 240px: 24px label + 4px gap + 212px editable control. */
+.editor--detail .nc-textarea[name="job_description"] { height:calc(var(--nc-space-60) - var(--nc-space-7)); min-height:calc(var(--nc-space-60) - var(--nc-space-7)) }
+.editor--detail .nc-textarea[name="compensation_text"] { height:var(--nc-space-10); min-height:var(--nc-space-10) }
+.editor--detail .nc-textarea[name="notes"] { height:calc(var(--nc-space-24) + var(--nc-space-1)); min-height:calc(var(--nc-space-24) + var(--nc-space-1)) }
+.shell:has(.editor--detail) > #workspace { margin-top:calc(-1 * var(--nc-space-8)) }
 .editor__panels > * { min-width:0 }
 /* Match Builder's results sidebar: padded shell, UI headings and separate zones. */
 .editor__status.panel { align-self:start; display:flex; flex-direction:column; gap:28px; padding:28px; margin:0; overflow-wrap:anywhere }
@@ -113,8 +128,11 @@ details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-b
 .editor__status .history time { margin-top:4px }
 .editor__status #history > .panel { padding:0; margin:0; border:0; border-radius:0; background:transparent }
 @media(min-width:1200px) {
+  .shell:has(.editor--detail) { max-width:1440px; padding-inline:var(--nc-space-12) }
   .editor--detail { max-width:none }
-  .editor--detail .editor__panels { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,1fr); gap:24px }
+  /* Header is in normal flow; keep a 24px viewport inset once it scrolls away. */
+  .editor--detail .editor__status { position:sticky; top:var(--nc-space-6) }
+  .editor--detail .editor__panels { display:grid; grid-template-columns:minmax(0,1fr) 440px; gap:var(--nc-space-6) }
 }
 .status-controls { display:flex; gap:12px; align-items:end; flex-wrap:wrap }
 .status-controls .nc-field { flex:1; margin:0; min-width:170px }
@@ -206,3 +224,5 @@ time { display:block; font-size:13px; color:var(--muted) }
   .shell:has(.board) #tracker-heading > div { flex-basis:100% }
   #tracker-add { margin-left:auto }
 }
+
+@media(max-width:600px) { .editor--detail .field-grid { grid-template-columns:minmax(0,1fr) } }

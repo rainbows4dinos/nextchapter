@@ -22,10 +22,10 @@ function statusBadge(status) {
 }
 
 /** Figma Company Avatar Sm (206:18776): the company's first letter or digit; decorative, the name follows it.
- * @param {string} company */
-function companyAvatar(company) {
+ * @param {string} company @param {boolean} [large] */
+function companyAvatar(company, large = false) {
   const initial = (company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
-  const avatar = el('span', initial, 'nc-avatar nc-avatar--company nc-avatar--sm'); avatar.setAttribute('aria-hidden', 'true');
+  const avatar = el('span', initial, `nc-avatar nc-avatar--company nc-avatar--${large ? 'lg' : 'sm'}`); avatar.setAttribute('aria-hidden', 'true');
   return avatar;
 }
 /** @template {keyof HTMLElementTagNameMap} T @param {T} tag @param {string} [text] @param {string} [className] */
@@ -258,7 +258,14 @@ export function editorView(root, row) {
   const editor = el('div', '', row ? 'editor editor--detail' : 'editor');
   const back = link('← Back to board', '#/board'); back.className = 'editor__back';
   const heading = el(row ? 'h1' : 'h2', row ? row.company : 'Add prospect', 'editor__heading');
-  editor.append(back, heading);
+  if (row) {
+    back.className = 'editor__back nc-paddle'; back.textContent = '';
+    const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
+    arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
+    back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
+    const title = el('div', '', 'editor__title'); title.append(companyAvatar(row.company, true), heading);
+    const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
+  } else editor.append(back, heading);
   const panels = el('div', '', 'editor__panels'); editor.append(panels);
   const form = el('form', '', 'panel'); form.id = 'prospect-form';
   const fields = el('fieldset');
@@ -296,6 +303,18 @@ export function editorView(root, row) {
   extra.append(selectField('work_arrangement', 'Work arrangement', WORK_ARRANGEMENTS, row?.work_arrangement ?? '', true));
   for (const [name, label] of /** @type {const} */ ([['posted_on','Posted date'], ['discovered_on','Discovered date'], ['applied_on','Applied date']])) extra.append(field(name, label, row?.[name] ?? '', 'date'));
   details.append(extra, field('notes', 'Notes', row?.notes ?? '', 'textarea'));
+  if (row) {
+    const primaryDetails = el('div', '', 'field-grid');
+    for (const name of ['location', 'employment_type', 'work_arrangement', 'compensation_text']) {
+      const wrapper = extra.querySelector(`[name="${name}"]`)?.closest('.nc-field');
+      if (wrapper) primaryDetails.append(wrapper);
+    }
+    fields.append(primaryDetails);
+    const sourceField = extra.querySelector('[name="source"]')?.closest('.nc-field');
+    if (sourceField) sourceField.querySelector('.nc-field__helper')?.remove();
+    extra.querySelector('[name="source"]')?.removeAttribute('aria-describedby');
+    details.open = true;
+  }
   fields.append(details);
   const feedback = el('p', '', 'feedback nc-alert'); feedback.id = 'save-feedback'; feedback.setAttribute('role','status');
   const save = el('button', row ? 'Save details' : 'Add prospect', 'primary nc-button nc-button--primary nc-button--lg'); save.type = 'submit';
