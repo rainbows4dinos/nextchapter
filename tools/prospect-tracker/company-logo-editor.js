@@ -1,4 +1,5 @@
-import { companyAvatar } from './company-avatar.js';
+// @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
+import { companyAvatar } from './company-avatar.js?v=20261025-logo-delivery';
 import { logoUrl } from './company-logo.js';
 import { bindFieldValidation } from '../shared/fields.mjs';
 

@@ -1,3 +1,4 @@
+import { logoDiagnostic } from './logo-diagnostics.js';
 import { normalizePatch } from './model.js';
 import { IngestionError } from './ingestion/errors.js';
 import { recognizePosting, INGESTION_METHODS } from './ingestion/posting-url.js';
@@ -38,5 +39,7 @@ export async function retrieveJob(client, url, signal) {
     }
     throw new Error('Could not retrieve this posting. Check your connection and the job-ingest deployment, or enter details manually.');
   }
-  return decodePreview(data, originalUrl);
+  const preview = decodePreview(data, originalUrl);
+  logoDiagnostic(preview.draft.company_logo_url ? 'candidate_accepted' : 'no_candidate');
+  return preview;
 }

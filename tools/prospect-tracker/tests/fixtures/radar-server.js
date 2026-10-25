@@ -10,7 +10,7 @@ import { feedResponse } from './feed-response.js';
 import { emptyProfile } from '../../career-profile-model.js';
 import { recognizePosting } from '../../ingestion/posting-url.js';
 
-export async function startFixture(port = 0) {
+export async function startFixture(port = 0, options = {}) {
   const db = await createLocalDatabase();
   const owner = '11111111-1111-4111-8111-111111111111';
   await db.query('insert into auth.users(id) values ($1)', [owner]);
@@ -78,7 +78,8 @@ export async function startFixture(port = 0) {
         retrieves++;
         const handler = createIngestionHandler({ ownerId: owner, allowedOrigins: [origin],
           authenticate: async value => value === token ? owner : null,
-          fetcher: async target => {
+          retrieveLogo: options.retrieveLogo,
+          fetcher: options.fetcher ?? (async target => {
             const destination = new URL(String(target));
             if (destination.hostname === 'apply.workable.com') {
               const identity = recognizePosting(JSON.parse(text).url);
@@ -118,10 +119,10 @@ export async function startFixture(port = 0) {
             if (id === '404') return Response.json({}, { status: 404 });
             if (id === '99999') await new Promise(done => setTimeout(done, 5000));
             return Response.json(id === '67890' ? { id: 67890, title: 'Designer' } : { ...posting, id: Number(id) });
-          }
+          })
         });
         const result = await handler(new Request(origin + url.pathname, { method: req.method, headers: req.headers, body: text }));
-        res.writeHead(result.status, Object.fromEntries(result.headers)); res.end(await result.text()); return;
+        res.writeHead(result.status, Object.fromEntries(result.headers)); res.end(Buffer.from(await result.arrayBuffer())); return;
       }
       if (url.pathname.startsWith('/rest/v1/')) {
         if (req.headers.authorization !== `Bearer ${token}`) { send({ message: 'Unauthorized', code: 'PGRST301' }, 401); return; }

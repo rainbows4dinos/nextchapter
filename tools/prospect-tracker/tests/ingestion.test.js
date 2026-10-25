@@ -69,10 +69,12 @@ test('ambiguous arrangements and invalid ranges stay missing; HTML is inert and 
   assert.equal(descriptionText('<p>Hello<img src="https://evil.invalid"> world</p><style>bad</style><iframe>bad</iframe><script>bad</script>'), 'Hello world');
 });
 
-test('pipeline makes only the fixed public API GET; untrusted absolute_url is never followed', async () => {
+test('pipeline retrieves only fixed API and hosted branding paths; untrusted absolute_url is never followed', async () => {
   const requests = [];
   const result = await ingestGreenhouse(url, { now, signal: signal(), fetcher: async (target, init) => { requests.push({ target, init }); return json(posting); } });
-  assert.equal(requests.length, 1); assert.equal(requests[0].target, identity.retrieval_url);
+  assert.equal(requests.length, 2); assert.equal(requests[0].target, identity.retrieval_url);
+  assert.equal(requests[1].target, identity.canonical_url);
+  assert.equal(requests[1].init.redirect, 'manual');
   assert.equal(requests[0].init.redirect, 'manual');
   assert.deepEqual(requests[0].init.headers, { Accept: 'application/json' });
   assert.equal(result.draft.job_url, identity.canonical_url);
@@ -110,7 +112,7 @@ test('handler authenticates and authorizes before outbound retrieval, restricts 
   ]) assert.equal((await createIngestionHandler({ ...options, fetcher, ...overrides })(req)).status, status);
   assert.equal(calls, 0);
   const response = await createIngestionHandler({ ...options, fetcher })(request());
-  assert.equal(response.status, 200); assert.equal(calls, 1);
+  assert.equal(response.status, 200); assert.equal(calls, 2);
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.equal(response.headers.get('access-control-allow-origin'), options.allowedOrigins[0]);
   const preflight = await createIngestionHandler(options)(new Request('https://example.invalid/', { method: 'OPTIONS', headers: { origin: options.allowedOrigins[0] } }));

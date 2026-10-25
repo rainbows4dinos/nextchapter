@@ -1,3 +1,4 @@
+import { retrieveLogo } from './logo-transport.ts';
 import { readPublicConfig } from '../../../tools/prospect-tracker/config.js';
 import { createAuthenticator, createIngestionHandler } from '../../../tools/prospect-tracker/ingestion/handler.js';
 
@@ -17,5 +18,5 @@ for (const origin of allowedOrigins) {
 }
 export default { fetch: createIngestionHandler({
   ownerId: Deno.env.get('RADAR_OWNER_ID') ?? '', allowedOrigins,
-  authenticate: createAuthenticator(config, fetch), fetcher: fetch
+  authenticate: createAuthenticator(config, fetch), fetcher: fetch, retrieveLogo
 }) };

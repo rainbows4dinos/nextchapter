@@ -1,3 +1,4 @@
+import { atsLogoUrl } from '../ats-logo.js';
 import { logoUrl } from '../company-logo.js';
 import { object, text } from './posting-facts.js';
 
@@ -15,6 +16,8 @@ export function employerLogo(organization, company) {
   const candidate = typeof image === 'string' ? image : text(imageObject.contentUrl) ?? text(imageObject.url);
   if (imageObject.contentUrl && imageObject.url && imageObject.contentUrl !== imageObject.url) return null;
   try {
+    const ats = atsLogoUrl(candidate);
+    if (ats) return ats;
     const url = logoUrl(candidate);
     // Reject platform origins and known branding paths. Employer-specific
     // assets on independent CDNs can still be accepted.
@@ -30,4 +33,5 @@ export function addEmployerLogo(draft, sources, organizations) {
   const logos = organizations.map(org => employerLogo(org, draft.company)).filter(Boolean);
   const unique = [...new Set(logos)];
   if (unique.length === 1) { draft.company_logo_url = unique[0]; sources.company_logo_url = 'Employer-bound logo metadata (review before saving)'; }
+  console.debug('[company-logo]', unique.length === 1 ? 'candidate_accepted' : organizations.some(org => object(org).logo) ? 'candidate_rejected' : 'no_candidate');
 }

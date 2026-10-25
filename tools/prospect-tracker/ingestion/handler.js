@@ -3,7 +3,7 @@ import { IngestionError } from './errors.js';
 import { readBounded } from './bounded-fetch.js';
 
 /** HTTP boundary; dependencies injected for deterministic function tests.
- * @param {{ownerId: string, allowedOrigins: string[], authenticate: (token: string, signal: AbortSignal) => Promise<string|null>, fetcher: typeof fetch, timeoutMs?: number}} options
+ * @param {{ownerId: string, allowedOrigins: string[], authenticate: (token: string, signal: AbortSignal) => Promise<string|null>, fetcher: typeof fetch, retrieveLogo?: (url:string, signal:AbortSignal) => Promise<{bytes:Uint8Array,type:string}>, timeoutMs?: number}} options
  */
 export function createIngestionHandler(options) {
   /** @param {Request} request */
@@ -39,8 +39,22 @@ export function createIngestionHandler(options) {
       const bodyText = await readBounded(request, 4096, controller.signal);
       let body;
       try { body = JSON.parse(bodyText); } catch { throw new IngestionError('invalid_request', 'Expected valid JSON.'); }
-      if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).some(key => key !== 'url') || typeof body.url !== 'string') {
+      if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).some(key => !['url','action'].includes(key)) || (body.action !== undefined && body.action !== 'logo') || typeof body.url !== 'string') {
         throw new IngestionError('invalid_request', 'Supply only a posting URL.');
+      }
+      if (body.action === 'logo') {
+        if (!options.retrieveLogo) throw new IngestionError('not_configured', 'Company image delivery is unavailable.', 503);
+        const image = await options.retrieveLogo(body.url, controller.signal);
+        controller.signal.throwIfAborted();
+        const imageHeaders = new Headers(headers);
+        // Supabase Functions SDK decodes image/* as text. Send binary explicitly;
+        // the browser assigns only this server-validated raster type to its blob.
+        imageHeaders.set('Content-Type', 'application/octet-stream');
+        imageHeaders.set('X-Logo-Content-Type', image.type);
+        imageHeaders.set('Access-Control-Expose-Headers', 'X-Logo-Content-Type');
+        imageHeaders.set('X-Content-Type-Options', 'nosniff');
+        imageHeaders.set('Content-Security-Policy', "default-src 'none'; sandbox");
+        return new Response(new Blob([new Uint8Array(image.bytes)], { type: image.type }), { headers: imageHeaders });
       }
       const preview = await ingestPosting(body.url.trim(), { fetcher: options.fetcher, signal: controller.signal });
       controller.signal.throwIfAborted();

@@ -1,3 +1,5 @@
+import { atsLogoUrl } from './ats-logo.js';
+
 /** Logos are references, never markup. No credentials, query payloads, local
  * addresses, or fragments; image requests must not carry prospect information.
  * @param {unknown} value @returns {string|null} */
@@ -5,6 +7,8 @@ export function logoUrl(value) {
   if (value == null || value === '') return null;
   if (typeof value !== 'string' || value.length > 2048) throw new Error('Company logo must be a public HTTPS image URL without credentials, query parameters or fragments.');
   const raw = value.trim();
+  const ats = atsLogoUrl(raw);
+  if (ats) return ats;
   if (!raw) return null;
   const url = new URL(raw);
   const host = url.hostname.toLowerCase();

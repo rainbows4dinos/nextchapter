@@ -48,14 +48,15 @@ Deno.test('Deno handler authenticates and makes only a bounded public retrieval'
   const handler = createIngestionHandler({ ownerId, allowedOrigins: ['https://example.github.io'], authenticate: () => Promise.resolve(ownerId),
     fetcher: (target, init) => {
       destinations.push(String(target)); assert.equal(init!.redirect, 'manual');
-      assert.deepEqual(init!.headers, { Accept: 'application/json' });
+      assert.deepEqual(init!.headers, { Accept: destinations.length === 1 ? 'application/json' : 'text/html' });
       return Promise.resolve(Response.json(fixture));
     }
   });
   const denied = await handler(new Request('https://example.invalid/', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ url }) }));
   assert.equal(denied.status, 401); assert.equal(destinations.length, 0);
   const response = await handler(new Request('https://example.invalid/', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer synthetic' }, body: JSON.stringify({ url }) }));
-  assert.equal(response.status, 200); assert.equal(destinations.length, 1);
+  assert.equal(response.status, 200); assert.equal(destinations.length, 2);
+  assert.equal(destinations[1], recognizeGreenhouse(url).canonical_url);
   assert.equal(destinations[0], recognizeGreenhouse(url).retrieval_url);
   assert.equal(response.headers.get('cache-control'), 'no-store');
 });
