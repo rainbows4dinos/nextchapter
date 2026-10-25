@@ -704,9 +704,15 @@
   "fref": "206:18776",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "pending",
-  "notes": "Decision 2026-10-24: build in code. Needed by Prospect Card (C-23).",
-  "id": "C-11"
+  "status": "synced",
+  "notes": "New .nc-avatar--company (radius lg). Used on Prospect Card with the company initial, since the tracker has no logo data (Figma shows the Image state).",
+  "id": "C-11",
+  "checklist": [
+   "[x] .nc-avatar--company: @radius/lg corners, same sizes and colors as Avatar",
+   "[x] Image state supported via .nc-avatar__image; Prospect Tracker has no logo data, so cards show the initial (Image=false state)",
+   "[!] Figma Image and Notification Badge properties are not connected to any layer (H-14)"
+  ],
+  "evidence": "design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser"
  },
  {
   "cat": "Components",
@@ -714,9 +720,16 @@
   "fref": "205:679",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "pending",
-  "notes": "Decision 2026-10-24: build in code.",
-  "id": "C-12"
+  "status": "synced",
+  "notes": "New .nc-avatar (Sm 28, Md 40, Lg 56): initials on @action/primary, optional image, notification badge placed at Figma offsets.",
+  "id": "C-12",
+  "checklist": [
+   "[x] New .nc-avatar, .nc-avatar--sm / --lg (Md default): round, @action/primary/bg, @action/primary/border, @action/primary/fg initials (UI/Button Sm for Sm, UI/Button for Md and Lg)",
+   "[x] Optional .nc-avatar__image covers the circle with a 1px @action/primary/fg inner stroke",
+   "[x] .nc-avatar-badge positioned top-right: measured 20/0, 30/2, 44/4 for Sm, Md, Lg, matching Figma",
+   "[-] No consumer yet"
+  ],
+  "evidence": "design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser"
  },
  {
   "cat": "Components",
@@ -724,9 +737,16 @@
   "fref": "216:20314",
   "cref": "none",
   "cls": "missing-in-code",
-  "status": "pending",
-  "notes": "Decision 2026-10-24: build in code.",
-  "id": "C-13"
+  "status": "synced",
+  "notes": "New .nc-paddle: Secondary Sm icon-only button plus optional link label, 8px apart; Prev and Next by markup order. No consumer yet.",
+  "id": "C-13",
+  "checklist": [
+   "[x] New .nc-paddle button wrapping a .nc-button--secondary --sm --icon-only and .nc-paddle__label (UI/Button, @link/default, @link/hover)",
+   "[x] Gap 8; measured 88.5x28 with the label at x36 (Prev) and the button at x61 (Next), matching Figma 89x28",
+   "[x] Hover and pressed states drive the inner button; disabled and focus-visible handled on the whole control",
+   "[-] No consumer yet"
+  ],
+  "evidence": "design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser"
  },
  {
   "cat": "Components",
@@ -895,19 +915,37 @@
   "fref": "216:20442",
   "cref": ".prospect-card",
   "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma nests Company Avatar; no avatar in code",
-  "id": "C-23"
+  "status": "synced",
+  "notes": "Restructured to Figma: Company Avatar + company header, title, meta row with status badge left and date right, hover grip. Padding 12 inside the border (Figma includes this stroke in layout). Removed a stale rule that colored the company name muted.",
+  "id": "C-23",
+  "checklist": [
+   "[x] Card 299x116 measured, matching Figma; padding var(--nc-space-3) inside the 1px border (stroke included in layout here), rows 4px apart",
+   "[x] Header: Company Avatar Sm at 13,13 + company (UI/Button, @link/default) at 47,19, 6px gap and 6px below; company was rendered muted by a stale rule (removed)",
+   "[x] Title Body/Default @text/primary at 13,51",
+   "[x] Meta row: Status-Badge at 13,83, date right-aligned at y85 (Caption, @text/secondary), was stacked under the badge",
+   "[x] Grip icon top-right at 274,13, shown on hover only where dragging is enabled (min-width 900px, hover, fine pointer); verified in the browser",
+   "[x] @card/bg, @card/border, @card/hover, radius default",
+   "[!] Figma Hover variant aligns the header to the bottom while Default centers it (H-15); code centers"
+  ],
+  "evidence": "design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser"
  },
  {
   "cat": "Components",
   "item": "Main Navigation Header",
   "fref": "125:12294",
   "cref": ".nextchapter-header",
-  "cls": "structure-drift",
-  "status": "pending",
-  "notes": "Figma hygiene fixed 2026-10-24, see H rows",
-  "id": "C-24"
+  "cls": "match",
+  "status": "synced",
+  "notes": "Already matched Figma at Lg, Md, Sm and Sm-Open; spacing now uses tokens. Verified 80px header, 28px insets, 40px and 12px nav gaps in the browser.",
+  "id": "C-24",
+  "checklist": [
+   "[x] Lg: 80px tall incl. 1px bottom border @border/control, @action/secondary/bg, max-width 1400, insets var(--nc-space-7), nav gap var(--nc-space-10), utilities gap var(--nc-space-5); measured at 1280px",
+   "[x] Md (900-1199): nav gap var(--nc-space-3), 28px tertiary menu toggle; measured at 1080px",
+   "[x] Sm: 64px, insets var(--nc-space-1-5) var(--nc-space-5), primary menu toggle",
+   "[x] Sm-Open: menu insets var(--nc-space-7) var(--nc-space-5), gap var(--nc-space-6), utilities divider with var(--nc-space-5) top padding, right-aligned items (checked with H-10)",
+   "[x] Uses synced MainNavItem, Switch-Mode and Button"
+  ],
+  "evidence": "design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser"
  },
  {
   "cat": "Figma hygiene",
@@ -1038,5 +1076,25 @@
   "cls": "hygiene",
   "status": "fixed-in-figma",
   "notes": "Fixed by designer 2026-10-24: the badge ring is now bound to surface/default (verified), matching the code."
+ },
+ {
+  "id": "H-14",
+  "cat": "Figma hygiene",
+  "item": "Company Avatar unbound properties",
+  "fref": "206:18776",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "needs-figma-fix",
+  "notes": "Company Avatar defines Image and Notification Badge boolean properties, but neither is connected to a layer (the img layer is always shown and there is no badge layer). Connect Image to the img layer, and add a badge layer or remove the property."
+ },
+ {
+  "id": "H-15",
+  "cat": "Figma hygiene",
+  "item": "Prospect Card hover header alignment",
+  "fref": "216:20442",
+  "cref": "-",
+  "cls": "hygiene",
+  "status": "needs-figma-fix",
+  "notes": "The header row (Frame 3) centers the avatar and company in Default but bottom-aligns them in Hover, so the company name drops 6px on hover. Code keeps it centered. Set Hover to center to match."
  }
 ]

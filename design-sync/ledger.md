@@ -15,8 +15,8 @@
 | Text styles | 17 | 17 | 17 | 0 |
 | Effect styles | 1 | 1 | 1 | 0 |
 | Paint styles | 0 | 0 | 0 | 0 |
-| Components | 24 | 24 | 19 | 5 |
-| Figma hygiene | - | 13 | 0 | 0 |
+| Components | 24 | 24 | 24 | 0 |
+| Figma hygiene | - | 15 | 0 | 2 |
 
 ## Log
 
@@ -41,8 +41,10 @@
 - 2026-10-24: Prospect Tracker date filter range radios switched to the shared Radio Sm label (.nc-choice--sm); local font-size and gap removed from .board-date-option. Cache revisions: date-filter.js, ui.js, app.js, bootstrap.js and styles.css 20261024-radio-label. Tests 190/191 (pre-existing failure), lint clean.
 - 2026-10-24: Component sync batch 6 (C-21 Alert, C-22 Toast, C-03 Avatar Badge): alert and toast padding corrected for the inside stroke (alerts were 42px tall), radius @radius/lg; new .nc-avatar-badge. components.css cache revision 20261024-batch-6. New Figma item H-13 (badge ring bound to a deleted variable). Evidence in design-sync/evidence/batch-6.*.
 - 2026-10-24: Designer rebound the Avatar Badge ring to surface/default (closes H-13, verified).
+- 2026-10-24: Component sync batch 7 (C-11 Company Avatar, C-12 Avatar, C-13 Paddle Button, C-23 Prospect Card, C-24 Main Navigation Header): new .nc-avatar (with company and badge variants) and .nc-paddle; Prospect Card restructured to Figma (avatar header, title, badge and date row, hover grip) in ui.js and styles.css; header spacing tokenized. New preview-tracker.html for tracker-styled components. Cache revisions: components.css and navigation.css 20261024-batch-7; Prospect Tracker ui/app/bootstrap/styles 20261024-batch-7. New Figma items H-14 and H-15. Tests 190/191 (pre-existing failure), lint clean. All 24 components synced.
+- 2026-10-24: Typecheck fix: the companyAvatar helper had been inserted between el()'s JSDoc and the function, detaching el's types (2 TS7006 errors reported by the user). Moved the helper above the JSDoc. tsc --noEmit (TypeScript 7.0.2, Linux binary installed outside the repo) now passes; tests 190/191 (pre-existing failure); lint clean.
 
-Status totals: fixed-in-figma 13, pending 5, synced 71
+Status totals: fixed-in-figma 13, needs-figma-fix 2, synced 76
 
 ## Rows
 
@@ -110,9 +112,9 @@ Status totals: fixed-in-figma 13, pending 5, synced 71
 | C-08 | Components | Button | 53:220 | `.nc-button` | structure-drift | synced | Buttons were 2px too tall and wide (42/30px); now fixed 40/28px with no vertical padding and side padding minus the border. Added .nc-button--icon-only (40x40, 28x28). |
 | C-09 | Components | Switch-Mode | 81:397 | `.theme-toggle` | match | synced | No structural drift: 48x28 track, 20px thumb at 4px and 24px, 12px sun and moon at 6px and 30px, colors per theme all match. |
 | C-10 | Components | MainNavItem | 92:9731 | `.nextchapter-nav-item` | structure-drift | synced | Desktop item matched (92x32); padding tokenized. Mobile now 6px side inset and radius md in every state, matching Figma after H-10. |
-| C-11 | Components | Company Avatar | 206:18776 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. Needed by Prospect Card (C-23). |
-| C-12 | Components | Avatar | 205:679 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
-| C-13 | Components | Paddle Button | 216:20314 | `none` | missing-in-code | pending | Decision 2026-10-24: build in code. |
+| C-11 | Components | Company Avatar | 206:18776 | `none` | missing-in-code | synced | New .nc-avatar--company (radius lg). Used on Prospect Card with the company initial, since the tracker has no logo data (Figma shows the Image state). |
+| C-12 | Components | Avatar | 205:679 | `none` | missing-in-code | synced | New .nc-avatar (Sm 28, Md 40, Lg 56): initials on @action/primary, optional image, notification badge placed at Figma offsets. |
+| C-13 | Components | Paddle Button | 216:20314 | `none` | missing-in-code | synced | New .nc-paddle: Secondary Sm icon-only button plus optional link label, 8px apart; Prev and Next by markup order. No consumer yet. |
 | C-14 | Components | Pill-Tabs | 279:1161 | `.nc-pill-tabs` | structure-drift | synced | Group height is the spec (Sm 28px, Lg 40px via --nc-pill-tabs-height); the 1px border sits inside the 2px padding, so tabs are group - 4px. Group grows with its tabs instead of wrapping. |
 | C-15 | Components | Step Progress Indicator | 102:11781 | `.nc-step-progress` | match | synced | Already matched (16px gaps, 1px @border/control connectors, Lg and Sm widths 719 and 300); spacing now uses tokens. |
 | C-16 | Components | TextField | 53:589 | `.nc-field .nc-input` | structure-drift | synced | Side padding 1px too wide fixed; disabled gets the gray fill and no border; error border @danger/border; Action L/R and Icon R now shared (.nc-input-group); Prospect Tracker Job URL uses Action R. |
@@ -122,8 +124,8 @@ Status totals: fixed-in-figma 13, pending 5, synced 71
 | C-20 | Components | Radio | 165:618 | `.nc-radio` | structure-drift | synced | Control already matched; uses the new .nc-choice label. Prospect Tracker date filter radios switched to it (12px medium, 6px gap). |
 | C-21 | Components | Alert | 53:638 | `.nc-alert` | structure-drift | synced | Alerts were 42px tall (border added to Figma padding); now 40px with padding minus the border. Radius uses @radius/lg as bound in Figma. |
 | C-22 | Components | Toast | 125:11817 | `.nc-toast` | structure-drift | synced | Toasts were 2px too large; padding now subtracts the border (134x40 like Figma). Close icon lands 10px after the message and 8px from the edge. |
-| C-23 | Components | Prospect Card | 216:20442 | `.prospect-card` | structure-drift | pending | Figma nests Company Avatar; no avatar in code |
-| C-24 | Components | Main Navigation Header | 125:12294 | `.nextchapter-header` | structure-drift | pending | Figma hygiene fixed 2026-10-24, see H rows |
+| C-23 | Components | Prospect Card | 216:20442 | `.prospect-card` | structure-drift | synced | Restructured to Figma: Company Avatar + company header, title, meta row with status badge left and date right, hover grip. Padding 12 inside the border (Figma includes this stroke in layout). Removed a stale rule that colored the company name muted. |
+| C-24 | Components | Main Navigation Header | 125:12294 | `.nextchapter-header` | match | synced | Already matched Figma at Lg, Md, Sm and Sm-Open; spacing now uses tokens. Verified 80px header, 28px insets, 40px and 12px nav gaps in the browser. |
 | H-01 | Figma hygiene | Paddle Button | 216:20314 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: gap 8 -> spacing/2 on both variants (215:20115, 216:20310). Values unchanged, binding only. |
 | H-02 | Figma hygiene | Chip | 62:285 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: padding on all 6 variants: Sm 12/8 -> spacing/3, spacing/2; Lg 16/12 -> spacing/4, spacing/3. Values unchanged, binding only. |
 | H-03 | Figma hygiene | Pill-Tabs | 279:1161 | `-` | hygiene | fixed-in-figma | Fixed by agent 2026-10-24: padding 2 -> spacing/0_5 on both sizes; radius 999 -> radius/full (9999, renders the same pill). Radius value changed (999/10 -> 9999), visual result identical; review. |
@@ -137,6 +139,8 @@ Status totals: fixed-in-figma 13, pending 5, synced 71
 | H-11 | Figma hygiene | TextArea input height | 61:183 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: TextArea input is 98px in all five states. Code min-height updated from 96 to 98. |
 | H-12 | Figma hygiene | TextField Icon R color | 53:589 | `-` | false-positive | fixed-in-figma | False positive (designer confirmed 2026-10-24): Icon R is bound to text/secondary, and action/disabled/fg in the disabled state; the API could not read inside the icon instance. Order fix (icon after Action R) verified in all five variants. Code matches. |
 | H-13 | Figma hygiene | Avatar Badge ring variable | 205:665 | `-` | hygiene | fixed-in-figma | Fixed by designer 2026-10-24: the badge ring is now bound to surface/default (verified), matching the code. |
+| H-14 | Figma hygiene | Company Avatar unbound properties | 206:18776 | `-` | hygiene | needs-figma-fix | Company Avatar defines Image and Notification Badge boolean properties, but neither is connected to a layer (the img layer is always shown and there is no badge layer). Connect Image to the img layer, and add a badge layer or remove the property. |
+| H-15 | Figma hygiene | Prospect Card hover header alignment | 216:20442 | `-` | hygiene | needs-figma-fix | The header row (Frame 3) centers the avatar and company in Default but bottom-aligns them in Hover, so the company name drops 6px on hover. Code keeps it centered. Set Hover to center to match. |
 
 ## Component checklists
 
@@ -239,6 +243,32 @@ Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Buil
 
 Evidence: design-sync/evidence/batch-3.png and batch-3-metrics.json; Resume Builder checked in the browser at 1280px
 
+### C-11 Company Avatar
+
+- [x] .nc-avatar--company: @radius/lg corners, same sizes and colors as Avatar
+- [x] Image state supported via .nc-avatar__image; Prospect Tracker has no logo data, so cards show the initial (Image=false state)
+- [!] Figma Image and Notification Badge properties are not connected to any layer (H-14)
+
+Evidence: design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser
+
+### C-12 Avatar
+
+- [x] New .nc-avatar, .nc-avatar--sm / --lg (Md default): round, @action/primary/bg, @action/primary/border, @action/primary/fg initials (UI/Button Sm for Sm, UI/Button for Md and Lg)
+- [x] Optional .nc-avatar__image covers the circle with a 1px @action/primary/fg inner stroke
+- [x] .nc-avatar-badge positioned top-right: measured 20/0, 30/2, 44/4 for Sm, Md, Lg, matching Figma
+- [-] No consumer yet
+
+Evidence: design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser
+
+### C-13 Paddle Button
+
+- [x] New .nc-paddle button wrapping a .nc-button--secondary --sm --icon-only and .nc-paddle__label (UI/Button, @link/default, @link/hover)
+- [x] Gap 8; measured 88.5x28 with the label at x36 (Prev) and the button at x61 (Next), matching Figma 89x28
+- [x] Hover and pressed states drive the inner button; disabled and focus-visible handled on the whole control
+- [-] No consumer yet
+
+Evidence: design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser
+
 ### C-14 Pill-Tabs
 
 - [x] Padding 2 from the outer edge with the 1px border inside it -> calc(var(--nc-space-0-5) - 1px), matching Figma stroke excluded from layout
@@ -327,3 +357,25 @@ Evidence: design-sync/evidence/batch-6.png and batch-6-metrics.json
 - [x] Radius @radius/lg; dismiss radius uses @radius/sm
 
 Evidence: design-sync/evidence/batch-6.png and batch-6-metrics.json
+
+### C-23 Prospect Card
+
+- [x] Card 299x116 measured, matching Figma; padding var(--nc-space-3) inside the 1px border (stroke included in layout here), rows 4px apart
+- [x] Header: Company Avatar Sm at 13,13 + company (UI/Button, @link/default) at 47,19, 6px gap and 6px below; company was rendered muted by a stale rule (removed)
+- [x] Title Body/Default @text/primary at 13,51
+- [x] Meta row: Status-Badge at 13,83, date right-aligned at y85 (Caption, @text/secondary), was stacked under the badge
+- [x] Grip icon top-right at 274,13, shown on hover only where dragging is enabled (min-width 900px, hover, fine pointer); verified in the browser
+- [x] @card/bg, @card/border, @card/hover, radius default
+- [!] Figma Hover variant aligns the header to the bottom while Default centers it (H-15); code centers
+
+Evidence: design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser
+
+### C-24 Main Navigation Header
+
+- [x] Lg: 80px tall incl. 1px bottom border @border/control, @action/secondary/bg, max-width 1400, insets var(--nc-space-7), nav gap var(--nc-space-10), utilities gap var(--nc-space-5); measured at 1280px
+- [x] Md (900-1199): nav gap var(--nc-space-3), 28px tertiary menu toggle; measured at 1080px
+- [x] Sm: 64px, insets var(--nc-space-1-5) var(--nc-space-5), primary menu toggle
+- [x] Sm-Open: menu insets var(--nc-space-7) var(--nc-space-5), gap var(--nc-space-6), utilities divider with var(--nc-space-5) top padding, right-aligned items (checked with H-10)
+- [x] Uses synced MainNavItem, Switch-Mode and Button
+
+Evidence: design-sync/evidence/batch-7.png and batch-7-metrics.json (preview.html and preview-tracker.html); hover and header checked in the browser

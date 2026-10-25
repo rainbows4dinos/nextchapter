@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design sync preview: Prospect Tracker</title>
+<!-- Preview for components styled in tools/prospect-tracker/styles.css. Not linked from the app; serve the repo root and open /design-sync/preview-tracker.html (?theme=light for light mode). -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tools/shared/tokens.css">
+<link rel="stylesheet" href="../tools/shared/icons.css">
+<link rel="stylesheet" href="../tools/shared/components.css">
+<link rel="stylesheet" href="../tools/prospect-tracker/styles.css">
+<style>
+  body { margin: 0; }
+  .pv { padding: 32px; display: grid; gap: 32px; }
+  .pv h2 { margin: 0 0 12px; font: 500 12px/20px var(--nc-font-mono); color: var(--nc-text-muted); text-transform: none; }
+  .pv-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .pv-cell { display: block; width: 299px; }
+  .pv-cell .prospect-card { margin: 0; }
+</style>
+</head>
+<body>
+<main class="pv">
+  <section>
+    <h2>C-23 Prospect Card (216:20442)</h2>
+    <div class="pv-row">
+      <span class="pv-cell" data-shot="card-applied" data-company="Figma" data-title="Senior Product Designer" data-status="applied" data-date="Applied Oct 6, 2026"></span>
+      <span class="pv-cell" data-shot="card-prospect" data-company="nextchapter" data-title="Design Systems Lead, Platform and Tooling" data-status="prospect"></span>
+      <span class="pv-cell" data-shot="card-unknown" data-company="42 Labs" data-title="Staff Designer" data-status="interviewing" data-small="Application date unknown"></span>
+    </div>
+  </section>
+</main>
+<script type="module">
+  import { gravityIcon } from '../tools/shared/icons.mjs';
+  // Same markup as boardView in tools/prospect-tracker/ui.js.
+  for (const cell of document.querySelectorAll('[data-shot]')) {
+    const d = cell.dataset, card = document.createElement('a'); card.className = 'prospect-card'; card.href = '#';
+    const header = document.createElement('span'); header.className = 'prospect-card__header';
+    const avatar = document.createElement('span'); avatar.className = 'nc-avatar nc-avatar--company nc-avatar--sm'; avatar.textContent = (d.company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
+    const company = document.createElement('strong'); company.className = 'prospect-card__company'; company.textContent = d.company;
+    header.append(avatar, company);
+    const title = document.createElement('span'); title.className = 'prospect-card__title'; title.textContent = d.title;
+    const meta = document.createElement('span'); meta.className = 'prospect-card__meta';
+    const badge = document.createElement('span'); badge.className = 'nc-status-badge nc-status-badge--' + ({ applied: 'accent', prospect: 'neutral', interviewing: 'active' })[d.status]; badge.textContent = d.status[0].toUpperCase() + d.status.slice(1);
+    meta.append(badge);
+    if (d.date) { const t = document.createElement('time'); t.textContent = d.date; meta.append(t); }
+    if (d.small) { const s = document.createElement('small'); s.textContent = d.small; meta.append(s); }
+    const grip = gravityIcon('grip'); grip.classList.add('prospect-card__grip');
+    card.append(header, title, meta, grip); cell.append(card);
+  }
+</script>
+<script>if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('light');</script>
+</body>
+</html>

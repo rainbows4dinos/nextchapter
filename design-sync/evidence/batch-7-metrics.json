@@ -1,0 +1,930 @@
+{
+ "avatar-sm-dark": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 12px/12px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 20,
+    "y": 0,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(253, 186, 116)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "avatar-md-dark": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 30,
+    "y": 2,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(253, 186, 116)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "avatar-lg-dark": {
+  "w": 56,
+  "h": 56,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 44,
+    "y": 4,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(253, 186, 116)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "avatar-md-plain-dark": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "company-sm-dark": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 12px/12px Inter",
+  "kids": []
+ },
+ "company-md-dark": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "company-lg-dark": {
+  "w": 56,
+  "h": 56,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "paddle-prev-dark": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(215, 205, 251)",
+  "border": "0px rgb(215, 205, 251) rgb(215, 205, 251)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   },
+   {
+    "cls": "nc-paddle__label",
+    "x": 36,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(215, 205, 251)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(215, 205, 251)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "paddle-next-dark": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(215, 205, 251)",
+  "border": "0px rgb(215, 205, 251) rgb(215, 205, 251)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-paddle__label",
+    "x": 0,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(215, 205, 251)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(215, 205, 251)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   },
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 61,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "paddle-icon-only-dark": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(215, 205, 251)",
+  "border": "0px rgb(215, 205, 251) rgb(215, 205, 251)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "paddle-disabled-dark": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(160, 152, 171)",
+  "border": "0px rgb(160, 152, 171) rgb(160, 152, 171)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(160, 152, 171)",
+    "bg": "rgb(53, 45, 64)",
+    "border": "1px rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   },
+   {
+    "cls": "nc-paddle__label",
+    "x": 36,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(160, 152, 171)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(160, 152, 171)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "avatar-sm-light": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 12px/12px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 20,
+    "y": 0,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(154, 52, 18)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "avatar-md-light": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 30,
+    "y": 2,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(154, 52, 18)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "avatar-lg-light": {
+  "w": 56,
+  "h": 56,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-avatar-badge",
+    "x": 44,
+    "y": 4,
+    "w": 8,
+    "h": 8,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(154, 52, 18)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "9999px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "avatar-md-plain-light": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "9999px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "company-sm-light": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 12px/12px Inter",
+  "kids": []
+ },
+ "company-md-light": {
+  "w": 40,
+  "h": 40,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "company-lg-light": {
+  "w": 56,
+  "h": 56,
+  "padding": "0px",
+  "gap": "normal",
+  "radius": "8px",
+  "bg": "rgb(248, 225, 182)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(80, 71, 89) rgb(80, 71, 89)",
+  "font": "500 16px/16px Inter",
+  "kids": []
+ },
+ "paddle-prev-light": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(82, 51, 148)",
+  "border": "0px rgb(82, 51, 148) rgb(82, 51, 148)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   },
+   {
+    "cls": "nc-paddle__label",
+    "x": 36,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(82, 51, 148)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "paddle-next-light": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(82, 51, 148)",
+  "border": "0px rgb(82, 51, 148) rgb(82, 51, 148)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-paddle__label",
+    "x": 0,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(82, 51, 148)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   },
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 61,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "paddle-icon-only-light": {
+  "w": 28,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(82, 51, 148)",
+  "border": "0px rgb(82, 51, 148) rgb(82, 51, 148)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgb(215, 205, 251)",
+    "border": "1px rgb(82, 51, 148)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   }
+  ]
+ },
+ "paddle-disabled-light": {
+  "w": 88.5,
+  "h": 28,
+  "padding": "0px",
+  "gap": "8px",
+  "radius": "0px",
+  "bg": "rgba(0, 0, 0, 0)",
+  "color": "rgb(131, 122, 144)",
+  "border": "0px rgb(131, 122, 144) rgb(131, 122, 144)",
+  "font": "500 16px/16px Inter",
+  "kids": [
+   {
+    "cls": "nc-button nc-button--secondary nc-button--sm nc-button--icon-only",
+    "x": 0,
+    "y": 0,
+    "w": 28,
+    "h": 28,
+    "color": "rgb(131, 122, 144)",
+    "bg": "rgb(239, 235, 231)",
+    "border": "1px rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "radius": "6px",
+    "font": "500 12px/12px"
+   },
+   {
+    "cls": "nc-paddle__label",
+    "x": 36,
+    "y": 6,
+    "w": 52.5,
+    "h": 16,
+    "color": "rgb(131, 122, 144)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(131, 122, 144)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "500 16px/16px"
+   }
+  ]
+ },
+ "card-applied-dark": {
+  "w": 299,
+  "h": 116,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(35, 29, 43)",
+  "color": "rgb(250, 249, 247)",
+  "border": "1px rgb(131, 122, 144) rgb(131, 122, 144)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 79,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(160, 152, 171)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(160, 152, 171)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ },
+ "card-prospect-dark": {
+  "w": 299,
+  "h": 140,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(35, 29, 43)",
+  "color": "rgb(250, 249, 247)",
+  "border": "1px rgb(131, 122, 144) rgb(131, 122, 144)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 48,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 103,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(160, 152, 171)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(160, 152, 171)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ },
+ "card-unknown-dark": {
+  "w": 299,
+  "h": 116,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(35, 29, 43)",
+  "color": "rgb(250, 249, 247)",
+  "border": "1px rgb(131, 122, 144) rgb(131, 122, 144)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 79,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(250, 249, 247)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(250, 249, 247)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(160, 152, 171)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(160, 152, 171)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ },
+ "card-applied-light": {
+  "w": 299,
+  "h": 116,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(255, 255, 255)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(160, 152, 171) rgb(160, 152, 171)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 79,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(104, 97, 111)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(104, 97, 111)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ },
+ "card-prospect-light": {
+  "w": 299,
+  "h": 140,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(255, 255, 255)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(160, 152, 171) rgb(160, 152, 171)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 48,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 103,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(104, 97, 111)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(104, 97, 111)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ },
+ "card-unknown-light": {
+  "w": 299,
+  "h": 116,
+  "padding": "12px",
+  "gap": "4px",
+  "radius": "8px",
+  "bg": "rgb(255, 255, 255)",
+  "color": "rgb(35, 29, 43)",
+  "border": "1px rgb(160, 152, 171) rgb(160, 152, 171)",
+  "font": "300 16px/24px Inter",
+  "kids": [
+   {
+    "cls": "prospect-card__header",
+    "x": 13,
+    "y": 13,
+    "w": 273,
+    "h": 34,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px 20px 6px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__title",
+    "x": 13,
+    "y": 51,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "prospect-card__meta",
+    "x": 13,
+    "y": 79,
+    "w": 273,
+    "h": 24,
+    "color": "rgb(35, 29, 43)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(35, 29, 43)",
+    "padding": "4px 0px 0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   },
+   {
+    "cls": "gravity-icon prospect-card__grip",
+    "x": 274,
+    "y": 13,
+    "w": 16,
+    "h": 16,
+    "color": "rgb(104, 97, 111)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(104, 97, 111)",
+    "padding": "0px",
+    "radius": "0px",
+    "font": "300 16px/24px"
+   }
+  ]
+ }
+}

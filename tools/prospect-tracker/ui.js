@@ -21,6 +21,13 @@ function statusBadge(status) {
   const badge = el('span'); setProspectStatusBadge(badge, status); return badge;
 }
 
+/** Figma Company Avatar Sm (206:18776): the company's first letter or digit; decorative, the name follows it.
+ * @param {string} company */
+function companyAvatar(company) {
+  const initial = (company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
+  const avatar = el('span', initial, 'nc-avatar nc-avatar--company nc-avatar--sm'); avatar.setAttribute('aria-hidden', 'true');
+  return avatar;
+}
 /** @template {keyof HTMLElementTagNameMap} T @param {T} tag @param {string} [text] @param {string} [className] */
 export function el(tag, text = '', className = '') {
   const node = document.createElement(tag);
@@ -174,19 +181,23 @@ export function boardView(root, cards, options = {}) {
         node.dataset.prospectId = card.id;
         node.setAttribute('aria-describedby', hint.id);
         node.setAttribute('aria-keyshortcuts', 'Alt+ArrowUp Alt+ArrowDown');
-        node.append(el('strong', card.company), el('span', card.title));
-        node.append(statusBadge(card.status));
+        const header = el('span', '', 'prospect-card__header');
+        header.append(companyAvatar(card.company), el('strong', card.company, 'prospect-card__company'));
+        const meta = el('span', '', 'prospect-card__meta');
+        meta.append(statusBadge(card.status));
+        const grip = gravityIcon('grip'); grip.classList.add('prospect-card__grip');
+        node.append(header, el('span', card.title, 'prospect-card__title'), meta, grip);
         const appliedDate = formatAppliedDate(card.applied_on);
         if (appliedDate) {
           const time = el('time', `Applied ${appliedDate}`); time.dateTime = card.applied_on ?? '';
-          node.append(time);
+          meta.append(time);
         }
         if (!appliedDate && dateFilter.basis === 'applied') {
           const application = applicationDate(card, history);
           if (application.source === 'history') {
             const time = el('time', `Applied status recorded ${formatAppliedDate(application.date)}`, 'history-date');
-            time.dateTime = application.date ?? ''; node.append(time);
-          } else node.append(el('small', incomplete ? 'Application date unavailable — history incomplete' : 'Application date unknown'));
+            time.dateTime = application.date ?? ''; meta.append(time);
+          } else meta.append(el('small', incomplete ? 'Application date unavailable — history incomplete' : 'Application date unknown'));
         }
         return node;
       }));

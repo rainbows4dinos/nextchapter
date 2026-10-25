@@ -82,5 +82,13 @@
  {
   "date": "2026-10-24",
   "entry": "Designer rebound the Avatar Badge ring to surface/default (closes H-13, verified)."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Component sync batch 7 (C-11 Company Avatar, C-12 Avatar, C-13 Paddle Button, C-23 Prospect Card, C-24 Main Navigation Header): new .nc-avatar (with company and badge variants) and .nc-paddle; Prospect Card restructured to Figma (avatar header, title, badge and date row, hover grip) in ui.js and styles.css; header spacing tokenized. New preview-tracker.html for tracker-styled components. Cache revisions: components.css and navigation.css 20261024-batch-7; Prospect Tracker ui/app/bootstrap/styles 20261024-batch-7. New Figma items H-14 and H-15. Tests 190/191 (pre-existing failure), lint clean. All 24 components synced."
+ },
+ {
+  "date": "2026-10-24",
+  "entry": "Typecheck fix: the companyAvatar helper had been inserted between el()'s JSDoc and the function, detaching el's types (2 TS7006 errors reported by the user). Moved the helper above the JSDoc. tsc --noEmit (TypeScript 7.0.2, Linux binary installed outside the repo) now passes; tests 190/191 (pre-existing failure); lint clean."
  }
 ]

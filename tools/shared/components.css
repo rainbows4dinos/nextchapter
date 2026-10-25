@@ -343,6 +343,48 @@
   display: inline-block; flex: none; width: 8px; height: 8px; border-radius: var(--nc-radius-full);
   background: var(--nc-warning-fg); box-shadow: 0 0 0 1px var(--nc-surface-default);
 }
+/* Figma Avatar (205:679) and Company Avatar (206:18776): initials on @action/primary, Sm 28 / Md 40 / Lg 56.
+   Avatar is round; Company Avatar uses @radius/lg. An optional <img class="nc-avatar__image"> covers the initials.
+   <span class="nc-avatar nc-avatar--sm" aria-hidden="true">LR<span class="nc-avatar-badge"></span></span> */
+.nc-avatar {
+  position: relative; display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
+  width: 40px; height: 40px; border: 1px solid var(--nc-action-primary-border); border-radius: var(--nc-radius-full);
+  background: var(--nc-action-primary-bg); color: var(--nc-action-primary-fg); overflow: visible;
+  font-family: var(--nc-type-ui-button-family); font-size: var(--nc-type-ui-button-size);
+  font-weight: var(--nc-type-ui-button-weight); line-height: var(--nc-type-ui-button-line-height);
+  text-align: center; text-transform: uppercase; white-space: nowrap; user-select: none;
+}
+.nc-avatar--sm { width: 28px; height: 28px; font-size: var(--nc-type-ui-button-small-size); line-height: var(--nc-type-ui-button-small-line-height); }
+.nc-avatar--lg { width: 56px; height: 56px; }
+.nc-avatar--company { border-radius: var(--nc-radius-lg); }
+.nc-avatar__image {
+  position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); object-fit: cover;
+  border-radius: inherit; outline: 1px solid var(--nc-action-primary-fg); outline-offset: -1px;
+}
+.nc-avatar--company .nc-avatar__image { outline-color: var(--nc-action-primary-border); }
+/* Notification badge sits on the top-right edge: Sm 0/0, Md 2/2, Lg 4/4 from the outer corner. */
+.nc-avatar > .nc-avatar-badge { position: absolute; top: calc(2px - 1px); right: calc(2px - 1px); }
+.nc-avatar--sm > .nc-avatar-badge { top: -1px; right: -1px; }
+.nc-avatar--lg > .nc-avatar-badge { top: calc(4px - 1px); right: calc(4px - 1px); }
+
+/* Figma Paddle Button (216:20314): a Secondary Sm icon-only button with an optional link-style label, 8px apart.
+   <button class="nc-paddle"><span class="nc-button nc-button--secondary nc-button--sm nc-button--icon-only">(arrow-left icon)</span><span class="nc-paddle__label">Previous</span></button>
+   For Next, put the label first and use arrow-right. */
+.nc-paddle {
+  display: inline-flex; align-items: center; gap: var(--nc-space-2); margin: 0; padding: 0; border: 0; background: none;
+  color: var(--nc-link-default); cursor: pointer; text-decoration: none;
+  font-family: var(--nc-type-ui-button-family); font-size: var(--nc-type-ui-button-size);
+  font-weight: var(--nc-type-ui-button-weight); line-height: var(--nc-type-ui-button-line-height);
+  transition: color var(--nc-transition-general-sm);
+}
+.nc-paddle > .nc-button { pointer-events: none; }
+.nc-paddle:hover:not(:disabled) { color: var(--nc-link-hover); }
+.nc-paddle:hover:not(:disabled) > .nc-button--secondary { background: var(--nc-action-secondary-hover); }
+.nc-paddle:active:not(:disabled) > .nc-button--secondary { background: var(--nc-action-secondary-pressed); }
+.nc-paddle:disabled { color: var(--nc-action-disabled-fg); cursor: not-allowed; }
+.nc-paddle:disabled > .nc-button { background: var(--nc-action-disabled-bg); color: var(--nc-action-disabled-fg); border-color: transparent; }
+.nc-paddle:focus-visible { outline: none; }
+.nc-paddle:focus-visible > .nc-button { outline: var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset: var(--nc-focus-offset); }
 .nc-spinner {
   display: inline-block; box-sizing: border-box; flex-shrink: 0; width: 28px; height: 28px;
   border: 2px solid var(--nc-loading-bg); border-top-color: var(--nc-loading-fg); border-radius: 50%;

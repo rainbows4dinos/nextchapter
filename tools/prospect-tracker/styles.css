@@ -73,17 +73,22 @@ button:disabled { opacity:.5; cursor:wait }
 .column-done summary h3 { display:inline; color:var(--muted) }
 .column-done summary .count { margin-left:.5rem }
 .column-done[open] summary { margin-bottom:1rem }
-.prospect-card strong { color:var(--muted) }
 .count { color:var(--muted) }
-/* Figma Prospect Card 216:20442: card tokens, UI/Button company, Body Default title, Caption dates. */
-.prospect-card { display:block; padding:12px; margin-bottom:10px; border:1px solid var(--nc-card-border); border-radius:var(--nc-radius-default); background:var(--nc-card-bg); color:var(--nc-card-fg); text-decoration:none; overflow-wrap:anywhere; font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+/* Figma Prospect Card (216:20442): 12px padding inside the 1px border (Figma includes this stroke in layout), 4px between rows.
+   Header: Company Avatar Sm + company (UI/Button, link color), 6px gap and 6px below. Title: Body/Default.
+   Meta row: Status-Badge left, date right (Caption, text/secondary), 4px above. Grip shows on hover where dragging is available. */
+.prospect-card { position:relative; display:flex; flex-direction:column; gap:var(--nc-space-1); padding:var(--nc-space-3); margin-bottom:10px; border:1px solid var(--nc-card-border); border-radius:var(--nc-radius-default); background:var(--nc-card-bg); color:var(--nc-card-fg); text-decoration:none; overflow-wrap:anywhere; font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+.prospect-card__header { display:flex; align-items:center; gap:var(--nc-space-1-5); min-width:0; padding-bottom:var(--nc-space-1-5) }
+.prospect-card__company { min-width:0; color:var(--nc-link-default); font:var(--nc-type-ui-button-weight) var(--nc-type-ui-button-size)/var(--nc-type-ui-button-line-height) var(--nc-type-ui-button-family) }
+.prospect-card__title { display:block; color:var(--nc-text-primary) }
+.prospect-card__meta { display:flex; align-items:center; justify-content:space-between; gap:var(--nc-space-1-5); min-height:24px; padding-top:var(--nc-space-1) }
+.prospect-card__meta :is(small,time) { color:var(--nc-text-secondary); text-align:right; font:var(--nc-type-caption-weight) var(--nc-type-caption-size)/var(--nc-type-caption-line-height) var(--nc-type-caption-family) }
+.prospect-card__grip { position:absolute; top:var(--nc-space-3); right:var(--nc-space-2); width:16px; height:16px; color:var(--nc-text-muted); opacity:0; pointer-events:none; transition:opacity var(--nc-transition-general-sm) }
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  .prospect-card:hover .prospect-card__grip { opacity:1 }
+  .prospect-card__header { padding-right:var(--nc-space-5) }
+}
 .prospect-card:hover { text-decoration:none; background:var(--nc-card-hover) }
-.prospect-card strong { display:block; color:var(--accent); font:var(--nc-type-ui-button-weight) var(--nc-type-ui-button-size)/var(--nc-type-ui-button-line-height) var(--nc-type-ui-button-family) }
-.prospect-card span { display:block; margin-top:4px }
-.prospect-card .nc-status-badge { display:inline-flex; margin-top:8px }
-.prospect-card :is(small,time) { color:var(--muted); font:var(--nc-type-caption-weight) var(--nc-type-caption-size)/var(--nc-type-caption-line-height) var(--nc-type-caption-family) }
-.prospect-card small { display:block; margin-top:8px }
-.prospect-card time { margin-top:6px }
 label { display:block; font-size:13px; font-weight:400; margin-bottom:1rem }
 input,select,textarea { display:block; width:100%; margin-top:6px; padding:10px 12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-weight:300 }
 textarea { min-height:120px; resize:vertical }

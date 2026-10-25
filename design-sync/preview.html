@@ -133,13 +133,22 @@
     <h2>C-03 Avatar Badge (205:665)</h2>
     <div class="pv-row"><span class="pv-cell" data-shot="avatar-badge" style="padding:12px"><span class="nc-avatar-badge"></span></span></div>
   </section>
+  <section id="avatar">
+    <h2>C-12 Avatar (205:679) and C-11 Company Avatar (206:18776)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="avatar-sm" style="padding:12px"><span class="nc-avatar nc-avatar--sm" aria-hidden="true">LR<span class="nc-avatar-badge"></span></span></span><span class="pv-cell" data-shot="avatar-md" style="padding:12px"><span class="nc-avatar " aria-hidden="true">LR<span class="nc-avatar-badge"></span></span></span><span class="pv-cell" data-shot="avatar-lg" style="padding:12px"><span class="nc-avatar nc-avatar--lg" aria-hidden="true">LR<span class="nc-avatar-badge"></span></span></span><span class="pv-cell" data-shot="avatar-md-plain" style="padding:12px"><span class="nc-avatar " aria-hidden="true">LR</span></span><span class="pv-cell" data-shot="company-sm" style="padding:12px"><span class="nc-avatar nc-avatar--company nc-avatar--sm" aria-hidden="true">F</span></span><span class="pv-cell" data-shot="company-md" style="padding:12px"><span class="nc-avatar nc-avatar--company" aria-hidden="true">F</span></span><span class="pv-cell" data-shot="company-lg" style="padding:12px"><span class="nc-avatar nc-avatar--company nc-avatar--lg" aria-hidden="true">F</span></span></div>
+  </section>
+  <section id="paddle">
+    <h2>C-13 Paddle Button (216:20314)</h2>
+    <div class="pv-row"><span class="pv-cell" data-shot="paddle-prev"><button type="button" class="nc-paddle"><span class="nc-button nc-button--secondary nc-button--sm nc-button--icon-only"><span data-icon="arrow-left" data-size="12"></span></span><span class="nc-paddle__label">Paddle</span></button></span><span class="pv-cell" data-shot="paddle-next"><button type="button" class="nc-paddle"><span class="nc-paddle__label">Paddle</span><span class="nc-button nc-button--secondary nc-button--sm nc-button--icon-only"><span data-icon="arrow-right" data-size="12"></span></span></button></span><span class="pv-cell" data-shot="paddle-icon-only"><button type="button" class="nc-paddle" aria-label="Previous"><span class="nc-button nc-button--secondary nc-button--sm nc-button--icon-only"><span data-icon="arrow-left" data-size="12"></span></span></button></span><span class="pv-cell" data-shot="paddle-disabled"><button type="button" class="nc-paddle" disabled><span class="nc-button nc-button--secondary nc-button--sm nc-button--icon-only"><span data-icon="arrow-left" data-size="12"></span></span><span class="nc-paddle__label">Paddle</span></button></span></div>
+  </section>
+  <p><a href="preview-tracker.html">Prospect Tracker components (Prospect Card) &rarr;</a></p>
 </main>
 <script type="module">
   import { gravityIcon } from '../tools/shared/icons.mjs';
   for (const el of document.querySelectorAll('[data-icon]')) {
     const icon = gravityIcon(el.dataset.icon, { size: Number(el.dataset.size || 20) });
     if (el.dataset.class) icon.classList.add(el.dataset.class);
-    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group, .nc-select-wrap, .nc-alert, .nc-toast, .nc-toast__dismiss')) el.replaceWith(icon); else el.append(icon);
+    if (el.parentElement.matches('.nc-button, .toggle-track, .nc-input-group, .nc-select-wrap, .nc-alert, .nc-toast, .nc-toast__dismiss, .nc-button--icon-only')) el.replaceWith(icon); else el.append(icon);
   }
 </script>
 <script>
