@@ -17,7 +17,9 @@ export function companyAvatar(company, large = false, logo = null) {
   const avatar = document.createElement('span');
   avatar.className = `nc-avatar nc-avatar--company nc-avatar--${large ? 'lg' : 'sm'}`;
   avatar.setAttribute('aria-hidden', 'true');
-  avatar.textContent = (company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
+  const initials = document.createElement('span');
+  initials.textContent = (company.match(/[\p{L}\p{N}]/u)?.[0] ?? '?').toLocaleUpperCase();
+  avatar.append(initials);
   let url;
   try { url = logoUrl(logo); } catch { logoDiagnostic('candidate_rejected'); return avatar; }
   if (!url) { logoDiagnostic('no_candidate'); return avatar; }
@@ -30,12 +32,13 @@ export function companyAvatar(company, large = false, logo = null) {
   const release = () => { if (objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = ''; } };
   const fail = () => {
     controller.abort(); release(); logoDiagnostic('image_failed');
+    initials.hidden = false; avatar.classList.remove('nc-avatar--logo');
     clearTimeout(timer); img.remove(); img.removeAttribute('src');
     if (failed.size < 128) failed.add(url);
   };
   const timer = setTimeout(fail, 8000);
   img.addEventListener('error', fail, { once: true });
-  img.addEventListener('load', () => { clearTimeout(timer); if (img.naturalWidth) { img.hidden = false; release(); logoDiagnostic('image_rendered'); } else fail(); }, { once: true });
+  img.addEventListener('load', () => { clearTimeout(timer); if (img.naturalWidth) { initials.hidden = true; avatar.classList.add('nc-avatar--logo'); img.hidden = false; release(); logoDiagnostic('image_rendered'); } else fail(); }, { once: true });
   avatar.append(img);
   if (atsLogoUrl(url)) {
     if (!loadLogo) fail();

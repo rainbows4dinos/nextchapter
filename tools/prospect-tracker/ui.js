@@ -1,7 +1,7 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyLogoEditor } from './company-logo-editor.js?v=20261025-logo-delivery';
+import { companyLogoEditor } from './company-logo-editor.js?v=20261025-avatar-heading';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyAvatar } from './company-avatar.js?v=20261025-logo-delivery';
+import { companyAvatar } from './company-avatar.js?v=20261025-avatar-heading';
 import { prospectFields, selectField } from './prospect-form.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { createDateFilter } from './date-filter.js?v=20261024-radio-label';
@@ -239,7 +239,10 @@ export function editorView(root, row) {
   const form = el('form', '', 'panel'); form.id = 'prospect-form';
   const { fields, companyInput } = prospectFields(row ?? {}, { mode: row ? 'edit' : 'create' });
   fields.append(logoEditor.value, logoEditor.override);
-  const refreshCompany = () => logoEditor.updateCompany(companyInput.value);
+  const refreshCompany = () => {
+    logoEditor.updateCompany(companyInput.value);
+    if (!row) heading.textContent = companyInput.value.trim() || 'Add Prospect';
+  };
   companyInput.addEventListener('input', refreshCompany);
   companyInput.addEventListener('change', refreshCompany);
   const feedback = el('p', '', 'feedback nc-alert'); feedback.id = 'save-feedback'; feedback.setAttribute('role','status');
