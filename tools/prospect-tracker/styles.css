@@ -117,6 +117,7 @@ details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-b
 /* Match Builder's results sidebar: padded shell, UI headings and separate zones. */
 .editor__status.panel { align-self:start; display:flex; flex-direction:column; gap:28px; padding:28px; margin:0; overflow-wrap:anywhere }
 .editor__status section { min-width:0 }
+.editor--detail .editor__status .status-controls { width:100% }
 .editor__status :is(h2,h3) { font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family); margin:0 0 8px; padding-left:2px }
 .editor__status-content { display:flex; flex-direction:column; gap:12px }
 .editor__status-content > .nc-status-badge { align-self:flex-start }

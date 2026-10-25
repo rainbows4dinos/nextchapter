@@ -310,9 +310,6 @@ export function editorView(root, row) {
       if (wrapper) primaryDetails.append(wrapper);
     }
     fields.append(primaryDetails);
-    const sourceField = extra.querySelector('[name="source"]')?.closest('.nc-field');
-    if (sourceField) sourceField.querySelector('.nc-field__helper')?.remove();
-    extra.querySelector('[name="source"]')?.removeAttribute('aria-describedby');
     details.open = true;
   }
   fields.append(details);
