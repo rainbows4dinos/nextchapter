@@ -1,3 +1,5 @@
+import { writeFile, unlink } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { startFixture } from '../fixtures/radar-server.js';
 import { createClient } from '../../vendor/supabase.js';
@@ -10,6 +12,7 @@ const send=(method,params={},sessionId)=>new Promise((resolve,reject)=>{pending.
 const {targetId}=await send('Target.createTarget',{url:'about:blank'});const {sessionId}=await send('Target.attachToTarget',{targetId,flatten:true});const call=(method,params)=>send(method,params,sessionId);
 const ev=async expression=>{const r=await call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description);return r.result.value;};
 const wait=async expression=>{for(let i=0;i<200;i++){if(await ev(expression))return;await new Promise(resolve=>setTimeout(resolve,100));}throw Error('Timeout '+expression+' '+await ev("document.getElementById('progress')?.textContent"));};
+const manifestPath=`/private/tmp/nextchapter-fixture-approval-${crypto.randomUUID()}.json`;
 try{
   await client.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});const data=createRadarDataAccess(client);
   for(const override of [false,true,true])await data.createProspect({id:crypto.randomUUID(),company:'Example Studio',title:'Designer',job_url:'https://apply.workable.com/example/j/ABC123DEF4/',company_logo_override:override});
@@ -21,4 +24,12 @@ try{
   const result=JSON.parse(await ev("document.getElementById('report').textContent"));assert.deepEqual(result.summary,{examined:3,eligible:1,candidates_found:1,candidates_rejected:0,skipped:2,expected_updates:1});
   const after=await(await fetch(fixture.origin+'/__fixture')).json();assert.equal(after.attempts,before.attempts);assert.equal(after.prospects,before.prospects);assert.equal(after.events,before.events);
   assert.equal(await ev("document.querySelectorAll('button').length"),1);console.log('PASS authenticated dry run, employer match, rendered candidate, manual-clear preservation and zero prospect/history writes');
-}finally{await send('Target.closeTarget',{targetId});ws.close();await client.auth.signOut();await fixture.close();}
+  const manifest=JSON.stringify(result);await writeFile(manifestPath,manifest,{mode:0o600});
+  const digest=createHash('sha256').update(manifest).digest('hex');
+  await call('Page.navigate',{url:fixture.origin+'/tools/prospect-tracker/logo-backfill-apply.html'});await wait("!!document.getElementById('apply') && !document.getElementById('apply').disabled");
+  const {root}=await call('DOM.getDocument');const {nodeId}=await call('DOM.querySelector',{nodeId:root.nodeId,selector:'#manifest'});await call('DOM.setFileInputFiles',{nodeId,files:[manifestPath]});
+  await ev(`document.getElementById('digest').value=${JSON.stringify(digest)};document.getElementById('apply').click()`);await wait("!!document.getElementById('report').textContent");
+  const applied=JSON.parse(await ev("document.getElementById('report').textContent"));assert.equal(applied.summary.updated,1);assert.equal(applied.summary.failed,0);assert.equal(applied.summary.non_logo_changes,0);assert.equal(applied.summary.manual_choices_changed,0);
+  const final=await(await fetch(fixture.origin+'/__fixture')).json();assert.equal(final.attempts,after.attempts+1);assert.equal(final.events,after.events);
+  console.log('PASS approved manifest digest, guarded apply, exact update count and unchanged non-logo fields/manual choices/history');
+}finally{await unlink(manifestPath).catch(()=>{});await send('Target.closeTarget',{targetId});ws.close();await client.auth.signOut();await fixture.close();}

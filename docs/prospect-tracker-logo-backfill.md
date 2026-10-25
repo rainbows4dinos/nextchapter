@@ -24,3 +24,20 @@ npm --prefix tools/prospect-tracker run lint
 ```
 
 The browser check requires isolated Chrome CDP on port 9242. It uses disposable synthetic records and asserts no additional prospect writes or history events during the dry run. Hosted dry-run results must be reported separately from these fixture checks, and no hosted changes may occur before approval.
+
+## Applying an explicitly approved manifest
+
+`logo-backfill-apply.html` is a separate operator page, absent from application navigation. The original review page remains read-only. Use this page only after the user approves the reviewed proposals. It reads a local JSON manifest in browser memory and verifies its SHA-256 digest against the separately recorded review digest before selecting the proposals marked `expectedUpdate`. Neither the manifest nor verification results belong in this public repository.
+
+`logo-backfill-apply.js` rejects malformed/duplicate proposals before writing, verifies the current user with Auth, reads only that owner's records under RLS, then rechecks each approved record's exact revision, manual marker, company and supported provider immediately before saving. Existing syntactically valid logo references are conservatively preserved. It reuses `createRadarDataAccess().updateProspect()` with only `company_logo_url` and `company_logo_override: false`. The exact revision guards the final database update against concurrent edits. There is no posting reimport or automatic retry.
+
+Before/after owner-scoped snapshots verify the number of changed records, record count, all non-logo data and manual choices. The expected revision timestamp change is excluded from the non-logo comparison. Detailed private values stay in browser memory; the result contains only record identities, outcomes and verification counts. Individual read/write conflicts are reported without aborting other approved rows. If final verification differs, investigate rather than retrying automatically.
+
+Tests include malformed manifests, stale revisions, manual clears, existing references, logo-only writes, individual failures and the real SDK/local-database/browser file-and-digest flow:
+
+```sh
+node --test tools/prospect-tracker/tests/logo-backfill-apply.test.js
+node tools/prospect-tracker/tests/browser/logo-backfill.mjs
+```
+
+The apply page does not grant privileges; verified Auth and existing owner RLS remain authoritative. Never use a service-role key, commit a private manifest, or interpret a dry-run result as authorization to apply it.
