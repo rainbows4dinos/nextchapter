@@ -96,23 +96,22 @@ fieldset { padding:0; border:0; margin:0; min-width:0 }
 .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 16px }
 details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-bottom:1rem }
 .editor { max-width:860px; margin:auto }
-.editor__back { display:inline-block; margin-block:var(--nc-space-4) }
-.editor--detail .editor__heading { font:var(--nc-type-h2-weight) var(--nc-type-h2-size)/var(--nc-type-h2-line-height) var(--nc-type-h2-family); margin:0; min-width:0; overflow-wrap:anywhere }
-.editor--detail .editor__header { display:flex; flex-direction:column; align-items:flex-start; gap:var(--nc-space-8); padding-block:var(--nc-space-7) }
-.editor--detail .editor__back { display:inline-flex; margin:0 }
-.editor--detail .editor__back:hover { background:transparent }
+.editor__back { display:inline-flex; margin:0 }
+.editor .editor__heading { font:var(--nc-type-h2-weight) var(--nc-type-h2-size)/var(--nc-type-h2-line-height) var(--nc-type-h2-family); margin:0; min-width:0; overflow-wrap:anywhere }
+.editor .editor__header { display:flex; flex-direction:column; align-items:flex-start; gap:var(--nc-space-8); padding-block:var(--nc-space-7) }
+.editor .editor__back:hover { background:transparent }
 .editor__title { display:flex; align-items:center; gap:var(--nc-space-4); min-width:0; max-width:100% }
-.editor--detail .field-grid { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--nc-space-4) }
-.editor--detail .nc-field { min-width:0; margin-bottom:var(--nc-space-4) }
-.editor--detail details { margin:0 }
-.editor--detail summary { margin:0 0 var(--nc-space-4); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
+.prospect-fields .field-grid { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--nc-space-4) }
+.prospect-fields .nc-field { min-width:0; margin-bottom:var(--nc-space-4) }
+.prospect-fields details { margin:0 }
+.prospect-fields summary { margin:0 0 var(--nc-space-4); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
 .editor--detail .actions { padding-top:var(--nc-space-4); gap:var(--nc-space-4) }
 .editor--detail .actions .nc-button { min-height:var(--nc-space-10); height:auto; padding:var(--nc-space-2) var(--nc-space-3); white-space:normal }
 /* Figma field group is 240px: 24px label + 4px gap + 212px editable control. */
-.editor--detail .nc-textarea[name="job_description"] { height:calc(var(--nc-space-60) - var(--nc-space-7)); min-height:calc(var(--nc-space-60) - var(--nc-space-7)) }
-.editor--detail .nc-textarea[name="compensation_text"] { height:var(--nc-space-10); min-height:var(--nc-space-10) }
-.editor--detail .nc-textarea[name="notes"] { height:calc(var(--nc-space-24) + var(--nc-space-1)); min-height:calc(var(--nc-space-24) + var(--nc-space-1)) }
-.shell:has(.editor--detail) > #workspace { margin-top:calc(-1 * var(--nc-space-8)) }
+.prospect-fields .nc-textarea[name="job_description"] { height:calc(var(--nc-space-60) - var(--nc-space-7)); min-height:calc(var(--nc-space-60) - var(--nc-space-7)) }
+.prospect-fields .nc-textarea[name="compensation_text"] { height:var(--nc-space-10); min-height:var(--nc-space-10) }
+.prospect-fields .nc-textarea[name="notes"] { height:calc(var(--nc-space-24) + var(--nc-space-1)); min-height:calc(var(--nc-space-24) + var(--nc-space-1)) }
+.shell:has(.editor) > #workspace { margin-top:calc(-1 * var(--nc-space-8)) }
 .editor__panels > * { min-width:0 }
 /* Match Builder's results sidebar: padded shell, UI headings and separate zones. */
 .editor__status.panel { align-self:start; display:flex; flex-direction:column; gap:28px; padding:28px; margin:0; overflow-wrap:anywhere }
@@ -129,11 +128,11 @@ details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-b
 .editor__status .history time { margin-top:4px }
 .editor__status #history > .panel { padding:0; margin:0; border:0; border-radius:0; background:transparent }
 @media(min-width:1200px) {
-  .shell:has(.editor--detail) { max-width:1440px; padding-inline:var(--nc-space-12) }
-  .editor--detail { max-width:none }
+  .shell:has(.editor) { max-width:1440px; padding-inline:var(--nc-space-12) }
+  .editor { max-width:none }
   /* Header is in normal flow; keep a 24px viewport inset once it scrolls away. */
   .editor--detail .editor__status { position:sticky; top:var(--nc-space-6) }
-  .editor--detail .editor__panels { display:grid; grid-template-columns:minmax(0,1fr) 440px; gap:var(--nc-space-6) }
+  .editor__panels { display:grid; grid-template-columns:minmax(0,1fr) 440px; gap:var(--nc-space-6) }
 }
 .status-controls { display:flex; gap:12px; align-items:end; flex-wrap:wrap }
 .status-controls .nc-field { flex:1; margin:0; min-width:170px }
@@ -231,11 +230,9 @@ time { display:block; font-size:13px; color:var(--muted) }
   #tracker-add { margin-left:auto }
 }
 
-@media(max-width:600px) { .editor--detail .field-grid { grid-template-columns:minmax(0,1fr) } }
+@media(max-width:600px) { .prospect-fields .field-grid { grid-template-columns:minmax(0,1fr) } }
 
 /* Logo editing composes the shared field, avatar and button contracts. */
-.editor__logo-actions { display:flex; align-items:center; gap:var(--nc-space-3); margin-top:var(--nc-space-2) }
-.editor__logo-preview { display:flex }
 .editor .nc-avatar__image, .prospect-card .nc-avatar__image { object-fit:contain; pointer-events:none }
 
 /* Company identity metadata is edited from the Details avatar. */
@@ -244,3 +241,11 @@ time { display:block; font-size:13px; color:var(--muted) }
 .company-logo-popover { position:fixed; inset:auto; margin:0; width:320px; max-width:calc(100vw - 24px); max-height:calc(100dvh - 24px); overflow:auto; padding:var(--nc-space-4); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-panel); background:var(--nc-surface-raised); color:var(--nc-text-primary) }
 .company-logo-popover h2 { margin:0 0 var(--nc-space-3); font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family) }
 .company-logo-popover .actions { gap:var(--nc-space-2); padding-top:0 }
+
+/* Add Prospect: shared Details grid, with import as a non-sticky utility. */
+.editor__panels:has(.ingestion) { display:grid; gap:var(--nc-space-6) }
+.ingestion.panel { align-self:start; margin:0 }
+.ingestion :is(h2,h3) { font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family); margin:0 0 var(--nc-space-2) }
+.ingestion__supported { margin:var(--nc-space-3) 0 }
+.ingestion__supported summary { margin:0; font:var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family) }
+.ingestion__supported p { margin:var(--nc-space-2) 0 0; font:var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family) }

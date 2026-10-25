@@ -1,6 +1,6 @@
 import { companyLogoEditor } from './company-logo-editor.js';
 import { companyAvatar } from './company-avatar.js';
-import { logoUrl } from './company-logo.js';
+import { prospectFields, selectField } from './prospect-form.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { createDateFilter } from './date-filter.js?v=20261024-radio-label';
 import { applicationDate, appliedHistoryMap, defaultDateFilter } from './board-dates.js';
@@ -8,7 +8,7 @@ import { gravityIcon } from '../shared/icons.mjs';
 import { bindFieldValidation } from '../shared/fields.mjs';
 import { setAlert } from '../shared/status.mjs';
 import { BOARD_COLUMNS, formatAppliedDate, searchBoardGroups, statusLabel } from './view-model.js';
-import { STATUSES, SELECTABLE_STATUSES, WORK_ARRANGEMENTS, validateHttpUrl } from './model.js';
+import { STATUSES, SELECTABLE_STATUSES } from './model.js';
 import { createHandoff, HANDOFF_TTL } from '../shared/resume-handoff.mjs';
 import { STATUS_BADGE_TONES } from './prospect-status.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
@@ -222,117 +222,24 @@ export function boardView(root, cards, options = {}) {
     dispose: () => { saveState(); controller.abort(); disposeDrag(); add.remove(); }
   };
 }
-/** @param {string} name @param {string} label @param {string} value @param {string} [type] */
-function field(name, label, value, type = 'text') {
-  const wrapper = el('div', '', 'nc-field');
-  const caption = el('label', label.replace(/ \*$/, ''), 'nc-field__label');
-  if (label.endsWith(' *')) { const required = el('span', '*', 'nc-field__required'); required.setAttribute('aria-hidden', 'true'); caption.append(required); }
-  wrapper.append(caption);
-  const input = type === 'textarea' ? el('textarea') : el('input');
-  if (input instanceof HTMLInputElement) input.type = type;
-  input.name = name; input.value = value; input.id = `${name}-field`; caption.htmlFor = input.id;
-  input.className = type === 'textarea' ? 'nc-textarea' : 'nc-input';
-  input.required = name === 'company' || name === 'title';
-  wrapper.append(input);
-  return wrapper;
-}
-/** @param {string} name @param {string} label @param {readonly string[]} options @param {string} value @param {boolean} [unknown] */
-function selectField(name, label, options, value, unknown = false) {
-  const wrapper = el('div', '', 'nc-field'); const select = el('select', '', 'nc-select'); select.name = name;
-  select.id = `${name}-field`; const caption = el('label', label, 'nc-field__label'); caption.htmlFor = select.id;
-  wrapper.append(caption);
-  const closed = el('span', '', 'nc-select-wrap'); closed.append(select, gravityIcon('chevron-down')); wrapper.append(closed);
-  if (unknown) { const option = el('option', 'Not specified'); option.value = ''; select.append(option); }
-  if (name === 'status' && value === 'applying') {
-    const current = el('option', 'Applying (retired)'); current.value = value; current.disabled = true; select.append(current);
-  }
-  for (const item of options) { const option = el('option', statusLabel(item)); option.value = item; select.append(option); }
-  select.value = value; return wrapper;
-}
 /** @param {HTMLElement} root @param {import('./model.js').Prospect|null} row */
 export function editorView(root, row) {
   const editor = el('div', '', row ? 'editor editor--detail' : 'editor');
-  const back = link('← Back to board', '#/board'); back.className = 'editor__back';
-  const heading = el(row ? 'h1' : 'h2', row ? row.company : 'Add prospect', 'editor__heading');
-  const logoEditor = row ? companyLogoEditor(row) : null;
-  if (row && logoEditor) {
-    back.className = 'editor__back nc-paddle'; back.textContent = '';
-    const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
-    arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
-    back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
-    const title = el('div', '', 'editor__title'); title.append(logoEditor.trigger, heading, logoEditor.panel);
-    const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
-  } else editor.append(back, heading);
+  const back = link('', '#/board'); back.className = 'editor__back nc-paddle';
+  const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
+  arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
+  back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
+  const heading = el('h1', row ? row.company : 'Add Prospect', 'editor__heading');
+  const logoEditor = companyLogoEditor(row ?? {});
+  const title = el('div', '', 'editor__title'); title.append(logoEditor.trigger, heading, logoEditor.panel);
+  const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
   const panels = el('div', '', 'editor__panels'); editor.append(panels);
   const form = el('form', '', 'panel'); form.id = 'prospect-form';
-  const fields = el('fieldset');
-  const grid = el('div', '', 'field-grid');
-  grid.append(field('company', 'Company *', row?.company ?? ''), field('title', 'Role / title *', row?.title ?? ''));
-  const jobUrl = field('job_url', 'Job URL', row?.job_url ?? '', 'url');
-  const urlInput = /** @type {HTMLInputElement} */ (jobUrl.querySelector('input'));
-  const urlControl = el('div', '', 'nc-input-group job-url-control');
-  const open = link('Open', ''); open.className = 'nc-input-group__action job-url-control__open'; open.target = '_blank'; open.rel = 'noopener noreferrer'; open.setAttribute('aria-label', 'Open job posting');
-  const updateOpen = () => {
-    const value = urlInput.value.trim();
-    try { if (!value) throw new Error('Empty URL'); validateHttpUrl(value); open.href = value; open.hidden = false; }
-    catch { open.hidden = true; open.removeAttribute('href'); }
-    urlControl.classList.toggle('job-url-control--linked', !open.hidden);
-  };
-  urlControl.append(urlInput, open); jobUrl.append(urlControl);
-  urlInput.addEventListener('input', updateOpen); urlInput.addEventListener('change', updateOpen); updateOpen();
-  fields.append(grid);
-  if (logoEditor) fields.append(logoEditor.value, logoEditor.override);
-  else {
-    const logo = field('company_logo_url', 'Company Logo URL', row?.company_logo_url ?? '', 'url');
-    const logoInput = /** @type {HTMLInputElement} */ (logo.querySelector('input'));
-    logoInput.maxLength = 2048;
-    const override = el('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row?.company_logo_override ?? false);
-    const logoPreview = el('div', '', 'editor__logo-preview');
-    const updateLogo = () => {
-      try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); }
-      catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); }
-      logoPreview.replaceChildren(companyAvatar(/** @type {HTMLInputElement} */ (grid.querySelector('[name="company"]')).value, false, logoInput.value));
-    };
-    logoInput.addEventListener('input', () => { override.value = 'true'; try { logoUrl(logoInput.value); logoInput.setCustomValidity(''); } catch { logoInput.setCustomValidity('Use a public HTTPS image URL without credentials, query parameters or fragments.'); } });
-    logoInput.addEventListener('change', updateLogo);
-    logoInput.addEventListener('logo-candidate', updateLogo);
-    const clearLogo = button('Clear Logo', () => { logoInput.value = ''; logoInput.dispatchEvent(new window.Event('input', { bubbles: true })); updateLogo(); logoInput.focus(); }, 'nc-button nc-button--tertiary nc-button--sm');
-    logoPreview.append(companyAvatar(row?.company ?? '', false, row?.company_logo_url));
-    const logoActions = el('div', '', 'editor__logo-actions'); logoActions.append(logoPreview, clearLogo);
-    const logoHelp = el('small', 'Optional public HTTPS image URL. Your replacement or clear is kept when retrieving the posting again. Some hosts block external images; initials remain available.', 'nc-field__helper'); logoHelp.id = 'company-logo-help'; logoInput.setAttribute('aria-describedby', logoHelp.id);
-    logo.append(override, logoActions, logoHelp);
-    fields.append(logo);
-  }
-  fields.append(jobUrl, field('job_description', 'Job description', row?.job_description ?? '', 'textarea'));
-  const details = el('details'); details.append(el('summary', 'More job details'));
-  const extra = el('div', '', 'field-grid');
-  for (const [name, label] of /** @type {const} */ ([['source','Source'], ['location','Location'], ['employment_type','Employment type'], ['compensation_text','Compensation range / type']])) {
-    extra.append(field(name, label, row?.[name] ?? '', name === 'compensation_text' ? 'textarea' : 'text'));
-  }
-  const source = extra.querySelector('input[name="source"]');
-  if (source) {
-    source.setAttribute('list', 'source-options');
-    const options = el('datalist'); options.id = 'source-options';
-    for (const value of ['ChatGPT', 'LinkedIn', 'Welcome to the Jungle', 'Referral', 'Company site', 'Other']) {
-      const option = el('option'); option.value = value; options.append(option);
-    }
-    extra.append(options);
-    const helper = el('small', 'Optional discovery channel; any text is allowed.', 'nc-field__helper');
-    helper.id = 'source-field-helper'; source.setAttribute('aria-describedby', helper.id); source.closest('.nc-field')?.append(helper);
-  }
-  extra.append(selectField('work_arrangement', 'Work arrangement', WORK_ARRANGEMENTS, row?.work_arrangement ?? '', true));
-  for (const [name, label] of /** @type {const} */ ([['posted_on','Posted date'], ['discovered_on','Discovered date'], ['applied_on','Applied date']])) extra.append(field(name, label, row?.[name] ?? '', 'date'));
-  details.append(extra, field('notes', 'Notes', row?.notes ?? '', 'textarea'));
-  if (row) {
-    const primaryDetails = el('div', '', 'field-grid');
-    for (const name of ['location', 'employment_type', 'work_arrangement', 'compensation_text']) {
-      const wrapper = extra.querySelector(`[name="${name}"]`)?.closest('.nc-field');
-      if (wrapper) primaryDetails.append(wrapper);
-    }
-    fields.append(primaryDetails);
-    details.open = true;
-  }
-  fields.append(details);
+  const { fields, companyInput } = prospectFields(row ?? {}, { mode: row ? 'edit' : 'create' });
+  fields.append(logoEditor.value, logoEditor.override);
+  const refreshCompany = () => logoEditor.updateCompany(companyInput.value);
+  companyInput.addEventListener('input', refreshCompany);
+  companyInput.addEventListener('change', refreshCompany);
   const feedback = el('p', '', 'feedback nc-alert'); feedback.id = 'save-feedback'; feedback.setAttribute('role','status');
   const save = el('button', row ? 'Save details' : 'Add prospect', 'primary nc-button nc-button--primary nc-button--lg'); save.type = 'submit';
   fields.append(feedback, save);
@@ -367,7 +274,8 @@ export function editorView(root, row) {
     const actions = el('div', '', 'actions'); actions.append(save, send);
     fields.append(actions, feedback);
   }
-  form.append(fields); bindFieldValidation(form); panels.append(form);
+  form.append(fields); bindFieldValidation(form);
+  const main = el('div', '', 'editor__main'); main.append(form); panels.append(main);
   if (row) {
     const sidebar = el('aside', '', 'panel editor__status'); sidebar.setAttribute('aria-label', 'Prospect status and history');
     const section = el('section'); section.setAttribute('aria-labelledby', 'prospect-status-title');

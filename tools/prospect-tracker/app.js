@@ -9,9 +9,9 @@ import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261024-company-logo-editor';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261025-add-prospect-columns';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { mountIngestion } from './ingestion-ui.js?v=20261024-company-logo-editor';
+import { mountIngestion } from './ingestion-ui.js?v=20261025-add-prospect-columns';
 
 /** @param {import('@supabase/supabase-js').SupabaseClient<import('./database.types.js').Database>} client */
 export async function startRadar(client) {
@@ -35,11 +35,14 @@ export async function startRadar(client) {
   let mounted = false;
   /** @type {(()=>void)|null} */
   let boardCleanup = null;
+  /** @type {(()=>void)|null} */
+  let editorCleanup = null;
   /** @type {import('./ui.js').BoardState} */
   let boardState = { query: '', doneOpen: false, scrollLeft: 0, scrollTop: {} };
 
   const clear = () => {
     boardCleanup?.(); boardCleanup = null;
+    editorCleanup?.(); editorCleanup = null;
     epoch++; dirty = false; mounted = false; activeHash = '';
     workspace.replaceChildren();
     boardState = { query: '', doneOpen: false, scrollLeft: 0, scrollTop: {} };
@@ -88,7 +91,8 @@ export async function startRadar(client) {
     activeHash = window.location.hash || '#/board';
     const route = parseRoute(activeHash);
     boardCleanup?.(); boardCleanup = null;
-    node('tracker-heading').hidden = route.kind === 'detail';
+    editorCleanup?.(); editorCleanup = null;
+    node('tracker-heading').hidden = route.kind === 'detail' || route.kind === 'new';
     dirty = false; mounted = true;
     messageView(workspace, route.kind === 'board' ? 'Loading prospects…' : 'Loading prospect…');
     const current = () => epoch === thisEpoch && lastUserId === owner;
@@ -164,9 +168,9 @@ export async function startRadar(client) {
         const ingestion = route.kind === 'new' ? mountIngestion(form, {
           client, data, createId, current, busy,
           markDirty: () => { dirty = true; },
-          canReplace: () => !pending && (!dirty || window.confirm('Replace the job facts in this draft with a retrieved posting? Source, notes and applied date will be kept.')),
-          cancel: () => { busy(false); dirty = false; window.location.hash = '#/board'; }
+          canReplace: () => !pending && (!dirty || window.confirm('Replace the job facts in this draft with a retrieved posting? Source, notes and applied date will be kept.'))
         }) : null;
+        editorCleanup = ingestion?.dispose ?? null;
         const bindDetails = () => {
           form.addEventListener('input', () => { dirty = true; });
           form.addEventListener('submit', async event => {

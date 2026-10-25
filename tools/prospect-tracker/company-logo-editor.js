@@ -3,13 +3,13 @@ import { logoUrl } from './company-logo.js';
 import { bindFieldValidation } from '../shared/fields.mjs';
 
 /** Company identity editing lives on the avatar; hidden fields retain the
- * existing guarded Details save contract. No database writes happen here.
- * @param {import('./model.js').Prospect} row */
+ * existing guarded prospect save contract. No database writes happen here.
+ * @param {Pick<import('./model.js').DetailsPatch, 'company'|'company_logo_url'|'company_logo_override'>} row */
 export function companyLogoEditor(row) {
   /** @template {keyof HTMLElementTagNameMap} T @param {T} tag @param {string} [className] */
   const node = (tag, className = '') => { const item = document.createElement(tag); item.className = className; return item; };
   const value = node('input'); value.type = 'hidden'; value.name = 'company_logo_url'; value.value = row.company_logo_url ?? '';
-  const override = node('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row.company_logo_override);
+  const override = node('input'); override.type = 'hidden'; override.name = 'company_logo_override'; override.value = String(row.company_logo_override ?? false);
   const trigger = node('button', 'company-logo-trigger'); trigger.type = 'button'; trigger.title = 'Edit company logo';
   trigger.setAttribute('aria-label', 'Edit Company Logo'); trigger.setAttribute('aria-haspopup', 'dialog'); trigger.setAttribute('aria-expanded', 'false');
   const panel = node('div', 'company-logo-popover nc-menu-elevation'); panel.id = 'company-logo-editor'; panel.popover = 'auto'; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-labelledby', 'company-logo-title');
@@ -26,7 +26,9 @@ export function companyLogoEditor(row) {
   const remove = node('button', 'nc-button nc-button--tertiary nc-button--lg'); remove.type = 'button'; remove.textContent = 'Remove Logo';
   actions.append(use, remove); fields.append(field, actions); form.append(fields); bindFieldValidation(form);
   panel.append(heading, form);
-  const refresh = () => trigger.replaceChildren(companyAvatar(row.company, true, value.value));
+  let company = row.company ?? '';
+  const refresh = () => trigger.replaceChildren(companyAvatar(company, true, value.value));
+  value.addEventListener('logo-candidate', refresh);
   const commit = (/** @type {string|null} */ url) => {
     value.value = url ?? ''; override.value = 'true';
     value.dispatchEvent(new window.Event('input', { bubbles: true }));
@@ -50,5 +52,5 @@ export function companyLogoEditor(row) {
     window.addEventListener('resize', () => panel.hidePopover(), { signal });
   });
   panel.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); panel.hidePopover(); trigger.focus(); } });
-  refresh(); return { trigger, panel, value, override };
+  refresh(); return { trigger, panel, value, override, updateCompany(/** @type {string} */ name) { company = name; refresh(); } };
 }
