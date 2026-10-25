@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import { startFixture } from '../fixtures/radar-server.js';
+import { createClient } from '../../vendor/supabase.js';
+import { createRadarDataAccess } from '../../data.js';
+const fixture=await startFixture();
+const client=createClient(fixture.origin,'sb_publishable_synthetic',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+const endpoint=await(await fetch('http://127.0.0.1:9242/json/version')).json();const ws=new globalThis.WebSocket(endpoint.webSocketDebuggerUrl);await new Promise(resolve=>ws.addEventListener('open',resolve,{once:true}));
+let id=0;const pending=new Map();ws.addEventListener('message',event=>{const m=JSON.parse(event.data);if(m.id){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(m.error):p.resolve(m.result);}});
+const send=(method,params={},sessionId)=>new Promise((resolve,reject)=>{pending.set(++id,{resolve,reject});ws.send(JSON.stringify({id,method,params,sessionId}));});
+const {targetId}=await send('Target.createTarget',{url:'about:blank'});const {sessionId}=await send('Target.attachToTarget',{targetId,flatten:true});const call=(method,params)=>send(method,params,sessionId);
+const ev=async expression=>{const r=await call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description);return r.result.value;};
+const wait=async expression=>{for(let i=0;i<200;i++){if(await ev(expression))return;await new Promise(resolve=>setTimeout(resolve,100));}throw Error('Timeout '+expression+' '+await ev("document.getElementById('progress')?.textContent"));};
+try{
+  await client.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});const data=createRadarDataAccess(client);
+  for(const override of [false,true,true])await data.createProspect({id:crypto.randomUUID(),company:'Example Studio',title:'Designer',job_url:'https://apply.workable.com/example/j/ABC123DEF4/',company_logo_override:override});
+  await call('Page.enable');await call('Fetch.enable',{patterns:[{urlPattern:'https://cdn.example.com/*'}]});
+  ws.addEventListener('message',async event=>{const m=JSON.parse(event.data);if(m.method==='Fetch.requestPaused')await call('Fetch.fulfillRequest',{requestId:m.params.requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'image/png'},{name:'Access-Control-Allow-Origin',value:'*'}],body:'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aOGkAAAAASUVORK5CYII='});});
+  await call('Page.navigate',{url:fixture.origin+'/tools/prospect-tracker/'});await wait("!!document.querySelector('#login:not([hidden])')");await ev("document.getElementById('login-email').value='radar@example.invalid';document.getElementById('login-password').value='fixture-only-password';document.getElementById('login-form').requestSubmit()");await wait("!!document.querySelector('.board')");
+  const before=await(await fetch(fixture.origin+'/__fixture')).json();
+  await call('Page.navigate',{url:fixture.origin+'/tools/prospect-tracker/logo-backfill-review.html'});await wait("!!document.getElementById('run') && !document.getElementById('run').disabled");await ev("document.getElementById('run').click()");await wait("!!document.getElementById('report').textContent");
+  const result=JSON.parse(await ev("document.getElementById('report').textContent"));assert.deepEqual(result.summary,{examined:3,eligible:1,candidates_found:1,candidates_rejected:0,skipped:2,expected_updates:1});
+  const after=await(await fetch(fixture.origin+'/__fixture')).json();assert.equal(after.attempts,before.attempts);assert.equal(after.prospects,before.prospects);assert.equal(after.events,before.events);
+  assert.equal(await ev("document.querySelectorAll('button').length"),1);console.log('PASS authenticated dry run, employer match, rendered candidate, manual-clear preservation and zero prospect/history writes');
+}finally{await send('Target.closeTarget',{targetId});ws.close();await client.auth.signOut();await fixture.close();}
