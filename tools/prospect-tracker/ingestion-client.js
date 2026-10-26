@@ -1,3 +1,5 @@
+import { selectPreviewLogo } from './logo-selection.js';
+import { logoUrl } from './company-logo.js';
 import { logoDiagnostic } from './logo-diagnostics.js';
 import { normalizePatch } from './model.js';
 import { IngestionError } from './ingestion/errors.js';
@@ -19,6 +21,13 @@ export function decodePreview(input, originalUrl) {
   const meta = /** @type {Record<string,unknown>|null} */ (value.identity);
   if (!meta || meta.provider !== identity.provider || meta.board !== identity.board || meta.posting_id !== identity.posting_id || (meta.region ?? null) !== ('region' in identity ? identity.region : null) || meta.canonical_url !== identity.canonical_url || meta.retrieval_url !== identity.retrieval_url || (meta.requisition_id !== null && typeof meta.requisition_id !== 'string') || normalized.job_url !== identity.canonical_url) throw new Error('Invalid ingestion posting identity');
   if (value.original_url !== originalUrl || value.method !== INGESTION_METHODS[identity.provider] || typeof value.retrieved_at !== 'string' || !Number.isFinite(Date.parse(value.retrieved_at))) throw new Error('Invalid ingestion provenance');
+  if (value.employer_website !== undefined) {
+    const site = /** @type {Record<string,unknown>} */(value.employer_website);
+    if (!site || typeof site !== 'object' || typeof site.source !== 'string' || !['matched-organization','matched-posting-link','bound-provider-account'].includes(String(site.kind)) || typeof site.url !== 'string' || site.url.length > 1000 || logoUrl(site.url) !== site.url) throw new Error('Invalid website evidence');
+  }
+  if (value.logo_candidates !== undefined) {
+    if (!Array.isArray(value.logo_candidates) || value.logo_candidates.length > 4 || value.logo_candidates.some(item => !item || typeof item !== 'object' || item.employerMatched !== true || !['ats','website'].includes(item.source) || !['ats-logo','touch-icon','manifest-icon','favicon','organization-logo'].includes(item.role) || !['branding','marketing','social','ats-platform',undefined].includes(item.context) || !Number.isSafeInteger(item.width) || !Number.isSafeInteger(item.height) || item.width < 1 || item.height < 1 || item.width > 4096 || item.height > 4096 || item.width * item.height > 8_000_000 || typeof item.url !== 'string' || logoUrl(item.url) !== item.url)) throw new Error('Invalid logo candidates');
+  }
   if (!Array.isArray(value.warnings) || !value.warnings.every(item => typeof item === 'string') || !value.field_sources || typeof value.field_sources !== 'object' || Array.isArray(value.field_sources) || Object.entries(value.field_sources).some(([key, source]) => !FIELDS.includes(key) || typeof source !== 'string')) throw new Error('Invalid ingestion warnings or field sources');
   return { .../** @type {import('./ingestion/preview.js').IngestionPreview} */ (input), draft: normalized };
 }
@@ -28,6 +37,7 @@ export function decodePreview(input, originalUrl) {
  * @param {string} url @param {AbortSignal} signal
  */
 export async function retrieveJob(client, url, signal) {
+  const started=Date.now();
   const originalUrl = url.trim(); recognizePosting(originalUrl);
   const { data, error } = await client.functions.invoke('job-ingest', { body: { url: originalUrl }, signal });
   if (error) {
@@ -39,7 +49,7 @@ export async function retrieveJob(client, url, signal) {
     }
     throw new Error('Could not retrieve this posting. Check your connection and the job-ingest deployment, or enter details manually.');
   }
-  const preview = decodePreview(data, originalUrl);
+  const preview = await selectPreviewLogo(decodePreview(data, originalUrl),client,signal,18000-(Date.now()-started));
   logoDiagnostic(preview.draft.company_logo_url ? 'candidate_accepted' : 'no_candidate');
   return preview;
 }

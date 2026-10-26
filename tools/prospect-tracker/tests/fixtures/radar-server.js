@@ -76,7 +76,7 @@ export async function startFixture(port = 0, options = {}) {
       if (url.pathname === '/auth/v1/logout') { send({}); return; }
       if (url.pathname === '/functions/v1/job-ingest') {
         retrieves++;
-        const handler = createIngestionHandler({ ownerId: owner, allowedOrigins: [origin],
+        const handler = options.ingestionHandler ?? createIngestionHandler({ ownerId: owner, allowedOrigins: [origin],
           authenticate: async value => value === token ? owner : null,
           retrieveLogo: options.retrieveLogo,
           fetcher: options.fetcher ?? (async target => {

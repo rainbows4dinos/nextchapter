@@ -50,3 +50,13 @@ Deno.test('wire, header and decoded image limits reject oversized responses',()=
   assert.throws(()=>imageBody(encode('HTTP/1.1 200 OK\r\nX-Large: '+ 'a'.repeat(17000)+'\r\n\r\n')));
   assert.throws(()=>imageBody(concat(encode('HTTP/1.1 200 OK\r\n\r\n'),new Uint8Array(2*1024*1024+1))));
 });
+
+Deno.test('verified-site transport rejects DNS rebinding answers and redirects without weaker fallback',async()=>{
+  const {pinnedResource}=await import('./logo-transport.ts');let connected=false;
+  for(const answers of [['127.0.0.1'],['8.8.8.8','169.254.169.254'],[]])await assert.rejects(pinnedResource('https://verified.example.com/icon.png',new AbortController().signal,{accept:'image/png',byteLimit:1024},{resolve:()=>Promise.resolve(answers),connect:()=>{connected=true;throw Error();},secure:()=>{throw Error();}}));
+  assert.equal(connected,false);
+  let closed=false;
+  const wire=new TextEncoder().encode('HTTP/1.1 302 Found\r\nLocation: https://127.0.0.1/private\r\nContent-Length: 0\r\n\r\n');let read=false;
+  const tls={handshake:()=>Promise.resolve({alpnProtocol:'http/1.1'}),close(){closed=true;},write:(bytes:Uint8Array)=>Promise.resolve(bytes.length),read:(bytes:Uint8Array)=>{if(read)return Promise.resolve(null);read=true;bytes.set(wire);return Promise.resolve(wire.length);}} as Deno.TlsConn;
+  await assert.rejects(pinnedResource('https://verified.example.com/icon.png',new AbortController().signal,{accept:'image/png',byteLimit:1024},{resolve:()=>Promise.resolve(['8.8.8.8']),connect:()=>Promise.resolve({close(){closed=true;}} as Deno.TcpConn),secure:()=>Promise.resolve(tls)}));assert.equal(closed,true);
+});

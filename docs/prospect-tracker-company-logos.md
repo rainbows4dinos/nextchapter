@@ -1,5 +1,7 @@
 # Prospect Tracker Company Logos
 
+The October 26 resolver extension adds bounded verified-site discovery, qualitative candidate comparison and owner-bound delivery references. See [verified branding discovery and selection](prospect-tracker-logo-selection.md) for current behavior, configuration and release requirements. Earlier release details below record the original ATS-only implementation.
+
 Issue #29 adds optional `company_logo_url` and `company_logo_override` fields to prospects. A manual URL replacement or explicit clear sets the override flag. Repeated retrieval in the existing new-prospect preview respects that flag. A database trigger also preserves saved manual choices when an automatic refresh write explicitly supplies `company_logo_override: false`; other refreshed facts still save. Manual edits always supply `true`. There is no new existing-prospect refresh workflow, backfill, upload service, or employer crawl.
 
 ## Detection and review

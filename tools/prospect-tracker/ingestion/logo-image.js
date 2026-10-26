@@ -5,13 +5,22 @@ const rejected = () => new IngestionError('logo_content_rejected', 'The company 
 /** Raster signatures and bounded dimensions, independently of MIME/extension.
  * The browser decoder remains the final validity check. No SVG/HTML is served.
  * @param {Uint8Array} bytes */
-export function rasterType(bytes) {
+export function rasterMetadata(bytes) {
   if (bytes.length < 24 || bytes.length > LOGO_BYTE_LIMIT) throw rejected();
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const ascii = /** @param {number} start @param {number} length */ (start, length) => String.fromCharCode(...bytes.subarray(start, start + length));
   let width = 0, height = 0, type = '';
   if ([137,80,78,71,13,10,26,10].every((byte, i) => bytes[i] === byte) && view.getUint32(8) === 13 && ascii(12, 4) === 'IHDR') {
     width = view.getUint32(16); height = view.getUint32(20); type = 'image/png';
+    let offset=8,hasData=false,ended=false;
+    while(offset+12<=bytes.length){
+      const length=view.getUint32(offset),chunk=ascii(offset+4,4);
+      if(length>bytes.length-offset-12||chunk==='acTL')throw rejected();
+      if(chunk==='IDAT')hasData=true;
+      offset+=length+12;
+      if(chunk==='IEND'){if(length!==0||offset!==bytes.length)throw rejected();ended=true;break;}
+    }
+    if(!hasData||!ended)throw rejected();
     if (bytes.length < 45 || ascii(bytes.length - 8, 4) !== 'IEND') throw rejected();
   } else if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[bytes.length - 2] === 0xff && bytes[bytes.length - 1] === 0xd9) {
     let offset = 2;
@@ -40,5 +49,8 @@ export function rasterType(bytes) {
     type = 'image/webp';
   }
   if (!type || !width || !height || width > 4096 || height > 4096 || width * height > 8_000_000) throw rejected();
-  return type;
+  return { type, width, height };
 }
+
+/** @param {Uint8Array} bytes */
+export function rasterType(bytes) { return rasterMetadata(bytes).type; }

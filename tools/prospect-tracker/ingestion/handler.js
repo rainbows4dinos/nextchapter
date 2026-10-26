@@ -3,7 +3,7 @@ import { IngestionError } from './errors.js';
 import { readBounded } from './bounded-fetch.js';
 
 /** HTTP boundary; dependencies injected for deterministic function tests.
- * @param {{ownerId: string, allowedOrigins: string[], authenticate: (token: string, signal: AbortSignal) => Promise<string|null>, fetcher: typeof fetch, retrieveLogo?: (url:string, signal:AbortSignal) => Promise<{bytes:Uint8Array,type:string}>, timeoutMs?: number}} options
+ * @param {{ownerId: string, allowedOrigins: string[], authenticate: (token: string, signal: AbortSignal) => Promise<string|null>, fetcher: typeof fetch, retrieveLogo?: (url:string, signal:AbortSignal) => Promise<{bytes:Uint8Array,type:string}>, resolveBranding?: (preview:import('./preview.js').IngestionPreview,signal:AbortSignal)=>Promise<import('./preview.js').IngestionPreview>, timeoutMs?: number}} options
  */
 export function createIngestionHandler(options) {
   /** @param {Request} request */
@@ -27,7 +27,8 @@ export function createIngestionHandler(options) {
     const cancel = () => controller.abort();
     request.signal.addEventListener('abort', cancel, { once: true });
     if (request.signal.aborted) cancel();
-    const timer = setTimeout(cancel, options.timeoutMs ?? 15000);
+    const timeoutMs=options.timeoutMs??15000,deadline=Date.now()+timeoutMs;
+    const timer = setTimeout(cancel,timeoutMs);
     try {
       const authorization = request.headers.get('authorization') ?? '';
       const token = /^Bearer ([^\s]{1,8192})$/i.exec(authorization)?.[1];
@@ -56,7 +57,15 @@ export function createIngestionHandler(options) {
         imageHeaders.set('Content-Security-Policy', "default-src 'none'; sandbox");
         return new Response(new Blob([new Uint8Array(image.bytes)], { type: image.type }), { headers: imageHeaders });
       }
-      const preview = await ingestPosting(body.url.trim(), { fetcher: options.fetcher, signal: controller.signal });
+      let preview = await ingestPosting(body.url.trim(), { fetcher: options.fetcher, signal: controller.signal });
+      if (options.resolveBranding) {
+        const remaining=Math.floor(deadline-Date.now()-Math.min(500,timeoutMs/4));
+        if(remaining>0){
+          const brandingSignal=globalThis.AbortSignal.any([controller.signal,globalThis.AbortSignal.timeout(remaining)]);
+          try{preview=await options.resolveBranding(preview,brandingSignal);}
+          catch{controller.signal.throwIfAborted();console.debug('[company-logo]','optional-resolution-unavailable');}
+        }
+      }
       controller.signal.throwIfAborted();
       return reply(preview);
     } catch (error) {

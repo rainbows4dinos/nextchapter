@@ -1,3 +1,4 @@
+import { organizationWebsite } from './employer-website.js';
 import { addGreenhouseBranding } from './greenhouse-branding.js';
 import { addEmployerLogo } from './company-logo.js';
 import { descriptionText } from './posting-facts.js';
@@ -68,6 +69,7 @@ export async function ingestGreenhouse(url, options) {
   const identity = recognizeGreenhouse(url);
   const posting = await retrievePosting(options.fetcher, identity.retrieval_url, options.signal);
   const preview = normalizeGreenhouse(posting, identity, url, options.now ?? new Date(), options.discoveredOn);
+  preview.employer_website = organizationWebsite(object(posting).hiringOrganization,preview.draft.company,identity.canonical_url);
   await addGreenhouseBranding(preview, options);
   return preview;
 }

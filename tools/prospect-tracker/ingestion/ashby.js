@@ -120,5 +120,7 @@ export async function ingestAshby(url, options) {
   }
   /** @type {string[]} */ const warnings = [];
   const metadata = await retrieveMetadata(identity, text(raw.title), options, warnings);
-  return normalizeAshby(raw, identity, metadata, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  const preview = normalizeAshby(raw, identity, metadata, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  if (metadata.website_evidence) preview.employer_website = /** @type {import('./employer-website.js').WebsiteEvidence} */ (metadata.website_evidence);
+  return preview;
 }

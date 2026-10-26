@@ -1,7 +1,7 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyLogoEditor } from './company-logo-editor.js?v=20261025-avatar-heading';
+import { companyLogoEditor } from './company-logo-editor.js?v=20261026-branding-selection';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyAvatar } from './company-avatar.js?v=20261025-avatar-heading';
+import { companyAvatar } from './company-avatar.js?v=20261026-branding-selection';
 import { prospectFields, selectField } from './prospect-form.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { createDateFilter } from './date-filter.js?v=20261024-radio-label';

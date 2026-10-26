@@ -1,5 +1,5 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { configureLogoDelivery } from './company-avatar.js?v=20261025-avatar-heading';
+import { configureLogoDelivery } from './company-avatar.js?v=20261026-branding-selection';
 import { createLogoLoader } from './company-logo-delivery.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { setAccountBusy } from '../shared/navigation.mjs?v=20261013-tracker-route';
@@ -12,9 +12,9 @@ import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261025-avatar-heading';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261026-branding-selection';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { mountIngestion } from './ingestion-ui.js?v=20261025-avatar-heading';
+import { mountIngestion } from './ingestion-ui.js?v=20261026-branding-selection';
 
 /** @param {import('@supabase/supabase-js').SupabaseClient<import('./database.types.js').Database>} client */
 export async function startRadar(client) {

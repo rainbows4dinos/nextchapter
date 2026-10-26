@@ -5,12 +5,15 @@ import { object, text } from './posting-facts.js';
 const normalized = /** @param {string} name */ name => name.normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase();
 const intermediary = /\b(?:greenhouse|ashby|lever|workable|workday|recruit(?:er|ing|ment)?|staffing|talent agency|confidential|undisclosed)\b/i;
 
+/** @param {unknown} name @param {string|null|undefined} company */
+export function employerMatches(name,company) { return typeof name==='string' && !!company && normalized(name)===normalized(company) && !intermediary.test(name); }
+
 /** Only an employer-bound logo, never og:image, publisher.logo or a page image.
  * Ambiguity is normal. Never retrieve the URL here.
  * @param {unknown} organization @param {string|undefined|null} company */
 export function employerLogo(organization, company) {
   const org = object(organization), name = text(org.name);
-  if (!name || !company || normalized(name) !== normalized(company) || intermediary.test(name)) return null;
+  if (!employerMatches(name,company)) return null;
   const image = org.logo;
   const imageObject = object(image);
   const candidate = typeof image === 'string' ? image : text(imageObject.contentUrl) ?? text(imageObject.url);

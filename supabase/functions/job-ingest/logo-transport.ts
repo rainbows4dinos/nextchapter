@@ -1,3 +1,4 @@
+import { logoUrl } from '../../../tools/prospect-tracker/company-logo.js';
 import { atsLogoUrl } from '../../../tools/prospect-tracker/ats-logo.js';
 import { LOGO_BYTE_LIMIT, rasterType } from '../../../tools/prospect-tracker/ingestion/logo-image.js';
 import { IngestionError } from '../../../tools/prospect-tracker/ingestion/errors.js';
@@ -17,12 +18,12 @@ export function publicIpv4(address: string): boolean {
 const failure = () => new IngestionError('logo_retrieval_failed', 'The company image could not be retrieved.', 502);
 const MAX_HEADERS = 16 * 1024;
 // Includes framing overhead; decoded bytes have their own smaller limit.
-const MAX_WIRE = LOGO_BYTE_LIMIT + 64 * 1024;
+const WIRE_OVERHEAD = 64 * 1024;
 
 /** Strict, deliberately small HTTP/1.1 subset: no redirects, compression,
  * interim responses, duplicate framing headers or conflicting framing. */
-export function imageBody(wire: Uint8Array): Uint8Array {
-  if (wire.length > MAX_WIRE) throw failure();
+export function imageBody(wire: Uint8Array, byteLimit = LOGO_BYTE_LIMIT): Uint8Array {
+  if (wire.length > byteLimit + WIRE_OVERHEAD) throw failure();
   let headerEnd = -1;
   for (let i = 0; i < Math.min(wire.length - 3, MAX_HEADERS); i++) {
     if (wire[i] === 13 && wire[i+1] === 10 && wire[i+2] === 13 && wire[i+3] === 10) { headerEnd = i; break; }
@@ -58,13 +59,13 @@ export function imageBody(wire: Uint8Array): Uint8Array {
         return result;
       }
       size += count;
-      if (size > LOGO_BYTE_LIMIT || position + count + 2 > body.length || body[position+count] !== 13 || body[position+count+1] !== 10) throw failure();
+      if (size > byteLimit || position + count + 2 > body.length || body[position+count] !== 13 || body[position+count+1] !== 10) throw failure();
       chunks.push(body.subarray(position, position + count)); position += count + 2;
     }
     throw failure();
   }
   if (length !== undefined && (!/^\d{1,10}$/.test(length) || Number(length) !== body.length)) throw failure();
-  if (body.length > LOGO_BYTE_LIMIT) throw failure();
+  if (body.length > byteLimit) throw failure();
   return body;
 }
 
@@ -72,15 +73,16 @@ export function imageBody(wire: Uint8Array): Uint8Array {
  * hostname. DNS is never consulted again during the connection (no TOCTOU).
  * No cookies, bearer headers, referrer, redirects, proxy or ambient fetch state.
  * Dependency seams are for tests only, never HTTP request options. */
-export async function retrieveLogo(value: string, signal: AbortSignal, dependencies = {
+export async function pinnedResource(value: string, signal: AbortSignal, options: {accept:string,byteLimit:number}, dependencies = {
   resolve: (host: string) => Deno.resolveDns(host, 'A'),
   connect: (ip: string) => Deno.connect({ hostname: ip, port: 443 }),
   secure: (conn: Deno.TcpConn, host: string) => Deno.startTls(conn, { hostname: host, alpnProtocols: ['http/1.1'] })
 }) {
-  const canonical = atsLogoUrl(value);
+  const canonical = logoUrl(value);
   if (!canonical) throw new IngestionError('logo_candidate_rejected', 'Unsupported company image.', 400);
   const url = new URL(canonical);
   const deadline = AbortSignal.any([signal, AbortSignal.timeout(6000)]);
+  deadline.throwIfAborted();
   let connection: Deno.Conn | undefined;
   const close = () => { try { connection?.close(); } catch { /* Already closed. */ } };
   // Race non-cancelable DNS and connect operations; late sockets close below.
@@ -98,20 +100,30 @@ export async function retrieveLogo(value: string, signal: AbortSignal, dependenc
       const tls = await dependencies.secure(tcp, url.hostname); connection = tls;
       if (deadline.aborted) { close(); throw failure(); }
       await tls.handshake(); deadline.throwIfAborted();
-      const request = new TextEncoder().encode(`GET ${url.pathname}${url.search} HTTP/1.1\r\nHost: ${url.hostname}\r\nAccept: image/png,image/jpeg,image/webp\r\nAccept-Encoding: identity\r\nConnection: close\r\n\r\n`);
+      const request = new TextEncoder().encode(`GET ${url.pathname}${url.search} HTTP/1.1\r\nHost: ${url.hostname}\r\nAccept: ${options.accept}\r\nAccept-Encoding: identity\r\nConnection: close\r\n\r\n`);
       for (let offset = 0; offset < request.length;) offset += await tls.write(request.subarray(offset));
       const chunks: Uint8Array[] = []; let size = 0;
       while (true) {
         deadline.throwIfAborted();
         const chunk = new Uint8Array(16384), count = await tls.read(chunk);
         if (count === null) break;
-        size += count; if (size > MAX_WIRE) throw failure();
+        size += count; if (size > options.byteLimit + WIRE_OVERHEAD) throw failure();
         chunks.push(chunk.subarray(0, count));
       }
       const wire = new Uint8Array(size); let offset = 0;
       for (const chunk of chunks) { wire.set(chunk, offset); offset += chunk.length; }
-      const bytes = imageBody(wire);
-      return { bytes, type: rasterType(bytes) };
+      const bytes = imageBody(wire,options.byteLimit);
+      const headerText = new TextDecoder().decode(wire.subarray(0,Math.min(wire.length,MAX_HEADERS))).split('\r\n\r\n')[0];
+      const type = /^content-type:\s*([^\r\n]+)/im.exec(headerText)?.[1].split(';')[0].trim().toLowerCase() ?? '';
+      return { bytes, type };
     })()]);
   } finally { close(); }
+}
+
+/** Existing ATS-only entry remains fail-closed for unsigned client URLs. */
+export async function retrieveLogo(value:string,signal:AbortSignal,dependencies?:Parameters<typeof pinnedResource>[3]) {
+  const canonical=atsLogoUrl(value);
+  if(!canonical)throw new IngestionError('logo_candidate_rejected','Unsupported company image.',400);
+  const image=await pinnedResource(canonical,signal,{accept:'image/png,image/jpeg,image/webp',byteLimit:LOGO_BYTE_LIMIT},dependencies);
+  return {bytes:image.bytes,type:rasterType(image.bytes)};
 }

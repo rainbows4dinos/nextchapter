@@ -1,3 +1,4 @@
+import { managedLogoUrl } from './managed-logo.js';
 import { logoUrl } from './company-logo.js';
 import { atsLogoUrl } from './ats-logo.js';
 import { logoDiagnostic } from './logo-diagnostics.js';
@@ -40,7 +41,7 @@ export function companyAvatar(company, large = false, logo = null) {
   img.addEventListener('error', fail, { once: true });
   img.addEventListener('load', () => { clearTimeout(timer); if (img.naturalWidth) { initials.hidden = true; avatar.classList.add('nc-avatar--logo'); img.hidden = false; release(); logoDiagnostic('image_rendered'); } else fail(); }, { once: true });
   avatar.append(img);
-  if (atsLogoUrl(url)) {
+  if (atsLogoUrl(url) || managedLogoUrl(url)) {
     if (!loadLogo) fail();
     else void loadLogo(url, controller.signal).then(blob => {
       if (controller.signal.aborted) return;

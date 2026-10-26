@@ -91,5 +91,7 @@ export async function ingestLever(url, options) {
   const raw = validateLeverPosting(await retrievePosting(options.fetcher, identity.retrieval_url, options.signal, 'Lever'), identity);
   /** @type {string[]} */ const warnings = [];
   const metadata = await retrieveMetadata(identity, text(raw.text), options, warnings);
-  return normalizeLever(raw, identity, metadata, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  const preview = normalizeLever(raw, identity, metadata, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  if (metadata.website_evidence) preview.employer_website = /** @type {import('./employer-website.js').WebsiteEvidence} */ (metadata.website_evidence);
+  return preview;
 }

@@ -1,3 +1,4 @@
+import { postingWebsite, unambiguousWebsite } from './employer-website.js';
 import { Parser } from 'htmlparser2';
 import { atsLogoUrl } from '../ats-logo.js';
 import { retrievePosting } from './bounded-fetch.js';
@@ -36,12 +37,13 @@ export function greenhouseBranding(html, company, canonical) {
  * @param {import('./preview.js').IngestionPreview} preview
  * @param {{fetcher:typeof fetch,signal:AbortSignal}} options */
 export async function addGreenhouseBranding(preview, options) {
-  if (preview.draft.company_logo_url || !preview.draft.company) return;
+  if (!preview.draft.company) return;
   try {
     const signal = globalThis.AbortSignal.any([options.signal, globalThis.AbortSignal.timeout(2500)]);
     const html = await retrievePosting(options.fetcher, preview.identity.canonical_url, signal, 'Greenhouse', 'html');
+    preview.employer_website = unambiguousWebsite(preview.employer_website,postingWebsite(String(html),preview.draft.company,preview.identity.canonical_url));
     const logo = greenhouseBranding(/** @type {string} */ (html), preview.draft.company, preview.identity.canonical_url);
-    if (logo) {
+    if (logo && !preview.draft.company_logo_url) {
       preview.draft.company_logo_url = logo;
       preview.field_sources.company_logo_url = 'Greenhouse employer header matched to posting and company';
     }

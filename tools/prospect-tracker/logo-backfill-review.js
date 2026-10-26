@@ -1,3 +1,4 @@
+import { managedLogoUrl } from './managed-logo.js';
 import { getRadarClient } from './supabase-client.js';
 import { readLogoRecords, resolveLogoDryRun } from './logo-backfill.js';
 import { retrieveJob } from './ingestion-client.js';
@@ -20,7 +21,7 @@ run.addEventListener('click',async()=>{
       const timer=setTimeout(()=>controller.abort(),8000);
       const img=new window.Image();img.referrerPolicy='no-referrer';img.crossOrigin='anonymous';
       try {
-        const source=atsLogoUrl(url)?(objectUrl=URL.createObjectURL(await load(url,controller.signal))):url;
+        const source=atsLogoUrl(url)||managedLogoUrl(url)?(objectUrl=URL.createObjectURL(await load(url,controller.signal))):url;
         return await new Promise(resolve=>{
           const abort=()=>{img.removeAttribute('src');resolve(false);};
           controller.signal.addEventListener('abort',abort,{once:true});

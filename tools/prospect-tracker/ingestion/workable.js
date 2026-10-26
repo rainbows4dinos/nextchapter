@@ -1,4 +1,5 @@
-import { addEmployerLogo } from './company-logo.js';
+import { employerWebsiteUrl } from './employer-website.js';
+import { addEmployerLogo, employerMatches } from './company-logo.js';
 import { IngestionError } from './errors.js';
 import { recognizeWorkable } from './workable-url.js';
 import { retrievePosting } from './bounded-fetch.js';
@@ -96,5 +97,8 @@ export async function ingestWorkable(url, options) {
   // Valid JSON with a missing/conflicting account binding is a hard failure.
   if (metadata !== undefined) account = validateWorkableAccount(metadata, raw, identity);
   options.signal.throwIfAborted();
-  return normalizeWorkable(raw, identity, account, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  const preview = normalizeWorkable(raw, identity, account, url, options.now ?? new Date(), warnings, options.discoveredOn);
+  const website = employerWebsiteUrl(account.url);
+  if (website && employerMatches(account.name,preview.draft.company)) preview.employer_website = {url:website,kind:'bound-provider-account',source:identity.canonical_url};
+  return preview;
 }

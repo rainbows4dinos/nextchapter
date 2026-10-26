@@ -1,4 +1,4 @@
-import { retrieveLogo } from './logo-transport.ts';
+import { createBranding } from './branding.ts';
 import { readPublicConfig } from '../../../tools/prospect-tracker/config.js';
 import { createAuthenticator, createIngestionHandler } from '../../../tools/prospect-tracker/ingestion/handler.js';
 
@@ -16,7 +16,8 @@ for (const origin of allowedOrigins) {
     throw new Error('RADAR_ALLOWED_ORIGINS must contain exact HTTPS origins or explicit HTTP localhost origins');
   }
 }
+const branding = createBranding({origin:config.supabaseUrl,owner:Deno.env.get('RADAR_OWNER_ID')??'',secret:Deno.env.get('RADAR_LOGO_SIGNING_KEY')});
 export default { fetch: createIngestionHandler({
   ownerId: Deno.env.get('RADAR_OWNER_ID') ?? '', allowedOrigins,
-  authenticate: createAuthenticator(config, fetch), fetcher: fetch, retrieveLogo
+  authenticate: createAuthenticator(config, fetch), fetcher: fetch, retrieveLogo:branding.deliver, resolveBranding:branding.resolve
 }) };

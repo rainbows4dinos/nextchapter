@@ -1,3 +1,4 @@
+import { organizationWebsite, postingWebsite, unambiguousWebsite } from './employer-website.js';
 import { Parser } from 'htmlparser2';
 import { retrievePosting } from './bounded-fetch.js';
 import { object, text } from './posting-facts.js';
@@ -66,7 +67,10 @@ export async function retrieveMetadata(identity, title, options, warnings) {
   const target = `https://${host}/${identity.board}/${identity.posting_id}`;
   try {
     const html = await retrievePosting(options.fetcher, target, options.signal, PROVIDER_NAMES[identity.provider], 'html');
-    return postingMetadata(/** @type {string} */ (html), identity, title, warnings);
+    const metadata = postingMetadata(/** @type {string} */ (html), identity, title, warnings);
+    const company = text(object(metadata.hiringOrganization).name);
+    if (company) metadata.website_evidence = unambiguousWebsite(organizationWebsite(metadata.hiringOrganization,company,target),postingWebsite(String(html),company,target));
+    return metadata;
   } catch {
     options.signal.throwIfAborted();
     warnings.push('The hosted posting metadata could not be retrieved within the security/size limits. API facts are retained; complete Company manually.');

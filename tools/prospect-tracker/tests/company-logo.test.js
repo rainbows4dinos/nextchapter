@@ -81,3 +81,23 @@ test('logo columns retain owner RLS and reject unsafe stored URL syntax', async(
     assert.equal((await db.query('update prospects set company_logo_url=null where id=$1 returning id',[id])).rows.length,0);
   } finally {await db.close();}
 });
+
+test('managed website references persist through the normal owner-scoped save and manual replacement/clear remain authoritative',async()=>{
+  const {createLogoReferences}=await import('../../../supabase/functions/job-ingest/logo-reference.ts');
+  const {createLogoLoader}=await import('../company-logo-delivery.js');
+  const owner='11111111-1111-4111-8111-111111111111',refs=createLogoReferences('https://api.example.com','fixture-only-signing-key-not-for-production');
+  const reference=await refs.issue({url:'https://employer.example.com/touch.png',site:'https://employer.example.com/',role:'touch-icon'},owner);
+  const png=new Uint8Array(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aOGkAAAAASUVORK5CYII=','base64'));
+  const fixture=await startFixture(0,{retrieveLogo:async url=>{await refs.verify(url,owner);return {bytes:png,type:'image/png'};}});
+  const client=createClient(fixture.origin,'sb_publishable_synthetic',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  try{
+    await client.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});const data=createRadarDataAccess(client);
+    let row=await data.createProspect({id:crypto.randomUUID(),company:'Example Studio',title:'Designer',company_logo_url:reference});
+    assert.equal((await data.getProspect(row.id)).company_logo_url,reference);
+    assert.deepEqual(new Uint8Array(await(await createLogoLoader(client)(reference,new AbortController().signal)).arrayBuffer()),png);
+    row=await data.updateProspect(row.id,{company_logo_url:logo,company_logo_override:true},row.updated_at);
+    row=await data.updateProspect(row.id,{company_logo_url:reference,company_logo_override:false},row.updated_at);assert.equal(row.company_logo_url,logo);
+    row=await data.updateProspect(row.id,{company_logo_url:null,company_logo_override:true},row.updated_at);
+    row=await data.updateProspect(row.id,{company_logo_url:reference,company_logo_override:false},row.updated_at);assert.equal(row.company_logo_url,null);assert.equal((await data.listStatusEvents(row.id)).length,1);
+  }finally{await client.auth.signOut({scope:'local'});await fixture.close();}
+});
