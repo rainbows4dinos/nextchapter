@@ -181,7 +181,7 @@ export async function startFixture(port = 0, options = {}) {
       }
       if (url.pathname === '/tools/prospect-tracker/public-env.js') {
         res.writeHead(200, { 'content-type': 'text/javascript' });
-        res.end(`export default ${JSON.stringify({ SUPABASE_URL: origin, SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_synthetic' })};`); return;
+        res.end(`export default ${JSON.stringify({ SUPABASE_URL: origin, SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_synthetic', ...(options.brandfetchClientId ? { BRANDFETCH_CLIENT_ID: options.brandfetchClientId } : {}) })};`); return;
       }
       // Serve the suite entry points and shared assets for navigation/handoff acceptance.
       if (url.pathname === '/tools/career-radar/' || url.pathname === '/tools/career-radar/index.html') {

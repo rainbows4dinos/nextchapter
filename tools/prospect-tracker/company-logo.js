@@ -1,4 +1,5 @@
 import { atsLogoUrl } from './ats-logo.js';
+import { brandfetchReference, brandfetchLogo } from './brandfetch.js';
 
 /** Logos are references, never markup. No credentials, query payloads, local
  * addresses, or fragments; image requests must not carry prospect information.
@@ -12,6 +13,11 @@ export function logoUrl(value) {
   if (!raw) return null;
   const url = new URL(raw);
   const host = url.hostname.toLowerCase();
+  if (host === 'brandfetch.io' || host.endsWith('.brandfetch.io')) {
+    const ref = brandfetchReference(raw);
+    if (!ref) throw new Error('Choose a supported company logo reference.');
+    return brandfetchLogo(ref.domain, ref.variant);
+  }
   if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash || url.port ||
       !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(host) || /(?:^|\.)(?:localhost|local|internal|test|invalid|example)$/.test(host) ||
       /^\d+(?:\.\d+)*$/.test(host) || /[\s\\<>"]/.test(raw)) {

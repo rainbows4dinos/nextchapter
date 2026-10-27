@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { readPublicConfig } from './config.js';
+import { configureBrandfetch } from './brandfetch.js';
 
 /** @typedef {import('./database.types.js').Database} Database */
 
@@ -11,6 +12,7 @@ import { readPublicConfig } from './config.js';
  */
 export function createRadarClient(env) {
   const { supabaseUrl, publishableKey } = readPublicConfig(env);
+  configureBrandfetch(env.BRANDFETCH_CLIENT_ID);
   return createClient(supabaseUrl, publishableKey, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
   });

@@ -1,4 +1,5 @@
 import { logoDiagnostic } from './logo-diagnostics.js';
+import { brandfetchReference } from './brandfetch.js';
 
 /** Authenticated Edge Function request; the ATS never receives browser headers.
  * No company identity or prospect ID is sent. No persistent image cache.
@@ -6,6 +7,7 @@ import { logoDiagnostic } from './logo-diagnostics.js';
 export function createLogoLoader(client) {
   /** @param {string} url @param {AbortSignal} signal */
   return async (url, signal) => {
+    if (brandfetchReference(url)) throw new Error('Company logo requires direct image loading');
     const { data, error, response } = await client.functions.invoke('job-ingest', { body: { action: 'logo', url }, signal });
     const type = response?.headers.get('x-logo-content-type') ?? '';
     if (error || !(data instanceof Blob) || !['image/png','image/jpeg','image/webp'].includes(type) || data.size > 2 * 1024 * 1024) {
