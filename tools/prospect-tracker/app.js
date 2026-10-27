@@ -1,5 +1,5 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { configureLogoDelivery } from './company-avatar.js?v=20261026-brandfetch-picker';
+import { configureLogoDelivery } from './company-avatar.js?v=20261026-logo-grid';
 import { createLogoLoader } from './company-logo-delivery.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { setAccountBusy } from '../shared/navigation.mjs?v=20261013-tracker-route';
@@ -12,9 +12,9 @@ import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261026-brandfetch-picker';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261026-logo-grid';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { mountIngestion } from './ingestion-ui.js?v=20261026-brandfetch-picker';
+import { mountIngestion } from './ingestion-ui.js?v=20261026-logo-grid';
 
 /** @param {import('@supabase/supabase-js').SupabaseClient<import('./database.types.js').Database>} client */
 export async function startRadar(client) {
@@ -167,8 +167,23 @@ export async function startRadar(client) {
         if (route.kind === 'detail' && !row) { messageView(workspace, 'Prospect unavailable. It may no longer be accessible to this account.'); return; }
         const createId = crypto.randomUUID();
         let attemptedCreate = false;
+        const logoOptions = row ? { saveLogo: async (/** @type {string} */ url) => {
+          if (pending || !userId || !row) throw new Error('Wait for the current save or sign in before trying again.');
+          busy(true);
+          try {
+            const saved = await data.updateProspect(row.id, { company_logo_url: url, company_logo_override: true }, row.updated_at);
+            if (!current()) throw new Error('This page changed. Reopen the prospect to see its saved logo.');
+            // Advance the shared revision without rebuilding or saving the form draft.
+            row = saved;
+            showToast({ message: 'Logo saved.', variant: 'success' });
+          } catch (error) {
+            throw new Error(error instanceof StaleProspectError
+              ? 'This prospect changed elsewhere. Close this picker and reload before trying again. Keep a copy of any unsaved edits.'
+              : 'Could not save the logo. Try again.', { cause: error });
+          } finally { busy(false); }
+        } } : {};
         /** @type {HTMLFormElement} */
-        let form = editorView(workspace, row);
+        let form = editorView(workspace, row, logoOptions);
         const ingestion = route.kind === 'new' ? mountIngestion(form, {
           client, data, createId, current, busy,
           markDirty: () => { dirty = true; },
@@ -201,7 +216,7 @@ export async function startRadar(client) {
                 showToast({ message: 'Prospect saved.', variant: 'success' });
                 window.location.hash = `#/prospects/${row.id}`;
               } else {
-                form = editorView(workspace, row); bindDetails(); bindStatus();
+                form = editorView(workspace, row, logoOptions); bindDetails(); bindStatus();
                 showToast({ message: 'Details saved.', variant: 'success' });
                 void loadHistory();
               }

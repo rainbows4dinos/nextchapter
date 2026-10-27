@@ -94,7 +94,10 @@ test('query-free references create, save, reload and clear using existing owner-
     await fetch(fixture.origin+'/__fixture/fail-next-save',{method:'POST'});
     await assert.rejects(data.updateProspect(row.id,{company_logo_url:brandfetchLogo('example.org','logo')},row.updated_at));
     assert.equal((await data.listProspects())[0].company_logo_url,ref);
-    row=await data.updateProspect(row.id,{company_logo_url:brandfetchLogo('example.org','symbol')},row.updated_at);
+    const before = row;
+    row=await data.updateProspect(row.id,{company_logo_url:brandfetchLogo('example.org','symbol'),company_logo_override:true},row.updated_at);
+    assert.deepEqual(Object.keys(row).filter(key=>JSON.stringify(row[key])!==JSON.stringify(before[key])).sort(),['company_logo_url','updated_at']);
+    await assert.rejects(data.updateProspect(row.id,{company_logo_url:ref,company_logo_override:true},before.updated_at),/changed|stale/i);
     assert.equal((await data.listProspects())[0].company_logo_url,row.company_logo_url);
     row=await data.updateProspect(row.id,{company_logo_url:null,company_logo_override:true},row.updated_at);
     assert.equal(row.company_logo_url,null);assert.equal(row.company_logo_override,true);

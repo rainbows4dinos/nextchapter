@@ -25,7 +25,7 @@ try{
   for(const width of [1440,390])for(const light of [false,true]){await call('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});await ev(`document.body.classList.toggle('light',${light})`);assert.equal(await ev('document.documentElement.scrollWidth>innerWidth'),false);}
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
   const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});const directory=process.env.LOGO_LIVE_OUTPUT??'/private/tmp';await writeFile(directory+'/branding-'+item.company.replace(/[^a-z0-9]/ig,'-')+'.png',Buffer.from(shot.data,'base64'),{mode:0o600});
-  await ev("(async()=>{const {companyAvatar}=await import('./company-avatar.js?v=20261026-brandfetch-picker');const small=companyAvatar(document.querySelector('[name=company]').value,false,document.querySelector('[name=company_logo_url]').value);small.id='verification-small-avatar';document.body.append(small);})()");
+  await ev("(async()=>{const {companyAvatar}=await import('./company-avatar.js?v=20261026-logo-grid');const small=companyAvatar(document.querySelector('[name=company]').value,false,document.querySelector('[name=company_logo_url]').value);small.id='verification-small-avatar';document.body.append(small);})()");
   await wait("!!document.querySelector('#verification-small-avatar img:not([hidden])')");
   assert.equal(await ev("document.getElementById('verification-small-avatar').getBoundingClientRect().width"),28);
   await ev("document.getElementById('verification-small-avatar').remove()");

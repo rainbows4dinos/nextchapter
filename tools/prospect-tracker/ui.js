@@ -1,7 +1,7 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyLogoEditor } from './company-logo-editor.js?v=20261026-brandfetch-picker';
+import { companyLogoEditor } from './company-logo-editor.js?v=20261026-logo-grid';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyAvatar } from './company-avatar.js?v=20261026-brandfetch-picker';
+import { companyAvatar } from './company-avatar.js?v=20261026-logo-grid';
 import { prospectFields, selectField } from './prospect-form.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { createDateFilter } from './date-filter.js?v=20261024-radio-label';
@@ -224,15 +224,16 @@ export function boardView(root, cards, options = {}) {
     dispose: () => { saveState(); controller.abort(); disposeDrag(); add.remove(); }
   };
 }
-/** @param {HTMLElement} root @param {import('./model.js').Prospect|null} row */
-export function editorView(root, row) {
+/** @param {HTMLElement} root @param {import('./model.js').Prospect|null} row
+ * @param {import('./company-logo-editor.js').LogoEditorOptions} [options] */
+export function editorView(root, row, options = {}) {
   const editor = el('div', '', row ? 'editor editor--detail' : 'editor');
   const back = link('', '#/board'); back.className = 'editor__back nc-paddle';
   const arrow = el('span', '', 'nc-button nc-button--secondary nc-button--sm nc-button--icon-only');
   arrow.append(gravityIcon('arrow-left')); arrow.setAttribute('aria-hidden', 'true');
   back.append(arrow, el('span', 'Back to Board', 'nc-paddle__label'));
   const heading = el('h1', row ? row.company : 'Add Prospect', 'editor__heading');
-  const logoEditor = companyLogoEditor(row ?? {});
+  const logoEditor = companyLogoEditor(row ?? {}, options);
   const title = el('div', '', 'editor__title'); title.append(logoEditor.trigger, heading, logoEditor.panel);
   const header = el('div', '', 'editor__header'); header.append(back, title); editor.append(header);
   const panels = el('div', '', 'editor__panels'); editor.append(panels);

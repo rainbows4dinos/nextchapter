@@ -1,76 +1,82 @@
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { companyAvatar } from './company-avatar.js?v=20261026-brandfetch-picker';
+import { companyAvatar } from './company-avatar.js?v=20261026-logo-grid';
 import { brandfetchLogo, searchBrands } from './brandfetch.js';
 
-/** A live autocomplete in the existing editor. No persistence or identity inference.
- * @param {(url:string,ready:boolean)=>void} select */
+/** Live manual selection only; persistence is supplied by the existing editor.
+ * @param {(url:string)=>Promise<void>} select */
 export function brandfetchPicker(select) {
   /** @template {keyof HTMLElementTagNameMap} T @param {T} tag @param {string} [className] */
   const node = (tag, className = '') => { const item = document.createElement(tag); item.className = className; return item; };
   const root = node('div', 'company-logo-search');
-  const label = node('label', 'nc-field__label'); label.htmlFor = 'company-logo-search'; label.textContent = 'Find a Company';
-  const query = node('input', 'nc-input'); query.id = label.htmlFor; query.type = 'search'; query.maxLength = 120; query.autocomplete = 'off';
+  const query = node('input', 'nc-input'); query.id = 'company-logo-search'; query.type = 'search'; query.maxLength = 120; query.autocomplete = 'off'; query.placeholder = 'Search companies'; query.setAttribute('aria-label', 'Search Companies');
   const status = node('p', 'company-logo-feedback'); status.setAttribute('role', 'status');
-  const results = node('div', 'company-logo-results'); results.setAttribute('role', 'group'); results.setAttribute('aria-label', 'Company Matches');
-  const preview = node('div', 'company-logo-preview'); preview.hidden = true;
-  const image = node('div');
-  const variantLabel = node('label', 'nc-field__label'); variantLabel.htmlFor = 'company-logo-variant'; variantLabel.textContent = 'Logo Style';
-  const variant = node('select', 'nc-input'); variant.id = variantLabel.htmlFor;
-  for (const [value, text] of [['icon', 'Icon'], ['symbol', 'Symbol'], ['logo', 'Logo']]) { const option = node('option'); option.value = value; option.textContent = text; variant.append(option); }
-  const imageStatus = node('p', 'company-logo-feedback'); imageStatus.setAttribute('role', 'status');
-  preview.append(image, variantLabel, variant, imageStatus); root.append(label, query, status, results, preview);
+  const results = node('div', 'company-logo-results'); results.setAttribute('role', 'group'); results.setAttribute('aria-label', 'Company Logos');
+  results.id = 'company-logo-results'; query.setAttribute('aria-controls', results.id);
+  root.append(query, status, results);
   /** @type {ReturnType<typeof setTimeout>|undefined} */ let debounce;
   /** @type {AbortController|undefined} */ let request;
-  let generation = 0, imageGeneration = 0, active = false;
-  /** @type {{name:string,domain:string}|null} */ let selected = null;
+  let generation = 0, active = false, saving = false, selected = '';
   const cancelRequest = () => { generation++; clearTimeout(debounce); request?.abort(); results.replaceChildren(); };
-  const showSelection = () => {
-    if (!selected) return;
-    const reference = brandfetchLogo(selected.domain, variant.value);
-    const current = ++imageGeneration;
-    preview.hidden = false; imageStatus.textContent = 'Loading logo…'; select(reference, false);
-    image.replaceChildren(companyAvatar(selected.name, true, reference, (/** @type {boolean} */ loaded) => {
-      if (!active || current !== imageGeneration) return;
-      imageStatus.textContent = loaded ? '' : 'This logo style is unavailable. Try another style or image URL.';
-      select(reference, loaded);
-    }));
-  };
-  variant.addEventListener('change', showSelection);
   const schedule = () => {
-    cancelRequest(); const current = generation;
-    if (selected) select('', false);
-    selected = null; imageGeneration++; preview.hidden = true; image.replaceChildren();
-    const text = query.value.trim();
-    status.textContent = text ? 'Searching…' : 'Enter a company name to find its logo.';
+    if (saving) return;
+    cancelRequest(); const current = generation, text = query.value.trim();
+    status.textContent = text ? 'Searching…' : ''; results.setAttribute('aria-busy', String(!!text));
     if (!text) return;
     debounce = setTimeout(() => {
-      const controller = new AbortController(); request = controller;
-      let timedOut = false;
+      const controller = new AbortController(); request = controller; let timedOut = false;
       const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, 8000);
       void searchBrands(text, controller.signal).then(matches => {
         if (!active || current !== generation) return;
-        status.textContent = matches.length ? 'Choose the company you mean.' : 'No companies found. Try another name or use an image URL.';
+        status.textContent = matches.length ? '' : 'No logos found. Try another company name.';
         for (const match of matches) {
-          const button = node('button', 'company-logo-result'); button.type = 'button'; button.setAttribute('aria-pressed', 'false');
-          const copy = node('span'); const name = node('strong'); name.textContent = match.name; const domain = node('span'); domain.textContent = match.domain; copy.append(name, domain);
-          button.append(companyAvatar(match.name, false, brandfetchLogo(match.domain)), copy);
+          const reference = brandfetchLogo(match.domain);
+          const button = node('button', 'company-logo-result'); button.type = 'button'; button.disabled = true;
+          button.setAttribute('aria-label', `${match.name} — ${match.domain}`); button.setAttribute('aria-pressed', String(reference === selected)); button.setAttribute('aria-busy', 'true');
+          const name = node('strong'); name.textContent = match.name; name.title = match.name;
+          const domain = node('span', 'company-logo-domain'); domain.textContent = match.domain; domain.title = match.domain;
+          const feedback = node('span', 'company-logo-tile-state'); feedback.textContent = 'Loading…';
+          const image = companyAvatar(match.name, true, reference, (/** @type {boolean} */ loaded) => {
+            if (!active || current !== generation) return;
+            button.dataset.ready = String(loaded); button.disabled = saving || !loaded;
+            button.setAttribute('aria-busy', 'false'); feedback.textContent = loaded ? '' : 'Unavailable';
+          });
+          button.append(image, name, domain, feedback);
           button.addEventListener('click', () => {
-            for (const other of results.querySelectorAll('button')) other.setAttribute('aria-pressed', String(other === button));
-            selected = match; variant.value = 'icon'; showSelection();
+            if (saving || button.dataset.ready !== 'true') return;
+            saving = true; query.disabled = true; button.setAttribute('aria-busy', 'true'); feedback.textContent = 'Saving…'; status.textContent = 'Saving logo…';
+            for (const tile of results.querySelectorAll('button')) tile.disabled = true;
+            void select(reference).then(() => { status.textContent = 'Logo selected.'; }).catch(error => {
+              status.textContent = error instanceof Error ? error.message : 'Could not save the logo. Try again.';
+            }).finally(() => {
+              saving = false; query.disabled = false; button.setAttribute('aria-busy', 'false'); feedback.textContent = '';
+              for (const tile of results.querySelectorAll('button')) tile.disabled = tile.dataset.ready !== 'true';
+              if (active) button.focus();
+            });
           });
           results.append(button);
         }
-      }).catch(error => {
+      }).catch(() => {
         if (!active || current !== generation) return;
-        status.textContent = timedOut ? 'Search timed out. Edit the name to try again or use an image URL.' : error instanceof Error && !controller.signal.aborted ? error.message : 'Search canceled.';
-      }).finally(() => clearTimeout(timeout));
+        status.textContent = timedOut ? 'Search timed out. Edit the name to try again.' : 'Could not search right now. Edit the name to try again.';
+      }).finally(() => { clearTimeout(timeout); if (current === generation) results.setAttribute('aria-busy', 'false'); });
     }, 300);
   };
   query.addEventListener('input', schedule);
-  query.addEventListener('keydown', event => { if (event.key === 'Enter') event.preventDefault(); });
-  return { root, query,
-    open(/** @type {string} */ company) { active = true; query.value = company; variant.value = 'icon'; schedule(); },
-    close() { active = false; cancelRequest(); imageGeneration++; selected = null; image.replaceChildren(); preview.hidden = true; status.textContent = ''; },
-    custom() { imageGeneration++; selected = null; preview.hidden = true; image.replaceChildren(); }
+  query.addEventListener('keydown', event => {
+    if (event.key === 'Enter') event.preventDefault();
+    if (event.key === 'ArrowDown') { event.preventDefault(); [...results.querySelectorAll('button')].find(tile => !tile.disabled)?.focus(); }
+  });
+  results.addEventListener('keydown', event => {
+    const tiles = [...results.querySelectorAll('button')].filter(tile => !tile.disabled);
+    const index = tiles.findIndex(tile => tile === document.activeElement);
+    const columns = window.getComputedStyle(results).gridTemplateColumns.split(' ').length;
+    const movement = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns };
+    if (index < 0 || !(event.key in movement)) return;
+    event.preventDefault();
+    tiles[Math.max(0, Math.min(tiles.length - 1, index + movement[/** @type {keyof typeof movement} */ (event.key)]))]?.focus();
+  });
+  return { root, query, isSaving: () => saving,
+    open(/** @type {string} */ company, /** @type {string} */ reference = '') { active = true; selected = reference; query.value = company; schedule(); },
+    close() { active = false; cancelRequest(); status.textContent = ''; }
   };
 }

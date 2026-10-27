@@ -241,19 +241,23 @@ time { display:block; font-size:13px; color:var(--muted) }
 .company-logo-popover { position:fixed; inset:auto; margin:0; width:320px; max-width:calc(100vw - 24px); max-height:calc(100dvh - 24px); overflow:auto; padding:var(--nc-space-4); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-panel); background:var(--nc-surface-raised); color:var(--nc-text-primary) }
 .company-logo-popover h2 { margin:0 0 var(--nc-space-3); font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family) }
 .company-logo-popover .actions { gap:var(--nc-space-2); padding-top:0 }
-.company-logo-search { display:grid; gap:var(--nc-space-2) }
+/* Manual logo picker: one action per tile; no form or footer. */
+.company-logo-popover { width:480px }
+.company-logo-search { display:grid; gap:var(--nc-space-3) }
 .company-logo-feedback { margin:0; color:var(--nc-text-secondary); font-size:var(--nc-type-ui-label-size) }
-.company-logo-results { display:grid; gap:var(--nc-space-1); max-height:var(--nc-space-80); overflow:auto }
-.company-logo-result { display:flex; align-items:center; gap:var(--nc-space-3); padding:var(--nc-space-2); width:100%; text-align:left; color:var(--nc-text-primary); background:var(--nc-surface-raised); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-lg); cursor:pointer }
-.company-logo-result > span:last-child { display:grid; min-width:0; overflow-wrap:anywhere }
-.company-logo-result > span:last-child > span { color:var(--nc-text-secondary) }
-.company-logo-result:hover, .company-logo-result[aria-pressed="true"] { border-color:var(--nc-link-default); background:var(--nc-card-hover) }
-.company-logo-result[aria-pressed="true"] { border-width:2px; padding:calc(var(--nc-space-2) - 1px) }
+.company-logo-feedback:empty { display:none }
+.company-logo-results { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--nc-space-2); max-height:min(var(--nc-space-96),calc(100dvh - var(--nc-space-40))); overflow:auto; padding:var(--nc-space-1) }
+.company-logo-result { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--nc-space-2); padding:var(--nc-space-3); min-width:0; color:var(--nc-text-primary); background:var(--nc-surface-raised); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-lg); cursor:pointer }
+.company-logo-result .nc-avatar { flex:none }
+.company-logo-result strong, .company-logo-domain { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.company-logo-domain, .company-logo-tile-state { color:var(--nc-text-secondary); font-size:var(--nc-type-ui-label-size) }
+.company-logo-tile-state { min-height:var(--nc-space-4) }
+.company-logo-result:hover:not(:disabled), .company-logo-result[aria-pressed="true"] { border-color:var(--nc-link-default); background:var(--nc-card-hover) }
+.company-logo-result[aria-pressed="true"] { border-width:2px; padding:calc(var(--nc-space-3) - 1px) }
 .company-logo-result:focus-visible { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
-.company-logo-preview { display:grid; gap:var(--nc-space-2) }
-.company-logo-preview[hidden] { display:none }
-.company-logo-custom { margin:var(--nc-space-3) 0 }
-.company-logo-custom summary { cursor:pointer; margin-bottom:var(--nc-space-2) }
+.company-logo-result:disabled { cursor:default }
+.company-logo-result[aria-busy="true"] { border-style:dashed }
+@media(max-width:600px) { .company-logo-results { grid-template-columns:repeat(2,minmax(0,1fr)) } }
 
 /* Add Prospect: shared Details grid, with import as a non-sticky utility. */
 .editor__panels:has(.ingestion) { display:grid; gap:var(--nc-space-6) }
