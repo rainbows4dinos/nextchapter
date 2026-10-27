@@ -10,6 +10,7 @@ import { bindFieldValidation, setFieldError } from '../shared/fields.mjs';
 import { createRadarDataAccess, StaleProspectError } from './data.js';
 import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
+import { mountProspectDelete } from './prospect-delete.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261026-editor-actions';
@@ -192,8 +193,29 @@ export async function startRadar(client) {
           markDirty: () => { dirty = true; },
           canReplace: () => !pending && (!dirty || window.confirm('Replace the job facts in this draft with a retrieved posting? Source, notes and applied date will be kept.'))
         }) : null;
-        editorCleanup = ingestion?.dispose ?? null;
+        /** @type {(()=>void)|null} */
+        let deleteCleanup = null;
+        editorCleanup = () => { ingestion?.dispose(); deleteCleanup?.(); };
         const bindDetails = () => {
+          deleteCleanup?.();
+          deleteCleanup = row ? mountProspectDelete(form, {
+            getProspect: () => /** @type {import('./model.js').Prospect} */ (row),
+            canDelete: () => current() && !!userId && !pending,
+            remove: async selected => {
+              busy(true);
+              try { await data.deleteProspect(selected.id, selected.updated_at); }
+              catch (error) {
+                if (current() && error instanceof StaleProspectError) showError(error, node('save-feedback'));
+                throw error;
+              } finally { if (current()) busy(false); }
+            },
+            onSuccess: () => {
+              if (!current()) return;
+              dirty = false;
+              showToast({ message: 'Prospect deleted.', variant: 'success' });
+              window.location.hash = '#/board';
+            }
+          }) : null;
           form.addEventListener('input', () => { dirty = true; });
           form.addEventListener('submit', async event => {
             event.preventDefault();

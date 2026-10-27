@@ -229,3 +229,24 @@ test('board Applied history is owner/RLS-scoped, paginated in batches and read-o
   const failed = harness([{status:403,body:{message:'History unavailable'}}]);
   await assert.rejects(failed.data.listAppliedTransitions(), error=>error.message==='History unavailable');
 });
+
+test('delete sends only the exact prospect ID and unmodified microsecond revision to the RPC', async () => {
+  const { data, requests } = harness([{ body: id }]);
+  await data.deleteProspect(id, revision);
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].url.pathname, '/rest/v1/rpc/delete_prospect');
+  assert.equal(requests[0].method, 'POST');
+  assert.deepEqual(requests[0].body, { prospect_id: id, expected_updated_at: revision });
+});
+
+test('delete never reports success for a missing/stale, linked, failed or unconfirmed response', async () => {
+  for (const response of [{ status: 409, body: { code: '40001', message: 'stale' } }, { status: 409, body: { code: '23503', message: 'linked' } }, { status: 503, body: { code: 'TEST_FAILURE', message: 'unavailable' } }, { body: null }]) {
+    const { data, requests } = harness([response]);
+    await assert.rejects(data.deleteProspect(id, revision), response.body?.code === '40001' ? StaleProspectError : undefined);
+    assert.equal(requests.length, 1);
+  }
+  const { data, requests } = harness([]);
+  await assert.rejects(data.deleteProspect('invalid', revision));
+  await assert.rejects(data.deleteProspect(id, 'invalid'));
+  assert.equal(requests.length, 0);
+});

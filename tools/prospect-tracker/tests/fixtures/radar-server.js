@@ -126,6 +126,18 @@ export async function startFixture(port = 0, options = {}) {
       }
       if (url.pathname.startsWith('/rest/v1/')) {
         if (req.headers.authorization !== `Bearer ${token}`) { send({ message: 'Unauthorized', code: 'PGRST301' }, 401); return; }
+        if (url.pathname === '/rest/v1/rpc/delete_prospect' && req.method === 'POST') {
+          attempts++;
+          if (options.deleteDelayMs) await new Promise(done => setTimeout(done, Math.min(options.deleteDelayMs, 2000)));
+          if (failNextSave) { failNextSave = false; send({ message: 'Synthetic deletion failure', code: 'TEST_FAILURE' }, 503); return; }
+          const body = JSON.parse(text);
+          const result = await db.transaction(async tx => {
+            await tx.exec('set local role authenticated');
+            await tx.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: owner })]);
+            return tx.query('select public.delete_prospect($1,$2::timestamptz) as id', [body.prospect_id, body.expected_updated_at]);
+          });
+          send(result.rows[0].id); return;
+        }
         if (url.pathname === '/rest/v1/rpc/reorder_prospect_column' && req.method === 'POST') {
           if (failNextSave) { failNextSave = false; send({ message: 'Synthetic reorder failure', code: 'TEST_FAILURE' }, 503); return; }
           const body = JSON.parse(text);

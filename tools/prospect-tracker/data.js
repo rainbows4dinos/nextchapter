@@ -13,8 +13,8 @@ import {
 /** @typedef {Pick<Prospect, 'id'|'company'|'title'|'job_url'|'location'|'status'|'applied_on'|'updated_at'>} ProspectIdentity */
 
 export class StaleProspectError extends Error {
-  constructor() {
-    super('Prospect changed, is unavailable, or is no longer accessible. Reload before saving.');
+  constructor(action = 'saving') {
+    super(`Prospect changed, is unavailable, or is no longer accessible. Reload before ${action}.`);
     this.name = 'StaleProspectError';
   }
 }
@@ -190,6 +190,18 @@ export function createRadarDataAccess(client) {
     }
   }
 
+  /** Permanently remove one owned record at its exact saved revision.
+   * History cleanup is atomic in the RPC; no direct table DELETE is exposed.
+   * @param {string} id @param {string} expectedUpdatedAt */
+  async function deleteProspect(id, expectedUpdatedAt) {
+    validateId(id); validateRevision(expectedUpdatedAt);
+    const { data, error } = await client.rpc('delete_prospect', { prospect_id: id, expected_updated_at: expectedUpdatedAt });
+    if (error?.code === '40001') throw new StaleProspectError('deleting');
+    if (error?.code === '23503') throw new Error('This prospect is linked to a Career Radar opportunity and cannot be deleted.');
+    if (error) throw error;
+    if (data !== id) throw new Error('Deletion was not confirmed. Reload the saved prospect before trying again.');
+  }
+
   /** @param {string} columnId @param {string[]} expectedIds @param {string[]} orderedIds */
   async function reorderColumn(columnId, expectedIds, orderedIds) {
     expectedIds.forEach(id => validateId(id)); orderedIds.forEach(id => validateId(id));
@@ -198,5 +210,5 @@ export function createRadarDataAccess(client) {
     if (error) throw error;
   }
 
-  return { listAppliedTransitions, reorderColumn, listProspects, listProspectIdentities, getProspect, createProspect, updateProspect, updateAssessment, setConnections, changeStatus, listStatusEvents };
+  return { deleteProspect, listAppliedTransitions, reorderColumn, listProspects, listProspectIdentities, getProspect, createProspect, updateProspect, updateAssessment, setConnections, changeStatus, listStatusEvents };
 }

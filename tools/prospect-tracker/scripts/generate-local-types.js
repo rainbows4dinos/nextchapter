@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { createLocalDatabase } from './local-database.js';
 
 // Bootstrap snapshot from PostgreSQL introspection, not handwritten types.
@@ -38,9 +38,26 @@ try {
       : '        Relationships: [];\n';
     output += '      };\n';
   }
-  const { rows: functions } = await db.query(`select p.proname, pg_get_function_arguments(p.oid) as args from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public' and p.proname = 'reorder_prospect_column'`);
-  if (functions.length !== 1 || functions[0].args !== 'column_id text, expected_ids uuid[], ordered_ids uuid[]') throw new Error('Unexpected reorder RPC signature');
-  output += '    };\n    Views: { [_ in never]: never };\n    Functions: { reorder_prospect_column: { Args: { column_id: string; expected_ids: string[]; ordered_ids: string[] }; Returns: undefined } };\n    Enums: { [_ in never]: never };\n    CompositeTypes: { [_ in never]: never };\n  };\n};\n';
+  const { rows: functions } = await db.query(`
+    select p.proname, p.proargnames as names,
+      array(select format_type(t, null) from unnest(p.proargtypes::oid[]) t) as types,
+      format_type(p.prorettype, null) as result
+    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.proname in ('reorder_prospect_column','delete_prospect') order by p.proname
+  `);
+  if (functions.length !== 2) throw new Error('Expected both Tracker RPC signatures');
+  const rpcTypes = { uuid: 'string', text: 'string', 'uuid[]': 'string[]', 'timestamp with time zone': 'string', void: 'undefined' };
+  const rpc = functions.map(fn => {
+    if (!rpcTypes[fn.result] || fn.types.some(type => !rpcTypes[type])) throw new Error('Unsupported RPC type');
+    return `      ${fn.proname}: {\n        Args: {\n${fn.names.map((name, index) => `          ${name}: ${rpcTypes[fn.types[index]]}\n`).join('')}        }\n        Returns: ${rpcTypes[fn.result]}\n      }\n`;
+  }).join('');
+  if (process.argv.includes('--functions-only')) {
+    const existing = await readFile(new URL('../database.types.ts', import.meta.url), 'utf8');
+    output = existing.replace(/ {4}Functions: \{[\s\S]*? {4}Enums:/, `    Functions: {\n${rpc}    }\n    Enums:`);
+    if (!/ {4}Functions: \{/.test(existing)) throw new Error('Missing Functions type block');
+  } else {
+    output += `    };\n    Views: { [_ in never]: never };\n    Functions: {\n${rpc}    };\n    Enums: { [_ in never]: never };\n    CompositeTypes: { [_ in never]: never };\n  };\n};\n`;
+  }
   await writeFile(new URL('../database.types.ts', import.meta.url), output);
   console.log('Generated migration-based PostgreSQL schema snapshot. Hosted Supabase generation is still required after deployment.');
 } finally {

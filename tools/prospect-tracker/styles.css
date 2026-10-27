@@ -271,3 +271,10 @@ time { display:block; font-size:13px; color:var(--muted) }
 .ingestion__supported { margin:var(--nc-space-3) 0 }
 .ingestion__supported summary { margin:0; font:var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family) }
 .ingestion__supported p { margin:var(--nc-space-2) 0 0; font:var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family) }
+
+/* Confirmation uses the existing raised-panel surface, shared buttons and native modal focus behavior. */
+.editor__delete { margin-inline-start:auto }
+.prospect-delete-dialog { width:480px; max-width:calc(100vw - 2 * var(--nc-space-4)); max-height:calc(100dvh - 2 * var(--nc-space-4)); box-sizing:border-box; overflow:auto; padding:var(--nc-space-6); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-panel); background:var(--nc-surface-raised); color:var(--nc-text-primary) }
+.prospect-delete-dialog::backdrop { background:var(--nc-background-page); opacity:.8 }
+.prospect-delete-dialog h2 { font:var(--nc-type-h3-weight) var(--nc-type-h3-size)/var(--nc-type-h3-line-height) var(--nc-type-h3-family) }
+.prospect-delete-dialog .actions { justify-content:flex-end; gap:var(--nc-space-3); margin-top:var(--nc-space-6) }

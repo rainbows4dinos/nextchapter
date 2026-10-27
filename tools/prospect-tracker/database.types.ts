@@ -251,6 +251,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      delete_prospect: {
+        Args: { expected_updated_at: string; prospect_id: string }
+        Returns: string
+      }
       reorder_prospect_column: {
         Args: {
           column_id: string
