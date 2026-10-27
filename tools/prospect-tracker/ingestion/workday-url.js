@@ -1,8 +1,8 @@
 import { IngestionError } from './errors.js';
 
-// Only clusters exercised in the compatibility spike. Expanding this set needs
-// a public detail smoke check; do not accept arbitrary Workday-looking hosts.
-const CLUSTERS = new Set(['1', '3', '5', '103']);
+// Only clusters verified by public detail smoke checks. Expanding this set
+// needs the same check; do not accept arbitrary Workday-looking hosts.
+const CLUSTERS = new Set(['1', '3', '5', '103', '501']);
 const TOKEN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/;
 const ANCHOR = /^[A-Za-z0-9][A-Za-z0-9_-]{0,350}_[A-Za-z0-9][A-Za-z0-9-]{0,99}$/;
 const TENANT_HOST = /^([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)\.wd([1-9][0-9]{0,2})\.myworkdayjobs\.com$/;
@@ -19,7 +19,7 @@ export function recognizeWorkday(input) {
   }
   const hosted = TENANT_HOST.exec(url.hostname), shared = SHARED_HOST.exec(url.hostname);
   const cluster = hosted?.[2] ?? shared?.[1];
-  const unsupported = () => new IngestionError('unsupported_url', 'Use a public Workday job detail link on a supported wd1, wd3, wd5 or wd103 hosted site. Custom domains and other routes are not supported.');
+  const unsupported = () => new IngestionError('unsupported_url', 'Use a public Workday job detail link on a supported wd1, wd3, wd5, wd103 or wd501 hosted site. Custom domains and other routes are not supported.');
   if (!cluster || !CLUSTERS.has(cluster)) throw unsupported();
   let parts;
   try { parts = url.pathname.replace(/\/$/, '').split('/').slice(1).map(decodeURIComponent); }

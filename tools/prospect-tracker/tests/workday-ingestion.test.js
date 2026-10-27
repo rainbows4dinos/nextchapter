@@ -19,7 +19,7 @@ const clone = () => globalThis.structuredClone(raw);
 const options = { now, signal: signal(), fetcher: async target => String(target).includes('/wday/cxs/') ? Response.json(raw) : new Response(page, { headers: { 'content-type': 'text/html' } }) };
 
 test('Workday recognizes validated clusters, both host families, optional locale/location and canonical tracking rules', () => {
-  for (const cluster of ['1','3','5','103']) for (const shared of [false,true]) for (const locale of ['', 'en-US/', 'fr-FR/', 'en/']) for (const location of ['', 'Example-City/']) {
+  for (const cluster of ['1','3','5','103','501']) for (const shared of [false,true]) for (const locale of ['', 'en-US/', 'fr-FR/', 'en/']) for (const location of ['', 'Example-City/']) {
     const host = shared ? `wd${cluster}.myworkdaysite.com` : `example.wd${cluster}.myworkdayjobs.com`;
     const root = shared ? 'recruiting/example/External_Careers' : 'External_Careers';
     const input = `https://${host}/${locale}${root}/job/${location}Senior-Product-Designer_REQ-123-1?utm_source=test&source=channel&unknown=kept#fragment`;
@@ -36,7 +36,9 @@ test('Workday refuses hostile hosts, unknown clusters, unsupported routes, encod
   for (const input of [
     'https://example.wd5.myworkdayjobs.com.evil.test/External/job/A_REQ-1',
     'https://evil.example.wd5.myworkdayjobs.com/External/job/A_REQ-1',
-    url.replace('wd5','wd99'),url.replace('wd5','wd5-impl'),
+    url.replace('wd5','wd99'),url.replace('wd5','wd502'),url.replace('wd5','wd0501'),
+    url.replace('wd5','wd501').replace('.com/', '.com.evil.test/'),
+    url.replace('example.wd5','evil.ancestry.wd501'),url.replace('wd5','wd5-impl'),
     url.replace('/job/Example-City/','/details/'),url.replace('/job/Example-City/Senior-Product-Designer_REQ-123-1',''),
     url.replace('Senior-Product-Designer_REQ-123-1','12345'),url.replace('Example-City','%2fprivate'),
     url.replace('Example-City','%252fprivate'),url.replace('Example-City','%2e%2e'),url.replace('Example-City','..'),
@@ -128,4 +130,25 @@ test('Workday duplicates ignore locale/location/tracking but preserve tenant/sit
   const prospect={id:'11111111-1111-4111-8111-111111111111',company:'Original Legal Entity',title:raw.jobPostingInfo.title,job_url:url.replace('en-US/','').replace('Example-City/',''),location:null,status:'prospect',applied_on:null,updated_at:'2026-10-07T12:00:00.123456Z'};
   assert.equal(duplicateCandidates(draft,[prospect])[0].strength,'strong');
   for(const other of [url.replace('REQ-123-1','REQ-123'),url.replace('External_Careers','Other'),url.replace('example.wd5','different.wd5'),url.replace('wd5','wd3')]) assert.deepEqual(duplicateCandidates({...draft,company:prospect.company},[{...prospect,job_url:other}]),[]);
+});
+
+
+test('wd501 retrieval uses fixed hosted URLs and retains exact posting checks', async () => {
+  const input = url.replace('example.wd5', 'ancestry.wd501');
+  const id = recognizePosting(input);
+  const posting = clone();
+  posting.jobPostingInfo.externalUrl = input;
+  const calls = [];
+  const result = await ingestPosting(input, {...options, fetcher: async (target, init) => {
+    calls.push(String(target));
+    assert.equal(init.redirect, 'manual');
+    assert.deepEqual(init.headers, {Accept: calls.length === 1 ? 'application/json' : 'text/html'});
+    return calls.length === 1 ? Response.json(posting) : new Response('', {headers: {'content-type': 'text/html'}});
+  }});
+  assert.equal(decodePreview(result, input).draft.title, raw.jobPostingInfo.title);
+  assert.deepEqual(calls, [id.retrieval_url, id.metadata_url]);
+  for (const externalUrl of [url, input.replace('REQ-123-1', 'REQ-123'), input.replace('External_Careers', 'Other')]) {
+    posting.jobPostingInfo.externalUrl = externalUrl;
+    assert.throws(() => validateWorkdayPosting(posting, id), e => e.code === 'invalid_posting');
+  }
 });
