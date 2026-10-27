@@ -13,7 +13,7 @@ import { validateStatus, validateHttpUrl } from './model.js';
 import { mountProspectDelete } from './prospect-delete.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261026-editor-actions';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261027-find-people';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { mountIngestion } from './ingestion-ui.js?v=20261026-editor-actions';
 

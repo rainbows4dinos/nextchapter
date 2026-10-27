@@ -278,3 +278,12 @@ time { display:block; font-size:13px; color:var(--muted) }
 .prospect-delete-dialog::backdrop { background:var(--nc-background-page); opacity:.8 }
 .prospect-delete-dialog h2 { font:var(--nc-type-h3-weight) var(--nc-type-h3-size)/var(--nc-type-h3-line-height) var(--nc-type-h3-family) }
 .prospect-delete-dialog .actions { justify-content:flex-end; gap:var(--nc-space-3); margin-top:var(--nc-space-6) }
+
+/* Saved-record research links share the existing tertiary button and popover surface. */
+.find-people__panel { position:fixed; inset:auto; margin:0; width:400px; max-width:calc(100vw - 2 * var(--nc-space-4)); max-height:calc(100dvh - 2 * var(--nc-space-4)); box-sizing:border-box; overflow:auto; padding:var(--nc-space-4); border:1px solid var(--nc-border-control); border-radius:var(--nc-radius-panel); background:var(--nc-surface-raised); color:var(--nc-text-primary) }
+.find-people__panel h2 { font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family); margin:0 0 var(--nc-space-2) }
+.find-people__panel p { font:var(--nc-type-body-small-weight) var(--nc-type-body-small-size)/var(--nc-type-body-small-line-height) var(--nc-type-body-small-family); margin:var(--nc-space-2) 0 }
+.find-people__option { display:flex; flex-direction:column; gap:var(--nc-space-1); padding:var(--nc-space-3); border-radius:var(--nc-radius-default); color:var(--nc-text-primary) }
+.find-people__option small { color:var(--nc-text-secondary) }
+.find-people__option[aria-disabled] { color:var(--nc-text-muted) }
+.find-people__panel::backdrop { background:transparent }

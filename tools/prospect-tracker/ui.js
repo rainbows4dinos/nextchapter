@@ -1,3 +1,4 @@
+import { findPeople } from './find-people.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { companyLogoEditor } from './company-logo-editor.js?v=20261026-editor-actions';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
@@ -279,7 +280,7 @@ export function editorView(root, row, options = {}) {
         setAlert(feedback, { message, variant: 'danger' });
       }
     }, 'secondary nc-button nc-button--tertiary nc-button--lg');
-    const actions = el('div', '', 'actions'); actions.append(send);
+    const actions = el('div', '', 'actions'); actions.append(send, findPeople({ company: row.company, title: row.title }));
     fields.append(actions, feedback);
   }
   form.append(fields, footer); bindFieldValidation(form);
