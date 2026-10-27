@@ -6,7 +6,7 @@ import { recognizeWorkable } from './workable-url.js';
 export const PROVIDER_NAMES = /** @type {const} */ ({ greenhouse: 'Greenhouse', ashby: 'Ashby', lever: 'Lever', workday: 'Workday', workable: 'Workable' });
 export const INGESTION_METHODS = /** @type {const} */ ({ greenhouse: 'greenhouse-job-board-api', ashby: 'ashby-job-posting-api', lever: 'lever-postings-api', workday: 'workday-cxs-detail', workable: 'workable-public-job-detail' });
 const UUID = '[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}';
-const ASHBY = new RegExp(`^/([A-Za-z0-9_-]{1,100})/(${UUID})(?:/application)?/?$`);
+const ASHBY = new RegExp(`^/((?:[A-Za-z0-9_-]|%[0-9a-fA-F]{2})+)/(${UUID})(?:/application)?/?$`);
 const LEVER = new RegExp(`^/([A-Za-z0-9_-]{1,100})/(${UUID})(?:/apply)?/?$`);
 
 /** Unknown parameters remain intact. They are never forwarded upstream.
@@ -34,13 +34,23 @@ export function recognizePosting(input) {
   if (url.hostname === 'apply.workable.com') return recognizeWorkable(input);
   if (url.hostname.endsWith('.myworkdayjobs.com') || url.hostname.endsWith('.myworkdaysite.com')) return recognizeWorkday(input);
   if (url.hostname === 'jobs.ashbyhq.com') {
+    const unsupported = () => new IngestionError('unsupported_url', 'Use a supported Ashby job detail URL with a complete job ID.');
+    // URL parsing removes controls and resolves dot segments/backslashes. Reject
+    // those raw forms before accepting an otherwise normalized Ashby identity.
+    const rawPath = input.split(/[?#]/, 1)[0];
+    if ([...input].some(char => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127) || rawPath.includes('\\') || /\/(?:\.|%2e){1,2}(?=\/|$)/i.test(rawPath)) throw unsupported();
+    if (/^\/[^/]+\/?$/.test(url.pathname)) throw new IngestionError('unsupported_url', 'Use an Ashby job detail URL, not a board listing.');
     const match = ASHBY.exec(url.pathname);
-    if (!match) throw new IngestionError('unsupported_url', 'Use an Ashby job detail URL, not a board listing.');
-    const [, board, id] = match;
+    if (!match) throw unsupported();
+    const [, segment, id] = match;
+    let board;
+    try { board = decodeURIComponent(segment); } catch { throw unsupported(); }
+    if (!/^[A-Za-z0-9_ -]{1,100}$/.test(board)) throw unsupported();
+    const encodedBoard = encodeURIComponent(board);
     const posting_id = id.toLowerCase();
     return { provider: /** @type {const} */ ('ashby'), board, posting_id,
-      canonical_url: canonical(url, `https://jobs.ashbyhq.com/${board}/${posting_id}`, ['source', 'ashby_source']),
-      retrieval_url: `https://api.ashbyhq.com/posting-api/job-board/${board}?includeCompensation=true` };
+      canonical_url: canonical(url, `https://jobs.ashbyhq.com/${encodedBoard}/${posting_id}`, ['source', 'ashby_source']),
+      retrieval_url: `https://api.ashbyhq.com/posting-api/job-board/${encodedBoard}?includeCompensation=true` };
   }
   if (['jobs.lever.co', 'jobs.eu.lever.co'].includes(url.hostname)) {
     const match = LEVER.exec(url.pathname);

@@ -64,7 +64,8 @@ export async function retrieveMetadata(identity, title, options, warnings) {
   // Reconstruct a fixed hosted path, discarding all input query parameters.
   const host = identity.provider === 'ashby' ? 'jobs.ashbyhq.com' :
     identity.provider === 'lever' && identity.region === 'eu' ? 'jobs.eu.lever.co' : 'jobs.lever.co';
-  const target = `https://${host}/${identity.board}/${identity.posting_id}`;
+  const board = identity.provider === 'ashby' ? encodeURIComponent(identity.board) : identity.board;
+  const target = `https://${host}/${board}/${identity.posting_id}`;
   try {
     const html = await retrievePosting(options.fetcher, target, options.signal, PROVIDER_NAMES[identity.provider], 'html');
     const metadata = postingMetadata(/** @type {string} */ (html), identity, title, warnings);

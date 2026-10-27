@@ -18,7 +18,7 @@ Duplicates retain **Open existing**, **Save separately** and **Cancel**. Known p
 | Lever global | `https://jobs.lever.co/<site>/<uuid>` and optional `/apply` suffix | Individual `api.lever.co/v0/postings/<site>/<uuid>?mode=json`, then its fixed hosted detail page |
 | Lever EU | `https://jobs.eu.lever.co/<site>/<uuid>` and optional `/apply` suffix | Individual `api.eu.lever.co/v0/postings/<site>/<uuid>?mode=json`, then its fixed EU hosted detail page |
 
-Board/site tokens allow letters, digits, underscores and hyphens. Posting IDs must be UUID-shaped; preserve board/site case and lowercase UUIDs. Remove fragments, application suffixes, `utm_*`, and the recognized provider tracking parameters. Preserve unknown query parameters on the saved URL. Queries are **never forwarded** to ATS APIs or hosted metadata retrieval. Global and EU Lever identities remain distinct.
+Lever site tokens allow letters, digits, underscores and hyphens. Ashby board identifiers additionally allow ordinary ASCII spaces: decode only the board segment once, validate 1–100 decoded characters, and encode it once for API/hosted URL paths. `identity.board` is decoded and case-preserving; equivalent approved percent encodings share an identity. Malformed escapes, residual percent signs, separators, controls, traversal, unsupported punctuation and Unicode remain rejected. Posting IDs must be UUID-shaped; preserve board/site case and lowercase UUIDs. Remove fragments, application suffixes, `utm_*`, and the recognized provider tracking parameters. Preserve unknown query parameters on the saved URL. Queries are **never forwarded** to ATS APIs or hosted metadata retrieval. Global and EU Lever identities remain distinct.
 
 The public API supplies posting facts but does not supply the employer display name in the interfaces inspected. Both new adapters therefore request one fixed ATS detail page and inertly parse only matching `JobPosting` JSON-LD. Match explicit posting identity/URL when present; otherwise require an exact normalized title and a single matching object on that individual page. Reject conflicting or ambiguous metadata. Company comes only from `hiringOrganization.name`, never the board slug. If metadata is absent, blocked, oversized or malformed, retain supported API facts and require manual company entry.
 
@@ -144,3 +144,18 @@ The existing `job-ingest` function was redeployed with JWT verification enabled.
 - Do not assume Workday has an equivalent supported public API. Validate representative tenant/site URL identities and structured data in a separate spike before adding destinations. Keep its date, employer and description semantics explicit; a missing structured-data response should fall back to manual entry, not widen the retrieval boundary or introduce headless browsing.
 
 Stop here for review and continued hosted dogfooding. Workday is not implemented or authorized by this milestone.
+
+
+## Ashby encoded-space fix — 26 October 2026
+
+The local implementation accepts existing boards such as `jasper%20ai`, retaining complete UUID-shaped detail paths and exact upstream identity matching. Board-only URLs keep the board-listing guidance; unsupported detail paths use “Use a supported Ashby job detail URL with a complete job ID.” Structured error codes/statuses and draft preservation are unchanged. The coordinated release remains incomplete until both Pages and `job-ingest` serve the updated recognizer.
+
+After separate commit/push/deployment approval, release both consumers from the same reviewed revision:
+
+1. Run scoped frontend/backend typechecks, lint and tests. Record the unrelated existing résumé-date expectation failure separately. The frontend import map uses recognizer cache revision `20261026-ashby-spaces`; inspect dependent module caching as needed. No frontend bundler is required.
+2. Deploy `job-ingest` from that revision using the existing deployment procedure with JWT verification enabled. Preserve owner/origin configuration, secrets and signing keys. Verify an authenticated read-only encoded-space preview and unchanged unauthorized rejection before proceeding.
+3. Push the approved frontend revision to `main` to trigger GitHub Pages. Verify successful workflow completion and actual served module revisions. During the interval, the older frontend still rejects spaces; do not claim release completion until both components agree.
+4. In a fresh authenticated hosted tab, retrieve a complete current public encoded-space posting. Confirm matching board/ID, company, title, description, canonical URL and unchanged draft preservation on failure. Do not save, change status, remove records or run a backfill. Confirm retrieval produces no prospect/history writes using appropriate read-only evidence.
+5. If either component fails, stop the rollout and prefer a forward fix. A coordinated rollback must redeploy the previous Edge Function bundle with JWT verification retained and restore the prior frontend revision through a reviewed revert/Pages deployment. Restoring the old recognizer again rejects space-board imports and recognition of any such URLs saved after release; it does not delete stored records. No schema, secret or signing-key rollback is needed.
+
+Release dependencies: explicit approval, an identified previous function/frontend revision, authorized deployment credentials, and a currently available complete public posting. Local acceptance is not evidence of hosted bundle compatibility.
