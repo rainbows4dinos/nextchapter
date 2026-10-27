@@ -4,6 +4,17 @@ import { reorderVisibleCards, parseRoute, groupCards, searchBoardGroups, formatA
 import { STATUSES } from '../model.js';
 
 const id = '11111111-1111-4111-8111-111111111111';
+test('existing prospect details exclude stale logo fields; creation retains the selected draft logo', () => {
+  const form = new FormData();
+  form.set('company','Example'); form.set('title','Designer'); form.set('notes','Unsaved note');
+  form.set('company_logo_url','https://cdn.brandfetch.io/domain/old.example.org/type/icon');
+  form.set('company_logo_override','false');
+  const edit = readDetails(form,{includeLogo:false});
+  assert.equal(Object.hasOwn(edit,'company_logo_url'),false);
+  assert.equal(Object.hasOwn(edit,'company_logo_override'),false);
+  assert.equal(edit.notes,'Unsaved note');
+  assert.equal(readDetails(form).company_logo_url,form.get('company_logo_url'));
+});
 test('card application dates preserve the saved calendar day across viewer timezones', () => {
   const previousTimezone = process.env.TZ;
   try {

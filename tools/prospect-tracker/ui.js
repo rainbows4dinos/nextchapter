@@ -248,7 +248,9 @@ export function editorView(root, row, options = {}) {
   companyInput.addEventListener('change', refreshCompany);
   const feedback = el('p', '', 'feedback nc-alert'); feedback.id = 'save-feedback'; feedback.setAttribute('role','status');
   const save = el('button', row ? 'Save details' : 'Add prospect', 'primary nc-button nc-button--primary nc-button--lg'); save.type = 'submit';
-  fields.append(feedback, save);
+  const cancel = button('Cancel', () => back.click(), 'nc-button nc-button--tertiary nc-button--lg');
+  const controls = el('div', '', 'editor__action-controls'); controls.append(save, cancel);
+  const footer = el('fieldset', '', 'editor__actions'); footer.setAttribute('aria-label', 'Prospect Actions'); footer.append(feedback, controls);
   if (row) {
     const feedback = el('p', '', 'feedback nc-alert'); feedback.setAttribute('role', 'status');
     const send = button('Send to Résumé Builder', () => {
@@ -277,10 +279,20 @@ export function editorView(root, row, options = {}) {
         setAlert(feedback, { message, variant: 'danger' });
       }
     }, 'secondary nc-button nc-button--tertiary nc-button--lg');
-    const actions = el('div', '', 'actions'); actions.append(save, send);
+    const actions = el('div', '', 'actions'); actions.append(send);
     fields.append(actions, feedback);
   }
-  form.append(fields); bindFieldValidation(form);
+  form.append(fields, footer); bindFieldValidation(form);
+  form.addEventListener('invalid', () => setAlert(feedback, { message: 'Review the highlighted fields before saving.', variant: 'danger' }), true);
+  // Native focus/validation scrolling must account for the responsive footer,
+  // including wrapped errors and the mobile safe-area inset. No nested scroller.
+  const actionSize = new window.ResizeObserver(() => {
+    if (!form.isConnected) { actionSize.disconnect(); return; }
+    const height = `${Math.ceil(footer.getBoundingClientRect().height)}px`;
+    editor.style.setProperty('--editor-action-height', height);
+    document.documentElement.style.setProperty('--editor-action-height', height);
+  });
+  actionSize.observe(footer);
   const main = el('div', '', 'editor__main'); main.append(form); panels.append(main);
   if (row) {
     const sidebar = el('aside', '', 'panel editor__status'); sidebar.setAttribute('aria-label', 'Prospect status and history');

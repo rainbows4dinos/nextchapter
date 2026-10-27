@@ -80,16 +80,17 @@ export function searchBoardGroups(cards, query, dateFilter, history = new Map(),
   }));
 }
 /** Only core fields belong in this form; never clear assessments/connections.
- * @param {FormData} form @returns {import('./model.js').DetailsPatch}
+ * @param {FormData} form @param {{includeLogo?:boolean}} [options]
+ * @returns {import('./model.js').DetailsPatch}
  */
-export function readDetails(form) {
+export function readDetails(form, { includeLogo = true } = {}) {
   /** @type {Record<string, string>} */
   const patch = {};
   for (const key of ['company', 'title', 'job_url', 'source', 'location', 'work_arrangement',
     'employment_type', 'compensation_text', 'job_description', 'posted_on', 'discovered_on', 'applied_on', 'notes']) {
     patch[key] = String(form.get(key) ?? '');
   }
-  const logo = form.has('company_logo_url') ? { company_logo_url: String(form.get('company_logo_url') ?? ''), company_logo_override: form.get('company_logo_override') === 'true' } : {};
+  const logo = includeLogo && form.has('company_logo_url') ? { company_logo_url: String(form.get('company_logo_url') ?? ''), company_logo_override: form.get('company_logo_override') === 'true' } : {};
   return /** @type {import('./model.js').DetailsPatch} */ (normalizePatch({ ...patch, ...logo }));
 }
 /** @param {unknown} error */

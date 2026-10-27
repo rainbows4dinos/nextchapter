@@ -81,6 +81,9 @@ export async function startRadar(client) {
   function busy(value) {
     pending = value;
     for (const fields of workspace.querySelectorAll('fieldset')) fields.disabled = value;
+    for (const trigger of workspace.querySelectorAll('button.company-logo-trigger')) {
+      /** @type {HTMLButtonElement} */ (trigger).disabled = value;
+    }
     for (const cancel of workspace.querySelectorAll('button.ingestion-cancel')) {
       /** @type {HTMLButtonElement} */ (cancel).disabled = value && !cancel.hasAttribute('data-retrieving');
     }
@@ -199,7 +202,9 @@ export async function startRadar(client) {
             const values = new FormData(form);
             busy(true); setAlert(feedback, { message: row ? 'Saving details…' : 'Adding prospect…' });
             try {
-              const patch = readDetails(values);
+              // Saved prospects have an independent, guarded logo writer. Never
+              // replay hidden form logo values through a later details save.
+              const patch = readDetails(values, { includeLogo: !row });
               if (row) row = await data.updateProspect(row.id, patch, row.updated_at);
               else {
                 // A retry first reconciles an uncertain insert using the retained ID.

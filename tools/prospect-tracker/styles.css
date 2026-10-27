@@ -113,6 +113,11 @@ details { margin:1rem 0 } summary { cursor:pointer; color:var(--muted); margin-b
 .prospect-fields .nc-textarea[name="notes"] { height:calc(var(--nc-space-24) + var(--nc-space-1)); min-height:calc(var(--nc-space-24) + var(--nc-space-1)) }
 .shell:has(.editor) > #workspace { margin-top:calc(-1 * var(--nc-space-8)) }
 .editor__panels > * { min-width:0 }
+.editor__actions { position:sticky; bottom:0; z-index:2; display:grid; gap:var(--nc-space-3); margin-top:var(--nc-space-4); padding:var(--nc-space-4) 0 calc(var(--nc-space-4) + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--nc-border-control); background:var(--nc-surface-raised) }
+.editor__actions .feedback { margin:0 }
+.editor__action-controls { display:flex; flex-wrap:wrap; gap:var(--nc-space-3); align-items:center }
+.editor :is(.nc-field,.nc-input,.nc-textarea,.nc-select) { scroll-margin-block-end:calc(var(--editor-action-height,var(--nc-space-24)) + var(--nc-space-4)) }
+html:has(.editor__actions) { scroll-padding-block-end:calc(var(--editor-action-height,var(--nc-space-24)) + var(--nc-space-4)) }
 /* Match Builder's results sidebar: padded shell, UI headings and separate zones. */
 .editor__status.panel { align-self:start; display:flex; flex-direction:column; gap:28px; padding:28px; margin:0; overflow-wrap:anywhere }
 .editor__status section { min-width:0 }

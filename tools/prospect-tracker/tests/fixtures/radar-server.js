@@ -137,6 +137,9 @@ export async function startFixture(port = 0, options = {}) {
           send(null); return;
         }
         const table = url.pathname.split('/').pop();
+        if (table === 'prospects' && req.method === 'PATCH' && options.saveDelayMs) {
+          await new Promise(done => setTimeout(done, Math.min(options.saveDelayMs, 2000)));
+        }
         if (!['prospects','prospect_status_events','career_profiles','radar_opportunities'].includes(table)) { send({}, 404); return; }
         if (table === 'prospect_status_events' && req.method === 'GET' && failAppliedHistory) { failAppliedHistory = false; send({ message: 'Synthetic history failure' }, 403); return; }
         if(table==='radar_opportunities' && req.method==='GET' && failHistory){failHistory=false;send({message:'Synthetic history failure'},503);return;}
