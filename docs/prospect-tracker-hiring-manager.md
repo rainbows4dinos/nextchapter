@@ -1,6 +1,6 @@
 # Manual Potential Hiring Manager and Builder handoff — issues #30 and #43
 
-28 October 2026. Implemented and validated locally only. No commit, push, deployment, hosted migration or production writes. Automatic discovery, APIs, AI extraction, picker, network integration and enrichment remain deferred.
+28 October 2026. Implementation validated locally. Release subsequently authorized: hosted migration `20261028000000` applied and hosted database types regenerated; frontend release is in progress. No production prospect records were created or edited. Automatic discovery, APIs, AI extraction, picker, network integration and enrichment remain deferred.
 
 ## Data and editor
 
@@ -47,3 +47,9 @@ No résumé generation/export request was made. The disposable server does not s
 Release needs separate approval: apply only the reviewed additive migration, regenerate types from hosted Supabase, then release Tracker and Builder together through Pages. No separate Edge Function deployment is required for this phase: contact persistence uses existing Supabase REST/owner guards and ingestion's accepted preview contract is unchanged. If functions are later redeployed, include the new imported validator module in the bundle. Before migration, this frontend cannot save the new field and must not be published as complete. Rollback should prefer restoring the frontend while retaining the nullable column/data; do not drop stored contacts as part of a code rollback.
 
 Product review: confirm the visible recipient opt-in and optional Company field. No automatic-discovery/provider decision is required for this phase. Explicit user authorization remains required before commit/push/deployment or any hosted migration.
+
+## Authorized release — 28 October 2026
+
+The missing production UI was caused by implementation commit `3e1ff9a` remaining on the feature branch. Pages had successfully published `5a6cf4f`, which contained design explorations but no hiring-manager implementation. Public assets matched the preceding application version even with cache-busting queries. The hosted column was also absent.
+
+Under the user’s explicit “Run the fixes” authorization, the dry run listed only `20261028000000_prospect_hiring_manager.sql`; it was applied successfully and migration history verified. Types were regenerated from hosted Supabase. Release merges the implementation with current main, preserving the design explorations. Earlier local-only statements describe initial validation; the migration and release are now authorized. Hosted save/handoff acceptance remains separate from static asset verification.

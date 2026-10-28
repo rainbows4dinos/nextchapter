@@ -78,7 +78,6 @@ export type Database = {
       }
       prospects: {
         Row: {
-          hiring_manager: Json | null
           applied_on: string | null
           assessment_concerns: string | null
           assessment_rationale: string | null
@@ -96,6 +95,7 @@ export type Database = {
           domain_fit: number | null
           employment_type: string | null
           experience_fit: number | null
+          hiring_manager: Json | null
           id: string
           job_description: string | null
           job_url: string | null
@@ -117,7 +117,6 @@ export type Database = {
           work_style_fit: number | null
         }
         Insert: {
-          hiring_manager?: Json | null
           applied_on?: string | null
           assessment_concerns?: string | null
           assessment_rationale?: string | null
@@ -135,6 +134,7 @@ export type Database = {
           domain_fit?: number | null
           employment_type?: string | null
           experience_fit?: number | null
+          hiring_manager?: Json | null
           id?: string
           job_description?: string | null
           job_url?: string | null
@@ -156,7 +156,6 @@ export type Database = {
           work_style_fit?: number | null
         }
         Update: {
-          hiring_manager?: Json | null
           applied_on?: string | null
           assessment_concerns?: string | null
           assessment_rationale?: string | null
@@ -174,6 +173,7 @@ export type Database = {
           domain_fit?: number | null
           employment_type?: string | null
           experience_fit?: number | null
+          hiring_manager?: Json | null
           id?: string
           job_description?: string | null
           job_url?: string | null
