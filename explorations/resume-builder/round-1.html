@@ -1,0 +1,1300 @@
+<title>Résumé Builder Directions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: prototype chrome on top, a fixed-size product frame (1440 or 390) as the stage, direction card and comparison below.
+   Tokens mirror tools/shared/tokens.css (nextchapter Figma foundations). Dark-first, like the B02 source frame. */
+:root {
+  color-scheme: dark;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --bg: #15111B;            /* nc-neutral-950 */
+  --surface: #231D2B;       /* nc-neutral-900 */
+  --sunken: #1C1724;        /* exploratory: between 900 and 950 */
+  --border-subtle: #504759; /* nc-neutral-700 */
+  --border-control: #837A90;/* nc-neutral-500 */
+  --text: #FAF9F7;          /* nc-neutral-100 */
+  --text-2: #EFEBE7;        /* nc-neutral-200 */
+  --muted: #A098AB;         /* nc-neutral-400 */
+  --primary: #F8E1B6;       /* nc-primary-200 */
+  --primary-hover: #F1CC88; /* nc-primary-300 */
+  --secondary: #D7CDFB;     /* nc-secondary-200 */
+  --secondary-hover: #B3A5F5;
+  --focus: #B3A5F5;         /* nc-secondary-300 */
+  --sel-bg: #35245B;        /* nc-secondary-900 */
+  --sel-fg: #EEE9FD;
+  --input-bg: #15111B;
+  --ink: #231D2B;           /* text on peach and lavender */
+  --ink-border: #504759;
+  --success: #87CFA5;
+  --danger: #F79BB3;
+  --warning: #FDBA74;
+  --info: #B3A5F5;
+  --header-bg: #D7CDFB;
+  --paper: #FFFFFF;
+  --paper-ink: #231D2B;
+  --paper-rule: #D4D0DC;
+  --paper-muted: #68616F;
+  --highlight: rgba(242, 197, 111, 0.22);
+  --chrome-bg: #0E0B12;
+  --shadow-hard: 2px 2px 0 var(--border-control);
+}
+body.light {
+  color-scheme: light;
+  --bg: #FAF9F7;
+  --surface: #FFFFFF;
+  --sunken: #EFEBE7;
+  --border-subtle: #D4D0DC;
+  --border-control: #A098AB;
+  --text: #231D2B;
+  --text-2: #504759;
+  --muted: #68616F;
+  --focus: #523394;
+  --sel-bg: #EEE9FD;
+  --sel-fg: #523394;
+  --input-bg: #FFFFFF;
+  --success: #195E3D;
+  --danger: #9B1F43;
+  --warning: #9A3412;
+  --info: #523394;
+  --highlight: rgba(229, 174, 84, 0.28);
+  --chrome-bg: #EFEBE7;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--chrome-bg); }
+body { margin: 0; font: 300 16px/24px var(--sans); color: var(--text);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; font-weight: 400; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── Prototype chrome ─────────────────────────────── */
+.pbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--chrome-bg); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-block: 14px; border-bottom: 1px solid var(--border-subtle); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--chrome-bg); }
+.pbar__title { font: 400 21px/28px var(--serif); margin-right: auto; }
+.pbar__title small { display: block; font: 400 12px/16px var(--mono); color: var(--muted); }
+.ptabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.ptab { border: 1px solid var(--border-control); background: transparent; border-radius: 999px; padding: 5px 12px; font: 500 13px/20px var(--sans); color: var(--text); display: inline-flex; gap: 8px; align-items: center; }
+.ptab kbd { font: 500 11px/16px var(--mono); color: var(--muted); }
+.ptab[aria-selected="true"] { background: var(--primary); color: var(--ink); border-color: var(--ink-border); }
+.ptab[aria-selected="true"] kbd { color: var(--ink); }
+.pctl { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--border-control); border-radius: 999px; padding: 2px; }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 3px 10px; font: 500 12px/18px var(--sans); color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--sel-bg); color: var(--sel-fg); }
+.linkbtn { border: 0; background: none; padding: 0; font: 500 12px/18px var(--sans); color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+
+.stage { margin-top: 20px; overflow-x: auto; border-radius: 4px; }
+.frame { container-type: inline-size; margin-inline: auto; width: 100%; max-width: 1440px; background: var(--bg); border: 1px solid var(--border-subtle); overflow: hidden; }
+.stage[data-fit="actual"] .frame { width: 1440px; max-width: none; }
+.stage[data-viewport="phone"] .frame { width: 390px; max-width: 100%; }
+.sim-note { font: 400 12px/16px var(--mono); color: var(--muted); }
+
+/* ── nextchapter product UI (shared) ───────────────── */
+.nc-header { background: var(--header-bg); color: var(--ink); display: flex; align-items: center; gap: 24px; padding: 0 48px; height: 80px; border-bottom: 1px solid var(--ink-border); }
+.nc-logo { font: 400 28px/36px var(--serif); color: var(--ink); margin-right: auto; }
+.nc-nav { display: flex; gap: 40px; margin-right: auto; }
+.nc-nav button, .nc-util button { background: none; border: 1px solid transparent; border-radius: 999px; padding: 3px 12px; color: var(--ink); font: 400 16px/24px var(--sans); }
+.nc-nav button[aria-current="page"] { background: var(--primary); border-color: var(--ink-border); }
+.nc-util { display: flex; gap: 12px; align-items: center; }
+.nc-switch { width: 48px; height: 28px; border-radius: 999px; border: 1.5px solid var(--ink); background: transparent; position: relative; padding: 0; }
+.nc-switch::after { content: ""; position: absolute; top: 3px; right: 3px; width: 19px; height: 19px; border-radius: 50%; background: var(--ink); transition: right 150ms ease; }
+body.light .nc-switch::after { right: 23px; }
+.nc-menu { display: none; }
+@container (max-width: 760px) {
+  .nc-header { padding: 0 16px; height: 64px; }
+  .nc-logo { font-size: 24px; }
+  .nc-nav, .nc-util .nc-hide-sm { display: none; }
+  .nc-menu { display: inline-flex; }
+}
+
+.shell { max-width: 800px; margin: 0 auto; padding: 40px 0 48px; display: grid; gap: 24px; }
+.wide { max-width: 1280px; margin: 0 auto; padding: 32px 48px 48px; }
+@container (max-width: 860px) { .shell, .wide { padding-inline: 16px; padding-top: 24px; } }
+.h1 { font: 400 32px/40px var(--serif); }
+.h2 { font: 400 28px/36px var(--serif); }
+.h3 { font: 400 21px/32px var(--serif); }
+.eyebrow { font: 500 12px/16px var(--sans); color: var(--muted); letter-spacing: .02em; }
+.muted { color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--border-control); border-radius: 12px; padding: 28px; display: grid; gap: 22px; }
+@container (max-width: 520px) { .card { padding: 18px; } }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@container (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
+.field { display: grid; gap: 6px; }
+.field > label, .lbl { font: 500 16px/24px var(--sans); }
+.field > label span, .lbl span { font-weight: 400; color: var(--text-2); }
+.input, .textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border-control); border-radius: 6px; padding: 8px 12px; font: 300 16px/24px var(--sans); color: var(--text); }
+.textarea { resize: vertical; min-height: 64px; }
+.input:hover, .textarea:hover { border-color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--border-control); background: transparent; border-radius: 999px; padding: 3px 11px; font: 500 12px/20px var(--sans); color: var(--text); }
+.chip:hover { background: color-mix(in srgb, var(--border-subtle) 50%, transparent); }
+.chip[aria-pressed="true"] { background: var(--primary); color: var(--ink); border-color: var(--ink-border); }
+.chip small { font-weight: 400; opacity: .75; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 6px; padding: 9px 12px; font: 500 16px/20px var(--sans); border: 1px solid var(--ink-border); }
+.btn--primary { background: var(--primary); color: var(--ink); }
+.btn--primary:hover { background: var(--primary-hover); }
+.btn--secondary { background: var(--secondary); color: var(--ink); border-color: #523394; }
+.btn--secondary:hover { background: var(--secondary-hover); }
+.btn--tertiary { background: transparent; color: var(--text); border-color: var(--border-control); }
+.btn--tertiary:hover { background: color-mix(in srgb, var(--border-subtle) 45%, transparent); }
+.btn--sm { padding: 5px 10px; font-size: 13px; line-height: 16px; }
+.btn:disabled { background: color-mix(in srgb, var(--border-subtle) 60%, transparent); color: var(--muted); border-color: var(--border-subtle); cursor: not-allowed; }
+.alert { border: 1px solid var(--info); color: var(--info); border-radius: 6px; padding: 8px 12px; display: flex; gap: 10px; align-items: flex-start; font: 300 15px/22px var(--sans); background: var(--surface); }
+.alert--warning { border-color: var(--warning); color: var(--warning); }
+.alert--success { border-color: var(--success); color: var(--success); }
+.alert .x { margin-left: auto; background: none; border: 0; color: inherit; padding: 0 4px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 1px 9px; font: 500 12px/20px var(--sans); background: #EFEBE7; color: #231D2B; white-space: nowrap; }
+.badge--accent { background: #EEE9FD; }
+.badge--active { background: #F8E1B6; }
+.badge--positive { background: #EFFAF3; }
+.badge--negative { background: #FFF1F4; }
+.badge--highlight { background: #FFF7ED; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 16px; }
+.steps li { display: flex; align-items: center; gap: 10px; font: 400 16px/24px var(--sans); white-space: nowrap; }
+.steps li:not(:last-child)::after { content: ""; width: 140px; height: 1px; background: var(--border-control); margin-left: 6px; }
+.steps .n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border-subtle); font-weight: 400; }
+.steps .on .n { background: var(--primary); color: var(--ink); }
+.steps .done .n { background: var(--sel-bg); color: var(--sel-fg); }
+@container (max-width: 860px) { .steps li:not(:last-child)::after { width: 24px; } .steps li:not(.on) .t { display: none; } }
+.tabs { display: inline-flex; gap: 4px; border: 1px solid var(--border-control); border-radius: 999px; padding: 3px; }
+.tabs button { border: 0; background: none; border-radius: 999px; padding: 4px 14px; font: 500 14px/20px var(--sans); color: var(--text); }
+.tabs button[aria-selected="true"] { background: var(--primary); color: var(--ink); }
+.progress { height: 6px; border-radius: 999px; background: var(--border-subtle); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--primary); transition: width 120ms linear; }
+.stagelist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.stagelist li { display: flex; gap: 10px; align-items: center; color: var(--muted); }
+.stagelist li.done { color: var(--text); }
+.stagelist li.now { color: var(--primary); font-weight: 400; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* The résumé document (screen preview) */
+.doc { background: var(--paper); color: var(--paper-ink); border-radius: 4px; padding: 40px 44px; font: 300 13.5px/20px var(--sans); box-shadow: var(--shadow-hard); }
+@container (max-width: 520px) { .doc { padding: 22px 18px; } }
+.doc .nm { font: 400 26px/32px var(--serif); }
+.doc .ct { font: 400 11.5px/16px var(--mono); color: var(--paper-muted); margin-top: 2px; }
+.doc h5 { font: 600 11px/16px var(--sans); letter-spacing: .06em; color: var(--paper-muted); margin: 18px 0 6px; border-bottom: 1px solid var(--paper-rule); padding-bottom: 4px; }
+.doc .role { margin-top: 10px; }
+.doc .rh { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-weight: 500; }
+.doc .rh span:last-child { font-weight: 300; color: var(--paper-muted); }
+.doc ul { margin: 4px 0 0; padding-left: 18px; }
+.doc li { margin: 2px 0; }
+.doc p { margin: 0 0 10px; }
+.doc .revised { background: var(--highlight); border-radius: 3px; box-shadow: 0 0 0 2px var(--highlight); }
+.doc .flag { text-decoration: underline wavy #C2410C; text-underline-offset: 3px; }
+.doc .cover { background: #FFF7ED; box-shadow: inset 3px 0 0 #E5AE54; }
+.doc .lt p { margin-bottom: 12px; }
+.doc-wrap { display: grid; gap: 10px; }
+.doc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
+
+.side { display: grid; gap: 16px; align-content: start; }
+.side .card { padding: 20px; gap: 12px; }
+.qa-empty { color: var(--success); font: 400 14px/20px var(--sans); }
+.revlog { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font: 300 14px/20px var(--sans); }
+.revlog li { border-left: 2px solid var(--border-control); padding-left: 10px; }
+.revlog b { font-weight: 500; }
+.preview-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+@container (max-width: 1000px) { .preview-grid { grid-template-columns: 1fr; } }
+
+/* ── A · Brief First ───────────────────────────────── */
+.a-stages { display: flex; gap: 0; border: 1px solid var(--border-control); border-radius: 8px; overflow: hidden; }
+.a-stages button { flex: 1; background: transparent; border: 0; border-right: 1px solid var(--border-control); padding: 10px 14px; text-align: left; display: grid; gap: 2px; color: var(--muted); }
+.a-stages button:last-child { border-right: 0; }
+.a-stages button b { font: 500 15px/20px var(--sans); color: var(--text); }
+.a-stages button small { font: 400 12px/16px var(--mono); }
+.a-stages button[aria-current="step"] { background: var(--sel-bg); color: var(--sel-fg); }
+.a-stages button[aria-current="step"] b { color: var(--sel-fg); }
+.a-stages button:disabled { cursor: not-allowed; opacity: .55; }
+.a-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@container (max-width: 1000px) { .a-grid { grid-template-columns: 1fr; } }
+.reqs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.req { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; padding: 14px 0; border-top: 1px solid var(--border-subtle); align-items: start; }
+.req:first-child { border-top: 0; padding-top: 0; }
+.req input { margin-top: 5px; width: 16px; height: 16px; accent-color: #F8E1B6; }
+.req .q { font: 400 15px/22px var(--sans); color: var(--text); }
+.req .ev { grid-column: 2 / 4; font: 300 13px/19px var(--sans); color: var(--text-2); padding-left: 10px; border-left: 2px solid var(--border-subtle); }
+.req .ev em { font-style: normal; font: 500 11px/16px var(--mono); color: var(--muted); display: block; }
+.req.off .q, .req.off .ev { opacity: .45; }
+.req.gap .ev { border-left-color: var(--warning); color: var(--warning); }
+.det { display: grid; gap: 8px; }
+.det-row { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+.det-row .why { font: 400 11.5px/16px var(--mono); color: var(--muted); }
+.coverage { display: flex; flex-wrap: wrap; gap: 6px; }
+.coverage button { border: 1px solid var(--border-control); background: transparent; color: var(--text); border-radius: 6px; padding: 4px 9px; font: 400 12.5px/18px var(--sans); text-align: left; max-width: 100%; }
+.coverage button[aria-pressed="true"] { border-color: #E5AE54; background: color-mix(in srgb, #E5AE54 18%, transparent); }
+.coverage button.gap { border-style: dashed; color: var(--warning); border-color: var(--warning); }
+.lede { font: 400 14px/21px var(--sans); color: var(--text-2); padding: 12px 14px; border-radius: 8px; background: var(--sunken); border: 1px solid var(--border-subtle); }
+
+/* ── B · Workbench ─────────────────────────────────── */
+.b-wrap { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); min-height: 900px; }
+@container (max-width: 1000px) { .b-wrap { grid-template-columns: 1fr; } }
+.b-left { border-right: 1px solid var(--border-subtle); padding: 28px 32px; display: grid; gap: 18px; align-content: start; background: var(--surface); }
+.b-right { padding: 28px 36px; display: grid; gap: 14px; align-content: start; }
+@container (max-width: 1000px) { .b-left { border-right: 0; border-bottom: 1px solid var(--border-subtle); padding: 20px 16px; } .b-right { padding: 20px 16px; } }
+.b-jd { font: 300 15px/24px var(--sans); white-space: pre-wrap; color: var(--text-2); max-height: 420px; overflow: auto; padding-right: 6px; }
+.b-jd mark { all: unset; cursor: pointer; border-bottom: 2px solid var(--border-control); padding: 0 1px; color: var(--text); }
+.b-jd mark[aria-pressed="true"] { background: var(--highlight); border-bottom-color: #E5AE54; }
+.b-jd mark:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.b-steer { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.b-steer .chip { padding-right: 6px; }
+.b-bl { all: unset; display: block; cursor: pointer; border-radius: 3px; padding: 1px 3px; margin-left: -3px; }
+.b-bl:hover { background: #EEE9FD; }
+.b-bl:focus-visible { outline: 2px solid #523394; }
+.b-bl[aria-expanded="true"] { background: #EEE9FD; box-shadow: inset 2px 0 0 #523394; }
+.b-bl .pin { font: 500 10px/14px var(--mono); color: #523394; margin-left: 6px; }
+.b-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; padding: 6px; border: 1px solid #504759; background: #231D2B; border-radius: 6px; box-shadow: 2px 2px 0 #504759; width: max-content; max-width: 100%; }
+.b-tools button { border: 1px solid #837A90; background: transparent; color: #FAF9F7; border-radius: 4px; padding: 3px 9px; font: 500 12px/16px var(--sans); }
+.b-tools button:hover { background: #35245B; }
+.b-tools button:focus-visible { outline: 2px solid #B3A5F5; }
+.b-empty { border: 1px dashed var(--border-control); border-radius: 8px; padding: 56px 32px; display: grid; gap: 14px; justify-items: start; }
+.b-flagnote { font: 400 12px/16px var(--mono); color: #9A3412; display: block; }
+
+/* ── C · Positioning Mixer ─────────────────────────── */
+.c-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@container (max-width: 1000px) { .c-wrap { grid-template-columns: 1fr; } }
+.c-facet { display: grid; grid-template-columns: 112px 1fr; gap: 10px 16px; padding: 14px 0; border-top: 1px solid var(--border-subtle); }
+.c-facet:first-of-type { border-top: 0; }
+@container (max-width: 520px) { .c-facet { grid-template-columns: 1fr; } }
+.c-facet h4 { font: 500 14px/28px var(--sans); color: var(--text-2); }
+.wchip { border: 1px solid var(--border-control); background: transparent; color: var(--text); border-radius: 999px; padding: 3px 11px 3px 6px; font: 500 12.5px/20px var(--sans); display: inline-flex; align-items: center; gap: 7px; }
+.wchip .w { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--border-control); position: relative; flex: none; }
+.wchip[data-w="1"] { background: var(--sel-bg); color: var(--sel-fg); border-color: var(--secondary-hover); }
+.wchip[data-w="1"] .w { border-color: currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.wchip[data-w="2"] { background: var(--primary); color: var(--ink); border-color: var(--ink-border); }
+.wchip[data-w="2"] .w { border-color: var(--ink); background: var(--ink); }
+.wchip b { font: 500 10.5px/14px var(--mono); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font: 400 12px/16px var(--sans); color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.shape { position: sticky; top: 90px; display: grid; gap: 14px; }
+.shape .card { gap: 14px; padding: 22px; }
+.meter { display: grid; gap: 6px; }
+.meter .bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--border-subtle); }
+.meter .bar i { display: block; height: 100%; }
+.meter .ends { display: flex; justify-content: space-between; font: 400 12px/16px var(--sans); color: var(--muted); }
+.sh-role { display: grid; gap: 4px; }
+.sh-role h5 { margin: 0; font: 500 13px/18px var(--sans); display: flex; justify-content: space-between; gap: 8px; }
+.sh-role h5 span { font: 400 11px/18px var(--mono); color: var(--muted); }
+.sh-line { display: grid; grid-template-columns: 1fr 44px; gap: 10px; align-items: center; font: 300 12.5px/18px var(--sans); color: var(--text-2); }
+.sh-line .s { height: 4px; border-radius: 999px; background: var(--border-subtle); overflow: hidden; }
+.sh-line .s i { display: block; height: 100%; background: var(--primary); }
+.sh-line.held { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--border-control); }
+.sh-line.held .s i { background: var(--border-control); }
+
+/* ── D · Typeset (exploratory visual language) ─────── */
+.d { --d-rule: var(--border-subtle); padding: 56px 64px 72px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
+@container (max-width: 860px) { .d { padding: 28px 16px 48px; grid-template-columns: 1fr; row-gap: 28px; } }
+.d-mast { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--text); padding-bottom: 10px; flex-wrap: wrap; }
+.d-mast .k { font: 400 12px/16px var(--mono); color: var(--muted); }
+.d-mast .t { font: italic 400 20px/24px var(--serif); }
+.d-brief { grid-column: 1 / span 8; font: 400 clamp(26px, 3.6cqi, 50px)/1.28 var(--serif); letter-spacing: -0.005em; }
+@container (max-width: 860px) { .d-brief { grid-column: 1 / -1; font-size: 27px; } }
+.d-brief input { font: inherit; letter-spacing: inherit; color: var(--text); background: transparent; border: 0; border-bottom: 1px dashed var(--border-control); padding: 0 2px; field-sizing: content; min-width: 4ch; max-width: 100%; border-radius: 0; }
+.d-brief input:hover { border-bottom-color: var(--text); }
+.d-brief input:focus-visible { outline: none; border-bottom: 2px solid #E5AE54; background: var(--highlight); }
+.d-mark { all: unset; cursor: pointer; background: linear-gradient(transparent 12%, var(--highlight) 12%, var(--highlight) 92%, transparent 92%); padding: 0 4px; border-radius: 1px; }
+.d-mark:hover { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: var(--danger); }
+.d-mark:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.d-add { all: unset; cursor: pointer; font-style: italic; color: var(--muted); border-bottom: 1px dotted var(--muted); }
+.d-add:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.d-picker { grid-column: 1 / span 8; display: flex; flex-wrap: wrap; gap: 4px 0; font: 400 19px/30px var(--serif); border-top: 1px solid var(--d-rule); border-bottom: 1px solid var(--d-rule); padding: 12px 0; }
+@container (max-width: 860px) { .d-picker { grid-column: 1 / -1; } }
+.d-picker button { all: unset; cursor: pointer; color: var(--muted); padding: 0 2px; }
+.d-picker button::after { content: " ·"; color: var(--border-subtle); padding-right: 8px; }
+.d-picker button:last-child::after { content: ""; }
+.d-picker button[aria-pressed="true"] { color: var(--text); background: var(--highlight); }
+.d-picker button:focus-visible { outline: 2px solid var(--focus); }
+.d-clip { grid-column: 9 / -1; grid-row: 2 / span 3; border-left: 1px solid var(--d-rule); padding-left: 24px; display: grid; gap: 10px; align-content: start; }
+@container (max-width: 860px) { .d-clip { grid-column: 1 / -1; grid-row: auto; border-left: 0; padding-left: 0; border-top: 1px solid var(--d-rule); padding-top: 16px; } }
+.d-clip textarea { width: 100%; min-height: 300px; background: transparent; border: 0; resize: vertical; font: 400 12.5px/20px var(--mono); color: var(--text-2); padding: 0; }
+.d-clip textarea:focus-visible { outline: 1px solid var(--focus); outline-offset: 6px; }
+.d-note { font: italic 400 18px/26px var(--serif); color: var(--text-2); }
+.d-note textarea { width: 100%; background: transparent; border: 0; border-left: 2px solid #E5AE54; padding: 0 0 0 12px; font: inherit; color: inherit; resize: vertical; min-height: 56px; }
+.d-note textarea:focus-visible { outline: 1px solid var(--focus); outline-offset: 4px; }
+.d-act { grid-column: 1 / span 8; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+@container (max-width: 860px) { .d-act { grid-column: 1 / -1; } }
+.d-press { border: 1px solid var(--text); background: var(--primary); color: var(--ink); font: 400 21px/28px var(--serif); padding: 10px 22px; border-radius: 0; box-shadow: 4px 4px 0 var(--text); transition: transform 120ms ease, box-shadow 120ms ease; }
+.d-press:hover { transform: translate(1px, 1px); box-shadow: 3px 3px 0 var(--text); }
+.d-press:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--text); }
+.d-press:disabled { opacity: .6; }
+.d-tabs { display: flex; gap: 22px; font: 400 21px/28px var(--serif); }
+.d-tabs button { all: unset; cursor: pointer; color: var(--muted); border-bottom: 1px solid transparent; }
+.d-tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+.d-tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.d-proofrow { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 24px; align-items: start; }
+@container (max-width: 860px) { .d-proofrow { grid-template-columns: 1fr; } }
+.d-proof { counter-reset: ln; border-radius: 0; box-shadow: 6px 6px 0 var(--border-subtle); padding-left: 64px; }
+.d-proof .ln { position: relative; }
+.d-proof .ln::before { counter-increment: ln; content: counter(ln); position: absolute; left: -46px; width: 28px; text-align: right; font: 400 10px/20px var(--mono); color: #A098AB; }
+@container (max-width: 520px) { .d-proof { padding-left: 40px; } .d-proof .ln::before { left: -32px; width: 22px; } }
+.d-marg { display: grid; gap: 14px; align-content: start; }
+.d-marg h4 { font: italic 400 18px/24px var(--serif); border-bottom: 1px solid var(--d-rule); padding-bottom: 6px; }
+.d-qa { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font: 400 12.5px/18px var(--mono); }
+.d-qa li { display: grid; grid-template-columns: 28px 1fr; color: var(--warning); }
+.d-qa li.ok { color: var(--success); }
+.d-markup { display: grid; gap: 8px; }
+.d-markup textarea { width: 100%; min-height: 70px; background: transparent; border: 0; border-bottom: 1px solid var(--d-rule); font: italic 400 17px/24px var(--serif); color: var(--text); resize: vertical; padding: 4px 0; }
+.d-markup textarea:focus-visible { outline: none; border-bottom: 2px solid #E5AE54; }
+.d-link { all: unset; cursor: pointer; font: 400 14px/20px var(--sans); color: var(--text); border-bottom: 1px solid var(--text); justify-self: start; }
+.d-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.d-run { grid-column: 1 / -1; display: grid; gap: 14px; }
+.d-run .big { font: italic 400 clamp(26px, 3cqi, 44px)/1.2 var(--serif); }
+.d-run .rule { height: 2px; background: var(--border-subtle); position: relative; }
+.d-run .rule i { position: absolute; inset: 0 auto 0 0; background: var(--text); }
+
+/* ── E · Application Queue ─────────────────────────── */
+.e-wrap { display: grid; grid-template-columns: 320px minmax(0, 1fr); min-height: 900px; }
+@container (max-width: 860px) { .e-wrap { grid-template-columns: 1fr; min-height: 0; } }
+.e-rail { border-right: 1px solid var(--border-subtle); padding: 24px 16px; display: grid; gap: 14px; align-content: start; background: var(--surface); }
+@container (max-width: 860px) { .e-rail { border-right: 0; border-bottom: 1px solid var(--border-subtle); } }
+.e-rail h2 { font: 400 21px/28px var(--serif); padding-inline: 8px; }
+.e-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.e-item { width: 100%; text-align: left; background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; }
+.e-item:hover { background: color-mix(in srgb, var(--border-subtle) 40%, transparent); }
+.e-item[aria-current="true"] { background: var(--sel-bg); border-color: var(--secondary-hover); color: var(--sel-fg); }
+.e-item .co { font: 500 15px/20px var(--sans); display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.e-item .ti { font: 300 13px/18px var(--sans); color: inherit; opacity: .85; }
+.e-item .mt { font: 400 11px/16px var(--mono); color: var(--muted); }
+.e-item[aria-current="true"] .mt { color: var(--sel-fg); opacity: .75; }
+.e-main { padding: 28px 40px 48px; display: grid; gap: 20px; align-content: start; }
+@container (max-width: 860px) { .e-main { padding: 20px 16px; } }
+.e-head { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; }
+.e-sub { display: flex; gap: 2px; }
+.e-sub button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 6px 10px; font: 500 14px/20px var(--sans); color: var(--muted); }
+.e-sub button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--primary); }
+.e-two { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@container (max-width: 1100px) { .e-two { grid-template-columns: 1fr; } }
+.select { background: var(--input-bg); border: 1px solid var(--border-control); border-radius: 6px; padding: 6px 10px; font: 400 14px/20px var(--sans); color: var(--text); }
+.e-hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font: 300 14px/20px var(--sans); }
+.e-hist li { display: grid; grid-template-columns: 110px 1fr; gap: 10px; }
+.e-hist time { font: 400 12px/20px var(--mono); color: var(--muted); }
+
+/* ── Notes below the stage ─────────────────────────── */
+.notes { max-width: 1440px; margin: 28px auto 0; display: grid; gap: 28px; }
+.dcard { background: var(--bg); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 28px; display: grid; gap: 18px; }
+@media (max-width: 600px) { .dcard { padding: 18px; } }
+.dcard header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; }
+.dcard header h2 { font: 400 28px/36px var(--serif); }
+.dcard .hyp { font: 400 19px/28px var(--serif); max-width: 70ch; }
+.dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 28px; margin: 0; }
+.dl div { display: grid; gap: 4px; align-content: start; }
+.dl dt { font: 500 12px/16px var(--sans); color: var(--muted); letter-spacing: .02em; }
+.dl dd { margin: 0; font: 300 14.5px/22px var(--sans); max-width: 62ch; }
+.dl ul { margin: 0; padding-left: 18px; }
+.cmp-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg); }
+table.cmp { border-collapse: collapse; width: 100%; min-width: 980px; font: 300 13.5px/20px var(--sans); }
+.cmp th, .cmp td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); }
+.cmp thead th { font: 500 13px/18px var(--sans); color: var(--text); background: var(--surface); position: sticky; top: 0; }
+.cmp tbody th { font: 500 13px/18px var(--sans); width: 180px; }
+.cmp td.on, .cmp th.on { background: color-mix(in srgb, var(--primary) 9%, transparent); }
+.cmp b { font-weight: 500; }
+.sect-h { font: 400 28px/36px var(--serif); }
+.reco { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.reco > div { border-top: 2px solid var(--border-control); padding-top: 10px; display: grid; gap: 6px; align-content: start; }
+.reco > div:first-child { border-top-color: var(--primary); }
+.reco h3 { font: 500 13px/18px var(--sans); color: var(--muted); }
+.reco p { margin: 0; font: 300 15px/23px var(--sans); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="pbar" role="region" aria-label="Exploration controls">
+  <div class="pbar__title">Résumé Builder · Round 1<small>5 directions · intensity 3 · focus all · baseline B02 (364:1851)</small></div>
+  <div class="ptabs" role="tablist" aria-label="Directions">
+    <button class="ptab" role="tab" data-direction="base" aria-selected="true"><kbd>1</kbd>Baseline</button>
+    <button class="ptab" role="tab" data-direction="A" aria-selected="false"><kbd>2</kbd>A · Brief First</button>
+    <button class="ptab" role="tab" data-direction="B" aria-selected="false"><kbd>3</kbd>B · Workbench</button>
+    <button class="ptab" role="tab" data-direction="C" aria-selected="false"><kbd>4</kbd>C · Positioning Mixer</button>
+    <button class="ptab" role="tab" data-direction="D" aria-selected="false"><kbd>5</kbd>D · Typeset</button>
+    <button class="ptab" role="tab" data-direction="E" aria-selected="false"><kbd>6</kbd>E · Application Queue</button>
+  </div>
+  <div class="pctl">
+    <div class="seg" role="group" aria-label="Mode"><button data-mode="dark" aria-pressed="true">Dark</button><button data-mode="light" aria-pressed="false">Light</button></div>
+    <div class="seg" role="group" aria-label="Viewport"><button data-viewport="desktop" aria-pressed="true">Desktop</button><button data-viewport="phone" aria-pressed="false">Phone</button></div>
+    <div class="seg" role="group" aria-label="Frame size"><button data-fit="fit" aria-pressed="true">Fit</button><button data-fit="actual" aria-pressed="false">1440 Actual</button></div>
+    <button class="linkbtn" id="resetBtn" type="button">Reset Sample</button>
+  </div>
+</div>
+
+<div class="stage" id="stage" data-viewport="desktop" data-fit="fit">
+  <div class="frame">
+    <section data-direction-panel="base" role="tabpanel" aria-label="Baseline"></section>
+    <section data-direction-panel="A" role="tabpanel" aria-label="A · Brief First" hidden></section>
+    <section data-direction-panel="B" role="tabpanel" aria-label="B · Workbench" hidden></section>
+    <section data-direction-panel="C" role="tabpanel" aria-label="C · Positioning Mixer" hidden></section>
+    <section data-direction-panel="D" role="tabpanel" aria-label="D · Typeset" hidden></section>
+    <section data-direction-panel="E" role="tabpanel" aria-label="E · Application Queue" hidden></section>
+  </div>
+</div>
+<p class="sim-note" style="max-width:1440px;margin:8px auto 0">Simulated: generation, emphasis detection, revisions and downloads run locally with no model call or file. Résumé text is assembled from docs/career-context/resume-master.md; company postings are audit samples.</p>
+
+<div class="notes">
+  <article class="dcard" id="dcard" aria-live="polite"></article>
+  <section style="display:grid;gap:14px" aria-labelledby="cmpH">
+    <h2 class="sect-h" id="cmpH">Comparison</h2>
+    <div class="cmp-wrap" id="cmp"></div>
+  </section>
+  <section class="dcard" aria-labelledby="recoH">
+    <h2 class="sect-h" id="recoH">Recommendation</h2>
+    <div class="reco" id="reco"></div>
+  </section>
+</div>
+
+<script type="application/json" id="exploration-round">
+{
+  "exploration": "resume-builder",
+  "round": 1,
+  "date": "2026-10-27",
+  "settings": "Settings: 5 directions · intensity 3 (3, 3, 3, 3, 3) · focus all · fidelity prototype",
+  "brief": "Larry tailors a résumé and cover letter to one posting at a time, often handed off from Prospect Tracker. Today he fills a long form, picks from 20 equally weighted emphasis chips (or leaves them blank for hidden auto-detection), waits on an opaque generation, and then corrects the result through a free-text revision box. Goal: get to a send-ready, fact-faithful application with fewer blind steps and fewer revision rounds.",
+  "sourceContract": [
+    "Inputs stay: job title (required), company, job description (required), hiring contact (optional), emphasis focus (optional, the 20 values in tone-and-positioning.md), additional notes",
+    "Outputs stay: tailored résumé and cover letter, QA warnings from rules.json, revisions, and the five-file download package (PDF, DOCX, ATS plain)",
+    "No invented career facts: every résumé line traces to resume-master.md; gaps are never claimed",
+    "Tracker handoff stays explicit and reviewable before generating",
+    "Brand assets stay: nextchapter logotype, DM Serif Display / Inter / IBM Plex Mono, lavender and peach palette, hard-shadow elevation",
+    "Title Case labels, sentence-case help text, no all-caps labels"
+  ],
+  "baseline": "Figma hLBR7Nl3GelwM9hstQb3Ah 364:1851 (B02 · Job details, filled with Tracker handoff · Desktop · Dark), read 2026-10-27; tools/resume-tailor.html at a48d153",
+  "seed": null,
+  "directions": [
+    {
+      "id": "A",
+      "name": "Brief First",
+      "intensity": 3,
+      "lead": "product",
+      "lineage": "original → A",
+      "hypothesis": "For Larry tailoring to a specific posting, reading the posting into an editable brief (requirements matched to master-résumé evidence, detected emphasis, unclaimable gaps) before generating will reduce revision rounds and unsupported claims, because the decisions the model currently makes invisibly become visible and correctable up front.",
+      "mechanism": "A new analysis step between input and generation. The tool splits the posting into requirements, pairs each with the strongest master-résumé evidence, flags gaps that will not be claimed, and pre-selects emphasis with the phrase that triggered it. Generation then works from the approved brief, and the preview shows which requirements each document covers.",
+      "evidence": "Observed: the Emphasis field says 'auto-detected if blank', but the detection result is never shown (364:1865, resume-tailor.html). Observed: QA warnings and revision are the only correction path, both after generation. Inferred: most revisions correct choices made during generation. No usage data on revision frequency exists.",
+      "composition": "Three stages: Posting (title, company, description; contact and notes behind More Options) → Brief (requirement list with match strength and evidence on the left; detected emphasis with reasons and the summary opener on the right) → Documents (preview with a coverage strip; click a requirement to highlight the line that answers it).",
+      "preserved": "All six inputs, both outputs, QA, revision box, download package, Tracker handoff notice.",
+      "departures": ["Adds a Brief stage and a second model call (speculative: extraction prompt not built)", "Emphasis chips move inside the brief as 'detected' plus 'add more'", "Coverage strip in the preview is new"],
+      "systemFit": "Reuses Chip, Alert, Status-Badge (positive, highlight, negative tones), Button, Field. New: requirement row (checkbox + evidence quote) and stage tabs; both compose existing parts. Stage tabs could use Pill Tabs instead of the segmented bar shown.",
+      "tradeoffs": ["Slower to first draft: one more screen and one more model call", "Thin or vague postings yield a thin brief, so the step adds friction with little signal", "Keyword matching in this prototype is crude; real extraction quality is unproven"],
+      "failure": "Larry skips the brief without reading it, or the extracted requirements are wrong often enough that correcting them costs more than revising the output.",
+      "validation": "Run the next 5 real Tracker handoffs through a live-model brief on localhost. Count revision requests and unsupported-claim catches per application against the last 5 made with the current flow.",
+      "cost": "Medium. One extraction prompt and JSON schema, one new stage view, coverage mapping in the preview. No storage change.",
+      "signature": ["requirement list with matched evidence", "gap rows that are never claimed", "detected emphasis with trigger phrase", "coverage strip on the documents"],
+      "screen": "A"
+    },
+    {
+      "id": "B",
+      "name": "Workbench",
+      "intensity": 3,
+      "lead": "ux",
+      "lineage": "original → B",
+      "hypothesis": "For Larry refining a draft, a single workspace with the posting beside the live document and per-line actions (pin, tighten, swap, remove, undo) will make revisions faster and more predictable than a free-text request box, because each change targets one line and is applied immediately instead of regenerating a whole document.",
+      "mechanism": "Removes the three-step wizard. The posting sits on the left with steering terms highlighted (click a term to steer emphasis). The right side is the document itself: generation streams into it, and selecting any line opens an action toolbar. Every action is undoable and logged.",
+      "evidence": "Observed: revisions today are free text applied to the whole document, with changes highlighted after the fact (goRevise in resume-tailor.html). Observed: the step bar hides the posting once preview starts. Inferred: many revision requests target one bullet ('drop the Elevate bullet' is the placeholder example).",
+      "composition": "Split view. Left: compact title and company, highlighted posting with Edit Posting, steering chips, contact and notes. Right: Résumé / Cover Letter tabs, Generate or Download, the document with selectable lines, QA flags inline next to the offending line, edit log with Undo.",
+      "preserved": "All inputs and outputs, QA rules, free-text revision (kept as a fallback below the log), download package.",
+      "departures": ["No step bar; generation and preview share one screen", "Per-line actions (speculative: Tighten and Swap need a per-bullet model call or bank lookup)", "QA flags move inline from the sidebar"],
+      "systemFit": "Reuses Chip, Button, Pill Tabs, Field. New: highlighted posting text, line toolbar (uses the hard-shadow popover treatment from rules.md), edit log. Medium extension.",
+      "tradeoffs": ["Dense at phone width; the split stacks and the posting scrolls away", "Per-line edits can drift from the cover letter, which is not edited in lockstep", "Highlight-to-steer is discoverable only if the marks read as interactive"],
+      "failure": "Larry still needs whole-document rewrites (tone, length) more often than line edits, so the toolbar goes unused.",
+      "validation": "Log revision type for 10 applications: share of requests that target a single line versus the whole document. If under a third are single-line, this direction's core bet is wrong.",
+      "cost": "Medium to high. Stable bullet IDs through generation, per-bullet actions, undo stack, streaming render into the document.",
+      "signature": ["posting and document side by side", "clickable steering highlights", "line toolbar with pin, tighten, swap, remove", "undoable edit log"],
+      "screen": "B"
+    },
+    {
+      "id": "C",
+      "name": "Positioning Mixer",
+      "intensity": 3,
+      "lead": "ui",
+      "lineage": "original → C",
+      "hypothesis": "For Larry choosing how to position himself, grouping the 20 emphasis values into four facets with Off / Supporting / Lead weights, next to a live preview of which master-résumé bullets rise or fall, will make emphasis a deliberate choice instead of a guess, because each click shows its effect before any generation.",
+      "mechanism": "Replaces the flat chip wall with faceted, three-state chips (Level, Practice, Market, Company and Terms) and a live 'résumé shape' panel: the summary opener, selected bullets per role with relative weight, held-back bullets, and a Leadership ↔ Hands-on IC balance meter.",
+      "evidence": "Observed: 20 chips in one undifferentiated wrap, all binary (364:1867). Observed: tone-and-positioning.md says chip order does not rank preferences, and Director and Staff IC have equal priority, so the UI gives no way to express which matters more for a given posting. Inferred: binary selection cannot express 'lead with X, support with Y'.",
+      "composition": "Left: compact job fields, then four facet rows of weighted chips and a legend. Right (sticky): balance meter, summary opener, per-role bullet bars with held-back lines struck through, then Generate. After generation the right side becomes the document; the left stays for remixing.",
+      "preserved": "All 20 emphasis values and labels, every other input, outputs, QA, revision, download.",
+      "departures": ["Facet grouping is new and needs approval (no source defines it)", "Three-state chip is a new Chip variant", "Weights must be passed to the prompt (speculative)"],
+      "systemFit": "Extends Chip with a weight state (proposed variant, nearest: selected chip). Balance meter and bar lines are new, simple components. Facet names are proposed copy.",
+      "tradeoffs": ["The preview ranks bullets by tags, which the model may not follow exactly", "Three states are slower to learn than a toggle", "Facet grouping implies a taxonomy that may not hold for every posting"],
+      "failure": "The previewed shape and the generated result diverge often, so the preview stops being trusted.",
+      "validation": "For 5 postings, set weights, generate, and compare previewed versus generated bullet sets. Target at least 80% overlap before investing in the variant.",
+      "cost": "Medium. Tag the master-résumé bullets (new structured data), weight-aware prompt, new chip variant.",
+      "signature": ["four facet rows", "Off / Supporting / Lead chips", "live résumé shape with held-back bullets", "Leadership ↔ IC balance meter"],
+      "screen": "C"
+    },
+    {
+      "id": "D",
+      "name": "Typeset",
+      "intensity": 3,
+      "lead": "visual",
+      "lineage": "original → D",
+      "hypothesis": "For Larry, a designer judging his own application, recasting the builder as an editorial writing desk (the brief as one large serif sentence, the posting as a mono clipping, the output as a numbered proof with margin marks) will raise perceived craft and make the document the hero, because form inputs and nested cards are replaced by typography that mirrors the artifact being made.",
+      "mechanism": "One coherent visual language: DM Serif Display at display size for the brief, IBM Plex Mono for source material, Inter only on the proof itself. Hairline rules and square corners replace rounded cards; peach becomes a highlighter mark, not a button fill. The primary action is a letterpress-style button with a hard offset shadow. QA warnings become proofreader margin notes keyed to line numbers.",
+      "evidence": "Observed: B02 is a form inside a raised card with 12px radius, which reads like any SaaS form. Observed: the product's own serif and mono faces are used only for titles and metadata. Inferred: the brand already leans editorial (DM Serif logotype), so this pushes an existing trait rather than importing a new one.",
+      "composition": "Masthead line. Left 8 columns: 'Tailor my résumé for the ___ role at ___, leaning on ___. Address the letter to ___.' with inline fields and highlighter emphasis marks, plus an inline word list to add more. Right 4 columns: the posting clipping and a margin note for additional notes. Below: Set the Proof. After generation: numbered proof sheet with margin column (proof marks, mark-up box, package).",
+      "preserved": "All inputs (as inline sentence fields), outputs, QA rules, revision, download, brand faces and palette.",
+      "departures": ["Exploratory raw values: brief type clamp(26–50px) (nearest Type/Display 50), radius 0 (nearest radius-none), 4px offset hard shadow (nearest nc-shadow-sm 1px)", "Peach used as a highlighter tint rgba(242,197,111,.22), the existing revised-highlight value", "No card containers"],
+      "systemFit": "Low reuse of component chrome: Field, Chip and Card are replaced visually. Tokens reused for color and type. Would need new text-input and button variants or a page-scoped style.",
+      "tradeoffs": ["Inline sentence fields are less scannable for a long, pasted job title", "Large serif lowers information density; more scrolling", "Diverges from Tracker and Radar, so the suite feels less unified"],
+      "failure": "The sentence form breaks with real data (long titles, missing company), or the look is admired but slows each application down.",
+      "validation": "Five-second test with 3 designers: describe the tool's purpose and tone. Then time 3 real applications in D versus baseline; reject if slower.",
+      "cost": "Medium. CSS-heavy, little logic change; export formatting unaffected. Risk is consistency with the rest of nextchapter.",
+      "signature": ["brief as one serif sentence", "highlighter emphasis marks", "mono posting clipping", "numbered proof with margin marks", "letterpress primary button"],
+      "screen": "D"
+    },
+    {
+      "id": "E",
+      "name": "Application Queue",
+      "intensity": 3,
+      "lead": "ux",
+      "lineage": "original → E",
+      "hypothesis": "For Larry applying to several roles in a week, organizing the builder around a queue of Tracker prospects (each with its own status, emphasis, documents and history) will reduce repeat setup and lost work, because the builder keeps per-application state instead of starting from an empty, single-use form each time.",
+      "mechanism": "Information-architecture change: a left rail lists prospects sent from Tracker with status (Needs Details, Ready, Generating, Check N, Generated, Downloaded). The main area is per-application with Details, Documents and History tabs. Emphasis can be copied from another application; all Ready applications can be generated in one pass.",
+      "evidence": "Observed: the builder keeps generated data only in browser memory, and Tracker handoff is a single token-addressed localStorage record (AGENTS.md). Observed: Tracker already holds multiple prospects with statuses. Inferred: re-entering emphasis and notes for similar roles repeats work. Unknown: how many applications Larry tailors per session.",
+      "composition": "Rail: 'From Prospect Tracker' list with status badges, Generate Ready (n). Main: company and role header with stage badge, Details / Documents / History tabs. Details: fields plus Copy Emphasis From. Documents: preview, QA, revise, download. History: timestamped events.",
+      "preserved": "Per-application inputs and outputs unchanged; QA and download unchanged; the form fields themselves are the baseline's.",
+      "departures": ["Builder gains persistence (speculative: Supabase table and Auth inside the Builder, which today has neither)", "Batch generation (speculative: cost and rate limits through the Worker)", "History is new"],
+      "systemFit": "Reuses Status-Badge, Field, Chip, Button, Pill Tabs. Rail list item is new but close to Tracker cards. Large back-end dependency: AGENTS.md requires RLS-gated Supabase access for private records.",
+      "tradeoffs": ["Highest build and security cost of the five", "Batch generation can spend API budget on applications Larry abandons", "Adds navigation weight for the single-application case"],
+      "failure": "Larry tailors one application per sitting most of the time, so the queue is overhead.",
+      "validation": "Before building: count, from Tracker history, how many prospects reach 'applying' within the same day or week. If most weeks have one, shelve this direction.",
+      "cost": "High. Supabase schema and RLS for drafts, Auth in the Builder, Tracker-to-Builder handoff for many records, batch control in the Worker.",
+      "signature": ["prospect rail with status badges", "per-application Details / Documents / History", "Copy Emphasis From", "Generate Ready (n)"],
+      "screen": "E"
+    }
+  ],
+  "checks": [],
+  "recommendation": {
+    "direction": "A",
+    "why": "A addresses the two biggest problems in the source: the auto-detected emphasis is invisible, and correction happens only after generation. Its gap rows enforce the repository's hardest rule (never invent career facts) inside the product rather than relying on the prompt. It also reuses existing components with the least new UI.",
+    "counterargument": "It adds a step and a model call before any document appears. If Larry mostly fixes wording rather than direction, B's line actions save more time, and A's brief becomes a speed bump.",
+    "combine": "Likely round 2: A's brief plus B's line toolbar in the Documents stage, and C's Lead / Supporting weights inside A's emphasis panel.",
+    "nextValidation": "Live-model brief on localhost for the next 5 real Tracker handoffs; compare revision count and unsupported-claim catches with the last 5 baseline applications."
+  },
+  "prototype": { "url": null, "file": "explorations/resume-builder/round-1.html" },
+  "selected": null
+}
+</script>
+
+<script>
+(() => {
+'use strict';
+const ROUND = JSON.parse(document.getElementById('exploration-round').textContent);
+const DIRS = ['base', 'A', 'B', 'C', 'D', 'E'];
+
+// ── Canonical inputs (from docs/career-context) ───────────────────────────
+const EMPH = [
+  ['healthcare', 'Healthcare / Sensitive UX', 'healthcare and sensitive UX'],
+  ['ai-native', 'AI Product / AI-Assisted Building', 'AI products and AI-assisted building'],
+  ['staff-ic', 'Staff / Principal IC', 'staff-level individual contribution'],
+  ['systems', 'Systems / Platform', 'systems and platform work'],
+  ['leadership', 'Director / Head of Design / People Management', 'design leadership'],
+  ['consumer', 'Consumer / DTC', 'consumer products'],
+  ['zero-to-one', 'Zero-to-One', 'zero-to-one product work'],
+  ['design-systems', 'Design Systems', 'design systems'],
+  ['b2b-saas', 'B2B / SaaS', 'B2B SaaS'],
+  ['enterprise', 'Enterprise / B2B', 'enterprise workflows'],
+  ['startup', 'Startup / Fast-Moving', 'fast-moving teams'],
+  ['early-stage', 'Early Stage', 'early-stage companies'],
+  ['growth', 'Growth', 'growth work'],
+  ['ecommerce', 'Ecommerce', 'ecommerce'],
+  ['developer-tools', 'Developer Tools', 'developer tools'],
+  ['data-heavy', 'Data-Heavy UX', 'data-heavy UX'],
+  ['brand', 'Brand Design', 'brand design'],
+  ['marketing', 'Marketing', 'marketing experiences'],
+  ['civic', 'Civic Tech / Nonprofit', 'civic and nonprofit work'],
+  ['contract', 'Contract / Freelance', 'contract work'],
+];
+const LABEL = Object.fromEntries(EMPH.map(e => [e[0], e[1]]));
+const PHRASE = Object.fromEntries(EMPH.map(e => [e[0], e[2]]));
+const KEYS = EMPH.map(e => e[0]);
+const FACETS = [
+  ['Level', ['leadership', 'staff-ic']],
+  ['Practice', ['design-systems', 'systems', 'zero-to-one', 'ai-native', 'data-heavy', 'brand', 'marketing']],
+  ['Market', ['b2b-saas', 'enterprise', 'consumer', 'healthcare', 'ecommerce', 'developer-tools', 'civic']],
+  ['Company and Terms', ['startup', 'early-stage', 'growth', 'contract']],
+];
+const DETECT = {
+  'design-systems': /design system/i, systems: /\bplatform|\bsystems?\b|ecosystem/i, 'b2b-saas': /\bb2b\b|\bsaas\b/i,
+  enterprise: /enterprise/i, 'staff-ic': /\bstaff\b|principal|individual contributor/i,
+  leadership: /director|head of|\bmanag(e|er|ing|ement)\b|mentor/i, 'ai-native': /\bai\b|ai-assisted|machine learning|\bllm/i,
+  healthcare: /health|clinical|patient|medical/i, consumer: /consumer|\bdtc\b/i, startup: /startup|fast-paced|fast-moving/i,
+  'early-stage': /\bseed\b|series a|early[- ]stage/i, growth: /\bgrowth\b/i, 'data-heavy': /\bdata\b|analytics|dashboard/i,
+  'developer-tools': /developer|\bapi\b|\bsdk\b/i, 'zero-to-one': /zero[- ]to[- ]one|0 ?to ?1|new product/i,
+  ecommerce: /e-?commerce|checkout|subscription/i, brand: /\bbrand/i, marketing: /marketing/i,
+  civic: /civic|nonprofit|government/i, contract: /\bcontract\b|freelance/i,
+};
+const ROLES = [
+  { co: 'Product Design & Creative Projects', title: 'Independent Design Consultant', dates: 'May 2026 to Present', cap: 2, bullets: [
+    ['p1', 'Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping and design systems.', ['consumer', 'design-systems', 'contract']],
+    ['p2', 'Developing custom tools, workflows and methodologies that use AI to accelerate product design and software development, from exploration through delivery.', ['ai-native', 'staff-ic', 'developer-tools']],
+    ['p3', "Produced a promotional film for PDX Pop Now!'s 2026 compilation as a volunteer, combining visual concept development and motion design.", ['brand', 'marketing', 'civic']] ] },
+  { co: 'G2', title: 'Principal Product Experience Designer', dates: 'Feb 2024 to May 2026', loc: 'Remote', cap: 4, bullets: [
+    ['g1', "Spearheaded a cross-functional rebuild of G2's design system, unifying product, brand and engineering around scalable foundations and component architecture.", ['design-systems', 'systems', 'staff-ic']],
+    ['g2', 'Led design consensus, Figma architecture and implementation planning for the Elevate design system across multiple squads.', ['design-systems', 'leadership', 'staff-ic']],
+    ['g3', 'Designed and launched the Seller Solutions framework, replacing the underperforming Suites product so SaaS vendors could market products by use case.', ['b2b-saas', 'enterprise', 'zero-to-one', 'growth']],
+    ['g4', 'Created inline editing workflows, modular landing pages, analytics integrations and AI-assisted social proof generation for Seller Solutions.', ['b2b-saas', 'ai-native', 'data-heavy', 'marketing']],
+    ['g5', "Designed onboarding, segmentation, integrations, notifications and analytics experiences across G2's buyer intent products.", ['data-heavy', 'systems', 'b2b-saas', 'enterprise']],
+    ['g6', 'Co-developed speculative AI-first product vision work, creating high-fidelity prototypes, animatics and executive storytelling artifacts.', ['ai-native', 'zero-to-one', 'staff-ic']] ] },
+  { co: 'PetPlate', title: 'Head of Product Design', dates: 'Oct 2022 to Sep 2023', loc: 'Remote', cap: 2, bullets: [
+    ['pp1', 'Led redesign initiatives across onboarding, subscription management, retention and ecommerce experiences on a rapidly evolving consumer platform.', ['ecommerce', 'consumer', 'growth', 'startup']],
+    ['pp2', 'Matured product design processes, collaboration models and design system practices across product, engineering and marketing.', ['design-systems', 'leadership', 'startup']],
+    ['pp3', 'Mentored designers while raising design quality, strategic thinking and organizational design maturity.', ['leadership']] ] },
+  { co: 'Wisdom Panel', title: 'Director, Product Design', dates: 'Nov 2019 to Oct 2022', loc: 'Hybrid, Portland, OR', cap: 3, bullets: [
+    ['w1', "Led a major transformation of Wisdom Panel's digital product experience, modernizing the platform and redesigning core customer journeys.", ['leadership', 'consumer', 'systems']],
+    ['w2', 'Directed scalable design systems and UX foundations that improved consistency, usability, accessibility and cross-functional collaboration.', ['design-systems', 'leadership', 'systems']],
+    ['w3', 'Translated complex scientific and genetic health information into approachable, trustworthy consumer experiences across onboarding and reporting.', ['healthcare', 'consumer', 'data-heavy']],
+    ['w4', 'Partnered with science, engineering, product and marketing stakeholders to align business goals with emotionally sensitive, human-centered UX.', ['healthcare', 'leadership']] ] },
+  { co: 'Vacasa', title: 'Lead Product Designer', dates: 'May 2016 to Nov 2019', loc: 'On-Site, Portland, OR', cap: 2, bullets: [
+    ['v1', "Led product design strategy for Vacasa's first native consumer app, contributing to a +9 gain in guest NPS and reduced support volume.", ['consumer', 'zero-to-one']],
+    ['v2', "Established foundational design system practices across Vacasa's web and native product ecosystem.", ['design-systems', 'systems']],
+    ['v3', 'Led design direction for internal operational tools used by housekeeping and field maintenance teams.', ['enterprise', 'data-heavy', 'systems']],
+    ['v4', 'Improved conversion across key guest booking flows, including property detail pages and checkout.', ['ecommerce', 'growth', 'consumer']] ] },
+].map(r => ({ ...r, bullets: r.bullets.map(([id, t, tags]) => ({ id, t, tags })) }));
+const ALL_BULLETS = ROLES.flatMap(r => r.bullets.map(b => ({ ...b, co: r.co })));
+const SKILLS = ['Systems thinking', 'Product strategy', 'Design systems leadership', 'Cross-functional facilitation', 'AI-assisted prototyping', 'Information architecture', 'Workflow design', 'Executive communication'];
+const SUMMARY_BASE = 'Product design leader focused on complex product ecosystems, workflow orchestration and human-centered systems thinking.';
+const EMPH_SENT = {
+  'design-systems': "Led design system rebuilds and foundations at G2, Wisdom Panel and Vacasa.",
+  systems: 'Works across product ecosystems, platform information architecture and workflow orchestration.',
+  'staff-ic': 'Connects product design with frontend implementation through AI-assisted prototyping.',
+  leadership: 'Former Director and Head of Product Design, ready to take on people management again.',
+  healthcare: 'Translated genetic health information into trustworthy consumer experiences at Wisdom Panel.',
+  'ai-native': 'Builds functional software and prototypes with AI-assisted coding, then hand-edits and iterates.',
+  consumer: 'Shaped consumer journeys at Vacasa, Wisdom Panel and PetPlate.',
+  'b2b-saas': "Designed seller and buyer intent workflows across G2's B2B platform.",
+  enterprise: "Designed seller and buyer intent workflows across G2's B2B platform.",
+  'data-heavy': 'Designed analytics, segmentation and notification experiences at G2.',
+  ecommerce: 'Improved booking conversion at Vacasa and led subscription and ecommerce redesigns at PetPlate.',
+  growth: 'Improved booking conversion at Vacasa and led subscription and ecommerce redesigns at PetPlate.',
+  'zero-to-one': "Led Vacasa's first native consumer app and launched G2's Seller Solutions framework.",
+};
+const RULES = { bulletWords: 25, bulletHard: 30, summaryTarget: 55, summaryHard: 60, skillsTarget: 12, skillsHard: 14, clMin: 250, clMax: 300, clLow: 200, clHigh: 320, antiMax: 1,
+  banned: ['genuine', 'genuinely', 'honest', 'honestly', 'durable', 'at scale', 'present-state', 'future-state', 'passionate', 'excited to apply'] };
+const STAGES = ['Reading the posting', 'Selecting evidence', 'Writing the résumé', 'Writing the cover letter', 'Running quality checks'];
+const STOP = new Set('with that this from their them they into your have will able also about across both more most such than then there these those what when where which while years year role roles team teams work works working design designs designer designers product products experience experiences strong ability plus using used help helps including include lead leads'.split(' '));
+
+// ── State ──────────────────────────────────────────────────────────────────
+const SAMPLE_JD = `Atlas Robotics is hiring a Staff Designer to lead design for a complex B2B platform used by fleet operations teams.
+- Partner with product and engineering leads to shape strategy and roadmap.
+- Evolve and govern the design system across web and tablet surfaces.
+- Turn dense operational data into clear dashboards and workflows.
+- Prototype AI-assisted features and test them with operators.
+- Mentor designers and raise the quality bar across squads.
+- Experience in robotics or industrial hardware is a plus.`;
+const newRec = o => Object.assign({ title: '', company: '', jd: '', contact: '', notes: '', emph: {}, auto: {}, gen: 'idle', progress: 0,
+  excluded: [], pinned: [], tightened: [], summaryTight: false, revisions: [], history: [], undo: [], reqOff: [], briefRead: false,
+  aStage: 'posting', handoff: true, downloaded: false, lastChanged: [], events: [] }, o);
+let S, timers = {};
+function initState() {
+  Object.values(timers).forEach(clearInterval); timers = {};
+  const prevMode = S ? S.mode : null;
+  S = {
+    active: 'base', mode: prevMode || initialMode(), viewport: 'desktop', fit: 'fit', docTab: 'resume', cur: 'atlas',
+    selBullet: null, bJdEdit: false, aMore: false, focusReq: null, dPicker: false, eSub: 'details', revDraft: '',
+    apps: {
+      atlas: newRec({ title: 'Staff Designer, Design Systems', company: 'Atlas Robotics', jd: SAMPLE_JD, contact: 'Audit Sample Contact',
+        notes: 'Emphasize design systems work.', emph: { healthcare: 1, 'staff-ic': 1 }, events: [['Oct 27, 09:12', 'Sent from Prospect Tracker']] }),
+      northwind: newRec({ title: 'Design Systems Lead', company: 'Northwind Labs', handoff: false,
+        jd: '- Own the component library and token pipeline across three product teams.\n- Partner with engineering on accessibility and theming.\n- Mentor two product designers.',
+        events: [['Oct 26, 16:40', 'Sent from Prospect Tracker']] }),
+      kestrel: newRec({ title: 'Senior Product Designer, Patient Experience', company: 'Kestrel Health', handoff: false,
+        events: [['Oct 25, 11:03', 'Sent from Prospect Tracker (no posting text)']] }),
+    },
+  };
+}
+function initialMode() {
+  const t = document.documentElement.getAttribute('data-theme');
+  if (t === 'light' || t === 'dark') return t;
+  return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+const rec = () => S.apps[S.cur];
+
+// ── Engine: detection, matching, composition, QA ──────────────────────────
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const words = s => String(s || '').split(/\s+/).filter(Boolean).length;
+const stem = w => w.toLowerCase().replace(/(ing|ed|es|s|e)$/, '').slice(0, 6);
+const tokens = s => [...new Set(String(s).toLowerCase().match(/[a-z][a-z-]{3,}/g) || [])].filter(w => !STOP.has(w)).map(stem);
+function detect(jd) {
+  const out = {};
+  for (const k of KEYS) { const m = String(jd || '').match(DETECT[k]); if (m) out[k] = m[0]; }
+  return out;
+}
+function weights(r) {
+  const explicit = Object.entries(r.emph).filter(([, w]) => w > 0);
+  if (explicit.length) return Object.fromEntries(explicit);
+  return Object.fromEntries(Object.keys(detect(r.jd)).map(k => [k, 1]));
+}
+function requirements(jd) {
+  const lines = String(jd || '').split(/\n+/).map(l => l.trim());
+  let reqs = lines.filter(l => /^[-•*]/.test(l)).map(l => l.replace(/^[-•*]\s*/, ''));
+  if (!reqs.length) reqs = String(jd || '').split(/(?<=[.!?])\s+/).filter(s => s.length > 24);
+  return reqs.map((q, i) => {
+    const qt = tokens(q), qk = Object.keys(detect(q));
+    let best = null, bestScore = 0;
+    for (const b of ALL_BULLETS) {
+      const bt = tokens(b.t);
+      const sc = qt.filter(t => bt.includes(t)).length + qk.filter(k => b.tags.includes(k)).length;
+      if (sc > bestScore) { bestScore = sc; best = b; }
+    }
+    return { i, q, best: bestScore ? best : null, strength: bestScore >= 2 ? 'strong' : bestScore === 1 ? 'partial' : 'gap' };
+  });
+}
+const tighten = t => { const c = t.replace(/,[^,]*\.$/, '.'); return c.length < t.length && words(c) >= 8 ? c : t; };
+const lc = t => t.charAt(0).toLowerCase() + t.slice(1).replace(/\.$/, '');
+function rankedKeys(w) { return Object.entries(w).sort((a, b) => b[1] - a[1] || KEYS.indexOf(a[0]) - KEYS.indexOf(b[0])).map(e => e[0]); }
+function compose(r) {
+  const w = weights(r);
+  const boosts = {};
+  if (r.briefRead) requirements(r.jd).forEach(q => { if (!r.reqOff.includes(q.i) && q.best) boosts[q.best.id] = (boosts[q.best.id] || 0) + 3; });
+  const roles = ROLES.map(role => {
+    const scored = role.bullets.filter(b => !r.excluded.includes(b.id)).map((b, i) => ({
+      ...b, i, text: r.tightened.includes(b.id) ? tighten(b.t) : b.t,
+      score: (r.pinned.includes(b.id) ? 100 : 0) + b.tags.reduce((s, t) => s + (w[t] || 0) * 2, 0) + (boosts[b.id] || 0),
+    }));
+    const sorted = [...scored].sort((a, b) => b.score - a.score || a.i - b.i);
+    return { ...role, chosen: sorted.slice(0, role.cap), held: sorted.slice(role.cap) };
+  });
+  const keys = rankedKeys(w);
+  const sents = [SUMMARY_BASE];
+  for (const k of keys) { const s = EMPH_SENT[k]; if (s && !sents.includes(s)) sents.push(s); if (sents.length === 3) break; }
+  if (sents.length < 3) sents.push('Player/coach who combines product direction and mentorship with hands-on craft.');
+  const summary = (r.summaryTight ? sents.slice(0, 2) : sents).join(' ');
+  const pick = co => roles.find(x => x.co === co).chosen;
+  const g = pick('G2'), wp = pick('Wisdom Panel'), va = pick('Vacasa');
+  const focus = keys.slice(0, 2).map(k => PHRASE[k]);
+  const cl = {
+    greeting: `Dear ${r.contact.trim() || 'Hiring Team'},`,
+    paras: [
+      `I'm applying for the ${r.title.trim() || 'open'} role at ${r.company.trim() || 'your company'}.${focus.length ? ` The posting puts weight on ${focus.join(' and ')}, so this letter focuses on the parts of my work that match.` : ''}`,
+      g.length ? `Most recently, as Principal Product Experience Designer at G2, I ${lc(g[0].text)}.${g[1] ? ` I also ${lc(g[1].text)}.` : ''}` : '',
+      'Since May 2026 I have worked as an independent design consultant, including product design consulting for a consumer mobile app rebuild that spanned interaction design, functional prototyping and design systems.',
+      `Before that, as Director of Product Design at Wisdom Panel, I ${lc((wp[0] || ROLES[3].bullets[0]).text)}.${va[0] ? ` At Vacasa, I ${lc(va[0].text)}.` : ''}`,
+      'I work as a player/coach, combining product direction and mentorship with hands-on craft. I also use AI-assisted coding to build functional prototypes, then hand-edit and iterate on the results, which keeps design decisions close to how the product actually behaves.',
+      `I'd welcome a conversation about the role and how this experience could help ${r.company.trim() || 'your team'}.`,
+    ].filter(Boolean),
+    sign: 'Larry Reynolds',
+  };
+  return { summary, roles, skills: SKILLS, cl, keys };
+}
+function qa(r, d) {
+  const out = [];
+  d.roles.forEach(role => {
+    if (role.chosen.length > role.cap) out.push({ msg: `${role.co}: ${role.chosen.length} bullets, cap is ${role.cap}` });
+    role.chosen.forEach(b => { const n = words(b.text); if (n > RULES.bulletHard) out.push({ msg: `${role.co}: ${n} word bullet, cap is ${RULES.bulletWords}`, target: b.id }); });
+  });
+  const sw = words(d.summary); if (sw > RULES.summaryHard) out.push({ msg: `Summary is ${sw} words, target is ${RULES.summaryTarget}`, target: 'summary' });
+  if (d.skills.length > RULES.skillsHard) out.push({ msg: `${d.skills.length} skills listed, target is ${RULES.skillsTarget}` });
+  const clText = [d.cl.greeting, ...d.cl.paras].join(' ');
+  const cw = words(clText);
+  if (cw > RULES.clHigh || cw < RULES.clLow) out.push({ msg: `Cover letter is ${cw} words, target is ${RULES.clMin} to ${RULES.clMax}`, target: 'cl' });
+  const all = (clText + ' ' + d.summary + ' ' + d.roles.flatMap(x => x.chosen.map(b => b.text)).join(' ')).toLowerCase();
+  const hits = RULES.banned.filter(t => all.includes(t));
+  if (hits.length) out.push({ msg: 'Banned words: ' + hits.join(', '), target: 'cl' });
+  const anti = (clText.match(/\b(isn't|is not|wasn't|was not|aren't|are not)\b[^.]{0,70}\bit(?:'s| is| was)\b/gi) || []).length;
+  if (anti > RULES.antiMax) out.push({ msg: `${anti} "not X, it is Y" constructions, max is ${RULES.antiMax}`, target: 'cl' });
+  return out;
+}
+function clWords(d) { return words([d.cl.greeting, ...d.cl.paras].join(' ')); }
+
+// ── Generation (simulated) ────────────────────────────────────────────────
+function startGen(id) {
+  const r = S.apps[id];
+  if (!r.title.trim() || !r.jd.trim()) return false;
+  clearInterval(timers[id]);
+  r.gen = 'running'; r.progress = 0; r.lastChanged = []; r.downloaded = false;
+  r.events.push([stamp(), 'Generation started']);
+  timers[id] = setInterval(() => {
+    r.progress = Math.min(1, r.progress + 0.055);
+    if (r.progress >= 1) {
+      clearInterval(timers[id]); r.gen = 'done';
+      const n = qa(r, compose(r)).length;
+      r.events.push([stamp(), `Résumé and cover letter generated · ${n ? n + ' quality warning' + (n > 1 ? 's' : '') : 'no quality warnings'}`]);
+      if (r.aStage === 'brief') r.aStage = 'docs';
+    }
+    if (shown(id)) render(true);
+  }, 110);
+  return true;
+}
+const shown = id => id === S.cur;
+function stamp() { const d = new Date(); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ', ' + d.toTimeString().slice(0, 5); }
+const stageIdx = r => Math.min(STAGES.length - 1, Math.floor(r.progress * STAGES.length));
+
+function applyRevision(r, text, tab) {
+  const t = text.toLowerCase().trim();
+  const d = compose(r);
+  let summary = 'Logged. The prototype does not call the model, so no change was applied.', changed = [];
+  const m = t.match(/(?:drop|remove|cut|delete)\s+(?:the\s+)?(.+)/);
+  if (m) {
+    const want = tokens(m[1].replace(/\bbullets?\b/g, ''));
+    const hit = d.roles.flatMap(x => x.chosen.map(b => ({ ...b, co: x.co }))).find(b => want.some(w => tokens(b.text).includes(w)));
+    if (hit) { pushUndo(r); r.excluded.push(hit.id); summary = `Removed the ${hit.co} bullet that began “${hit.text.split(' ').slice(0, 6).join(' ')}…” and promoted the next strongest one.`; changed = compose(r).roles.find(x => x.co === hit.co).chosen.map(b => b.id).filter(id => !d.roles.find(x => x.co === hit.co).chosen.some(b => b.id === id)); }
+    else summary = 'No matching bullet found. Name a word from the bullet you want removed.';
+  } else if (/short|tight|punch|trim|concise/.test(t)) {
+    pushUndo(r); r.summaryTight = true; summary = 'Tightened the summary to two sentences.'; changed = ['summary'];
+  } else {
+    const k = EMPH.find(e => t.includes(e[0].replace('-', ' ')) || t.includes(e[2].toLowerCase()) || t.includes(e[1].toLowerCase()));
+    if (k && /lead|emphas|focus|more/.test(t)) { pushUndo(r); r.emph = { ...r.emph, [k[0]]: 2 }; summary = `Moved ${k[1]} to the lead emphasis.`; changed = ['summary']; }
+  }
+  r.lastChanged = changed;
+  r.revisions.push({ text, summary, tab });
+  r.events.push([stamp(), 'Revision: ' + text]);
+}
+function pushUndo(r) { r.undo.push(JSON.stringify({ excluded: r.excluded, pinned: r.pinned, tightened: r.tightened, summaryTight: r.summaryTight, emph: r.emph })); }
+
+// ── Shared renderers ──────────────────────────────────────────────────────
+const bind = (name, extra = '') => `data-bind="${name}" ${extra}`;
+function header() {
+  return `<header class="nc-header">
+    <span class="nc-logo">nextchapter</span>
+    <nav class="nc-nav" aria-label="Main"><button type="button" data-act="noop">Career Radar</button><button type="button" data-act="noop">Prospect Tracker</button><button type="button" aria-current="page" data-act="noop">Résumé Builder</button></nav>
+    <div class="nc-util"><button type="button" class="nc-switch" data-act="toggleMode" aria-label="Switch to ${S.mode === 'dark' ? 'light' : 'dark'} mode"></button><button type="button" class="nc-hide-sm" data-act="noop">About</button><button type="button" class="nc-hide-sm" data-act="noop">Log In</button><button type="button" class="nc-menu btn btn--tertiary btn--sm" data-act="noop" style="color:var(--ink);border-color:var(--ink)">Menu</button></div>
+  </header>`;
+}
+function field(dir, key, label, opts = {}) {
+  const r = rec(), id = `${dir}-${key}`, v = esc(r[key]);
+  const lab = `<label for="${id}">${label}${opts.req ? ' *' : ''}${opts.hint ? ` <span>${opts.hint}</span>` : ''}</label>`;
+  const ctl = opts.area
+    ? `<textarea class="textarea" id="${id}" rows="${opts.rows || 3}" ${bind(key)}>${v}</textarea>`
+    : `<input class="input" id="${id}" value="${v}" ${bind(key)} autocomplete="off">`;
+  return `<div class="field">${lab}${ctl}</div>`;
+}
+function chips(dir, opts = {}) {
+  const r = rec();
+  return `<div class="chips" role="group" aria-label="Emphasis focus">${EMPH.map(([k, l], i) =>
+    `<button type="button" class="chip" data-act="toggleEmph" data-key="${k}" data-fk="chip-${k}" aria-pressed="${(r.emph[k] || 0) > 0}" ${i === 0 && opts.check ? `data-check="${opts.check}"` : ''}>${esc(l)}${opts.showAuto && r.auto[k] ? ' <small>detected</small>' : ''}</button>`).join('')}</div>`;
+}
+function genView(r, label = 'Generating') {
+  const si = stageIdx(r);
+  return `<div class="card" aria-live="polite"><div class="h3">${label}</div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(r.progress * 100)}" aria-label="Generation progress"><i style="width:${r.progress * 100}%"></i></div>
+    <ul class="stagelist">${STAGES.map((s, i) => `<li class="${i < si ? 'done' : i === si ? 'now' : ''}"><span class="dot"></span>${s}</li>`).join('')}</ul>
+    <span class="sim-note">Simulated · no model call</span></div>`;
+}
+function docHTML(r, opts = {}) {
+  const d = compose(r), flags = qa(r, d), flagged = new Set(flags.map(f => f.target).filter(Boolean));
+  const ch = new Set(r.lastChanged || []);
+  const cov = opts.coverId || null;
+  let budget = opts.partial != null ? Math.max(1, Math.floor(opts.partial * 26)) : Infinity;
+  const line = html => (budget-- > 0 ? html : '');
+  if ((opts.tab || S.docTab) === 'cl') {
+    return `<div class="doc lt ${opts.cls || ''}" aria-label="Cover letter preview">
+      ${line(`<p class="ln">${esc(d.cl.greeting)}</p>`)}
+      ${d.cl.paras.map(p => line(`<p class="ln ${flagged.has('cl') && opts.flags ? 'flag' : ''}">${esc(p)}</p>`)).join('')}
+      ${line(`<p class="ln">Sincerely,<br>${d.cl.sign}</p>`)}
+      ${opts.flags && flagged.has('cl') ? `<span class="b-flagnote">${esc(flags.find(f => f.target === 'cl').msg)}</span>` : ''}
+    </div>`;
+  }
+  const bl = b => {
+    const cls = [ch.has(b.id) ? 'revised' : '', flagged.has(b.id) ? 'flag' : '', cov === b.id ? 'cover' : ''].join(' ');
+    if (!opts.interactive) return line(`<li class="ln ${cls}">${esc(b.text)}</li>`);
+    const open = S.selBullet === b.id;
+    return line(`<li class="ln ${cls}"><button type="button" class="b-bl" data-act="selBullet" data-id="${b.id}" data-fk="bl-${b.id}" aria-expanded="${open}" ${b.id === 'g1' ? 'data-check="select-line"' : ''}>${esc(b.text)}${r.pinned.includes(b.id) ? '<span class="pin">PINNED</span>' : ''}</button>
+      ${open ? `<div class="b-tools" role="toolbar" aria-label="Line actions"><button type="button" data-act="bPin" data-id="${b.id}" data-fk="pin">${r.pinned.includes(b.id) ? 'Unpin' : 'Pin'}</button><button type="button" data-act="bTighten" data-id="${b.id}">Tighten</button><button type="button" data-act="bSwap" data-id="${b.id}">Swap</button><button type="button" data-act="bRemove" data-id="${b.id}">Remove</button></div>` : ''}</li>`);
+  };
+  return `<div class="doc ${opts.cls || ''}" aria-label="Résumé preview">
+    ${line(`<div class="nm ln">Larry Reynolds</div>`)}
+    ${line(`<div class="ct ln">Product Design Leader · Portland, OR · larryjr.design · linkedin.com/in/larryjrdesign</div>`)}
+    ${line(`<h5>Summary</h5><p class="ln ${ch.has('summary') ? 'revised' : ''} ${flagged.has('summary') ? 'flag' : ''}">${esc(d.summary)}</p>`)}
+    ${line('<h5>Experience</h5>')}
+    ${d.roles.map(role => line(`<div class="role"><div class="rh ln"><span>${esc(role.co)} · ${esc(role.title)}${role.loc ? ` (${esc(role.loc)})` : ''}</span><span>${role.dates}</span></div>`) + `<ul>${role.chosen.map(bl).join('')}</ul>` + (budget > 0 ? '</div>' : '</div>')).join('')}
+    ${line(`<h5>Skills</h5><p class="ln">${d.skills.join(' · ')}</p>`)}
+    ${line(`<h5>Education</h5><p class="ln">Bachelor of Science, Interactive Media Design</p>`)}
+  </div>`;
+}
+function qaList(r, variant = 'alerts') {
+  const f = qa(r, compose(r));
+  if (!f.length) return `<p class="qa-empty">No quality warnings.</p>`;
+  return f.map(x => `<div class="alert alert--warning" role="note">${esc(x.msg)}</div>`).join('');
+}
+function revBox(dir, label = 'Request Changes', btn = 'Apply Changes') {
+  const r = rec();
+  return `<div class="field"><label for="${dir}-rev">${label}</label>
+    <textarea class="textarea" id="${dir}-rev" rows="3" data-revdraft placeholder="Ask for a revision, e.g. Make the opening shorter, or drop the Elevate bullet">${esc(S.revDraft)}</textarea></div>
+    <button type="button" class="btn btn--secondary" data-act="revise">${btn}</button>
+    ${r.revisions.length ? `<ul class="revlog">${r.revisions.slice().reverse().map(v => `<li><b>${esc(v.text)}</b><br>${esc(v.summary)}</li>`).join('')}</ul>` : ''}`;
+}
+function docTabs(extra = '') {
+  return `<div class="tabs" role="tablist" aria-label="Document"><button type="button" role="tab" data-act="docTab" data-tab="resume" aria-selected="${S.docTab === 'resume'}" ${extra}>Résumé</button><button type="button" role="tab" data-act="docTab" data-tab="cl" aria-selected="${S.docTab === 'cl'}">Cover Letter</button></div>`;
+}
+function dlButton(r, label = 'Download Application Package') {
+  return r.downloaded
+    ? `<span class="badge badge--positive">${esc(fileName(r))}.zip · 5 files (simulated)</span>`
+    : `<button type="button" class="btn btn--primary" data-act="download">${label}</button>`;
+}
+const fileName = r => `LarryReynolds_${(r.company || 'Company').replace(/\W+/g, '-')}_${(r.title || 'Role').split(',')[0].replace(/\W+/g, '-')}`;
+
+// ── Baseline ──────────────────────────────────────────────────────────────
+function renderBase() {
+  const r = rec(), st = r.gen === 'idle' ? 0 : r.gen === 'running' ? 1 : 2;
+  const steps = ['Job details', 'Generating', 'Preview + Download'].map((t, i) => `<li class="${i === st ? 'on' : i < st ? 'done' : ''}" ${i === st ? 'aria-current="step"' : ''}><span class="n">${i + 1}</span><span class="t">${t}</span></li>`).join('');
+  let body;
+  if (r.gen === 'idle') {
+    body = `${r.handoff ? `<div class="alert" role="status"><span>Job details received from Prospect Tracker. Review them before generating.</span><button type="button" class="x" data-act="dismissHandoff" aria-label="Dismiss">×</button></div>` : ''}
+    <div class="card">
+      <div class="row2">${field('base', 'title', 'Job title', { req: true })}${field('base', 'company', 'Company')}</div>
+      ${field('base', 'jd', 'Job description', { req: true, area: true, rows: 6 })}
+      ${field('base', 'contact', 'Hiring contact', { hint: '— optional, for cover letter salutation' })}
+      <div class="field"><span class="lbl">Emphasis focus <span>— optional, auto-detected if blank</span></span>${chips('base', { check: 'toggle-emphasis' })}</div>
+      ${field('base', 'notes', 'Additional notes', { area: true, rows: 2 })}
+      <div><button type="button" class="btn btn--primary" data-act="generate" data-check="generate">Generate Resume + Cover Letter</button></div>
+    </div>`;
+  } else if (r.gen === 'running') {
+    body = genView(r);
+  } else {
+    body = `<div class="doc-head">${docTabs()}${dlButton(r)}</div>
+    <div class="preview-grid">${docHTML(r)}<aside class="side"><div class="card"><div class="h3">Generation Status</div>${r.revisions.length ? `<div class="alert alert--success">Revised: ${esc(r.revisions.at(-1).summary)}</div>` : '<div class="alert">Tailored to the posting and your emphasis.</div>'}</div><div class="card"><div class="h3">Quality Checks</div>${qaList(r)}</div><div class="card">${revBox('base')}</div></aside></div>
+    <div><button type="button" class="btn btn--tertiary" data-act="backToDetails">Edit Job Details</button></div>`;
+  }
+  return `${header()}<div class="${r.gen === 'done' ? 'wide' : 'shell'}" style="${r.gen === 'done' ? 'display:grid;gap:24px' : ''}"><h1 class="h1">Résumé Builder</h1><ol class="steps" aria-label="Application progress">${steps}</ol>${body}</div>`;
+}
+
+// ── A · Brief First ───────────────────────────────────────────────────────
+function renderA() {
+  const r = rec();
+  const stage = r.gen === 'running' ? 'gen' : r.aStage;
+  const reqs = requirements(r.jd);
+  const nav = [['posting', 'Posting', r.title ? esc(r.company || r.title) : 'Paste the job'], ['brief', 'Brief', r.briefRead ? `${reqs.length} requirements` : 'After reading'], ['docs', 'Documents', r.gen === 'done' ? 'Ready' : 'After generating']]
+    .map(([k, t, s]) => `<button type="button" data-act="aStage" data-stage="${k}" ${(stage === k || (stage === 'gen' && k === 'docs')) ? 'aria-current="step"' : ''} ${(k === 'brief' && !r.briefRead) || (k === 'docs' && r.gen !== 'done') ? 'disabled' : ''}><b>${t}</b><small>${s}</small></button>`).join('');
+  let body = '';
+  if (stage === 'posting') {
+    body = `${r.handoff ? `<div class="alert" role="status"><span>Job details received from Prospect Tracker. Read the posting to build a brief.</span><button type="button" class="x" data-act="dismissHandoff" aria-label="Dismiss">×</button></div>` : ''}
+    <div class="card"><div class="row2">${field('A', 'title', 'Job title', { req: true })}${field('A', 'company', 'Company')}</div>
+      ${field('A', 'jd', 'Job description', { req: true, area: true, rows: 9 })}
+      <div><button type="button" class="btn btn--tertiary btn--sm" data-act="aMore" aria-expanded="${S.aMore}" data-check="more-options">${S.aMore ? 'Hide' : 'More'} Options</button></div>
+      ${S.aMore ? `${field('A', 'contact', 'Hiring contact', { hint: '— optional' })}${field('A', 'notes', 'Additional notes', { area: true, rows: 2 })}` : ''}
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><button type="button" class="btn btn--primary" data-act="readPosting" data-check="read-posting" ${!r.jd.trim() ? 'disabled' : ''}>Read Posting</button><span class="muted" style="font-size:14px">Builds a brief you can edit before anything is written.</span></div></div>`;
+  } else if (stage === 'brief') {
+    const det = detect(r.jd);
+    const strong = reqs.filter(q => q.strength === 'strong').length, gaps = reqs.filter(q => q.strength === 'gap').length;
+    body = `<div class="a-grid">
+      <div class="card"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline"><div class="h3">What ${esc(r.company || 'They')} ${r.company ? 'Is' : 'Are'} Asking For</div><span class="sim-note">${strong} strong · ${reqs.length - strong - gaps} partial · ${gaps} gap</span></div>
+        <ul class="reqs">${reqs.map(q => `<li class="req ${r.reqOff.includes(q.i) ? 'off' : ''} ${q.strength === 'gap' ? 'gap' : ''}">
+          ${q.strength === 'gap' ? '<span></span>' : `<input type="checkbox" id="req-${q.i}" data-act="toggleReq" data-i="${q.i}" data-fk="req-${q.i}" ${r.reqOff.includes(q.i) ? '' : 'checked'} ${q.i === 0 ? 'data-check="toggle-requirement"' : ''} aria-label="Address: ${esc(q.q)}">`}
+          <label class="q" ${q.strength === 'gap' ? '' : `for="req-${q.i}"`}>${esc(q.q)}</label>
+          <span class="badge ${q.strength === 'strong' ? 'badge--positive' : q.strength === 'partial' ? 'badge--highlight' : 'badge--negative'}">${q.strength === 'strong' ? 'Strong Match' : q.strength === 'partial' ? 'Partial' : 'Gap'}</span>
+          <div class="ev">${q.best ? `<em>${esc(q.best.co)}</em>${esc(q.best.t)}` : 'No matching evidence in your master résumé. It will not be claimed.'}</div></li>`).join('')}</ul></div>
+      <div style="display:grid;gap:18px">
+        <div class="card" style="gap:14px"><div class="h3">Emphasis</div>
+          <div class="det">${Object.keys(det).length ? Object.keys(det).map(k => `<div class="det-row"><button type="button" class="chip" data-act="toggleEmph" data-key="${k}" data-fk="chip-${k}" aria-pressed="${(r.emph[k] || 0) > 0}">${esc(LABEL[k])}</button><span class="why">from “${esc(det[k])}”</span></div>`).join('') : '<p class="muted">Nothing detected. Add emphasis below.</p>'}${KEYS.filter(k => !det[k] && (r.emph[k] || 0) > 0).map(k => `<div class="det-row"><button type="button" class="chip" data-act="toggleEmph" data-key="${k}" data-fk="chip-${k}" aria-pressed="true">${esc(LABEL[k])}</button><span class="why">added by you</span></div>`).join('')}</div>
+          <details><summary class="eyebrow" style="cursor:pointer">Add Other Emphasis</summary><div style="margin-top:10px">${chipsSubset(KEYS.filter(k => !det[k]))}</div></details></div>
+        <div class="card" style="gap:10px"><div class="eyebrow">Summary will open with</div><div class="lede" data-live="aSummary">${esc(compose(r).summary)}</div></div>
+        <button type="button" class="btn btn--primary" data-act="generate">Generate From Brief</button>
+      </div></div>`;
+  } else if (stage === 'gen') {
+    body = genView(r, 'Writing From Your Brief');
+  } else {
+    const d = compose(r), chosen = new Set(d.roles.flatMap(x => x.chosen.map(b => b.id)));
+    const live = reqs.filter(q => !r.reqOff.includes(q.i));
+    const covered = live.filter(q => q.best && chosen.has(q.best.id)).length;
+    const focus = S.focusReq != null ? reqs.find(q => q.i === S.focusReq) : null;
+    body = `<div class="card" style="gap:10px;padding:18px 22px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><div class="eyebrow">Coverage · ${covered} of ${live.length} requirements answered${reqs.some(q => q.strength === 'gap') ? ' · gaps not claimed' : ''}</div><span class="sim-note">Select one to find it in the résumé</span></div>
+      <div class="coverage">${reqs.map(q => `<button type="button" data-act="focusReq" data-i="${q.i}" data-fk="cov-${q.i}" aria-pressed="${S.focusReq === q.i}" class="${q.strength === 'gap' ? 'gap' : ''}" ${r.reqOff.includes(q.i) ? 'style="opacity:.5"' : ''}>${q.best && chosen.has(q.best.id) && !r.reqOff.includes(q.i) ? '✓ ' : ''}${esc(q.q.length > 54 ? q.q.slice(0, 52) + '…' : q.q)}</button>`).join('')}</div></div>
+    <div class="doc-head">${docTabs()}${dlButton(r)}</div>
+    <div class="preview-grid">${docHTML(r, { coverId: focus && focus.best ? focus.best.id : null })}<aside class="side"><div class="card"><div class="h3">Quality Checks</div>${qaList(r)}</div><div class="card">${revBox('A')}</div></aside></div>`;
+  }
+  return `${header()}<div class="${stage === 'brief' || stage === 'docs' ? 'wide' : 'shell'}" style="display:grid;gap:22px"><h1 class="h1">Résumé Builder</h1><nav class="a-stages" aria-label="Stages">${nav}</nav>${body}</div>`;
+}
+function chipsSubset(keys) {
+  const r = rec();
+  return `<div class="chips">${keys.map(k => `<button type="button" class="chip" data-act="toggleEmph" data-key="${k}" data-fk="chip-${k}" aria-pressed="${(r.emph[k] || 0) > 0}">${esc(LABEL[k])}</button>`).join('')}</div>`;
+}
+
+// ── B · Workbench ─────────────────────────────────────────────────────────
+function jdMarked(r) {
+  const pattern = new RegExp(KEYS.map(k => DETECT[k].source).join('|'), 'gi');
+  let first = true;
+  return esc(r.jd).replace(pattern, m => {
+    const k = KEYS.find(k => DETECT[k].test(m)); if (!k) return m;
+    const on = (r.emph[k] || 0) > 0;
+    const out = `<mark tabindex="0" role="button" data-act="toggleEmph" data-key="${k}" data-fk="mk-${k}" aria-pressed="${on}" title="${esc(LABEL[k])}" ${first ? 'data-check="toggle-highlight"' : ''}>${m}</mark>`;
+    first = false; return out;
+  });
+}
+function renderB() {
+  const r = rec(), on = Object.entries(r.emph).filter(([, w]) => w > 0).map(([k]) => k);
+  const left = `<div class="b-left">
+    <div class="row2">${field('B', 'title', 'Job title', { req: true })}${field('B', 'company', 'Company')}</div>
+    <div class="field"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span class="lbl">Posting</span><button type="button" class="linkbtn" data-act="bJdEdit" data-fk="bjd">${S.bJdEdit ? 'Done Editing' : 'Edit Posting'}</button></div>
+      ${S.bJdEdit ? `<textarea class="textarea" id="B-jd" rows="12" ${bind('jd')}>${esc(r.jd)}</textarea>` : `<div class="b-jd">${r.jd.trim() ? jdMarked(r) : '<span class="muted">No posting yet. Select Edit Posting to paste it.</span>'}</div>`}
+      <span class="sim-note">Select an underlined term to steer the résumé toward it.</span></div>
+    <div class="field"><span class="lbl">Steering <span>${on.length ? '' : '— auto from the posting'}</span></span>
+      <div class="b-steer">${on.length ? on.map(k => `<button type="button" class="chip" aria-pressed="true" data-act="toggleEmph" data-key="${k}" data-fk="st-${k}" aria-label="Remove ${esc(LABEL[k])}">${esc(LABEL[k])} ×</button>`).join('') : Object.keys(detect(r.jd)).map(k => `<span class="badge">${esc(LABEL[k])}</span>`).join('')}</div></div>
+    <details><summary class="eyebrow" style="cursor:pointer">Contact and Notes</summary><div style="display:grid;gap:12px;margin-top:10px">${field('B', 'contact', 'Hiring contact', { hint: '— optional' })}${field('B', 'notes', 'Additional notes', { area: true, rows: 2 })}</div></details>
+  </div>`;
+  let right;
+  if (r.gen === 'idle') {
+    right = `<div class="doc-head"><div class="h2">Draft</div></div><div class="b-empty"><div class="h3">Your tailored résumé appears here, line by line.</div><p class="muted" style="margin:0">Steering terms on the left decide which evidence leads. After it's written, select any line to pin, tighten, swap or remove it.</p><button type="button" class="btn btn--primary" data-act="generate" data-check="generate" ${!r.title.trim() || !r.jd.trim() ? 'disabled' : ''}>Generate Résumé + Cover Letter</button></div>`;
+  } else if (r.gen === 'running') {
+    right = `<div class="doc-head"><div class="h2">Writing…</div><span class="sim-note">${Math.round(r.progress * 100)}% · simulated</span></div>${docHTML(r, { partial: r.progress, tab: 'resume' })}`;
+  } else {
+    const flags = qa(r, compose(r));
+    right = `<div class="doc-head">${docTabs()}<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn--tertiary btn--sm" data-act="generate">Regenerate</button>${dlButton(r, 'Download Package')}</div></div>
+      ${docHTML(r, { interactive: S.docTab === 'resume', flags: true })}
+      ${flags.length ? `<div style="display:grid;gap:6px">${flags.map(f => `<div class="alert alert--warning">${esc(f.msg)}</div>`).join('')}</div>` : '<p class="qa-empty">No quality warnings.</p>'}
+      <div class="card" style="padding:18px;gap:12px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div class="h3">Edits</div><button type="button" class="btn btn--tertiary btn--sm" data-act="undo" ${r.undo.length ? '' : 'disabled'}>Undo Last</button></div>
+        ${r.history.length ? `<ul class="revlog">${r.history.slice().reverse().map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : '<p class="muted" style="margin:0;font-size:14px">No line edits yet. Select a line in the résumé.</p>'}
+        <details><summary class="eyebrow" style="cursor:pointer">Ask for a Broader Change</summary><div style="display:grid;gap:10px;margin-top:10px">${revBox('B', 'Request Changes', 'Apply')}</div></details></div>`;
+  }
+  return `${header()}<div class="b-wrap">${left}<div class="b-right">${right}</div></div>`;
+}
+
+// ── C · Positioning Mixer ─────────────────────────────────────────────────
+function shapeHTML(r) {
+  const d = compose(r), w = weights(r);
+  const chosen = d.roles.flatMap(x => x.chosen);
+  const lead = chosen.filter(b => b.tags.includes('leadership')).length, ic = chosen.filter(b => b.tags.includes('staff-ic')).length;
+  const tot = Math.max(1, lead + ic);
+  const max = Math.max(1, ...chosen.map(b => b.score));
+  const auto = !Object.values(r.emph).some(x => x > 0);
+  return `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><div class="h3">Résumé Shape</div><span class="sim-note">${auto ? 'auto from posting' : 'from your mix'} · preview from master résumé</span></div>
+    <div class="meter"><div class="bar" aria-hidden="true"><i style="width:${lead / tot * 100}%;background:var(--secondary)"></i><i style="width:${ic / tot * 100}%;background:var(--primary)"></i></div>
+      <div class="ends"><span>Leadership · ${lead} lines</span><span>Hands-on IC · ${ic} lines</span></div></div>
+    <div class="lede">${esc(d.summary)}</div>
+    ${d.roles.map(role => `<div class="sh-role"><h5>${esc(role.co)}<span>${role.chosen.length} of ${role.bullets.length}</span></h5>
+      ${role.chosen.map(b => `<div class="sh-line"><span>${esc(b.text.split(' ').slice(0, 11).join(' '))}…</span><span class="s"><i style="width:${Math.max(6, b.score / max * 100)}%"></i></span></div>`).join('')}
+      ${role.held.slice(0, 2).map(b => `<div class="sh-line held"><span>${esc(b.text.split(' ').slice(0, 11).join(' '))}…</span><span class="s"><i style="width:${Math.max(6, b.score / max * 100)}%"></i></span></div>`).join('')}</div>`).join('')}
+  </div>`;
+}
+function renderC() {
+  const r = rec();
+  const facets = FACETS.map(([name, keys]) => `<div class="c-facet"><h4>${name}</h4><div class="chips">${keys.map((k, i) => {
+    const w = r.emph[k] || 0, state = ['Off', 'Supporting', 'Lead'][w], next = ['Supporting', 'Lead', 'Off'][w];
+    return `<button type="button" class="wchip" data-act="cycle" data-key="${k}" data-w="${w}" data-fk="w-${k}" aria-label="${esc(LABEL[k])}: ${state}. Select for ${next}." ${name === 'Level' && i === 0 ? 'data-check="cycle-weight"' : ''}><span class="w"></span>${esc(LABEL[k])}${w === 2 ? ' <b>LEAD</b>' : ''}</button>`;
+  }).join('')}</div></div>`).join('');
+  const right = r.gen === 'running' ? genView(r) : r.gen === 'done'
+    ? `<div class="doc-head">${docTabs()}${dlButton(r, 'Download Package')}</div>${docHTML(r)}<div class="card" style="padding:18px"><div class="h3">Quality Checks</div>${qaList(r)}</div><div class="card" style="padding:18px">${revBox('C')}</div>`
+    : `<div data-live="cShape">${shapeHTML(r)}</div><button type="button" class="btn btn--primary" data-act="generate" data-check="generate">Generate With This Mix</button>`;
+  return `${header()}<div class="wide" style="display:grid;gap:22px"><div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px"><h1 class="h1">Résumé Builder</h1>${r.handoff ? `<span class="badge badge--accent">From Prospect Tracker · review before generating</span>` : ''}</div>
+    <div class="c-wrap"><div style="display:grid;gap:20px">
+      <div class="card" style="gap:16px"><div class="row2">${field('C', 'title', 'Job title', { req: true })}${field('C', 'company', 'Company')}</div>${field('C', 'jd', 'Job description', { req: true, area: true, rows: 4 })}
+        <details><summary class="eyebrow" style="cursor:pointer">Contact and Notes</summary><div style="display:grid;gap:12px;margin-top:10px">${field('C', 'contact', 'Hiring contact', { hint: '— optional' })}${field('C', 'notes', 'Additional notes', { area: true, rows: 2 })}</div></details></div>
+      <div class="card" style="gap:6px"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><div class="h3">Positioning</div><button type="button" class="linkbtn" data-act="clearMix">Clear Mix</button></div>
+        <div class="legend"><span><span class="wchip" style="padding:0;border:0"><span class="w"></span></span>Off</span><span><span class="wchip" data-w="1" style="padding:0;border:0;background:none;color:var(--text)"><span class="w"></span></span>Supporting</span><span><span class="wchip" data-w="2" style="padding:0;border:0;background:none"><span class="w" style="border-color:var(--primary);background:var(--primary)"></span></span>Lead (up to 2)</span></div>
+        ${facets}</div>
+      ${r.gen === 'done' ? `<button type="button" class="btn btn--secondary" data-act="generate">Regenerate With This Mix</button>` : ''}
+    </div><div class="shape">${right}</div></div></div>`;
+}
+
+// ── D · Typeset ───────────────────────────────────────────────────────────
+function renderD() {
+  const r = rec(), on = KEYS.filter(k => (r.emph[k] || 0) > 0);
+  const auto = Object.keys(detect(r.jd));
+  const inp = (key, ph, lab) => `<input id="D-${key}" ${bind(key)} value="${esc(r[key])}" placeholder="${ph}" aria-label="${lab}" size="${Math.max(ph.length, r[key].length) + 1}" autocomplete="off">`;
+  const marks = on.length
+    ? on.map((k, i) => `<button type="button" class="d-mark" data-act="toggleEmph" data-key="${k}" data-fk="dm-${k}" aria-label="Remove ${esc(LABEL[k])}" ${i === 0 ? 'data-check="remove-emphasis"' : ''}>${esc(LABEL[k])}</button>`).reduce((a, m, i, arr) => a + (i === 0 ? '' : i === arr.length - 1 ? ' and ' : ', ') + m, '')
+    : `<span style="color:var(--muted)">whatever the posting stresses${auto.length ? ` (${esc(auto.slice(0, 2).map(k => PHRASE[k]).join(', '))})` : ''}</span>`;
+  const brief = `<p class="d-brief" style="margin:0">Tailor my résumé for the ${inp('title', 'job title', 'Job title')} role at ${inp('company', 'company', 'Company')}, leaning on ${marks} <button type="button" class="d-add" data-act="dPicker" aria-expanded="${S.dPicker}" data-fk="dadd">${S.dPicker ? '(close list)' : '+ add'}</button>. Address the letter to ${inp('contact', 'the hiring team', 'Hiring contact (optional)')}.</p>`;
+  const picker = S.dPicker ? `<div class="d-picker" role="group" aria-label="Emphasis">${EMPH.map(([k, l]) => `<button type="button" data-act="toggleEmph" data-key="${k}" data-fk="dp-${k}" aria-pressed="${(r.emph[k] || 0) > 0}">${esc(l)}</button>`).join('')}</div>` : '';
+  const clip = `<aside class="d-clip"><div class="eyebrow">The posting${r.company ? ` · ${esc(r.company)}` : ''}</div><label class="vh" for="D-jd">Job description</label><textarea id="D-jd" ${bind('jd')} placeholder="Paste the job description">${esc(r.jd)}</textarea>
+    <div class="d-note"><label class="eyebrow" for="D-notes" style="font-style:normal;font-family:var(--sans)">Margin note</label><textarea id="D-notes" ${bind('notes')} rows="2" placeholder="Anything to stress or avoid">${esc(r.notes)}</textarea></div></aside>`;
+  let lower = '';
+  if (r.gen === 'idle') {
+    lower = `<div class="d-act"><button type="button" class="d-press" data-act="generate" data-check="set-proof" ${!r.title.trim() || !r.jd.trim() ? 'disabled' : ''}>Set the Proof</button><span class="sim-note">${r.handoff ? 'Sent from Prospect Tracker · review the sentence first' : 'Résumé and cover letter, set together'}</span></div>`;
+  } else if (r.gen === 'running') {
+    lower = `<div class="d-run" aria-live="polite"><div class="big">${STAGES[stageIdx(r)]}…</div><div class="rule"><i style="width:${r.progress * 100}%"></i></div><span class="sim-note">Simulated · no model call</span></div>`;
+  } else {
+    const d = compose(r), flags = qa(r, d);
+    lower = `<div class="d-proofrow"><div style="display:grid;gap:16px"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px"><div class="d-tabs" role="tablist" aria-label="Document"><button type="button" role="tab" data-act="docTab" data-tab="resume" aria-selected="${S.docTab === 'resume'}">Résumé</button><button type="button" role="tab" data-act="docTab" data-tab="cl" aria-selected="${S.docTab === 'cl'}">Letter</button></div><span class="sim-note">Proof ${r.revisions.length + 1} · ${S.docTab === 'cl' ? clWords(d) + ' words' : d.roles.reduce((n, x) => n + x.chosen.length, 0) + ' bullets'}</span></div>${docHTML(r, { cls: 'd-proof' })}</div>
+      <aside class="d-marg"><h4>Proof marks</h4><ul class="d-qa">${flags.length ? flags.map((f, i) => `<li><span>¶${i + 1}</span>${esc(f.msg)}</li>`).join('') : '<li class="ok"><span>✓</span>Clean proof. No rule violations.</li>'}</ul>
+        <h4>Mark up</h4><div class="d-markup"><label class="vh" for="D-rev">Request changes</label><textarea id="D-rev" data-revdraft placeholder="Make the opening shorter…">${esc(S.revDraft)}</textarea><button type="button" class="d-link" data-act="revise">Send Mark-Up</button>
+        ${r.revisions.length ? `<ul class="d-qa">${r.revisions.slice().reverse().map(v => `<li class="ok"><span>↳</span>${esc(v.summary)}</li>`).join('')}</ul>` : ''}</div>
+        <h4>Package</h4>${r.downloaded ? `<span class="sim-note">${esc(fileName(r))}.zip · PDF, DOCX, ATS plain · simulated</span>` : `<button type="button" class="d-press" style="font-size:17px;padding:8px 16px" data-act="download">Print the Package</button>`}
+        <button type="button" class="d-link" data-act="backToDetails">Back to the brief</button></aside></div>`;
+  }
+  return `${header()}<div class="d"><div class="d-mast"><span class="t">The Résumé Builder</span><span class="k">${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${r.company ? 'for ' + esc(r.company) : 'untitled application'}</span></div>${brief}${clip}${picker}${lower}</div>`;
+}
+
+// ── E · Application Queue ─────────────────────────────────────────────────
+function status(r) {
+  if (!r.title.trim() || !r.jd.trim()) return ['Needs Details', 'badge--negative'];
+  if (r.gen === 'running') return ['Generating', 'badge--accent'];
+  if (r.gen === 'idle') return ['Ready', 'badge--active'];
+  if (r.downloaded) return ['Downloaded', 'badge--positive'];
+  const n = qa(r, compose(r)).length;
+  return n ? [`Check ${n}`, 'badge--highlight'] : ['Generated', 'badge--positive'];
+}
+function renderE() {
+  const ids = Object.keys(S.apps), ready = ids.filter(id => status(S.apps[id])[0] === 'Ready');
+  const rail = `<aside class="e-rail"><h2>Applications</h2><div class="eyebrow" style="padding-inline:8px">From Prospect Tracker · sample prospects</div>
+    <ul class="e-list" data-live="eList">${railItems()}</ul>
+    <button type="button" class="btn btn--secondary" data-act="genReady" data-check="generate-ready" ${ready.length ? '' : 'disabled'}>Generate Ready (${ready.length})</button>
+    <span class="sim-note" style="padding-inline:8px">Queue persistence and batch runs need Supabase storage in the Builder (speculative).</span></aside>`;
+  const r = rec(), [st, tone] = status(r);
+  const others = ids.filter(id => id !== S.cur && Object.values(S.apps[id].emph).some(w => w > 0));
+  let body;
+  if (S.eSub === 'details') {
+    body = `<div class="e-two"><div class="card"><div class="row2">${field('E', 'title', 'Job title', { req: true })}${field('E', 'company', 'Company')}</div>${field('E', 'jd', 'Job description', { req: true, area: true, rows: 7 })}${field('E', 'contact', 'Hiring contact', { hint: '— optional' })}${field('E', 'notes', 'Additional notes', { area: true, rows: 2 })}</div>
+      <div class="card" style="gap:14px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><div class="h3">Emphasis</div>
+        <label class="vh" for="E-copy">Copy emphasis from another application</label><select class="select" id="E-copy" data-act-change="copyEmph" data-check="copy-emphasis"><option value="">Copy Emphasis From…</option>${others.map(id => `<option value="${id}">${esc(S.apps[id].company)}</option>`).join('')}${others.length ? '' : '<option value="__none" disabled>No other application has emphasis yet</option>'}</select></div>
+        ${chips('E')}
+        <div style="display:flex;gap:10px;flex-wrap:wrap">${r.gen === 'done' ? `<button type="button" class="btn btn--tertiary" data-act="eSub" data-sub="docs">Open Documents</button>` : ''}<button type="button" class="btn btn--primary" data-act="generate" ${st === 'Needs Details' ? 'disabled' : ''}>${r.gen === 'done' ? 'Regenerate' : 'Generate This One'}</button></div></div></div>`;
+  } else if (S.eSub === 'docs') {
+    body = r.gen === 'running' ? genView(r) : r.gen === 'done'
+      ? `<div class="doc-head">${docTabs()}${dlButton(r, 'Download Package')}</div><div class="preview-grid">${docHTML(r)}<aside class="side"><div class="card"><div class="h3">Quality Checks</div>${qaList(r)}</div><div class="card">${revBox('E')}</div></aside></div>`
+      : `<div class="b-empty"><div class="h3">No documents yet.</div><p class="muted" style="margin:0">${st === 'Needs Details' ? 'Add the job title and posting in Details first.' : 'Generate from Details, or use Generate Ready in the list.'}</p><button type="button" class="btn btn--tertiary" data-act="eSub" data-sub="details">Go to Details</button></div>`;
+  } else {
+    body = `<div class="card"><ul class="e-hist">${r.events.slice().reverse().map(([t, e]) => `<li><time>${esc(t)}</time><span>${esc(e)}</span></li>`).join('')}</ul></div>`;
+  }
+  const main = `<div class="e-main"><div class="e-head"><div style="display:grid;gap:4px"><div class="eyebrow">${esc(r.company || 'Untitled company')}</div><h1 class="h1" style="font-size:28px;line-height:36px">${esc(r.title || 'Untitled role')}</h1></div><span class="badge ${tone}">${st}</span></div>
+    <div class="e-sub" role="tablist" aria-label="Application">${[['details', 'Details'], ['docs', 'Documents'], ['history', 'History']].map(([k, l]) => `<button type="button" role="tab" data-act="eSub" data-sub="${k}" data-fk="es-${k}" aria-selected="${S.eSub === k}">${l}</button>`).join('')}</div>${body}</div>`;
+  return `${header()}<div class="e-wrap">${rail}${main}</div>`;
+}
+function railItems() {
+  return Object.entries(S.apps).map(([id, a], i) => { const [st, tone] = status(a); return `<li><button type="button" class="e-item" data-act="selApp" data-id="${id}" data-fk="app-${id}" aria-current="${S.cur === id}" ${i === 1 ? 'data-check="select-app"' : ''}>
+    <span class="co"><span>${esc(a.company || 'Untitled')}</span><span class="badge ${tone}">${st}</span></span><span class="ti">${esc(a.title || 'No title yet')}</span><span class="mt">${esc(a.events[0] ? a.events[0][0] : '')}${a.revisions.length ? ` · ${a.revisions.length} revision${a.revisions.length > 1 ? 's' : ''}` : ''}</span></button></li>`; }).join('');
+}
+
+// ── Render loop ───────────────────────────────────────────────────────────
+const RENDER = { base: renderBase, A: renderA, B: renderB, C: renderC, D: renderD, E: renderE };
+const LIVE = { aSummary: () => esc(compose(rec()).summary), cShape: () => shapeHTML(rec()), eList: railItems };
+function render(fromTimer) {
+  const ae = document.activeElement, fk = ae && (ae.dataset?.fk || (ae.id && '#' + ae.id));
+  const sel = ae && 'selectionStart' in ae ? [ae.selectionStart, ae.selectionEnd] : null;
+  DIRS.forEach(id => {
+    const p = document.querySelector(`[data-direction-panel="${id}"]`), on = id === S.active;
+    p.hidden = !on;
+    document.querySelector(`[data-direction="${id}"]`).setAttribute('aria-selected', on);
+    if (!on) p.innerHTML = '';
+  });
+  const panel = document.querySelector(`[data-direction-panel="${S.active}"]`);
+  panel.innerHTML = RENDER[S.active]();
+  if (fk) {
+    const el = fk.startsWith('#') ? document.getElementById(fk.slice(1)) : panel.querySelector(`[data-fk="${CSS.escape(fk)}"]`);
+    if (el && panel.contains(el)) { el.focus({ preventScroll: true }); if (sel && 'setSelectionRange' in el) try { el.setSelectionRange(...sel); } catch (e) {} }
+  }
+  if (!fromTimer) renderNotes();
+}
+function renderLive() {
+  const panel = document.querySelector(`[data-direction-panel="${S.active}"]`);
+  panel.querySelectorAll('[data-live]').forEach(el => { el.innerHTML = LIVE[el.dataset.live](); });
+}
+function setActive(id) { if (!DIRS.includes(id) || id === S.active) return; S.active = id; S.selBullet = null; render(); }
+function cardHTML(id) {
+  if (id === 'base') return `<header><h2>Baseline</h2><span class="badge">Control</span><span class="sim-note">${esc(ROUND.baseline)}</span></header>
+    <p class="hyp" style="margin:0">The current Builder rebuilt for comparison: one long form, 20 binary emphasis chips, a three-step wizard, then preview with Quality Checks and a free-text revision box.</p>
+    <dl class="dl"><div><dt>Brief</dt><dd>${esc(ROUND.brief)}</dd></div><div><dt>Source contract (applies to every direction)</dt><dd><ul>${ROUND.sourceContract.map(s => `<li>${esc(s)}</li>`).join('')}</ul></dd></div>
+    <div><dt>Observed pain points</dt><dd><ul><li>Auto-detected emphasis is never shown, so leaving chips blank is a blind choice.</li><li>20 chips with equal weight cannot say “lead with X, support with Y”.</li><li>All correction happens after generation, through whole-document free text.</li><li>Nothing persists between applications; the Tracker handoff carries one record.</li></ul></dd></div></dl>`;
+  const d = ROUND.directions.find(x => x.id === id);
+  const li = a => `<ul>${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>`;
+  return `<header><h2>${esc(d.id)} · ${esc(d.name)}</h2><span class="badge badge--active">Intensity ${d.intensity} · Reinvent</span><span class="badge badge--accent">Lead: ${d.lead === 'ux' ? 'UX' : d.lead === 'ui' ? 'UI' : d.lead[0].toUpperCase() + d.lead.slice(1)}</span><span class="sim-note">${esc(d.lineage)}</span></header>
+    <p class="hyp" style="margin:0">${esc(d.hypothesis)}</p>
+    <dl class="dl"><div><dt>Mechanism</dt><dd>${esc(d.mechanism)}</dd></div><div><dt>Evidence and rationale</dt><dd>${esc(d.evidence)}</dd></div><div><dt>Composition and flow</dt><dd>${esc(d.composition)}</dd></div>
+    <div><dt>Stays faithful</dt><dd>${esc(d.preserved)}</dd></div><div><dt>Departures (why they fit Reinvent)</dt><dd>${li(d.departures)}</dd></div><div><dt>System fit</dt><dd>${esc(d.systemFit)}</dd></div>
+    <div><dt>Tradeoffs</dt><dd>${li(d.tradeoffs)}</dd></div><div><dt>Fails if</dt><dd>${esc(d.failure)}</dd></div><div><dt>Validation</dt><dd>${esc(d.validation)}</dd></div><div><dt>Cost</dt><dd>${esc(d.cost)}</dd></div></dl>`;
+}
+const CMP = [
+  ['Emphasis visible before generating', 'No. Auto-detection is hidden', '<b>Yes</b>, with trigger phrase', 'Partly: highlights in posting', '<b>Yes</b>, live résumé shape', 'Partly: named in the sentence', 'No, same as baseline'],
+  ['Guards against unsupported claims', 'Prompt only', '<b>Gap rows, never claimed</b>', 'Remove or swap lines', 'Shows chosen evidence', 'Prompt only', 'Prompt only'],
+  ['Revision precision', 'Whole document, free text', 'Free text plus coverage check', '<b>Per line, undoable</b>', 'Re-mix and regenerate', 'Free text as mark-up', 'Free text'],
+  ['Steps to first draft', '1 screen', '2 screens plus a model call', '<b>1 screen</b>', '1 screen', '1 screen', '1 screen, or batch'],
+  ['Several applications in one sitting', 'Start over each time', 'Start over', 'Start over', 'Start over', 'Start over', '<b>Queue with status, copy emphasis</b>'],
+  ['Phone width', 'Works', 'Works; brief is long', 'Stacks; posting scrolls away', 'Stacks; shape below chips', 'Sentence wraps well, proof is narrow', 'Rail stacks above'],
+  ['System reuse', 'Full', 'High', 'Medium (new toolbar)', 'Medium (new chip state)', 'Low (new visual language)', 'Medium'],
+  ['Build cost and dependencies', 'None', 'Medium: extraction prompt', 'Medium–high: stable bullet IDs, per-line calls', 'Medium: tagged bullets, weighted prompt', 'Medium: CSS, suite consistency', 'High: Supabase, Auth, batch'],
+  ['Confidence', 'Observed', 'Predicted; validate with 5 postings', 'Predicted; depends on edit mix', 'Predicted; preview must match output', 'Predicted; taste-dependent', 'Unknown demand'],
+];
+function renderNotes() {
+  document.getElementById('dcard').innerHTML = cardHTML(S.active);
+  const col = DIRS.indexOf(S.active);
+  document.getElementById('cmp').innerHTML = `<table class="cmp"><thead><tr><th scope="col">Criterion</th>${['Baseline', 'A · Brief First', 'B · Workbench', 'C · Mixer', 'D · Typeset', 'E · Queue'].map((h, i) => `<th scope="col" class="${i === col ? 'on' : ''}">${h}</th>`).join('')}</tr></thead>
+    <tbody>${CMP.map(([c, ...v]) => `<tr><th scope="row">${c}</th>${v.map((x, i) => `<td class="${i === col ? 'on' : ''}">${x}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const R = ROUND.recommendation;
+  document.getElementById('reco').innerHTML = `<div><h3>Recommend · A · Brief First</h3><p>${esc(R.why)}</p></div><div><h3>Strongest counterargument</h3><p>${esc(R.counterargument)}</p></div><div><h3>Likely round 2</h3><p>${esc(R.combine)}</p></div><div><h3>Next validation</h3><p>${esc(R.nextValidation)} A recommendation is not a selection; nothing has been built in Figma.</p></div>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────
+const ACT = {
+  noop() {},
+  toggleMode() { setMode(S.mode === 'dark' ? 'light' : 'dark'); },
+  dismissHandoff() { rec().handoff = false; },
+  toggleEmph({ key }) { const r = rec(); r.emph = { ...r.emph, [key]: (r.emph[key] || 0) > 0 ? 0 : 1 }; delete r.auto[key]; },
+  cycle({ key }) {
+    const r = rec(), w = ((r.emph[key] || 0) + 1) % 3, e = { ...r.emph, [key]: w };
+    if (w === 2) { const leads = Object.keys(e).filter(k => e[k] === 2 && k !== key); if (leads.length >= 2) e[leads[0]] = 1; }
+    r.emph = e;
+  },
+  clearMix() { rec().emph = {}; },
+  generate() { const r = rec(); if (startGen(S.cur)) { S.docTab = 'resume'; S.selBullet = null; if (S.active === 'E') S.eSub = 'docs'; } },
+  backToDetails() { const r = rec(); r.gen = 'idle'; r.aStage = 'posting'; },
+  docTab({ tab }) { S.docTab = tab; S.selBullet = null; },
+  download() { const r = rec(); r.downloaded = true; r.events.push([stamp(), 'Package downloaded (simulated)']); },
+  revise() {
+    const r = rec(), t = S.revDraft.trim(); if (!t) { const el = document.querySelector('[data-revdraft]'); el && el.focus(); return; }
+    applyRevision(r, t, S.docTab); S.revDraft = '';
+  },
+  // A
+  aMore() { S.aMore = !S.aMore; },
+  readPosting() {
+    const r = rec(); if (!r.jd.trim()) return;
+    const det = detect(r.jd);
+    if (!Object.values(r.emph).some(w => w > 0)) { r.emph = Object.fromEntries(Object.keys(det).map(k => [k, 1])); r.auto = Object.fromEntries(Object.keys(det).map(k => [k, true])); }
+    r.briefRead = true; r.aStage = 'brief'; r.reqOff = [];
+  },
+  aStage({ stage }) { const r = rec(); if (stage === 'brief' && !r.briefRead) return; if (stage === 'docs' && r.gen !== 'done') return; r.aStage = stage; },
+  toggleReq({ i }) { const r = rec(); i = +i; r.reqOff = r.reqOff.includes(i) ? r.reqOff.filter(x => x !== i) : [...r.reqOff, i]; },
+  focusReq({ i }) { S.focusReq = S.focusReq === +i ? null : +i; },
+  // B
+  bJdEdit() { S.bJdEdit = !S.bJdEdit; },
+  selBullet({ id }) { S.selBullet = S.selBullet === id ? null : id; },
+  bPin({ id }) { const r = rec(); pushUndo(r); const on = r.pinned.includes(id); r.pinned = on ? r.pinned.filter(x => x !== id) : [...r.pinned, id]; r.history.push(`${on ? 'Unpinned' : 'Pinned'} “${short(id)}”`); r.lastChanged = [id]; },
+  bTighten({ id }) { const r = rec(); pushUndo(r); r.tightened = [...new Set([...r.tightened, id])]; r.history.push(`Tightened “${short(id)}”`); r.lastChanged = [id]; S.selBullet = null; },
+  bSwap({ id }) { swapOrRemove(id, 'Swapped'); },
+  bRemove({ id }) { swapOrRemove(id, 'Removed'); },
+  undo() { const r = rec(), s = r.undo.pop(); if (!s) return; Object.assign(r, JSON.parse(s)); r.history.push('Undid last edit'); r.lastChanged = []; S.selBullet = null; },
+  // D
+  dPicker() { S.dPicker = !S.dPicker; },
+  // E
+  selApp({ id }) { S.cur = id; S.selBullet = null; S.eSub = S.apps[id].gen === 'done' ? 'docs' : 'details'; S.revDraft = ''; },
+  eSub({ sub }) { S.eSub = sub; },
+  genReady() { Object.keys(S.apps).forEach(id => { if (status(S.apps[id])[0] === 'Ready') startGen(id); }); },
+};
+const short = id => ALL_BULLETS.find(b => b.id === id).t.split(' ').slice(0, 5).join(' ') + '…';
+function swapOrRemove(id, verb) {
+  const r = rec(), before = compose(r);
+  pushUndo(r); r.excluded = [...r.excluded, id]; r.pinned = r.pinned.filter(x => x !== id);
+  const role = before.roles.find(x => x.chosen.some(b => b.id === id)), after = compose(r).roles.find(x => x.co === role.co);
+  const added = after.chosen.find(b => !role.chosen.some(c => c.id === b.id));
+  r.history.push(`${verb} “${short(id)}”${added ? ` → “${short(added.id)}”` : ''}`);
+  r.lastChanged = added ? [added.id] : []; S.selBullet = null;
+}
+function setMode(m) {
+  S.mode = m; document.body.classList.toggle('light', m === 'light');
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  const sw = document.querySelector('.nc-switch'); if (sw) sw.setAttribute('aria-label', `Switch to ${m === 'dark' ? 'light' : 'dark'} mode`);
+}
+
+// ── Events ────────────────────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const dir = e.target.closest('[data-direction]'); if (dir) { setActive(dir.dataset.direction); return; }
+  const mode = e.target.closest('[data-mode]'); if (mode) { setMode(mode.dataset.mode); return; }
+  const vp = e.target.closest('[data-viewport]'); if (vp && vp.tagName === 'BUTTON') { S.viewport = vp.dataset.viewport; document.getElementById('stage').dataset.viewport = S.viewport; document.querySelectorAll('button[data-viewport]').forEach(b => b.setAttribute('aria-pressed', b === vp)); return; }
+  const fit = e.target.closest('button[data-fit]'); if (fit) { document.getElementById('stage').dataset.fit = fit.dataset.fit; document.querySelectorAll('button[data-fit]').forEach(b => b.setAttribute('aria-pressed', b === fit)); return; }
+  if (e.target.closest('#resetBtn')) { const a = S.active; initState(); S.active = a; setMode(S.mode); render(); return; }
+  const a = e.target.closest('[data-act]');
+  if (a && !a.disabled && ACT[a.dataset.act]) { if (a.type === 'checkbox') { /* handled on change */ return; } e.preventDefault(); ACT[a.dataset.act](a.dataset); render(); }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.type === 'checkbox' && t.dataset.act) { ACT[t.dataset.act](t.dataset); render(); }
+  if (t.dataset.actChange === 'copyEmph' && t.value && S.apps[t.value]) { const r = rec(); r.emph = { ...S.apps[t.value].emph }; r.events.push([stamp(), `Copied emphasis from ${S.apps[t.value].company}`]); render(); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.bind) { rec()[t.dataset.bind] = t.value; if (t.closest('.d-brief')) t.size = Math.max(t.placeholder.length, t.value.length) + 1; renderLive(); }
+  if ('revdraft' in t.dataset) S.revDraft = t.value;
+});
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if (t.matches && t.matches('mark[data-act]') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); t.click(); return; }
+  if ('revdraft' in (t.dataset || {}) && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ACT.revise(); render(); return; }
+  if (e.key === 'Escape' && S.selBullet) { const id = S.selBullet; S.selBullet = null; render(); const b = document.querySelector(`[data-fk="bl-${id}"]`); b && b.focus(); return; }
+  if (t.closest && t.closest('input, textarea, select, [contenteditable]')) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const n = parseInt(e.key, 10); if (n >= 1 && n <= DIRS.length) setActive(DIRS[n - 1]);
+});
+
+initState();
+setMode(S.mode);
+render();
+})();
+</script>

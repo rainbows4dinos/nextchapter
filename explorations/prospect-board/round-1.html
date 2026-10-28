@@ -1,0 +1,867 @@
+<title>Prospect Board Directions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: prototype chrome, a 1440/390 product frame as the stage, then direction card, comparison, recommendation.
+   Tokens mirror tools/shared/tokens.css. Dark-first, like the T02 source frame. */
+:root {
+  color-scheme: dark;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --bg: #15111B; --surface: #231D2B; --card: #1C1724; --border-subtle: #504759; --border-control: #837A90;
+  --text: #FAF9F7; --text-2: #EFEBE7; --muted: #A098AB; --link: #D7CDFB;
+  --primary: #F8E1B6; --primary-hover: #F1CC88; --secondary: #D7CDFB; --secondary-hover: #B3A5F5;
+  --focus: #B3A5F5; --sel-bg: #35245B; --sel-fg: #EEE9FD; --card-hover: #35245B; --input-bg: #15111B;
+  --ink: #231D2B; --ink-border: #504759;
+  --success: #87CFA5; --danger: #F79BB3; --warning: #FDBA74; --info: #B3A5F5;
+  --header-bg: #D7CDFB; --chrome-bg: #0E0B12;
+  /* E · exploratory stage colors (raw; nearest tokens noted in the direction card) */
+  --st-prospects: #9782EB; --st-applied: #D7CDFB; --st-process: #F1CC88; --st-offer: #87CFA5; --st-rejected: #F79BB3; --st-closed: #837A90;
+}
+body.light {
+  color-scheme: light;
+  --bg: #FAF9F7; --surface: #FFFFFF; --card: #FFFFFF; --border-subtle: #D4D0DC; --border-control: #A098AB;
+  --text: #231D2B; --text-2: #504759; --muted: #68616F; --link: #523394;
+  --focus: #523394; --sel-bg: #EEE9FD; --sel-fg: #523394; --card-hover: #EEE9FD; --input-bg: #FFFFFF;
+  --success: #195E3D; --danger: #9B1F43; --warning: #9A3412; --info: #523394; --chrome-bg: #EFEBE7;
+  --st-prospects: #7C68D6; --st-applied: #B3A5F5; --st-process: #E5AE54; --st-offer: #3F9C68; --st-rejected: #D6577A; --st-closed: #A098AB;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--chrome-bg); }
+body { margin: 0; font: 300 16px/24px var(--sans); color: var(--text);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; font-weight: 400; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── Prototype chrome ── */
+.pbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: var(--chrome-bg); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-block: 14px; border-bottom: 1px solid var(--border-subtle); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--chrome-bg); }
+.pbar__title { font: 400 21px/28px var(--serif); margin-right: auto; }
+.pbar__title small { display: block; font: 400 12px/16px var(--mono); color: var(--muted); }
+.ptabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.ptab { border: 1px solid var(--border-control); background: transparent; border-radius: 999px; padding: 5px 12px; font: 500 13px/20px var(--sans); display: inline-flex; gap: 8px; align-items: center; }
+.ptab kbd { font: 500 11px/16px var(--mono); color: var(--muted); }
+.ptab small { font: 400 11px/16px var(--mono); color: var(--muted); }
+.ptab[aria-selected="true"] { background: var(--primary); color: var(--ink); border-color: var(--ink-border); }
+.ptab[aria-selected="true"] :is(kbd, small) { color: var(--ink); }
+.pctl { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--border-control); border-radius: 999px; padding: 2px; }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 3px 10px; font: 500 12px/18px var(--sans); color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--sel-bg); color: var(--sel-fg); }
+.linkbtn { border: 0; background: none; padding: 0; font: 500 12px/18px var(--sans); color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.stage { margin-top: 20px; overflow-x: auto; }
+.frame { container-type: inline-size; position: relative; margin-inline: auto; width: 100%; max-width: 1440px; background: var(--bg); border: 1px solid var(--border-subtle); overflow: hidden; }
+.stage[data-fit="actual"] .frame { width: 1440px; max-width: none; }
+.stage[data-viewport="phone"] .frame { width: 390px; max-width: 100%; }
+.sim-note { font: 400 12px/16px var(--mono); color: var(--muted); }
+
+/* ── nextchapter UI (shared) ── */
+.nc-header { background: var(--header-bg); color: var(--ink); display: flex; align-items: center; gap: 24px; padding: 0 48px; height: 80px; border-bottom: 1px solid var(--ink-border); }
+.nc-logo { font: 400 28px/36px var(--serif); margin-right: auto; }
+.nc-nav { display: flex; gap: 40px; margin-right: auto; }
+.nc-nav button, .nc-util button { background: none; border: 1px solid transparent; border-radius: 999px; padding: 3px 12px; color: var(--ink); font: 400 16px/24px var(--sans); }
+.nc-nav button[aria-current="page"] { background: var(--primary); border-color: var(--ink-border); }
+.nc-util { display: flex; gap: 12px; align-items: center; }
+.nc-switch { width: 48px; height: 28px; border-radius: 999px; border: 1.5px solid var(--ink); background: transparent; position: relative; padding: 0; }
+.nc-switch::after { content: ""; position: absolute; top: 3px; right: 3px; width: 19px; height: 19px; border-radius: 50%; background: var(--ink); transition: right 150ms ease; }
+body.light .nc-switch::after { right: 23px; }
+.nc-menu { display: none; }
+@container (max-width: 760px) { .nc-header { padding: 0 16px; height: 64px; } .nc-logo { font-size: 24px; } .nc-nav, .nc-hide-sm { display: none; } .nc-menu { display: inline-flex; } }
+
+.page { padding: 32px 48px 40px; display: grid; gap: 16px; }
+@container (max-width: 760px) { .page { padding: 20px 16px 32px; } }
+.ph { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); }
+.h1 { font: 400 32px/40px var(--serif); }
+.ph p { margin: 8px 0 0; font: 400 16px/24px var(--sans); color: var(--text-2); }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toolbar .tt { font: 500 16px/24px var(--sans); }
+.toolbar .ctl { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.search { width: 228px; max-width: 100%; height: 40px; border-radius: 999px; border: 1px solid var(--border-control); background: var(--input-bg); padding: 0 14px; font: 300 16px/24px var(--sans); }
+.select { height: 40px; min-width: 160px; border-radius: 6px; border: 1px solid var(--border-control); background: var(--input-bg); padding: 0 10px; font: 300 16px/24px var(--sans); }
+@container (max-width: 760px) { .search { width: 100%; } .toolbar .ctl { width: 100%; } .select { flex: 1; min-width: 0; } }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 6px; padding: 9px 12px; font: 500 16px/20px var(--sans); border: 1px solid var(--ink-border); background: transparent; }
+.btn--primary { background: var(--primary); color: var(--ink); }
+.btn--primary:hover { background: var(--primary-hover); }
+.btn--secondary { background: var(--secondary); color: var(--ink); border-color: #523394; }
+.btn--secondary:hover { background: var(--secondary-hover); }
+.btn--tertiary { color: var(--text); border-color: var(--border-control); }
+.btn--tertiary:hover { background: color-mix(in srgb, var(--border-subtle) 45%, transparent); }
+.btn--sm { padding: 4px 9px; font-size: 12.5px; line-height: 16px; }
+.btn[aria-pressed="true"] { background: var(--sel-bg); color: var(--sel-fg); border-color: var(--secondary-hover); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+/* Status-Badge: 20px, 4/6 padding, 2px corners, Inter Regular 12/12; same primitives in both themes */
+.badge { display: inline-flex; align-items: center; height: 20px; padding: 4px 6px; border-radius: 2px; font: 400 12px/12px var(--sans); color: #231D2B; background: #EFEBE7; white-space: nowrap; }
+.badge--accent { background: #EEE9FD; } .badge--active { background: #F8E1B6; } .badge--positive { background: #EFFAF3; }
+.badge--negative { background: #FFF1F4; } .badge--highlight { background: #FFF7ED; }
+.avatar { width: 26px; height: 26px; border-radius: 4px; background: var(--primary); color: var(--ink); display: grid; place-items: center; font: 500 13px/1 var(--sans); flex: none; border: 1px solid var(--ink-border); }
+
+/* Board (baseline) */
+.board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 16px; align-items: stretch; min-height: 560px; }
+.board.done-open { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@container (max-width: 760px) { .board, .board.done-open { grid-template-columns: 1fr; min-height: 0; } }
+.col { background: var(--surface); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 16px; min-width: 0; border: 1px solid transparent; transition: background-color 150ms, border-color 150ms; }
+.col h3 { font: 500 14px/17px var(--sans); display: flex; justify-content: space-between; gap: 8px; }
+.col.drop-ok { border-color: var(--focus); }
+.col.drop-over { background: var(--sel-bg); outline: 2px solid var(--focus); outline-offset: -2px; }
+.col-cards { display: grid; gap: 10px; align-content: start; }
+.done-toggle { all: unset; cursor: pointer; display: flex; align-items: center; gap: 8px; font: 500 14px/17px var(--sans); color: var(--muted); }
+.done-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.done-toggle .tri { width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; transition: transform 150ms; }
+.done-toggle[aria-expanded="true"] .tri { transform: rotate(90deg); }
+.pc { position: relative; border: 1px solid var(--border-control); border-radius: 8px; background: var(--card); transition: background-color 150ms; }
+.pc[draggable="true"] { cursor: grab; }
+.pc.dragging { opacity: .45; }
+.pc:hover { background: var(--card-hover); }
+.pc-open { all: unset; display: flex; flex-direction: column; gap: 4px; padding: 12px; width: 100%; box-sizing: border-box; cursor: pointer; border-radius: 8px; }
+.pc-open:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pc-head { display: flex; gap: 6px; align-items: center; padding-bottom: 6px; }
+.pc-co { font: 500 16px/16px var(--sans); color: var(--link); }
+.pc-ti { font: 300 16px/24px var(--sans); color: var(--text); }
+.pc-meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 24px; padding-top: 4px; }
+.pc-meta time, .pc-meta small { font: 300 12px/16px var(--sans); color: var(--text-2); }
+.empty-col { font: 300 14px/20px var(--sans); color: var(--muted); border: 1px dashed var(--border-subtle); border-radius: 8px; padding: 16px; }
+.chooser { border: 1px solid var(--border-control); border-radius: 8px; background: var(--surface); padding: 12px; display: grid; gap: 4px; box-shadow: 2px 2px 0 var(--border-control); }
+.chooser p { margin: 0 0 6px; font: 400 14px/20px var(--sans); }
+.chooser button { text-align: left; }
+
+/* Drawer (shared detail) */
+.drawer { position: absolute; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--surface); border-left: 1px solid var(--border-control); box-shadow: -4px 0 0 rgba(0,0,0,.18); z-index: 10; display: flex; flex-direction: column; }
+.drawer-in { padding: 24px; display: grid; gap: 18px; overflow: auto; align-content: start; }
+.drawer h2 { font: 400 28px/36px var(--serif); }
+.dmeta { display: grid; grid-template-columns: 120px 1fr; gap: 6px 12px; font: 300 14px/20px var(--sans); margin: 0; }
+.dmeta dt { color: var(--muted); } .dmeta dd { margin: 0; }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.hist li { display: grid; grid-template-columns: 96px 1fr; gap: 8px; font: 300 14px/20px var(--sans); align-items: center; }
+.hist time { font: 400 12px/16px var(--mono); color: var(--muted); }
+.scrim { position: absolute; inset: 0; background: rgba(14, 11, 18, .45); z-index: 9; border: 0; padding: 0; }
+.field { display: grid; gap: 6px; }
+.field label { font: 500 14px/20px var(--sans); }
+.input { height: 40px; border-radius: 6px; border: 1px solid var(--border-control); background: var(--input-bg); padding: 0 12px; font: 300 16px/24px var(--sans); width: 100%; }
+.toast { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: var(--bg); border-radius: 6px; padding: 8px 14px; font: 400 14px/20px var(--sans); z-index: 20; box-shadow: 2px 2px 0 var(--border-control); max-width: calc(100% - 32px); }
+
+/* ── A · Calm Hierarchy ── */
+.a .board { gap: 28px; }
+.a .col { background: transparent; border-radius: 0; padding: 0; gap: 14px; border: 0; border-top: 2px solid var(--text); padding-top: 12px; }
+.a .col.drop-over { background: color-mix(in srgb, var(--sel-bg) 70%, transparent); outline-offset: 4px; }
+.a .col h3 { align-items: baseline; justify-content: flex-start; gap: 10px; font: 500 13px/18px var(--sans); color: var(--text-2); }
+.a .col h3 .n { font: 400 38px/40px var(--serif); color: var(--text); font-variant-numeric: tabular-nums; }
+.a .col h3 .sub { margin-left: auto; font: 400 11.5px/16px var(--mono); color: var(--muted); }
+.a .col-cards { gap: 8px; }
+.a .pc { border-color: var(--border-subtle); border-radius: 4px; background: var(--surface); transition: border-color 150ms, box-shadow 150ms, transform 150ms; }
+.a .pc:hover { background: var(--surface); border-color: var(--border-control); box-shadow: 2px 2px 0 var(--border-control); transform: translate(-1px, -1px); }
+.a .pc-open { display: grid; grid-template-columns: 36px 1fr; gap: 2px 12px; padding: 12px 14px; border-radius: 4px; }
+.a .avatar { width: 36px; height: 36px; grid-row: 1 / 3; font: 400 18px/1 var(--serif); border-radius: 2px; }
+.a .pc-co { font: 400 19px/24px var(--serif); color: var(--text); }
+.a .pc-ti { font: 300 13.5px/19px var(--sans); color: var(--text-2); }
+.a .pc-meta { grid-column: 1 / -1; padding-top: 8px; margin-top: 6px; border-top: 1px solid var(--border-subtle); min-height: 0; }
+.a .pc-meta time { font: 400 11.5px/16px var(--mono); color: var(--muted); }
+.a .done-strip { all: unset; cursor: pointer; writing-mode: vertical-rl; display: flex; gap: 12px; align-items: center; font: 400 21px/24px var(--serif); color: var(--muted); padding-top: 4px; }
+.a .done-strip:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.a .done-strip .n { font: 400 38px/40px var(--serif); color: var(--text); }
+@container (max-width: 760px) { .a .done-strip { writing-mode: horizontal-tb; } }
+
+/* ── B · Next Move ── */
+.b .pc-age { display: grid; gap: 4px; padding-top: 6px; }
+.b .agebar { height: 3px; border-radius: 999px; background: var(--border-subtle); overflow: hidden; }
+.b .agebar i { display: block; height: 100%; background: var(--secondary-hover); }
+.b .agebar.late i { background: var(--warning); }
+.b .agetxt { display: flex; justify-content: space-between; gap: 8px; font: 400 12px/16px var(--sans); color: var(--text-2); }
+.b .next { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/16px var(--sans); color: var(--warning); }
+.b .next::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.b .next.calm { color: var(--muted); font-weight: 400; } .b .next.calm::before { background: var(--border-control); }
+.b .pc-tools { position: absolute; top: 8px; right: 8px; }
+.b .menu { position: absolute; right: 8px; top: 40px; z-index: 6; min-width: 210px; background: var(--surface); border: 1px solid var(--border-control); border-radius: 8px; box-shadow: 2px 2px 0 var(--border-control); padding: 6px; display: grid; gap: 2px; max-height: 340px; overflow: auto; }
+.b .menu h4 { font: 500 11px/16px var(--sans); color: var(--muted); padding: 6px 8px 2px; letter-spacing: .02em; }
+.b .menu button { all: unset; cursor: pointer; padding: 5px 8px; border-radius: 4px; font: 400 14px/20px var(--sans); display: flex; justify-content: space-between; gap: 10px; }
+.b .menu button:hover, .b .menu button:focus-visible { background: var(--sel-bg); color: var(--sel-fg); }
+.b .menu button[aria-current="true"]::after { content: "Current"; font: 400 11px/20px var(--mono); color: var(--muted); }
+.b .pc-head { padding-right: 64px; }
+
+/* ── C · Fit Ranked ── */
+.c .fit { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font: 400 12px/16px var(--sans); color: var(--text-2); padding-top: 4px; }
+.pips { display: inline-flex; gap: 3px; }
+.pips i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--border-control); }
+.pips i.on { background: var(--st-process); border-color: var(--st-process); }
+.pips.int i.on { background: var(--secondary-hover); border-color: var(--secondary-hover); }
+.c .concern { font: 300 12.5px/18px var(--sans); color: var(--muted); }
+.c .rate { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; font: 400 12px/16px var(--sans); color: var(--warning); padding-top: 4px; }
+.c .rate button { width: 26px; height: 24px; border-radius: 4px; border: 1px solid var(--border-control); background: transparent; font: 500 12px/1 var(--sans); }
+.c .rate button:hover { background: var(--sel-bg); }
+.c .pick { position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 4px; font: 400 11.5px/16px var(--sans); color: var(--muted); }
+.c .pick input { width: 15px; height: 15px; margin: 0; accent-color: #B3A5F5; }
+.c .pc-head { padding-right: 80px; }
+.c .pc.picked { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.c .rank { font: 400 11px/16px var(--mono); color: var(--muted); margin-right: 2px; }
+.c .colsub { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: -6px; }
+.tray { position: sticky; bottom: 0; z-index: 5; background: var(--surface); border: 1px solid var(--border-control); border-radius: 12px; box-shadow: 0 -2px 0 var(--border-subtle); padding: 16px 20px; display: grid; gap: 12px; }
+.tray-h { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.cmpgrid { overflow-x: auto; }
+.cmpgrid table { border-collapse: collapse; min-width: 560px; width: 100%; font: 300 13.5px/20px var(--sans); }
+.cmpgrid th, .cmpgrid td { padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); text-align: left; vertical-align: top; }
+.cmpgrid thead th { font: 500 14px/20px var(--sans); }
+.cmpgrid tbody th { font: 400 13px/20px var(--sans); color: var(--muted); width: 160px; }
+.cmpgrid td.best { color: var(--success); font-weight: 500; }
+
+/* ── D · Focus Queue ── */
+.d-sec { display: grid; gap: 8px; }
+.d-sec > header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.d-sec h2 { font: 400 21px/28px var(--serif); }
+.d-sec header p { margin: 0; font: 300 14px/20px var(--sans); color: var(--muted); }
+.d-rows { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border-subtle); border-radius: 12px; background: var(--surface); }
+.d-row { display: grid; grid-template-columns: 26px minmax(0, 1.6fr) 120px minmax(0, 1.4fr) 220px; gap: 14px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--border-subtle); }
+.d-row:first-child { border-top: 0; }
+@container (max-width: 860px) { .d-row { grid-template-columns: 26px 1fr; } .d-row > :nth-child(n+3) { grid-column: 2; } }
+.d-who { all: unset; cursor: pointer; display: grid; min-width: 0; }
+.d-who:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+.d-who b { font: 500 15px/20px var(--sans); color: var(--link); }
+.d-who span { font: 300 14px/20px var(--sans); color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d-why { font: 400 13px/18px var(--sans); color: var(--text-2); }
+.d-why b { font-weight: 500; color: var(--warning); }
+.d-why.calm b { color: var(--text-2); }
+.d-acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.d-closed summary { cursor: pointer; font: 400 21px/28px var(--serif); color: var(--muted); list-style: none; display: flex; gap: 10px; align-items: center; }
+.d-closed summary::-webkit-details-marker { display: none; }
+.d-empty { padding: 16px; font: 300 14px/20px var(--sans); color: var(--muted); }
+
+/* ── E · Timeline Lanes (exploratory visual language) ── */
+.e-ctl { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 12px/16px var(--sans); color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 6px; border-radius: 1px; }
+.tl { border-top: 1px solid var(--text); overflow-x: auto; }
+.tl-in { min-width: 860px; position: relative; }
+.tl-axis, .tl-lane { display: grid; grid-template-columns: 250px 1fr 132px; align-items: center; }
+.tl-axis { height: 34px; border-bottom: 1px solid var(--border-subtle); }
+.tl-ticks { position: relative; height: 100%; }
+.tl-ticks span { position: absolute; top: 9px; font: 400 11px/16px var(--mono); color: var(--muted); transform: translateX(-50%); white-space: nowrap; }
+.tl-grp { font: 400 13px/18px var(--mono); color: var(--muted); padding: 14px 0 6px; border-bottom: 1px solid var(--border-subtle); }
+.tl-lane { min-height: 44px; border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 50%, transparent); }
+.tl-lane:hover { background: color-mix(in srgb, var(--sel-bg) 45%, transparent); }
+.tl-who { all: unset; cursor: pointer; display: flex; gap: 10px; align-items: center; min-width: 0; padding: 6px 12px 6px 0; }
+.tl-who:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.tl-who .avatar { display: grid; }
+.tl-who b { font: 400 16px/20px var(--serif); display: block; }
+.tl-who span { font: 300 12px/16px var(--sans); color: var(--muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+.tl-track { position: relative; height: 44px; }
+.tl-seg { position: absolute; top: 18px; height: 8px; border-radius: 1px; }
+.tl-seg.quiet { background: repeating-linear-gradient(90deg, var(--seg) 0 3px, transparent 3px 7px) !important; opacity: .9; }
+.tl-dot { position: absolute; top: 15px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--bg); border: 2px solid var(--seg); }
+.tl-end { position: absolute; top: 12px; width: 2px; height: 20px; margin-left: -1px; background: var(--seg); }
+.tl-tag { position: absolute; top: 2px; font: 400 10.5px/14px var(--mono); color: var(--warning); white-space: nowrap; }
+.tl-today { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--text); pointer-events: none; }
+.tl-today span { position: absolute; top: 9px; left: 6px; font: 500 11px/16px var(--mono); color: var(--text); background: var(--bg); padding: 0 3px; }
+.tl-now { padding-left: 12px; }
+.tl-faded .tl-who, .tl-faded .tl-track { opacity: .55; }
+.tl-cap { font: 300 13px/18px var(--sans); color: var(--muted); }
+
+/* ── Notes ── */
+.notes { max-width: 1440px; margin: 28px auto 0; display: grid; gap: 28px; }
+.dcard { background: var(--bg); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 28px; display: grid; gap: 18px; }
+@media (max-width: 600px) { .dcard { padding: 18px; } }
+.dcard header { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+.dcard header h2 { font: 400 28px/36px var(--serif); }
+.chipinfo { display: inline-flex; border-radius: 999px; padding: 1px 10px; font: 500 12px/20px var(--sans); border: 1px solid var(--border-control); }
+.dcard .hyp { font: 400 19px/28px var(--serif); max-width: 72ch; margin: 0; }
+.dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 28px; margin: 0; }
+.dl div { display: grid; gap: 4px; align-content: start; }
+.dl dt { font: 500 12px/16px var(--sans); color: var(--muted); letter-spacing: .02em; }
+.dl dd { margin: 0; font: 300 14.5px/22px var(--sans); max-width: 62ch; }
+.dl ul { margin: 0; padding-left: 18px; }
+.sect-h { font: 400 28px/36px var(--serif); }
+.cmp-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg); }
+table.cmp { border-collapse: collapse; width: 100%; min-width: 1000px; font: 300 13.5px/20px var(--sans); }
+.cmp th, .cmp td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); }
+.cmp thead th { font: 500 13px/18px var(--sans); background: var(--surface); }
+.cmp tbody th { font: 500 13px/18px var(--sans); width: 190px; }
+.cmp .on { background: color-mix(in srgb, var(--primary) 9%, transparent); }
+.cmp b { font-weight: 500; }
+.reco { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.reco > div { border-top: 2px solid var(--border-control); padding-top: 10px; display: grid; gap: 6px; align-content: start; }
+.reco > div:first-child { border-top-color: var(--primary); }
+.reco h3 { font: 500 13px/18px var(--sans); color: var(--muted); }
+.reco p { margin: 0; font: 300 15px/23px var(--sans); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="pbar" role="region" aria-label="Exploration controls">
+  <div class="pbar__title">Prospect Tracker Board · Round 1<small>5 directions · intensity mixed (1, 1, 2, 2, 3) · focus ux, product, visual · baseline T02 (357:2)</small></div>
+  <div class="ptabs" role="tablist" aria-label="Directions">
+    <button class="ptab" role="tab" data-direction="base" aria-selected="true"><kbd>1</kbd>Baseline</button>
+    <button class="ptab" role="tab" data-direction="A" aria-selected="false"><kbd>2</kbd>A · Calm Hierarchy <small>R1</small></button>
+    <button class="ptab" role="tab" data-direction="B" aria-selected="false"><kbd>3</kbd>B · Next Move <small>R1</small></button>
+    <button class="ptab" role="tab" data-direction="C" aria-selected="false"><kbd>4</kbd>C · Fit Ranked <small>R2</small></button>
+    <button class="ptab" role="tab" data-direction="D" aria-selected="false"><kbd>5</kbd>D · Focus Queue <small>R2</small></button>
+    <button class="ptab" role="tab" data-direction="E" aria-selected="false"><kbd>6</kbd>E · Timeline Lanes <small>R3</small></button>
+  </div>
+  <div class="pctl">
+    <div class="seg" role="group" aria-label="Mode"><button data-mode="dark" aria-pressed="true">Dark</button><button data-mode="light" aria-pressed="false">Light</button></div>
+    <div class="seg" role="group" aria-label="Viewport"><button data-viewport="desktop" aria-pressed="true">Desktop</button><button data-viewport="phone" aria-pressed="false">Phone</button></div>
+    <div class="seg" role="group" aria-label="Frame size"><button data-fit="fit" aria-pressed="true">Fit</button><button data-fit="actual" aria-pressed="false">1440 Actual</button></div>
+    <button class="linkbtn" id="resetBtn" type="button">Reset Sample</button>
+  </div>
+</div>
+
+<div class="stage" id="stage" data-viewport="desktop" data-fit="fit">
+  <div class="frame" id="frame">
+    <section data-direction-panel="base" role="tabpanel" aria-label="Baseline"></section>
+    <section data-direction-panel="A" role="tabpanel" aria-label="A · Calm Hierarchy" hidden></section>
+    <section data-direction-panel="B" role="tabpanel" aria-label="B · Next Move" hidden></section>
+    <section data-direction-panel="C" role="tabpanel" aria-label="C · Fit Ranked" hidden></section>
+    <section data-direction-panel="D" role="tabpanel" aria-label="D · Focus Queue" hidden></section>
+    <section data-direction-panel="E" role="tabpanel" aria-label="E · Timeline Lanes" hidden></section>
+  </div>
+</div>
+<p class="sim-note" style="max-width:1440px;margin:8px auto 0">Simulated: saves, status history and Add Prospect run in this page only. Prospects, dates and scores are the synthetic audit fixture plus sample scores; “today” is fixed at Oct 27, 2026. Drag needs a desktop viewport; every move also works from the detail panel.</p>
+
+<div class="notes">
+  <article class="dcard" id="dcard" aria-live="polite"></article>
+  <section style="display:grid;gap:14px" aria-labelledby="cmpH"><h2 class="sect-h" id="cmpH">Comparison</h2><div class="cmp-wrap" id="cmp"></div></section>
+  <section class="dcard" aria-labelledby="recoH"><h2 class="sect-h" id="recoH">Recommendation</h2><div class="reco" id="reco"></div></section>
+</div>
+
+<script type="application/json" id="exploration-round">
+{
+  "exploration": "prospect-board",
+  "round": 1,
+  "date": "2026-10-27",
+  "settings": "Settings: 5 directions · intensity mixed (1, 1, 2, 2, 3) · focus [ux, product, visual] · fidelity prototype",
+  "brief": "Larry uses the Prospect Tracker board to see every prospect from first interest to a decision and to move them between stages. Today the board answers 'where is each prospect?' but not 'how long has it been?', 'what should I do next?' or 'which prospects are worth my time?'. Cards show company, title, status and applied date only, although status history, fit scores, connections and notes are already stored. Goal: a board that helps decide and act, not only file.",
+  "sourceContract": [
+    "All 12 stored statuses keep their values and labels; legacy Applying stays readable but not selectable",
+    "Four lifecycle groups (Prospects, Applied, In-Process, Done) and their drop semantics: cross-column drops use the column default; Done always asks for an explicit outcome",
+    "Saved manual order is preserved wherever manual order is shown; new or re-staged cards go to the top",
+    "Status history is written only by the database trigger on a status change",
+    "Search, status filter, date filter and Add Prospect remain available; card opens the prospect record",
+    "Status-Badge tones and geometry are fixed (prospect-status.js)",
+    "Drag is desktop-only with a keyboard and non-drag path to every move",
+    "Brand assets stay: header, logotype, DM Serif Display / Inter / IBM Plex Mono, lavender and peach palette"
+  ],
+  "baseline": "Figma hLBR7Nl3GelwM9hstQb3Ah 357:2 (T02 · Board, populated · Desktop · Dark), read 2026-10-27; tools/prospect-tracker at a48d153; docs/prospect-tracker-kanban.md",
+  "seed": null,
+  "directions": [
+    {
+      "id": "A", "name": "Calm Hierarchy", "intensity": 1, "lead": "visual", "lineage": "original → A",
+      "hypothesis": "For Larry scanning the board, a calmer typographic hierarchy (serif company names, large serif column counts, flat columns divided by rules, tighter cards with mono metadata) will make the board read faster and feel more considered, because company identity and stage totals become the two strongest signals and everything else steps back.",
+      "mechanism": "Same columns, cards, data and interactions. Column fills are replaced by a 2px top rule and a 38px serif count. Cards drop from 116px to about 92px: 36px logo tile spans two lines, company in DM Serif 19px, title in Inter 13.5px, meta in mono below a hairline. Hover uses the hard-shadow lift from rules.md. Done becomes a vertical strip.",
+      "evidence": "Observed: the company name, title and badge share similar weight (Inter 16/500 vs 16/300), so cards read as uniform blocks (357:191). Observed: four cards fill a 588px column, so longer columns scroll early. Inferred: stage totals matter for pacing but sit in 14px text at the column edge.",
+      "composition": "Header, page title, toolbar unchanged. Board: three ruled columns plus a vertical Done strip; cards denser with serif identity.",
+      "preserved": "Every interaction, column grouping, badge tones, manual order, filters, card → record.",
+      "departures": ["Exploratory raw values: card radius 4 (nearest radius-md 6), column count 38px serif (Type/H1 size), card company DM Serif 19px (nearest Type/H3 21px)", "Column surface removed (nearest token surface/default)", "Card hover uses nc-shadow-sm direction at 2px"],
+      "systemFit": "Reuses tokens and Status-Badge. Card and column are local Tracker styles, so the change stays inside styles.css. Proposes a serif company style not in the type scale.",
+      "tradeoffs": ["Serif at 19px is less compact than Inter for long company names", "Without column fills, drop targets need a stronger hover state", "Small gain if the real bottleneck is decisions, not scanning"],
+      "failure": "It looks better but Larry still opens every card to know what to do, so time on the board does not change.",
+      "validation": "Five-second test on the populated board: ask which stage has the most prospects and which company is in Final round. Compare accuracy with baseline.",
+      "cost": "Low. CSS only in the Tracker's local styles; no data or logic change.",
+      "signature": ["serif company names", "large serif column counts over a top rule", "flat ruled columns", "hard-shadow hover", "vertical Done strip"],
+      "screen": "A"
+    },
+    {
+      "id": "B", "name": "Next Move", "intensity": 1, "lead": "ux", "lineage": "original → B",
+      "hypothesis": "For Larry managing an active search, showing how long each prospect has sat in its stage and the next move on the card, with a Move menu that changes status without dragging or opening the record, will cut missed follow-ups and the clicks needed to keep the board current, because staleness and action become visible at the moment of scanning.",
+      "mechanism": "Within the existing board: each card gains an age bar (days since the last status event, scaled to 30 days) and a next-move line from simple rules (Applied ≥ 14 days → Follow Up; Prospect ≥ 10 days → Decide: Apply or Pass; In-Process ≥ 10 days → Check In; Offer → Respond). A Move menu on each card lists statuses grouped by column. A toolbar toggle filters to Needs Attention.",
+      "evidence": "Observed: status history with recorded_at is stored and already loaded for the record view (data.js), but the board shows only applied_on. Observed: the only non-drag move path is opening the record (kanban docs). Inferred: follow-up timing is the most common thing to forget in a long search.",
+      "composition": "Same header, toolbar plus Needs Attention (n) toggle, same columns and card anatomy with an age row added; Move button top-right of each card opens a hard-shadow menu.",
+      "preserved": "Columns, drop semantics (Done in the menu still means an explicit outcome), badges, manual order, filters, card → record.",
+      "departures": ["Card height grows by about 28px", "Next-move rules are proposed copy and thresholds", "Board query needs the latest status event per prospect (one more select or a view)"],
+      "systemFit": "Reuses Status-Badge, Button, the hard-shadow menu treatment (rules.md; note the current Done chooser uses a soft 0 4px 16px shadow, a discrepancy). New: age bar.",
+      "tradeoffs": ["Fixed thresholds will be wrong for some companies (slow enterprise hiring)", "Warning color on many cards turns into noise", "Adds a request to the board load"],
+      "failure": "Most cards show a warning at once, so the signal is ignored.",
+      "validation": "Replay Larry's real status history: how many prospects would have shown Follow Up each week? If more than 40% of open cards flag, the thresholds are wrong.",
+      "cost": "Low to medium. One query for latest event dates, a pure rule function, Move menu reusing the existing status saver.",
+      "signature": ["age bar per card", "next-move line", "Move menu without dragging", "Needs Attention filter"],
+      "screen": "B"
+    },
+    {
+      "id": "C", "name": "Fit Ranked", "intensity": 2, "lead": "product", "lineage": "original → C",
+      "hypothesis": "For Larry choosing which prospects to pursue, ranking the Prospects column by stored fit, showing fit and interest on every card, and letting him compare two or three side by side will lead to faster, better-reasoned apply-or-pass decisions, because the 12 assessment scores he already records become decision support instead of buried form fields.",
+      "mechanism": "Prospects becomes a Shortlist sorted by overall assessment then personal interest (with a Manual toggle that restores saved order). Cards show fit and interest pips and the first assessment concern. Unscored cards offer a one-tap 1–5 fit rating. A Compare checkbox on each card opens a tray with the key scores side by side, best value highlighted.",
+      "evidence": "Observed: prospects store 12 score fields plus rationale and concerns (model.js SCORE_FIELDS), none visible on the board. Observed: board order is manual only. Inferred: the hardest decision on the board is which Prospects to apply to.",
+      "composition": "Same page and columns. Shortlist header has Fit / Manual sort. Cards carry rank, pips, concern or rating buttons, Compare checkbox. Compare tray docks at the bottom of the board.",
+      "preserved": "Statuses, columns, drop semantics, filters, card → record, Applied and In-Process keep manual order.",
+      "departures": ["Fit sort overrides manual order in one column while active (saved order untouched, Manual restores it)", "Inline fit rating writes overall_assessment from the board", "Compare tray is a new surface"],
+      "systemFit": "Reuses Status-Badge, Button, checkbox. New: pip meter, compare tray table. Data exists; no schema change.",
+      "tradeoffs": ["Scores are subjective and often missing, so rank can look authoritative without being so", "Two sort modes complicate drag-to-reorder (disabled while Fit sort is on)", "Cards get busier"],
+      "failure": "Larry rarely fills scores, so most cards show the rating prompt and the ranking is meaningless.",
+      "validation": "Check real data: share of open prospects with overall_assessment set. Below half, test the inline rating for a week first and recheck.",
+      "cost": "Medium. Board query adds score fields; sort mode state; compare tray; guarded write for inline rating.",
+      "signature": ["Shortlist ranked by fit", "fit and interest pips", "inline 1–5 rating", "Compare tray"],
+      "screen": "C"
+    },
+    {
+      "id": "D", "name": "Focus Queue", "intensity": 2, "lead": "ux", "lineage": "original → D",
+      "hypothesis": "For Larry opening the Tracker to decide what to do today, a default view that sorts prospects by whose move it is (Your Move, Waiting on Them, Closed) with one primary action per row will get him from opening the page to acting in fewer steps than reading a stage board, because the view answers the daily question directly and the board becomes an alternate lens.",
+      "mechanism": "Information architecture change: a Focus / Board switch, Focus by default. Your Move collects prospects needing a decision, stale applications and offers; Waiting on Them collects fresh applications and active processes with a quiet-for count; Closed is collapsed. Each row has one primary action (Mark Applied, Log Follow-Up, Log Check-In, Respond) and a secondary Pass.",
+      "evidence": "Observed: the page description promises 'from first interest to a decision', but the board organizes by stage, not by action. Observed: Done is collapsed by default, implying open work is the focus. Inferred: the daily task is triage.",
+      "composition": "Header and toolbar as baseline plus the Focus / Board switch. Focus: three sections of full-width rows (logo, company and role, badge, reason, actions). Board: the baseline board, unchanged.",
+      "preserved": "All statuses and transitions, the full board as a second view, filters, Add Prospect, row → record.",
+      "departures": ["Default landing view changes from board to list", "Log Follow-Up and Log Check-In record an event without a status change (speculative: needs a follow-up event type or a notes convention; history today records only status changes)", "Whose-move rules are proposed"],
+      "systemFit": "Reuses Status-Badge, Button, avatar. New list row. Needs a non-status event concept, which the append-only history table does not have.",
+      "tradeoffs": ["Loses the at-a-glance pipeline shape on landing", "Rules decide what is 'your move'; mistakes hide prospects in Waiting", "Two views to maintain"],
+      "failure": "Larry prefers the spatial board and switches every visit, making Focus a detour.",
+      "validation": "Track the view chosen on each visit for two weeks; if Board wins most visits, demote Focus to a filter.",
+      "cost": "Medium to high. New view and rules; follow-up logging needs a schema decision (new event kind or table) and RLS.",
+      "signature": ["Focus / Board switch", "Your Move vs Waiting on Them", "one primary action per row", "quiet-for counts"],
+      "screen": "D"
+    },
+    {
+      "id": "E", "name": "Timeline Lanes", "intensity": 3, "lead": "visual", "lineage": "original → E",
+      "hypothesis": "For Larry judging the momentum of his search, drawing each prospect as a lane across calendar time, with stage segments from its status history, a today line and dashed silent stretches, will show what a stage board cannot: pace, stalls and overlap, because time becomes the main axis and stalls become visible gaps.",
+      "mechanism": "A new visual paradigm. Rows are prospects grouped by lifecycle stage; the x axis is weeks; each status event starts a segment colored by stage family; open prospects extend to today, and a run of 14+ silent days is drawn dashed with a 'quiet N d' tag. Closed prospects end with a cap and fade. Zoom between 4, 8 and 12 weeks; select a lane to open the record.",
+      "evidence": "Observed: append-only status history with recorded_at exists for every prospect. Observed: nothing in the product visualizes it. Inferred: a long search is about pacing (how many active at once, how long since any reply), which a stage board flattens.",
+      "composition": "Header and toolbar as baseline; a legend and zoom control; the timeline with left labels (serif company, role), track, and right current-status badge; a today line labelled in mono.",
+      "preserved": "Statuses and badges, filters, Add Prospect, record view and status changes (in the record panel). Manual order is not shown.",
+      "departures": ["Exploratory stage colors: Prospects #9782EB (secondary-400), Applied #D7CDFB (secondary-200), In-Process #F1CC88 (primary-300), Offer #87CFA5 (success-300), Rejected #F79BB3 (danger-300), closed #837A90 (neutral-500)", "No drag moves; status changes only via the record", "Manual order hidden while this view is active"],
+      "systemFit": "Low reuse beyond badges and tokens; a new timeline component. Data exists (status events) but the board would need all events, not only cards.",
+      "tradeoffs": ["Weak for moving cards; strong for reflection", "Needs width; at phone width the track scrolls", "Color-coded stages need a legend and must not be the only cue"],
+      "failure": "It is insightful once a week but not useful for daily work, so it becomes a report, not the board.",
+      "validation": "Show the timeline of Larry's real history and ask what he would do differently this week. If no action follows, ship it as a secondary report, not the board.",
+      "cost": "Medium. All-events query, timeline rendering, zoom; no schema change.",
+      "signature": ["lanes over calendar time", "stage-colored segments from history", "today line", "dashed quiet stretches", "serif lane labels"],
+      "screen": "E"
+    }
+  ],
+  "checks": [
+    { "name": "open card", "action": "click", "target": "[data-fk='card-harbor']", "directions": ["base", "A", "B", "C"] },
+    { "name": "close detail", "action": "click", "target": "[data-fk='dclose']", "directions": ["base", "A", "B", "C"] },
+    { "name": "search", "action": "type", "target": "[data-check='search']", "value": "atlas", "directions": ["base", "A"] },
+    { "name": "toggle Done", "action": "click", "target": "[data-check='done-toggle']", "directions": ["base", "A"] },
+    { "name": "open Move menu", "action": "click", "target": "[data-check='move-menu']", "directions": ["B"] },
+    { "name": "Needs Attention filter", "action": "click", "target": "[data-check='attention']", "directions": ["B"] },
+    { "name": "rate fit", "action": "click", "target": "[data-check='rate']", "directions": ["C"] },
+    { "name": "pick for compare", "action": "click", "target": "[data-check='compare-pick']", "directions": ["C"] },
+    { "name": "sort toggle", "action": "click", "target": "[data-check='sort-manual']", "directions": ["C"] },
+    { "name": "row action", "action": "click", "target": "[data-check='row-action']", "directions": ["D"] },
+    { "name": "switch to board", "action": "click", "target": "[data-check='view-board']", "directions": ["D"] },
+    { "name": "zoom", "action": "click", "target": "[data-check='zoom']", "directions": ["E"] },
+    { "name": "open lane", "action": "click", "target": "[data-check='open-lane']", "expectIn": ".frame", "directions": ["E"] }
+  ],
+  "recommendation": {
+    "direction": "B",
+    "why": "B addresses the board's biggest gap (no sense of time or next action) using data already stored, keeps every existing behavior and adds the first non-drag move path, which also fixes touch and narrow-width moves. It is the cheapest direction that changes what Larry does.",
+    "counterargument": "If the daily question is really 'what do I do today', D answers it directly and B only decorates the board; warning dots on many cards may become noise.",
+    "combine": "Round 2: B as the base, A's typographic hierarchy for the cards (B's extra row needs the space A saves), and C's fit pips on Prospects cards only. Keep E as a separate weekly view.",
+    "nextValidation": "Replay real status history through B's rules and count weekly flags; tune thresholds until under 40% of open cards flag, then live with it for two weeks."
+  },
+  "prototype": { "url": null, "file": "explorations/prospect-board/round-1.html" },
+  "selected": null
+}
+</script>
+
+<script>
+(() => {
+'use strict';
+const ROUND = JSON.parse(document.getElementById('exploration-round').textContent);
+const DIRS = ['base', 'A', 'B', 'C', 'D', 'E'];
+const TODAY = '2026-10-27';
+
+// ── Canonical model (tools/prospect-tracker) ──
+const STATUSES = ['prospect', 'interested', 'applying', 'applied', 'recruiter', 'interviewing', 'final', 'offer', 'passed', 'rejected', 'withdrawn', 'closed'];
+const SELECTABLE = STATUSES.filter(s => s !== 'applying');
+const TONE = { prospect: 'neutral', interested: 'accent', applying: 'active', applied: 'accent', recruiter: 'active', interviewing: 'active', final: 'highlight', offer: 'positive', passed: 'neutral', rejected: 'negative', withdrawn: 'neutral', closed: 'neutral' };
+const COLUMNS = [
+  { id: 'prospects', label: 'Prospects', statuses: ['prospect', 'interested', 'applying'], drop: 'prospect' },
+  { id: 'applied', label: 'Applied', statuses: ['applied'], drop: 'applied' },
+  { id: 'in-process', label: 'In-Process', statuses: ['recruiter', 'interviewing', 'final', 'offer'], drop: 'recruiter' },
+  { id: 'done', label: 'Done', statuses: ['passed', 'rejected', 'withdrawn', 'closed'], drop: null },
+];
+const OUTCOMES = ['passed', 'rejected', 'withdrawn', 'closed'];
+const label = s => s === 'final' ? 'Final round' : s.charAt(0).toUpperCase() + s.slice(1);
+const colOf = s => COLUMNS.find(c => c.statuses.includes(s));
+const STAGE_VAR = s => s === 'offer' ? '--st-offer' : s === 'rejected' ? '--st-rejected' : ['passed', 'withdrawn', 'closed'].includes(s) ? '--st-closed' : { prospects: '--st-prospects', applied: '--st-applied', 'in-process': '--st-process' }[colOf(s).id];
+
+// ── Sample data: audit fixture names; dates and scores are synthetic ──
+const P = (id, company, title, status, events, o = {}) => ({ id, company, title, status, events: events.map(([s, at]) => ({ s, at })), location: null, arrangement: null, comp: null, scores: null, concern: null, connections: 0, ...o });
+const SAMPLE = () => [
+  P('example', 'Example Studio', 'Senior Product Designer', 'prospect', [['prospect', '2026-10-20']], { location: 'Remote (US)', arrangement: 'remote', scores: { overall: 3, interest: 3, level: 4, comp: 3, domain: 2, logistics: 5 }, concern: 'Agency model; unclear product ownership' }),
+  P('fieldnote', 'Fieldnote', 'Principal Designer', 'applying', [['prospect', '2026-10-01'], ['applying', '2026-10-12']], { location: 'Portland, OR', arrangement: 'hybrid', scores: { overall: 4, interest: 4, level: 5, comp: 3, domain: 4, logistics: 4 }, concern: 'Comp range not posted', connections: 1 }),
+  P('northwind', 'Northwind Labs', 'Staff Product Designer, Platform', 'interested', [['prospect', '2026-10-05'], ['interested', '2026-10-08']], { location: 'Remote', arrangement: 'remote', comp: '$185k–$215k', scores: { overall: 5, interest: 5, level: 5, comp: 4, domain: 4, logistics: 5 }, concern: 'Small design team', connections: 2 }),
+  P('kestrel', 'Kestrel Health', 'Senior Product Designer', 'prospect', [['prospect', '2026-10-24']], { location: 'Seattle, WA', arrangement: 'hybrid' }),
+  P('quill', 'Quill Learning', 'Product Design Manager', 'applied', [['prospect', '2026-09-25'], ['applied', '2026-10-02']], { applied: '2026-10-02', location: 'Remote', arrangement: 'remote', scores: { overall: 3, interest: 2, level: 3, comp: 3, domain: 3, logistics: 5 }, concern: 'Edtech domain is new' }),
+  P('meridian', 'Meridian Maps', 'Senior UX Designer', 'applied', [['prospect', '2026-10-03'], ['applied', '2026-10-09']], { applied: '2026-10-09', location: 'Remote', arrangement: 'remote', scores: { overall: 4, interest: 4, level: 3, comp: 4, domain: 4, logistics: 5 } }),
+  P('harbor', 'Harbor Analytics', 'Lead Product Designer', 'applied', [['prospect', '2026-10-10'], ['applied', '2026-10-14']], { applied: '2026-10-14', location: 'Denver, CO', arrangement: 'hybrid', scores: { overall: 3, interest: 3, level: 4, comp: 3, domain: 4, logistics: 2 }, concern: 'Hybrid three days a week' }),
+  P('atlas', 'Atlas Robotics', 'Staff Designer, Design Systems', 'interviewing', [['prospect', '2026-09-15'], ['applied', '2026-09-21'], ['recruiter', '2026-10-01'], ['interviewing', '2026-10-15']], { applied: '2026-09-21', location: 'Remote', arrangement: 'remote', comp: '$190k–$225k', scores: { overall: 5, interest: 4, level: 5, comp: 5, domain: 3, logistics: 5 }, connections: 1 }),
+  P('copperline', 'Copperline', 'Senior Product Designer, Growth', 'recruiter', [['prospect', '2026-09-22'], ['applied', '2026-09-28'], ['recruiter', '2026-10-20']], { applied: '2026-09-28', location: 'Remote', arrangement: 'remote', scores: { overall: 4, interest: 3, level: 3, comp: 4, domain: 4, logistics: 5 } }),
+  P('brightwater', 'Brightwater Bank', 'Senior Product Designer, Payments', 'rejected', [['prospect', '2026-09-03'], ['applied', '2026-09-08'], ['rejected', '2026-09-30']], { applied: '2026-09-08', scores: { overall: 3, interest: 2, level: 3, comp: 4, domain: 2, logistics: 4 } }),
+  P('lumen', 'Lumen Studio', 'Design Lead', 'withdrawn', [['prospect', '2026-09-10'], ['applied', '2026-09-12'], ['recruiter', '2026-09-19'], ['withdrawn', '2026-10-06']], { applied: '2026-09-12', scores: { overall: 2, interest: 2, level: 4, comp: 2, domain: 3, logistics: 3 } }),
+];
+const SCORE_ROWS = [['overall', 'Overall assessment'], ['interest', 'Personal interest'], ['level', 'Level fit'], ['comp', 'Compensation fit'], ['domain', 'Domain fit'], ['logistics', 'Logistics fit']];
+
+// ── State ──
+let S, toastTimer;
+function init(keepMode) {
+  const mode = keepMode && S ? S.mode : (document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+  S = { active: 'base', mode, viewport: 'desktop', items: SAMPLE(), q: '', statusF: 'all', dateF: 'all', doneOpen: false, openId: null, adding: false,
+    chooser: null, menuFor: null, attention: false, sort: 'fit', picks: [], dView: 'focus', zoom: 8, toast: null, events: 0 };
+}
+const byId = id => S.items.find(p => p.id === id);
+const days = (a, b = TODAY) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+const lastAt = p => p.events.at(-1).at;
+const fmt = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const fmtShort = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function visible() {
+  const q = S.q.trim().toLowerCase();
+  return S.items.filter(p => (!q || (p.company + ' ' + p.title).toLowerCase().includes(q))
+    && (S.statusF === 'all' || p.status === S.statusF)
+    && (S.dateF === 'all' || (S.dateF === 'added30' ? days(p.events[0].at) <= 30 : p.applied && days(p.applied) <= 30)));
+}
+function setStatus(p, s, how) {
+  if (p.status === s) return;
+  const from = colOf(p.status).id, to = colOf(s).id;
+  p.status = s; p.events.push({ s, at: TODAY });
+  if (s === 'applied' && !p.applied) p.applied = TODAY;
+  if (from !== to) { S.items = [p, ...S.items.filter(x => x !== p)]; }
+  toast(`${p.company} moved to ${label(s)}${how ? ' · ' + how : ''}. History recorded.`);
+}
+function toast(msg) { S.toast = msg; clearTimeout(toastTimer); toastTimer = setTimeout(() => { S.toast = null; const t = document.querySelector('.toast'); t && t.remove(); }, 2600); }
+function attention(p) {
+  const d = days(lastAt(p)), c = colOf(p.status).id;
+  if (c === 'done') return null;
+  if (p.status === 'offer') return { t: 'Respond to Offer', d };
+  if (p.status === 'applying') return d >= 7 ? { t: 'Finish Application', d } : null;
+  if (c === 'prospects') return d >= 10 ? { t: 'Decide: Apply or Pass', d } : null;
+  if (c === 'applied') return d >= 14 ? { t: 'Follow Up', d } : null;
+  return d >= 10 ? { t: 'Check In', d } : null;
+}
+
+// ── Shared renderers ──
+const badge = s => `<span class="badge badge--${TONE[s]}">${label(s)}</span>`;
+const avatar = p => `<span class="avatar" aria-hidden="true">${esc(p.company[0])}</span>`;
+function header() {
+  return `<header class="nc-header"><span class="nc-logo">nextchapter</span>
+    <nav class="nc-nav" aria-label="Main"><button type="button" data-act="noop">Career Radar</button><button type="button" aria-current="page" data-act="noop">Prospect Tracker</button><button type="button" data-act="noop">Résumé Builder</button></nav>
+    <div class="nc-util"><button type="button" class="nc-switch" data-act="toggleMode" aria-label="Switch to ${S.mode === 'dark' ? 'light' : 'dark'} mode"></button><button type="button" class="nc-hide-sm" data-act="noop">About</button><button type="button" class="nc-hide-sm" data-act="noop">Log Out</button><button type="button" class="nc-menu btn btn--tertiary btn--sm" data-act="noop" style="color:var(--ink);border-color:var(--ink)">Menu</button></div></header>`;
+}
+function pageHead(desc = 'Your prospects, from first interest to a decision.') {
+  return `<div class="ph"><div><h1 class="h1">Prospect Tracker</h1><p>${desc}</p></div><button type="button" class="btn btn--primary" data-act="add">+ Add Prospect</button></div>`;
+}
+function toolbar(dir, extra = '') {
+  return `<div class="toolbar"><span class="tt">Prospects (${visible().length}${visible().length !== S.items.length ? ` of ${S.items.length}` : ''})</span><div class="ctl">${extra}
+    <label class="vh" for="${dir}-q">Filter prospects</label><input class="search" id="${dir}-q" type="search" placeholder="Filter prospects" value="${esc(S.q)}" data-bind="q" data-check="search" autocomplete="off">
+    <label class="vh" for="${dir}-st">Status</label><select class="select" id="${dir}-st" data-bind="statusF"><option value="all">All statuses</option>${STATUSES.map(s => `<option value="${s}" ${S.statusF === s ? 'selected' : ''}>${label(s)}</option>`).join('')}</select>
+    <label class="vh" for="${dir}-dt">Dates</label><select class="select" id="${dir}-dt" data-bind="dateF"><option value="all">All Dates</option><option value="added30" ${S.dateF === 'added30' ? 'selected' : ''}>Added, Last 30 Days</option><option value="applied30" ${S.dateF === 'applied30' ? 'selected' : ''}>Applied, Last 30 Days</option></select></div></div>`;
+}
+function grouped(list = visible()) {
+  return COLUMNS.map(c => ({ ...c, cards: list.filter(p => c.statuses.includes(p.status)) }));
+}
+const draggable = () => S.viewport === 'desktop' ? 'draggable="true"' : '';
+
+// Generic board. cardFn renders inner card HTML; opts adjust column header/done.
+function board(dir, cardFn, opts = {}) {
+  const cols = grouped(opts.list);
+  const html = cols.map(c => {
+    if (c.id === 'done' && !S.doneOpen) {
+      return opts.doneStrip ? `<div class="col" data-column="done"><button type="button" class="done-strip" data-act="doneToggle" aria-expanded="false" data-check="done-toggle" data-fk="done">Done <span class="n">${c.cards.length}</span></button>${S.chooser ? chooserHTML() : ''}</div>`
+        : `<div class="col" data-column="done"><button type="button" class="done-toggle" data-act="doneToggle" aria-expanded="false" data-check="done-toggle" data-fk="done"><span class="tri"></span>Done <span>${c.cards.length}</span></button>${S.chooser ? chooserHTML() : ''}</div>`;
+    }
+    const cards = opts.sortCol && opts.sortCol[c.id] ? opts.sortCol[c.id](c.cards) : c.cards;
+    const head = c.id === 'done'
+      ? `<h3><button type="button" class="done-toggle" data-act="doneToggle" aria-expanded="true" data-check="done-toggle" data-fk="done"><span class="tri"></span>Done</button><span>${c.cards.length}</span></h3>`
+      : (opts.colHead ? opts.colHead(c, cards) : `<h3><span>${c.label}</span><span>${c.cards.length}</span></h3>`);
+    return `<div class="col" data-column="${c.id}" aria-label="${c.label}">${head}${opts.colSub ? opts.colSub(c) : ''}
+      <div class="col-cards">${cards.length ? cards.map((p, i) => `<div class="pc ${opts.cardCls ? opts.cardCls(p) : ''}" data-card="${p.id}" ${opts.noDrag ? '' : draggable()}>${cardFn(p, i, c)}</div>`).join('') : `<div class="empty-col">${S.q || S.statusF !== 'all' || S.dateF !== 'all' ? 'No matches in this stage.' : 'Nothing here yet.'}</div>`}
+      ${c.id === 'done' && S.chooser ? chooserHTML() : ''}</div></div>`;
+  }).join('');
+  return `<div class="board ${S.doneOpen ? 'done-open' : ''}" data-board>${html}</div>`;
+}
+function chooserHTML() {
+  const p = byId(S.chooser);
+  return `<div class="chooser" role="dialog" aria-label="Choose an outcome"><p>Move ${esc(p.company)} to Done as:</p>${OUTCOMES.map((o, i) => `<button type="button" class="btn btn--tertiary btn--sm" data-act="outcome" data-s="${o}" data-fk="oc-${o}">${label(o)}</button>`).join('')}<button type="button" class="btn btn--tertiary btn--sm" data-act="cancelChooser" style="margin-top:6px">Cancel</button></div>`;
+}
+function baseCard(p) {
+  return `<button type="button" class="pc-open" data-act="open" data-id="${p.id}" data-fk="card-${p.id}" aria-label="${esc(p.company)}, ${esc(p.title)}, ${label(p.status)}. Alt+Up or Down to reorder.">
+    <span class="pc-head">${avatar(p)}<strong class="pc-co">${esc(p.company)}</strong></span><span class="pc-ti">${esc(p.title)}</span>
+    <span class="pc-meta">${badge(p.status)}${p.applied ? `<time>Applied ${fmt(p.applied)}</time>` : ''}</span></button>`;
+}
+function drawer() {
+  if (S.adding) {
+    return `<button class="scrim" type="button" data-act="close" aria-label="Close"></button><aside class="drawer" role="dialog" aria-label="Add prospect"><div class="drawer-in">
+      <h2>Add Prospect</h2><div class="field"><label for="add-co">Company *</label><input class="input" id="add-co" autocomplete="off"></div><div class="field"><label for="add-ti">Job title *</label><input class="input" id="add-ti" autocomplete="off"></div>
+      <p class="sim-note" id="add-err" role="alert"></p><div style="display:flex;gap:8px"><button type="button" class="btn btn--primary" data-act="saveAdd">Save Prospect</button><button type="button" class="btn btn--tertiary" data-act="close">Cancel</button></div></div></aside>`;
+  }
+  const p = S.openId && byId(S.openId); if (!p) return '';
+  return `<button class="scrim" type="button" data-act="close" aria-label="Close details"></button><aside class="drawer" role="dialog" aria-label="${esc(p.company)} details"><div class="drawer-in">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><div style="display:grid;gap:4px"><span class="sim-note">${esc(p.company)}</span><h2>${esc(p.title)}</h2></div><button type="button" class="btn btn--tertiary btn--sm" data-act="close" data-fk="dclose">Close</button></div>
+    <div class="field"><label for="d-status">Status</label><select class="select" id="d-status" data-status-select>${STATUSES.map(s => `<option value="${s}" ${p.status === s ? 'selected' : ''} ${s === 'applying' && p.status !== 'applying' ? 'disabled' : ''}>${label(s)}</option>`).join('')}</select></div>
+    <dl class="dmeta"><dt>Applied</dt><dd>${p.applied ? fmt(p.applied) : '—'}</dd><dt>Location</dt><dd>${esc(p.location || '—')}${p.arrangement ? ` · ${p.arrangement}` : ''}</dd><dt>Compensation</dt><dd>${esc(p.comp || 'Not posted')}</dd><dt>Connections</dt><dd>${p.connections || 'None'}</dd>
+    <dt>Fit</dt><dd>${p.scores ? `Overall ${p.scores.overall}/5 · Interest ${p.scores.interest}/5` : 'Not assessed'}</dd>${p.concern ? `<dt>Concern</dt><dd>${esc(p.concern)}</dd>` : ''}</dl>
+    <div style="display:grid;gap:8px"><span class="sim-note">Status history (database trigger)</span><ul class="hist">${p.events.slice().reverse().map(e => `<li><time>${fmtShort(e.at)}</time><span>${e.s === 'follow-up' ? '<span class="sim-note">Follow-up logged</span>' : badge(e.s)}</span></li>`).join('')}</ul></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn--secondary" data-act="noop">Edit Full Record</button><button type="button" class="btn btn--tertiary" data-act="noop">Tailor Résumé</button></div>
+    <span class="sim-note">Edit and Tailor open other routes in the real app; not simulated here.</span></div></aside>`;
+}
+const toastHTML = () => S.toast ? `<div class="toast" role="status">${esc(S.toast)}</div>` : '';
+
+// ── Baseline ──
+function renderBase() { return `${header()}<div class="page">${pageHead()}${toolbar('base')}${board('base', baseCard)}</div>`; }
+
+// ── A · Calm Hierarchy ──
+function renderA() {
+  const card = p => `<button type="button" class="pc-open" data-act="open" data-id="${p.id}" data-fk="card-${p.id}" aria-label="${esc(p.company)}, ${esc(p.title)}, ${label(p.status)}">
+    ${avatar(p)}<span class="pc-co">${esc(p.company)}</span><span class="pc-ti">${esc(p.title)}</span>
+    <span class="pc-meta">${badge(p.status)}<time>${p.applied ? 'Applied ' + fmtShort(p.applied) : 'Added ' + fmtShort(p.events[0].at)}</time></span></button>`;
+  const colHead = (c, cards) => {
+    const subs = c.statuses.filter(s => cards.some(p => p.status === s)).map(s => `${cards.filter(p => p.status === s).length} ${label(s).toLowerCase()}`).join(' · ');
+    return `<h3><span class="n">${cards.length}</span><span>${c.label}</span><span class="sub">${c.statuses.length > 1 ? subs : ''}</span></h3>`;
+  };
+  return `${header()}<div class="page a">${pageHead()}${toolbar('A')}${board('A', card, { colHead, doneStrip: true })}</div>`;
+}
+
+// ── B · Next Move ──
+function renderB() {
+  const need = visible().filter(attention).length;
+  const list = S.attention ? visible().filter(attention) : visible();
+  let first = true;
+  const card = p => {
+    const a = attention(p), d = days(lastAt(p)), done = colOf(p.status).id === 'done';
+    const menu = S.menuFor === p.id ? `<div class="menu" role="menu" aria-label="Move ${esc(p.company)}">${COLUMNS.map(c => `<h4>${c.label}</h4>${c.statuses.filter(s => SELECTABLE.includes(s)).map(s => `<button type="button" role="menuitem" data-act="menuMove" data-id="${p.id}" data-s="${s}" data-fk="mm-${s}" ${p.status === s ? 'aria-current="true"' : ''}>${label(s)}</button>`).join('')}`).join('')}</div>` : '';
+    const btn = `<div class="pc-tools"><button type="button" class="btn btn--tertiary btn--sm" data-act="menu" data-id="${p.id}" data-fk="mv-${p.id}" aria-haspopup="menu" aria-expanded="${S.menuFor === p.id}" ${first ? 'data-check="move-menu"' : ''}>Move ▾</button></div>`;
+    first = false;
+    return `${baseCard(p).replace('</button>', `${done ? '' : `<span class="pc-age"><span class="agebar ${a ? 'late' : ''}" aria-hidden="true"><i style="width:${Math.min(100, d / 30 * 100)}%"></i></span><span class="agetxt"><span>${d === 0 ? 'Moved today' : `${d} day${d === 1 ? '' : 's'} in ${label(p.status)}`}</span>${a ? `<span class="next">${a.t}</span>` : `<span class="next calm">On track</span>`}</span></span>`}</button>`)}${btn}${menu}`;
+  };
+  const extra = `<button type="button" class="btn btn--tertiary" data-act="attention" aria-pressed="${S.attention}" data-check="attention" data-fk="att">Needs Attention (${need})</button>`;
+  return `${header()}<div class="page b">${pageHead()}${toolbar('B', extra)}${board('B', card, { list })}</div>`;
+}
+
+// ── C · Fit Ranked ──
+function renderC() {
+  let rated = false, picked = false;
+  const rankSort = cards => S.sort === 'fit' ? [...cards].sort((a, b) => (b.scores?.overall ?? -1) - (a.scores?.overall ?? -1) || (b.scores?.interest ?? -1) - (a.scores?.interest ?? -1)) : cards;
+  const pips = (n, cls = '') => `<span class="pips ${cls}" aria-hidden="true">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</span>`;
+  const card = (p, i, c) => {
+    const sc = p.scores, inShort = c.id === 'prospects';
+    const fit = sc ? `<span class="fit">${pips(sc.overall)}<span>Fit ${sc.overall}/5</span>${sc.interest ? `${pips(sc.interest, 'int')}<span>Interest ${sc.interest}/5</span>` : ''}</span>${inShort && p.concern ? `<span class="concern">${esc(p.concern)}</span>` : ''}` : '';
+    let rate = '';
+    if (!sc) { rate = `<div style="padding:0 12px 12px"><span class="rate" role="group" aria-label="Rate fit for ${esc(p.company)}">Not assessed · Rate fit ${[1, 2, 3, 4, 5].map(n => `<button type="button" data-act="rate" data-id="${p.id}" data-n="${n}" data-fk="rate-${p.id}-${n}" ${!rated && n === 4 ? 'data-check="rate"' : ''} aria-label="${n} of 5">${n}</button>`).join('')}</span></div>`; rated = true; }
+    const pick = `<label class="pick"><input type="checkbox" data-pick="${p.id}" data-fk="pick-${p.id}" ${S.picks.includes(p.id) ? 'checked' : ''} ${!picked ? 'data-check="compare-pick"' : ''}>Compare</label>`; picked = true;
+    return `<button type="button" class="pc-open" data-act="open" data-id="${p.id}" data-fk="card-${p.id}" aria-label="${esc(p.company)}, ${esc(p.title)}, ${label(p.status)}${sc ? `, fit ${sc.overall} of 5` : ''}">
+      <span class="pc-head">${avatar(p)}<strong class="pc-co">${inShort && S.sort === 'fit' ? `<span class="rank">#${i + 1}</span>` : ''}${esc(p.company)}</strong></span><span class="pc-ti">${esc(p.title)}</span>
+      <span class="pc-meta">${badge(p.status)}${p.applied ? `<time>Applied ${fmt(p.applied)}</time>` : ''}</span>${fit}</button>${rate}${pick}`;
+  };
+  const cardSafe = card;
+  const colHead = (c, cards) => c.id === 'prospects'
+    ? `<h3><span>Shortlist</span><span>${cards.length}</span></h3>`
+    : `<h3><span>${c.label}</span><span>${cards.length}</span></h3>`;
+  const colSub = c => c.id === 'prospects' ? `<div class="colsub"><span class="sim-note">${S.sort === 'fit' ? 'Ranked by fit, then interest' : 'Your saved order'}</span><div class="seg" role="group" aria-label="Shortlist order"><button type="button" data-act="sort" data-v="fit" aria-pressed="${S.sort === 'fit'}">Fit</button><button type="button" data-act="sort" data-v="manual" aria-pressed="${S.sort === 'manual'}" data-check="sort-manual">Manual</button></div></div>` : '';
+  const picks = S.picks.map(byId).filter(Boolean);
+  const tray = picks.length ? `<div class="tray" role="region" aria-label="Compare"><div class="tray-h"><b style="font:400 21px/28px var(--serif)">Compare ${picks.length}</b><span class="sim-note">${picks.length < 2 ? 'Pick one or two more to compare' : 'Best value per row in green'}</span><button type="button" class="btn btn--tertiary btn--sm" data-act="clearPicks">Clear</button></div>
+    ${picks.length > 1 ? `<div class="cmpgrid"><table><thead><tr><th></th>${picks.map(p => `<th scope="col">${esc(p.company)}<br><span class="sim-note">${esc(p.title)}</span></th>`).join('')}</tr></thead><tbody>
+      ${SCORE_ROWS.map(([k, l]) => { const vals = picks.map(p => p.scores?.[k] ?? null), best = Math.max(...vals.filter(v => v != null)); return `<tr><th scope="row">${l}</th>${vals.map(v => `<td class="${v != null && v === best && vals.filter(x => x === best).length === 1 ? 'best' : ''}">${v ?? '—'}${v != null ? '/5' : ''}</td>`).join('')}</tr>`; }).join('')}
+      <tr><th scope="row">Compensation</th>${picks.map(p => `<td>${esc(p.comp || 'Not posted')}</td>`).join('')}</tr><tr><th scope="row">Concern</th>${picks.map(p => `<td>${esc(p.concern || '—')}</td>`).join('')}</tr></tbody></table></div>` : ''}</div>` : '';
+  return `${header()}<div class="page c">${pageHead()}${toolbar('C')}${board('C', cardSafe, { colHead, colSub, sortCol: { prospects: rankSort }, cardCls: p => S.picks.includes(p.id) ? 'picked' : '' })}${tray}</div>`;
+}
+
+// ── D · Focus Queue ──
+function renderD() {
+  const seg = `<div class="seg" role="group" aria-label="View"><button type="button" data-act="dView" data-v="focus" aria-pressed="${S.dView === 'focus'}">Focus</button><button type="button" data-act="dView" data-v="board" aria-pressed="${S.dView === 'board'}" data-check="view-board">Board</button></div>`;
+  if (S.dView === 'board') return `${header()}<div class="page">${pageHead()}${toolbar('D', seg)}${board('D', baseCard)}</div>`;
+  const list = visible();
+  const yours = [], waiting = [], closed = [];
+  list.forEach(p => { const c = colOf(p.status).id; if (c === 'done') closed.push(p); else if (attention(p) || c === 'prospects') yours.push(p); else waiting.push(p); });
+  yours.sort((a, b) => days(lastAt(b)) - days(lastAt(a)));
+  let firstAct = true;
+  const row = (p, kind) => {
+    const a = attention(p), d = days(lastAt(p)), c = colOf(p.status).id;
+    let why, acts = '';
+    const primary = (act, text) => { const h = `<button type="button" class="btn btn--primary btn--sm" data-act="${act}" data-id="${p.id}" data-fk="${act}-${p.id}" ${firstAct ? 'data-check="row-action"' : ''}>${text}</button>`; firstAct = false; return h; };
+    if (kind === 'yours') {
+      why = `<span class="d-why"><b>${a ? a.t : 'Decide: Apply or Pass'}</b> · ${c !== 'prospects' ? `quiet for ${d} days` : p.status === 'prospect' ? `added ${d === 0 ? 'today' : d + ' days ago'}` : `${label(p.status).toLowerCase()} for ${d} days`}</span>`;
+      if (c === 'prospects') acts = primary('markApplied', 'Mark Applied') + `<button type="button" class="btn btn--tertiary btn--sm" data-act="pass" data-id="${p.id}">Pass</button>`;
+      else if (p.status === 'offer') acts = primary('open', 'Open Offer');
+      else acts = primary('followUp', c === 'applied' ? 'Log Follow-Up' : 'Log Check-In') + `<button type="button" class="btn btn--tertiary btn--sm" data-act="open" data-id="${p.id}">Details</button>`;
+    } else if (kind === 'waiting') {
+      why = `<span class="d-why calm"><b>${c === 'applied' ? 'Waiting for a reply' : label(p.status)}</b> · ${d === 0 ? 'updated today' : `quiet for ${d} day${d === 1 ? '' : 's'}`}</span>`;
+      acts = `<button type="button" class="btn btn--tertiary btn--sm" data-act="open" data-id="${p.id}">Details</button>`;
+    } else {
+      why = `<span class="d-why calm">Closed ${fmtShort(lastAt(p))}</span>`;
+      acts = `<button type="button" class="btn btn--tertiary btn--sm" data-act="open" data-id="${p.id}">Details</button>`;
+    }
+    return `<li class="d-row">${avatar(p)}<button type="button" class="d-who" data-act="open" data-id="${p.id}" data-fk="who-${p.id}"><b>${esc(p.company)}</b><span>${esc(p.title)}</span></button><span>${badge(p.status)}</span>${why}<div class="d-acts">${acts}</div></li>`;
+  };
+  const sec = (title, sub, arr, kind) => `<section class="d-sec"><header><h2>${title} <span class="sim-note">${arr.length}</span></h2><p>${sub}</p></header><ul class="d-rows">${arr.length ? arr.map(p => row(p, kind)).join('') : `<li class="d-empty">${kind === 'yours' ? 'Nothing needs you right now.' : 'Nothing here.'}</li>`}</ul></section>`;
+  return `${header()}<div class="page">${pageHead('What needs you today, then everything in motion.')}${toolbar('D', seg)}
+    ${sec('Your Move', 'Decisions, stale applications and offers, oldest first.', yours, 'yours')}
+    ${sec('Waiting on Them', 'Fresh applications and active processes.', waiting, 'waiting')}
+    <details class="d-closed" ${S.doneOpen ? 'open' : ''}><summary data-act="doneToggle" data-fk="dclosed"><span class="sim-note">${S.doneOpen ? '▾' : '▸'}</span>Closed <span class="sim-note">${closed.length}</span></summary><ul class="d-rows" style="margin-top:8px">${closed.map(p => row(p, 'closed')).join('') || '<li class="d-empty">Nothing closed yet.</li>'}</ul></details>
+    <p class="sim-note">Log Follow-Up and Log Check-In are speculative: history records only status changes today.</p></div>`;
+}
+
+// ── E · Timeline Lanes ──
+function renderE() {
+  const end = Date.parse('2026-11-03'), start = end - S.zoom * 7 * 864e5, span = end - start;
+  const x = d => Math.max(0, Math.min(100, (Date.parse(d) - start) / span * 100));
+  const ticks = []; for (let t = start; t <= end; t += 7 * 864e5) ticks.push(t);
+  const zoom = `<div class="seg" role="group" aria-label="Time span">${[4, 8, 12].map(z => `<button type="button" data-act="zoom" data-v="${z}" aria-pressed="${S.zoom === z}" ${z === 12 ? 'data-check="zoom"' : ''}>${z} Weeks</button>`).join('')}</div>`;
+  const legend = `<div class="legend" aria-label="Legend">${[['--st-prospects', 'Prospects'], ['--st-applied', 'Applied'], ['--st-process', 'In-Process'], ['--st-offer', 'Offer'], ['--st-rejected', 'Rejected'], ['--st-closed', 'Passed, Withdrawn, Closed']].map(([v, l]) => `<span><i style="background:var(${v})"></i>${l}</span>`).join('')}<span><i style="background:repeating-linear-gradient(90deg,var(--muted) 0 3px,transparent 3px 7px)"></i>Quiet 14+ days</span></div>`;
+  let firstLane = true;
+  const lane = p => {
+    const done = colOf(p.status).id === 'done';
+    const evs = p.events.filter(e => STATUSES.includes(e.s));
+    const segs = evs.map((e, i) => {
+      const to = evs[i + 1] ? evs[i + 1].at : (done ? e.at : TODAY);
+      const l = x(e.at), w = Math.max(0, x(to) - l), v = STAGE_VAR(e.s);
+      const quietDays = !evs[i + 1] && !done ? days(lastAt(p)) : 0;
+      if (quietDays >= 14) {
+        const split = Date.parse(e.at) + 14 * 864e5, sx = Math.max(0, Math.min(100, (split - start) / span * 100));
+        return `<span class="tl-seg" style="left:${l}%;width:${Math.max(0, sx - l)}%;background:var(${v})"></span><span class="tl-seg quiet" style="--seg:var(${v});left:${sx}%;width:${Math.max(0, x(TODAY) - sx)}%"></span><span class="tl-tag" style="left:${Math.min(sx, 86)}%">quiet ${quietDays} d</span>`;
+      }
+      return `<span class="tl-seg" style="left:${l}%;width:${w}%;background:var(${v})"></span>`;
+    }).join('') + evs.map(e => Date.parse(e.at) >= start ? (OUTCOMES.includes(e.s) ? `<span class="tl-end" style="--seg:var(${STAGE_VAR(e.s)});left:${x(e.at)}%" title="${label(e.s)} ${fmtShort(e.at)}"></span>` : `<span class="tl-dot" style="--seg:var(${STAGE_VAR(e.s)});left:${x(e.at)}%" title="${label(e.s)} ${fmtShort(e.at)}"></span>`) : '').join('');
+    const h = `<div class="tl-lane ${done ? 'tl-faded' : ''}"><button type="button" class="tl-who" data-act="open" data-id="${p.id}" data-fk="lane-${p.id}" ${firstLane ? 'data-check="open-lane"' : ''} aria-label="${esc(p.company)}, ${esc(p.title)}, ${label(p.status)}, last change ${fmtShort(lastAt(p))}">${avatar(p)}<span><b>${esc(p.company)}</b><span>${esc(p.title)}</span></span></button><div class="tl-track" aria-hidden="true">${segs}</div><div class="tl-now">${badge(p.status)}</div></div>`;
+    firstLane = false; return h;
+  };
+  const groups = grouped().filter(g => g.cards.length);
+  const active = visible().filter(p => colOf(p.status).id !== 'done');
+  const quiet = active.filter(p => days(lastAt(p)) >= 14).length;
+  const body = `<div class="tl"><div class="tl-in"><div class="tl-axis"><span class="sim-note">${S.zoom} weeks</span><div class="tl-ticks">${ticks.filter(t => Math.abs(t - Date.parse(TODAY)) > 3 * 864e5).map(t => `<span style="left:${(t - start) / span * 100}%">${fmtShort(new Date(t).toISOString().slice(0, 10))}</span>`).join('')}</div><span></span></div>
+    ${groups.map(g => `<div class="tl-grp">${g.label} · ${g.cards.length}</div>${g.cards.map(lane).join('')}`).join('')}
+    <div class="tl-today" style="left:calc(250px + (100% - 382px) * ${x(TODAY) / 100})"><span>Today</span></div></div></div>`;
+  return `${header()}<div class="page">${pageHead('Every prospect over time: where each one moved, and where things went quiet.')}${toolbar('E')}
+    <div class="e-ctl">${legend}${zoom}</div><p class="tl-cap">${active.length} open · ${quiet} quiet for 14+ days · ${visible().length - active.length} closed</p>${body}</div>`;
+}
+
+// ── Render ──
+const RENDER = { base: renderBase, A: renderA, B: renderB, C: renderC, D: renderD, E: renderE };
+function render(notes = true) {
+  const ae = document.activeElement, fk = ae && (ae.dataset?.fk || (ae.id && '#' + ae.id));
+  const sel = ae && ae.tagName === 'INPUT' && ae.type !== 'checkbox' ? [ae.selectionStart, ae.selectionEnd] : null;
+  DIRS.forEach(id => { const p = document.querySelector(`[data-direction-panel="${id}"]`), on = id === S.active; p.hidden = !on; const tb = document.querySelector(`[data-direction="${id}"]`); tb.setAttribute('aria-selected', on); tb.tabIndex = on ? 0 : -1; if (!on) p.innerHTML = ''; });
+  const panel = document.querySelector(`[data-direction-panel="${S.active}"]`);
+  panel.innerHTML = RENDER[S.active]() + drawer() + toastHTML();
+  let target = fk && (fk.startsWith('#') ? document.getElementById(fk.slice(1)) : panel.querySelector(`[data-fk="${CSS.escape(fk)}"]`));
+  if (S.focusNext) { target = panel.querySelector(S.focusNext) || target; S.focusNext = null; }
+  if (target && panel.contains(target)) { target.focus({ preventScroll: true }); if (sel) try { target.setSelectionRange(...sel); } catch (e) {} }
+  if (notes) renderNotes();
+}
+function setActive(id) { if (!DIRS.includes(id) || id === S.active) return; S.active = id; S.menuFor = null; S.chooser = null; S.openId = null; S.adding = false; render(); }
+function cardHTML(id) {
+  if (id === 'base') return `<header><h2>Baseline</h2><span class="chipinfo">Control</span><span class="sim-note">${esc(ROUND.baseline)}</span></header>
+    <p class="hyp">The current board rebuilt for comparison: four lifecycle columns, manual order, drag between columns, Done chooser, search and filters.</p>
+    <dl class="dl"><div><dt>Brief</dt><dd>${esc(ROUND.brief)}</dd></div><div><dt>Source contract (every direction)</dt><dd><ul>${ROUND.sourceContract.map(s => `<li>${esc(s)}</li>`).join('')}</ul></dd></div>
+    <div><dt>Observed gaps</dt><dd><ul><li>No time signal on cards: a prospect applied 25 days ago looks the same as one applied today.</li><li>No next action; the board files, it does not prompt.</li><li>12 stored fit scores, connections and concerns never reach the board.</li><li>The only non-drag move is opening the record, so narrow and touch use is slow.</li><li>Discrepancy: the Done chooser uses a soft 0 4px 16px shadow; rules.md calls for the hard-shadow treatment on popovers.</li></ul></dd></div></dl>`;
+  const d = ROUND.directions.find(x => x.id === id), li = a => `<ul>${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>`;
+  const lv = ['', 'Refine', 'Rethink', 'Reinvent'][d.intensity];
+  return `<header><h2>${d.id} · ${esc(d.name)}</h2><span class="chipinfo" style="background:var(--primary);color:var(--ink)">Intensity ${d.intensity} · ${lv}</span><span class="chipinfo">Lead: ${d.lead === 'ux' ? 'UX' : d.lead[0].toUpperCase() + d.lead.slice(1)}</span><span class="sim-note">${esc(d.lineage)}</span></header>
+    <p class="hyp">${esc(d.hypothesis)}</p>
+    <dl class="dl"><div><dt>Mechanism</dt><dd>${esc(d.mechanism)}</dd></div><div><dt>Evidence and rationale</dt><dd>${esc(d.evidence)}</dd></div><div><dt>Composition and flow</dt><dd>${esc(d.composition)}</dd></div>
+    <div><dt>Stays faithful</dt><dd>${esc(d.preserved)}</dd></div><div><dt>Departures (why they fit ${lv})</dt><dd>${li(d.departures)}</dd></div><div><dt>System fit</dt><dd>${esc(d.systemFit)}</dd></div>
+    <div><dt>Tradeoffs</dt><dd>${li(d.tradeoffs)}</dd></div><div><dt>Fails if</dt><dd>${esc(d.failure)}</dd></div><div><dt>Validation</dt><dd>${esc(d.validation)}</dd></div><div><dt>Cost</dt><dd>${esc(d.cost)}</dd></div></dl>`;
+}
+const CMP = [
+  ['Shows time / staleness', 'No', 'No', '<b>Age bar + days in stage</b>', 'No', 'Quiet-for counts', '<b>Whole history, quiet stretches</b>'],
+  ['Prompts the next action', 'No', 'No', '<b>Next-move line, Needs Attention</b>', 'Indirect (rank)', '<b>One action per row</b>', 'No'],
+  ['Supports apply-or-pass decisions', 'No', 'No', 'Decide prompt only', '<b>Fit rank, compare</b>', 'Mark Applied / Pass', 'No'],
+  ['Non-drag move path', 'Record only', 'Record only', '<b>Move menu on card</b>', 'Record only', '<b>Row actions</b>', 'Record only'],
+  ['Pipeline shape at a glance', 'Good', '<b>Best: large counts</b>', 'Good', 'Good', 'Weaker (list)', 'Good, by time'],
+  ['Phone width', 'Columns stack', 'Columns stack', 'Stack; taller cards', 'Stack; busier cards', '<b>Rows suit narrow</b>', 'Track scrolls sideways'],
+  ['System reuse', 'Full', 'High (local CSS)', 'High', 'Medium (pips, tray)', 'Medium (list row)', 'Low (new component)'],
+  ['Data / schema change', 'None', 'None', 'Latest event per card', 'Score fields in board query', '<b>New follow-up event concept</b>', 'All events'],
+  ['Cost', 'None', 'Low', 'Low–medium', 'Medium', 'Medium–high', 'Medium'],
+  ['Confidence', 'Observed', 'Predicted; taste', 'Predicted; thresholds need tuning', 'Depends on scores being filled', 'Predicted; habit risk', 'Speculative value'],
+];
+function renderNotes() {
+  document.getElementById('dcard').innerHTML = cardHTML(S.active);
+  const col = DIRS.indexOf(S.active);
+  document.getElementById('cmp').innerHTML = `<table class="cmp"><thead><tr><th scope="col">Criterion</th>${['Baseline', 'A · Calm Hierarchy', 'B · Next Move', 'C · Fit Ranked', 'D · Focus Queue', 'E · Timeline Lanes'].map((h, i) => `<th scope="col" class="${i === col ? 'on' : ''}">${h}</th>`).join('')}</tr></thead><tbody>${CMP.map(([c, ...v]) => `<tr><th scope="row">${c}</th>${v.map((x, i) => `<td class="${i === col ? 'on' : ''}">${x}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const R = ROUND.recommendation;
+  document.getElementById('reco').innerHTML = `<div><h3>Recommend · B · Next Move</h3><p>${esc(R.why)}</p></div><div><h3>Strongest counterargument</h3><p>${esc(R.counterargument)}</p></div><div><h3>Likely round 2</h3><p>${esc(R.combine)}</p></div><div><h3>Next validation</h3><p>${esc(R.nextValidation)} A recommendation is not a selection.</p></div>`;
+}
+
+// ── Actions ──
+const ACT = {
+  noop() { toast('Not part of this prototype.'); },
+  toggleMode() { setMode(S.mode === 'dark' ? 'light' : 'dark'); },
+  doneToggle() { S.doneOpen = !S.doneOpen; },
+  open({ id }) { if (Date.now() < (S.suppress || 0)) return; S.openId = id; S.menuFor = null; S.focusNext = '[data-fk="dclose"]'; },
+  close() { const id = S.openId; S.openId = null; S.adding = false; S.focusNext = id ? `[data-fk="card-${id}"], [data-fk="lane-${id}"], [data-fk="who-${id}"]` : null; },
+  add() { S.adding = true; S.openId = null; S.focusNext = '#add-co'; },
+  saveAdd() {
+    const co = document.getElementById('add-co').value.trim(), ti = document.getElementById('add-ti').value.trim();
+    if (!co || !ti) { document.getElementById('add-err').textContent = 'Company and job title are both required.'; return 'stay'; }
+    S.items.unshift(P('new' + (++S.events), co, ti, 'prospect', [['prospect', TODAY]])); S.adding = false; toast(`${co} added to Prospects.`);
+  },
+  outcome({ s }) { const p = byId(S.chooser); S.chooser = null; setStatus(p, s, 'Done'); },
+  cancelChooser() { S.chooser = null; },
+  // B
+  attention() { S.attention = !S.attention; },
+  menu({ id }) { S.menuFor = S.menuFor === id ? null : id; if (S.menuFor) S.focusNext = '.menu button'; },
+  // Done outcomes are listed by name, so choosing one is already the explicit outcome the Done chooser asks for.
+  menuMove({ id, s }) { S.menuFor = null; setStatus(byId(id), s, 'from Move menu'); S.focusNext = `[data-fk="mv-${id}"]`; },
+  // C
+  rate({ id, n }) { const p = byId(id); p.scores = { overall: +n, interest: null, level: null, comp: null, domain: null, logistics: null }; toast(`${p.company} rated ${n}/5 fit.`); },
+  sort({ v }) { S.sort = v; },
+  clearPicks() { S.picks = []; },
+  // D
+  dView({ v }) { S.dView = v; },
+  markApplied({ id }) { setStatus(byId(id), 'applied'); },
+  pass({ id }) { setStatus(byId(id), 'passed'); },
+  followUp({ id }) { const p = byId(id); p.events.push({ s: 'follow-up', at: TODAY }); toast(`Follow-up logged for ${p.company} (speculative event).`); },
+  // E
+  zoom({ v }) { S.zoom = +v; },
+};
+function setMode(m) {
+  S.mode = m; document.body.classList.toggle('light', m === 'light');
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  const sw = document.querySelector('.nc-switch'); if (sw) sw.setAttribute('aria-label', `Switch to ${m === 'dark' ? 'light' : 'dark'} mode`);
+}
+
+// ── Events ──
+document.addEventListener('click', e => {
+  const dir = e.target.closest('[data-direction]'); if (dir) { setActive(dir.dataset.direction); return; }
+  const mode = e.target.closest('button[data-mode]'); if (mode) { setMode(mode.dataset.mode); return; }
+  const vp = e.target.closest('button[data-viewport]'); if (vp) { S.viewport = vp.dataset.viewport; document.getElementById('stage').dataset.viewport = S.viewport; document.querySelectorAll('button[data-viewport]').forEach(b => b.setAttribute('aria-pressed', b === vp)); render(false); return; }
+  const fit = e.target.closest('button[data-fit]'); if (fit) { document.getElementById('stage').dataset.fit = fit.dataset.fit; document.querySelectorAll('button[data-fit]').forEach(b => b.setAttribute('aria-pressed', b === fit)); return; }
+  if (e.target.closest('#resetBtn')) { const a = S.active, vpv = S.viewport; init(true); S.active = a; S.viewport = vpv; setMode(S.mode); render(); return; }
+  const a = e.target.closest('[data-act]');
+  if (a && !a.disabled && ACT[a.dataset.act]) { e.preventDefault(); const r = ACT[a.dataset.act](a.dataset); if (r !== 'stay') render(false); return; }
+  if (S.menuFor && !e.target.closest('.menu')) { S.menuFor = null; render(false); }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('select[data-bind]')) { S[t.dataset.bind] = t.value; render(false); }
+  if (t.matches('[data-status-select]')) { setStatus(byId(S.openId), t.value, 'from record'); render(false); }
+  if (t.matches('[data-pick]')) { const id = t.dataset.pick; S.picks = S.picks.includes(id) ? S.picks.filter(x => x !== id) : [...S.picks, id].slice(-3); render(false); }
+});
+document.addEventListener('input', e => { const t = e.target; if (t.matches('input[data-bind]')) { S[t.dataset.bind] = t.value; render(false); } });
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if (e.key === 'Escape') { if (S.menuFor) { const id = S.menuFor; S.menuFor = null; S.focusNext = `[data-fk="mv-${id}"]`; render(false); return; } if (S.openId || S.adding) { ACT.close(); render(false); return; } if (S.chooser) { S.chooser = null; render(false); return; } }
+  if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown') && t.matches('.pc-open')) {
+    e.preventDefault(); const id = t.dataset.id, p = byId(id), col = colOf(p.status).id;
+    const same = S.items.filter(x => colOf(x.status).id === col), i = same.indexOf(p), j = i + (e.key === 'ArrowUp' ? -1 : 1);
+    if (j < 0 || j >= same.length) return;
+    const ai = S.items.indexOf(p), bi = S.items.indexOf(same[j]); [S.items[ai], S.items[bi]] = [S.items[bi], S.items[ai]];
+    toast(`${p.company} moved ${e.key === 'ArrowUp' ? 'up' : 'down'}. Order saved.`); render(false); return;
+  }
+  if (t.matches && t.matches('.ptab') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'Home' || e.key === 'End')) {
+    e.preventDefault(); const i = DIRS.indexOf(S.active), n = e.key === 'Home' ? 0 : e.key === 'End' ? DIRS.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + DIRS.length) % DIRS.length;
+    setActive(DIRS[n]); document.querySelector(`[data-direction="${DIRS[n]}"]`).focus(); return;
+  }
+  if (t.closest && t.closest('input, textarea, select')) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const n = parseInt(e.key, 10); if (n >= 1 && n <= DIRS.length) setActive(DIRS[n - 1]);
+});
+// Native drag and drop (desktop viewport only), mirroring kanban.js semantics.
+let dragId = null;
+document.addEventListener('dragstart', e => { const c = e.target.closest && e.target.closest('.pc[data-card]'); if (!c) return; dragId = c.dataset.card; c.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragId); document.querySelectorAll('[data-board] .col').forEach(col => col.classList.add('drop-ok')); });
+document.addEventListener('dragover', e => { const col = e.target.closest && e.target.closest('[data-board] .col'); if (!col || !dragId) return; e.preventDefault(); document.querySelectorAll('.col.drop-over').forEach(c => c !== col && c.classList.remove('drop-over')); col.classList.add('drop-over'); });
+document.addEventListener('dragend', () => { dragId = null; S.suppress = Date.now() + 400; document.querySelectorAll('.drop-ok, .drop-over, .dragging').forEach(n => n.classList.remove('drop-ok', 'drop-over', 'dragging')); });
+document.addEventListener('drop', e => {
+  const col = e.target.closest && e.target.closest('[data-board] .col'); if (!col) return; e.preventDefault();
+  const id = dragId || e.dataTransfer.getData('text/plain'), p = byId(id), dest = COLUMNS.find(c => c.id === col.dataset.column);
+  dragId = null; S.suppress = Date.now() + 400; if (!p || !dest || dest.statuses.includes(p.status)) { render(false); return; }
+  if (!dest.drop) { S.chooser = id; S.doneOpen = S.doneOpen; S.focusNext = '[data-fk="oc-passed"]'; render(false); return; }
+  setStatus(p, dest.drop, 'drag'); render(false);
+});
+
+init(false);
+setMode(S.mode);
+render();
+})();
+</script>

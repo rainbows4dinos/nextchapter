@@ -1,0 +1,198 @@
+{
+  "exploration": "resume-builder",
+  "round": 1,
+  "date": "2026-10-27",
+  "settings": "Settings: 5 directions · intensity 3 (3, 3, 3, 3, 3) · focus all · fidelity prototype",
+  "brief": "Larry tailors a résumé and cover letter to one posting at a time, often handed off from Prospect Tracker. Today he fills a long form, picks from 20 equally weighted emphasis chips (or leaves them blank for hidden auto-detection), waits on an opaque generation, and then corrects the result through a free-text revision box. Goal: get to a send-ready, fact-faithful application with fewer blind steps and fewer revision rounds.",
+  "sourceContract": [
+    "Inputs stay: job title (required), company, job description (required), hiring contact (optional), emphasis focus (optional, the 20 values in tone-and-positioning.md), additional notes",
+    "Outputs stay: tailored résumé and cover letter, QA warnings from rules.json, revisions, and the five-file download package (PDF, DOCX, ATS plain)",
+    "No invented career facts: every résumé line traces to resume-master.md; gaps are never claimed",
+    "Tracker handoff stays explicit and reviewable before generating",
+    "Brand assets stay: nextchapter logotype, DM Serif Display / Inter / IBM Plex Mono, lavender and peach palette, hard-shadow elevation",
+    "Title Case labels, sentence-case help text, no all-caps labels"
+  ],
+  "baseline": "Figma hLBR7Nl3GelwM9hstQb3Ah 364:1851 (B02 · Job details, filled with Tracker handoff · Desktop · Dark), read 2026-10-27; tools/resume-tailor.html at a48d153",
+  "seed": null,
+  "directions": [
+    {
+      "id": "A",
+      "name": "Brief First",
+      "intensity": 3,
+      "lead": "product",
+      "lineage": "original → A",
+      "hypothesis": "For Larry tailoring to a specific posting, reading the posting into an editable brief (requirements matched to master-résumé evidence, detected emphasis, unclaimable gaps) before generating will reduce revision rounds and unsupported claims, because the decisions the model currently makes invisibly become visible and correctable up front.",
+      "mechanism": "A new analysis step between input and generation. The tool splits the posting into requirements, pairs each with the strongest master-résumé evidence, flags gaps that will not be claimed, and pre-selects emphasis with the phrase that triggered it. Generation then works from the approved brief, and the preview shows which requirements each document covers.",
+      "evidence": "Observed: the Emphasis field says 'auto-detected if blank', but the detection result is never shown (364:1865, resume-tailor.html). Observed: QA warnings and revision are the only correction path, both after generation. Inferred: most revisions correct choices made during generation. No usage data on revision frequency exists.",
+      "composition": "Three stages: Posting (title, company, description; contact and notes behind More Options) → Brief (requirement list with match strength and evidence on the left; detected emphasis with reasons and the summary opener on the right) → Documents (preview with a coverage strip; click a requirement to highlight the line that answers it).",
+      "preserved": "All six inputs, both outputs, QA, revision box, download package, Tracker handoff notice.",
+      "departures": [
+        "Adds a Brief stage and a second model call (speculative: extraction prompt not built)",
+        "Emphasis chips move inside the brief as 'detected' plus 'add more'",
+        "Coverage strip in the preview is new"
+      ],
+      "systemFit": "Reuses Chip, Alert, Status-Badge (positive, highlight, negative tones), Button, Field. New: requirement row (checkbox + evidence quote) and stage tabs; both compose existing parts. Stage tabs could use Pill Tabs instead of the segmented bar shown.",
+      "tradeoffs": [
+        "Slower to first draft: one more screen and one more model call",
+        "Thin or vague postings yield a thin brief, so the step adds friction with little signal",
+        "Keyword matching in this prototype is crude; real extraction quality is unproven"
+      ],
+      "failure": "Larry skips the brief without reading it, or the extracted requirements are wrong often enough that correcting them costs more than revising the output.",
+      "validation": "Run the next 5 real Tracker handoffs through a live-model brief on localhost. Count revision requests and unsupported-claim catches per application against the last 5 made with the current flow.",
+      "cost": "Medium. One extraction prompt and JSON schema, one new stage view, coverage mapping in the preview. No storage change.",
+      "signature": [
+        "requirement list with matched evidence",
+        "gap rows that are never claimed",
+        "detected emphasis with trigger phrase",
+        "coverage strip on the documents"
+      ],
+      "screen": "A"
+    },
+    {
+      "id": "B",
+      "name": "Workbench",
+      "intensity": 3,
+      "lead": "ux",
+      "lineage": "original → B",
+      "hypothesis": "For Larry refining a draft, a single workspace with the posting beside the live document and per-line actions (pin, tighten, swap, remove, undo) will make revisions faster and more predictable than a free-text request box, because each change targets one line and is applied immediately instead of regenerating a whole document.",
+      "mechanism": "Removes the three-step wizard. The posting sits on the left with steering terms highlighted (click a term to steer emphasis). The right side is the document itself: generation streams into it, and selecting any line opens an action toolbar. Every action is undoable and logged.",
+      "evidence": "Observed: revisions today are free text applied to the whole document, with changes highlighted after the fact (goRevise in resume-tailor.html). Observed: the step bar hides the posting once preview starts. Inferred: many revision requests target one bullet ('drop the Elevate bullet' is the placeholder example).",
+      "composition": "Split view. Left: compact title and company, highlighted posting with Edit Posting, steering chips, contact and notes. Right: Résumé / Cover Letter tabs, Generate or Download, the document with selectable lines, QA flags inline next to the offending line, edit log with Undo.",
+      "preserved": "All inputs and outputs, QA rules, free-text revision (kept as a fallback below the log), download package.",
+      "departures": [
+        "No step bar; generation and preview share one screen",
+        "Per-line actions (speculative: Tighten and Swap need a per-bullet model call or bank lookup)",
+        "QA flags move inline from the sidebar"
+      ],
+      "systemFit": "Reuses Chip, Button, Pill Tabs, Field. New: highlighted posting text, line toolbar (uses the hard-shadow popover treatment from rules.md), edit log. Medium extension.",
+      "tradeoffs": [
+        "Dense at phone width; the split stacks and the posting scrolls away",
+        "Per-line edits can drift from the cover letter, which is not edited in lockstep",
+        "Highlight-to-steer is discoverable only if the marks read as interactive"
+      ],
+      "failure": "Larry still needs whole-document rewrites (tone, length) more often than line edits, so the toolbar goes unused.",
+      "validation": "Log revision type for 10 applications: share of requests that target a single line versus the whole document. If under a third are single-line, this direction's core bet is wrong.",
+      "cost": "Medium to high. Stable bullet IDs through generation, per-bullet actions, undo stack, streaming render into the document.",
+      "signature": [
+        "posting and document side by side",
+        "clickable steering highlights",
+        "line toolbar with pin, tighten, swap, remove",
+        "undoable edit log"
+      ],
+      "screen": "B"
+    },
+    {
+      "id": "C",
+      "name": "Positioning Mixer",
+      "intensity": 3,
+      "lead": "ui",
+      "lineage": "original → C",
+      "hypothesis": "For Larry choosing how to position himself, grouping the 20 emphasis values into four facets with Off / Supporting / Lead weights, next to a live preview of which master-résumé bullets rise or fall, will make emphasis a deliberate choice instead of a guess, because each click shows its effect before any generation.",
+      "mechanism": "Replaces the flat chip wall with faceted, three-state chips (Level, Practice, Market, Company and Terms) and a live 'résumé shape' panel: the summary opener, selected bullets per role with relative weight, held-back bullets, and a Leadership ↔ Hands-on IC balance meter.",
+      "evidence": "Observed: 20 chips in one undifferentiated wrap, all binary (364:1867). Observed: tone-and-positioning.md says chip order does not rank preferences, and Director and Staff IC have equal priority, so the UI gives no way to express which matters more for a given posting. Inferred: binary selection cannot express 'lead with X, support with Y'.",
+      "composition": "Left: compact job fields, then four facet rows of weighted chips and a legend. Right (sticky): balance meter, summary opener, per-role bullet bars with held-back lines struck through, then Generate. After generation the right side becomes the document; the left stays for remixing.",
+      "preserved": "All 20 emphasis values and labels, every other input, outputs, QA, revision, download.",
+      "departures": [
+        "Facet grouping is new and needs approval (no source defines it)",
+        "Three-state chip is a new Chip variant",
+        "Weights must be passed to the prompt (speculative)"
+      ],
+      "systemFit": "Extends Chip with a weight state (proposed variant, nearest: selected chip). Balance meter and bar lines are new, simple components. Facet names are proposed copy.",
+      "tradeoffs": [
+        "The preview ranks bullets by tags, which the model may not follow exactly",
+        "Three states are slower to learn than a toggle",
+        "Facet grouping implies a taxonomy that may not hold for every posting"
+      ],
+      "failure": "The previewed shape and the generated result diverge often, so the preview stops being trusted.",
+      "validation": "For 5 postings, set weights, generate, and compare previewed versus generated bullet sets. Target at least 80% overlap before investing in the variant.",
+      "cost": "Medium. Tag the master-résumé bullets (new structured data), weight-aware prompt, new chip variant.",
+      "signature": [
+        "four facet rows",
+        "Off / Supporting / Lead chips",
+        "live résumé shape with held-back bullets",
+        "Leadership ↔ IC balance meter"
+      ],
+      "screen": "C"
+    },
+    {
+      "id": "D",
+      "name": "Typeset",
+      "intensity": 3,
+      "lead": "visual",
+      "lineage": "original → D",
+      "hypothesis": "For Larry, a designer judging his own application, recasting the builder as an editorial writing desk (the brief as one large serif sentence, the posting as a mono clipping, the output as a numbered proof with margin marks) will raise perceived craft and make the document the hero, because form inputs and nested cards are replaced by typography that mirrors the artifact being made.",
+      "mechanism": "One coherent visual language: DM Serif Display at display size for the brief, IBM Plex Mono for source material, Inter only on the proof itself. Hairline rules and square corners replace rounded cards; peach becomes a highlighter mark, not a button fill. The primary action is a letterpress-style button with a hard offset shadow. QA warnings become proofreader margin notes keyed to line numbers.",
+      "evidence": "Observed: B02 is a form inside a raised card with 12px radius, which reads like any SaaS form. Observed: the product's own serif and mono faces are used only for titles and metadata. Inferred: the brand already leans editorial (DM Serif logotype), so this pushes an existing trait rather than importing a new one.",
+      "composition": "Masthead line. Left 8 columns: 'Tailor my résumé for the ___ role at ___, leaning on ___. Address the letter to ___.' with inline fields and highlighter emphasis marks, plus an inline word list to add more. Right 4 columns: the posting clipping and a margin note for additional notes. Below: Set the Proof. After generation: numbered proof sheet with margin column (proof marks, mark-up box, package).",
+      "preserved": "All inputs (as inline sentence fields), outputs, QA rules, revision, download, brand faces and palette.",
+      "departures": [
+        "Exploratory raw values: brief type clamp(26–50px) (nearest Type/Display 50), radius 0 (nearest radius-none), 4px offset hard shadow (nearest nc-shadow-sm 1px)",
+        "Peach used as a highlighter tint rgba(242,197,111,.22), the existing revised-highlight value",
+        "No card containers"
+      ],
+      "systemFit": "Low reuse of component chrome: Field, Chip and Card are replaced visually. Tokens reused for color and type. Would need new text-input and button variants or a page-scoped style.",
+      "tradeoffs": [
+        "Inline sentence fields are less scannable for a long, pasted job title",
+        "Large serif lowers information density; more scrolling",
+        "Diverges from Tracker and Radar, so the suite feels less unified"
+      ],
+      "failure": "The sentence form breaks with real data (long titles, missing company), or the look is admired but slows each application down.",
+      "validation": "Five-second test with 3 designers: describe the tool's purpose and tone. Then time 3 real applications in D versus baseline; reject if slower.",
+      "cost": "Medium. CSS-heavy, little logic change; export formatting unaffected. Risk is consistency with the rest of nextchapter.",
+      "signature": [
+        "brief as one serif sentence",
+        "highlighter emphasis marks",
+        "mono posting clipping",
+        "numbered proof with margin marks",
+        "letterpress primary button"
+      ],
+      "screen": "D"
+    },
+    {
+      "id": "E",
+      "name": "Application Queue",
+      "intensity": 3,
+      "lead": "ux",
+      "lineage": "original → E",
+      "hypothesis": "For Larry applying to several roles in a week, organizing the builder around a queue of Tracker prospects (each with its own status, emphasis, documents and history) will reduce repeat setup and lost work, because the builder keeps per-application state instead of starting from an empty, single-use form each time.",
+      "mechanism": "Information-architecture change: a left rail lists prospects sent from Tracker with status (Needs Details, Ready, Generating, Check N, Generated, Downloaded). The main area is per-application with Details, Documents and History tabs. Emphasis can be copied from another application; all Ready applications can be generated in one pass.",
+      "evidence": "Observed: the builder keeps generated data only in browser memory, and Tracker handoff is a single token-addressed localStorage record (AGENTS.md). Observed: Tracker already holds multiple prospects with statuses. Inferred: re-entering emphasis and notes for similar roles repeats work. Unknown: how many applications Larry tailors per session.",
+      "composition": "Rail: 'From Prospect Tracker' list with status badges, Generate Ready (n). Main: company and role header with stage badge, Details / Documents / History tabs. Details: fields plus Copy Emphasis From. Documents: preview, QA, revise, download. History: timestamped events.",
+      "preserved": "Per-application inputs and outputs unchanged; QA and download unchanged; the form fields themselves are the baseline's.",
+      "departures": [
+        "Builder gains persistence (speculative: Supabase table and Auth inside the Builder, which today has neither)",
+        "Batch generation (speculative: cost and rate limits through the Worker)",
+        "History is new"
+      ],
+      "systemFit": "Reuses Status-Badge, Field, Chip, Button, Pill Tabs. Rail list item is new but close to Tracker cards. Large back-end dependency: AGENTS.md requires RLS-gated Supabase access for private records.",
+      "tradeoffs": [
+        "Highest build and security cost of the five",
+        "Batch generation can spend API budget on applications Larry abandons",
+        "Adds navigation weight for the single-application case"
+      ],
+      "failure": "Larry tailors one application per sitting most of the time, so the queue is overhead.",
+      "validation": "Before building: count, from Tracker history, how many prospects reach 'applying' within the same day or week. If most weeks have one, shelve this direction.",
+      "cost": "High. Supabase schema and RLS for drafts, Auth in the Builder, Tracker-to-Builder handoff for many records, batch control in the Worker.",
+      "signature": [
+        "prospect rail with status badges",
+        "per-application Details / Documents / History",
+        "Copy Emphasis From",
+        "Generate Ready (n)"
+      ],
+      "screen": "E"
+    }
+  ],
+  "checks": [],
+  "recommendation": {
+    "direction": "A",
+    "why": "A addresses the two biggest problems in the source: the auto-detected emphasis is invisible, and correction happens only after generation. Its gap rows enforce the repository's hardest rule (never invent career facts) inside the product rather than relying on the prompt. It also reuses existing components with the least new UI.",
+    "counterargument": "It adds a step and a model call before any document appears. If Larry mostly fixes wording rather than direction, B's line actions save more time, and A's brief becomes a speed bump.",
+    "combine": "Likely round 2: A's brief plus B's line toolbar in the Documents stage, and C's Lead / Supporting weights inside A's emphasis panel.",
+    "nextValidation": "Live-model brief on localhost for the next 5 real Tracker handoffs; compare revision count and unsupported-claim catches with the last 5 baseline applications."
+  },
+  "prototype": {
+    "url": "https://claude.ai/artifact/Wz86v85Zwp1JnrHxnhG8qT",
+    "file": "explorations/resume-builder/round-1.html"
+  },
+  "selected": null
+}

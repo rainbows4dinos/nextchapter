@@ -1,0 +1,398 @@
+{
+ "source": "Current desktop UI of tools/prospect-tracker/ and tools/resume-tailor.html at commit a48d153; references rendered at 1440 px by Playwright against the synthetic fixture (Tracker) and local context with the Anthropic proxy intercepted (Builder).",
+ "destination": {
+  "fileKey": "hLBR7Nl3GelwM9hstQb3Ah",
+  "page": "UX AUDIT 10/27",
+  "pageId": "353:5396"
+ },
+ "agreed": "2026-10-27: 17 distinct desktop views x 1440 x Dark only; mobile, Career Radar landing and About excluded; Light deferred.",
+ "directions": {
+  "current": {
+   "name": "Current implementation (audit baseline)",
+   "signature": [
+    "lavender nav header with selected pill item",
+    "DM Serif Display page headings",
+    "hard-edged panels on surface/raised",
+    "status badges by tone",
+    "peach primary / lavender secondary buttons"
+   ]
+  }
+ },
+ "frames": [
+  {
+   "id": "T01-desktop-dark",
+   "app": "Tracker",
+   "view": "Sign in",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "359:541",
+   "reference": "scratchpad/shots/ref/T01-sign-in.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "header, DM Serif heading, raised panel and button treatments present"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "T02-desktop-dark",
+   "app": "Tracker",
+   "view": "Board, populated",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "357:2",
+   "reference": "scratchpad/shots/ref/T02-board-populated.png",
+   "checks": {
+    "visual": "matches reference; avatar img layer hidden per instance (library Image property unwired)",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 1,
+   "gaps": [
+    "Synthetic logos for Kestrel Health, Northwind Labs and Harbor Analytics rendered as initials avatars (no image source in plugin context)"
+   ]
+  },
+  {
+   "id": "T03-desktop-dark",
+   "app": "Tracker",
+   "view": "Board, empty",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "358:215",
+   "reference": "scratchpad/shots/ref/T03-board-empty.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "header, DM Serif heading, raised panel and button treatments present"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "T04-desktop-dark",
+   "app": "Tracker",
+   "view": "Board, filtered with date menu open",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "358:443",
+   "reference": "scratchpad/shots/ref/T04-board-filtered-date-menu.png",
+   "checks": {
+    "visual": "matches; Done column open with Tidewater card, popover overlay with Pill-Tabs + Radio Sm; trigger shown with focus/ring border override",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 1,
+   "gaps": []
+  },
+  {
+   "id": "T05-desktop-dark",
+   "app": "Tracker",
+   "view": "Add Prospect, blank",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "362:1356",
+   "reference": "scratchpad/shots/ref/T05-add-prospect.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "T06-desktop-dark",
+   "app": "Tracker",
+   "view": "Add Prospect, retrieved posting and likely duplicates",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "362:1672",
+   "reference": "scratchpad/shots/ref/T06-add-prospect-retrieved-duplicates.png",
+   "checks": {
+    "visual": "matches incl. the reference compensation textarea clipping its second line (observed app issue, reproduced)",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 1,
+   "gaps": []
+  },
+  {
+   "id": "T07-desktop-dark",
+   "app": "Tracker",
+   "view": "Prospect details",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "360:548",
+   "reference": "scratchpad/shots/ref/T07-prospect-details.png",
+   "checks": {
+    "visual": "matches; textarea heights via Input FILL override inside fixed-height instances",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 2,
+   "gaps": []
+  },
+  {
+   "id": "T08-desktop-dark",
+   "app": "Tracker",
+   "view": "Prospect details, logo picker open",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "361:825",
+   "reference": "scratchpad/shots/ref/T08-details-logo-picker.png",
+   "checks": {
+    "visual": "matches; synthetic Brandfetch logos shown as initials avatars",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": [
+    "Logo tiles use initials avatars instead of synthetic logo images"
+   ]
+  },
+  {
+   "id": "T09-desktop-dark",
+   "app": "Tracker",
+   "view": "Prospect details, delete confirmation",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "361:1259",
+   "reference": "scratchpad/shots/ref/T09-details-delete-confirm.png",
+   "checks": {
+    "visual": "matches; backdrop background/page at 80% layer opacity",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 1,
+   "gaps": []
+  },
+  {
+   "id": "T10-desktop-dark",
+   "app": "Tracker",
+   "view": "Message view (unknown route)",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "359:685",
+   "reference": "scratchpad/shots/ref/T10-message-not-found.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "header, DM Serif heading, raised panel and button treatments present"
+   },
+   "fixPasses": 1,
+   "gaps": []
+  },
+  {
+   "id": "B01-desktop-dark",
+   "app": "Builder",
+   "view": "Job details, empty",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "363:1717",
+   "reference": "scratchpad/shots/ref/B01-job-details-empty.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 1,
+   "gaps": []
+  },
+  {
+   "id": "B02-desktop-dark",
+   "app": "Builder",
+   "view": "Job details, filled with Tracker handoff notice",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "364:1851",
+   "reference": "scratchpad/shots/ref/B02-job-details-filled-handoff.png",
+   "checks": {
+    "visual": "matches; dismiss X is an absolute overlay because Alert has no close property",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": [
+    "Dismiss control is an overlay icon, not part of the Alert component"
+   ]
+  },
+  {
+   "id": "B03-desktop-dark",
+   "app": "Builder",
+   "view": "Generating",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "364:2123",
+   "reference": "scratchpad/shots/ref/B03-generating.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "header, DM Serif heading, raised panel and button treatments present"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "B04-desktop-dark",
+   "app": "Builder",
+   "view": "Generation failure",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "364:2291",
+   "reference": "scratchpad/shots/ref/B04-generation-failure.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "header, DM Serif heading, raised panel and button treatments present"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "B05-desktop-dark",
+   "app": "Builder",
+   "view": "Résumé preview",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "365:2108",
+   "reference": "scratchpad/shots/ref/B05-resume-preview.png",
+   "checks": {
+    "visual": "matches; résumé document typography kept raw (app-local preview rules)",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "B06-desktop-dark",
+   "app": "Builder",
+   "view": "Cover letter preview",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "366:2231",
+   "reference": "scratchpad/shots/ref/B06-cover-letter-preview.png",
+   "checks": {
+    "visual": "matches reference at 1440, Dark",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  },
+  {
+   "id": "B07-desktop-dark",
+   "app": "Builder",
+   "view": "Revised résumé",
+   "viewport": "desktop 1440",
+   "mode": "Dark",
+   "state": "default",
+   "required": true,
+   "status": "verified",
+   "nodeId": "366:2439",
+   "reference": "scratchpad/shots/ref/B07-revised-resume.png",
+   "checks": {
+    "visual": "matches; revision highlight raw #F2C56F 18%",
+    "structure": "auto layout throughout; 0 non-auto-layout frames; library instances linked, none detached; 0 visible rasters; colors bound to Theme variables (Dark mode set on frame); no default instance text",
+    "signature": "5 of 5 present (lavender nav header with selected item, DM Serif headings, raised panels, toned status badges, peach/lavender buttons)"
+   },
+   "fixPasses": 0,
+   "gaps": []
+  }
+ ],
+ "proposals": [
+  {
+   "what": "Company Avatar: wire the Image boolean to the img layer",
+   "nearest": "Company Avatar 206:18776",
+   "why": "property exists but toggles nothing; instances needed a layer-visibility override"
+  },
+  {
+   "what": "Alert: message text Fill instead of Hug; optional Show Close property",
+   "nearest": "Alert 53:638",
+   "why": "full-width alerts wrapped after a few words without an override; Builder handoff notice is dismissible"
+  },
+  {
+   "what": "TextArea: Input frame Fill (or a height property) instead of fixed 98px",
+   "nearest": "TextArea 61:183",
+   "why": "resizing the nested Input is ignored; overrides were needed for 40/72/100/124/140/212px textareas"
+  },
+  {
+   "what": "Page title 32px DM Serif (Tracker, Builder input) and panel h2 26px are raw in code",
+   "nearest": "Type/Heading/H1 (38), Type/Heading/H2 (28)",
+   "why": "code uses base h1/h2 sizes outside the type scale; Builder preview uses the H1 token, so the same title changes size between steps"
+  },
+  {
+   "what": "Résumé section labels use text-transform: uppercase",
+   "nearest": "Type/Caption",
+   "why": "design rules prohibit all-caps labels unless a canonical component specifies them"
+  },
+  {
+   "what": "Revision highlight raw rgba(242,197,111,.18) background",
+   "nearest": "primary/300 at 18%",
+   "why": "no highlight token; per-mode value would need a Theme variable"
+  },
+  {
+   "what": "Date filter trigger is a button styled as a field",
+   "nearest": "TextField with calendar icon",
+   "why": "no field-trigger/button component; built from TextField for appearance"
+  }
+ ],
+ "destinationSections": {
+  "tracker": "366:2722",
+  "builder": "366:2723"
+ },
+ "findings": [
+  "Create vs edit forms order the same fields differently: Add Prospect puts Location/Employment/Work arrangement/Compensation under More job details; Prospect details shows them above it (T05/T06 vs T07).",
+  "Compensation range textarea is one row tall and clips multi-line retrieved values (T06)."
+ ],
+ "captureNotes": "Builder frames show \"Log In\" because Builder references were captured in a signed-out browser context; Tracker frames show the signed-in header except T01."
+}

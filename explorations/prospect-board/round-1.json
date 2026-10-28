@@ -1,0 +1,316 @@
+{
+  "exploration": "prospect-board",
+  "round": 1,
+  "date": "2026-10-27",
+  "settings": "Settings: 5 directions · intensity mixed (1, 1, 2, 2, 3) · focus [ux, product, visual] · fidelity prototype",
+  "brief": "Larry uses the Prospect Tracker board to see every prospect from first interest to a decision and to move them between stages. Today the board answers 'where is each prospect?' but not 'how long has it been?', 'what should I do next?' or 'which prospects are worth my time?'. Cards show company, title, status and applied date only, although status history, fit scores, connections and notes are already stored. Goal: a board that helps decide and act, not only file.",
+  "sourceContract": [
+    "All 12 stored statuses keep their values and labels; legacy Applying stays readable but not selectable",
+    "Four lifecycle groups (Prospects, Applied, In-Process, Done) and their drop semantics: cross-column drops use the column default; Done always asks for an explicit outcome",
+    "Saved manual order is preserved wherever manual order is shown; new or re-staged cards go to the top",
+    "Status history is written only by the database trigger on a status change",
+    "Search, status filter, date filter and Add Prospect remain available; card opens the prospect record",
+    "Status-Badge tones and geometry are fixed (prospect-status.js)",
+    "Drag is desktop-only with a keyboard and non-drag path to every move",
+    "Brand assets stay: header, logotype, DM Serif Display / Inter / IBM Plex Mono, lavender and peach palette"
+  ],
+  "baseline": "Figma hLBR7Nl3GelwM9hstQb3Ah 357:2 (T02 · Board, populated · Desktop · Dark), read 2026-10-27; tools/prospect-tracker at a48d153; docs/prospect-tracker-kanban.md",
+  "seed": null,
+  "directions": [
+    {
+      "id": "A",
+      "name": "Calm Hierarchy",
+      "intensity": 1,
+      "lead": "visual",
+      "lineage": "original → A",
+      "hypothesis": "For Larry scanning the board, a calmer typographic hierarchy (serif company names, large serif column counts, flat columns divided by rules, tighter cards with mono metadata) will make the board read faster and feel more considered, because company identity and stage totals become the two strongest signals and everything else steps back.",
+      "mechanism": "Same columns, cards, data and interactions. Column fills are replaced by a 2px top rule and a 38px serif count. Cards drop from 116px to about 92px: 36px logo tile spans two lines, company in DM Serif 19px, title in Inter 13.5px, meta in mono below a hairline. Hover uses the hard-shadow lift from rules.md. Done becomes a vertical strip.",
+      "evidence": "Observed: the company name, title and badge share similar weight (Inter 16/500 vs 16/300), so cards read as uniform blocks (357:191). Observed: four cards fill a 588px column, so longer columns scroll early. Inferred: stage totals matter for pacing but sit in 14px text at the column edge.",
+      "composition": "Header, page title, toolbar unchanged. Board: three ruled columns plus a vertical Done strip; cards denser with serif identity.",
+      "preserved": "Every interaction, column grouping, badge tones, manual order, filters, card → record.",
+      "departures": [
+        "Exploratory raw values: card radius 4 (nearest radius-md 6), column count 38px serif (Type/H1 size), card company DM Serif 19px (nearest Type/H3 21px)",
+        "Column surface removed (nearest token surface/default)",
+        "Card hover uses nc-shadow-sm direction at 2px"
+      ],
+      "systemFit": "Reuses tokens and Status-Badge. Card and column are local Tracker styles, so the change stays inside styles.css. Proposes a serif company style not in the type scale.",
+      "tradeoffs": [
+        "Serif at 19px is less compact than Inter for long company names",
+        "Without column fills, drop targets need a stronger hover state",
+        "Small gain if the real bottleneck is decisions, not scanning"
+      ],
+      "failure": "It looks better but Larry still opens every card to know what to do, so time on the board does not change.",
+      "validation": "Five-second test on the populated board: ask which stage has the most prospects and which company is in Final round. Compare accuracy with baseline.",
+      "cost": "Low. CSS only in the Tracker's local styles; no data or logic change.",
+      "signature": [
+        "serif company names",
+        "large serif column counts over a top rule",
+        "flat ruled columns",
+        "hard-shadow hover",
+        "vertical Done strip"
+      ],
+      "screen": "A"
+    },
+    {
+      "id": "B",
+      "name": "Next Move",
+      "intensity": 1,
+      "lead": "ux",
+      "lineage": "original → B",
+      "hypothesis": "For Larry managing an active search, showing how long each prospect has sat in its stage and the next move on the card, with a Move menu that changes status without dragging or opening the record, will cut missed follow-ups and the clicks needed to keep the board current, because staleness and action become visible at the moment of scanning.",
+      "mechanism": "Within the existing board: each card gains an age bar (days since the last status event, scaled to 30 days) and a next-move line from simple rules (Applied ≥ 14 days → Follow Up; Prospect ≥ 10 days → Decide: Apply or Pass; In-Process ≥ 10 days → Check In; Offer → Respond). A Move menu on each card lists statuses grouped by column. A toolbar toggle filters to Needs Attention.",
+      "evidence": "Observed: status history with recorded_at is stored and already loaded for the record view (data.js), but the board shows only applied_on. Observed: the only non-drag move path is opening the record (kanban docs). Inferred: follow-up timing is the most common thing to forget in a long search.",
+      "composition": "Same header, toolbar plus Needs Attention (n) toggle, same columns and card anatomy with an age row added; Move button top-right of each card opens a hard-shadow menu.",
+      "preserved": "Columns, drop semantics (Done in the menu still means an explicit outcome), badges, manual order, filters, card → record.",
+      "departures": [
+        "Card height grows by about 28px",
+        "Next-move rules are proposed copy and thresholds",
+        "Board query needs the latest status event per prospect (one more select or a view)"
+      ],
+      "systemFit": "Reuses Status-Badge, Button, the hard-shadow menu treatment (rules.md; note the current Done chooser uses a soft 0 4px 16px shadow, a discrepancy). New: age bar.",
+      "tradeoffs": [
+        "Fixed thresholds will be wrong for some companies (slow enterprise hiring)",
+        "Warning color on many cards turns into noise",
+        "Adds a request to the board load"
+      ],
+      "failure": "Most cards show a warning at once, so the signal is ignored.",
+      "validation": "Replay Larry's real status history: how many prospects would have shown Follow Up each week? If more than 40% of open cards flag, the thresholds are wrong.",
+      "cost": "Low to medium. One query for latest event dates, a pure rule function, Move menu reusing the existing status saver.",
+      "signature": [
+        "age bar per card",
+        "next-move line",
+        "Move menu without dragging",
+        "Needs Attention filter"
+      ],
+      "screen": "B"
+    },
+    {
+      "id": "C",
+      "name": "Fit Ranked",
+      "intensity": 2,
+      "lead": "product",
+      "lineage": "original → C",
+      "hypothesis": "For Larry choosing which prospects to pursue, ranking the Prospects column by stored fit, showing fit and interest on every card, and letting him compare two or three side by side will lead to faster, better-reasoned apply-or-pass decisions, because the 12 assessment scores he already records become decision support instead of buried form fields.",
+      "mechanism": "Prospects becomes a Shortlist sorted by overall assessment then personal interest (with a Manual toggle that restores saved order). Cards show fit and interest pips and the first assessment concern. Unscored cards offer a one-tap 1–5 fit rating. A Compare checkbox on each card opens a tray with the key scores side by side, best value highlighted.",
+      "evidence": "Observed: prospects store 12 score fields plus rationale and concerns (model.js SCORE_FIELDS), none visible on the board. Observed: board order is manual only. Inferred: the hardest decision on the board is which Prospects to apply to.",
+      "composition": "Same page and columns. Shortlist header has Fit / Manual sort. Cards carry rank, pips, concern or rating buttons, Compare checkbox. Compare tray docks at the bottom of the board.",
+      "preserved": "Statuses, columns, drop semantics, filters, card → record, Applied and In-Process keep manual order.",
+      "departures": [
+        "Fit sort overrides manual order in one column while active (saved order untouched, Manual restores it)",
+        "Inline fit rating writes overall_assessment from the board",
+        "Compare tray is a new surface"
+      ],
+      "systemFit": "Reuses Status-Badge, Button, checkbox. New: pip meter, compare tray table. Data exists; no schema change.",
+      "tradeoffs": [
+        "Scores are subjective and often missing, so rank can look authoritative without being so",
+        "Two sort modes complicate drag-to-reorder (disabled while Fit sort is on)",
+        "Cards get busier"
+      ],
+      "failure": "Larry rarely fills scores, so most cards show the rating prompt and the ranking is meaningless.",
+      "validation": "Check real data: share of open prospects with overall_assessment set. Below half, test the inline rating for a week first and recheck.",
+      "cost": "Medium. Board query adds score fields; sort mode state; compare tray; guarded write for inline rating.",
+      "signature": [
+        "Shortlist ranked by fit",
+        "fit and interest pips",
+        "inline 1–5 rating",
+        "Compare tray"
+      ],
+      "screen": "C"
+    },
+    {
+      "id": "D",
+      "name": "Focus Queue",
+      "intensity": 2,
+      "lead": "ux",
+      "lineage": "original → D",
+      "hypothesis": "For Larry opening the Tracker to decide what to do today, a default view that sorts prospects by whose move it is (Your Move, Waiting on Them, Closed) with one primary action per row will get him from opening the page to acting in fewer steps than reading a stage board, because the view answers the daily question directly and the board becomes an alternate lens.",
+      "mechanism": "Information architecture change: a Focus / Board switch, Focus by default. Your Move collects prospects needing a decision, stale applications and offers; Waiting on Them collects fresh applications and active processes with a quiet-for count; Closed is collapsed. Each row has one primary action (Mark Applied, Log Follow-Up, Log Check-In, Respond) and a secondary Pass.",
+      "evidence": "Observed: the page description promises 'from first interest to a decision', but the board organizes by stage, not by action. Observed: Done is collapsed by default, implying open work is the focus. Inferred: the daily task is triage.",
+      "composition": "Header and toolbar as baseline plus the Focus / Board switch. Focus: three sections of full-width rows (logo, company and role, badge, reason, actions). Board: the baseline board, unchanged.",
+      "preserved": "All statuses and transitions, the full board as a second view, filters, Add Prospect, row → record.",
+      "departures": [
+        "Default landing view changes from board to list",
+        "Log Follow-Up and Log Check-In record an event without a status change (speculative: needs a follow-up event type or a notes convention; history today records only status changes)",
+        "Whose-move rules are proposed"
+      ],
+      "systemFit": "Reuses Status-Badge, Button, avatar. New list row. Needs a non-status event concept, which the append-only history table does not have.",
+      "tradeoffs": [
+        "Loses the at-a-glance pipeline shape on landing",
+        "Rules decide what is 'your move'; mistakes hide prospects in Waiting",
+        "Two views to maintain"
+      ],
+      "failure": "Larry prefers the spatial board and switches every visit, making Focus a detour.",
+      "validation": "Track the view chosen on each visit for two weeks; if Board wins most visits, demote Focus to a filter.",
+      "cost": "Medium to high. New view and rules; follow-up logging needs a schema decision (new event kind or table) and RLS.",
+      "signature": [
+        "Focus / Board switch",
+        "Your Move vs Waiting on Them",
+        "one primary action per row",
+        "quiet-for counts"
+      ],
+      "screen": "D"
+    },
+    {
+      "id": "E",
+      "name": "Timeline Lanes",
+      "intensity": 3,
+      "lead": "visual",
+      "lineage": "original → E",
+      "hypothesis": "For Larry judging the momentum of his search, drawing each prospect as a lane across calendar time, with stage segments from its status history, a today line and dashed silent stretches, will show what a stage board cannot: pace, stalls and overlap, because time becomes the main axis and stalls become visible gaps.",
+      "mechanism": "A new visual paradigm. Rows are prospects grouped by lifecycle stage; the x axis is weeks; each status event starts a segment colored by stage family; open prospects extend to today, and a run of 14+ silent days is drawn dashed with a 'quiet N d' tag. Closed prospects end with a cap and fade. Zoom between 4, 8 and 12 weeks; select a lane to open the record.",
+      "evidence": "Observed: append-only status history with recorded_at exists for every prospect. Observed: nothing in the product visualizes it. Inferred: a long search is about pacing (how many active at once, how long since any reply), which a stage board flattens.",
+      "composition": "Header and toolbar as baseline; a legend and zoom control; the timeline with left labels (serif company, role), track, and right current-status badge; a today line labelled in mono.",
+      "preserved": "Statuses and badges, filters, Add Prospect, record view and status changes (in the record panel). Manual order is not shown.",
+      "departures": [
+        "Exploratory stage colors: Prospects #9782EB (secondary-400), Applied #D7CDFB (secondary-200), In-Process #F1CC88 (primary-300), Offer #87CFA5 (success-300), Rejected #F79BB3 (danger-300), closed #837A90 (neutral-500)",
+        "No drag moves; status changes only via the record",
+        "Manual order hidden while this view is active"
+      ],
+      "systemFit": "Low reuse beyond badges and tokens; a new timeline component. Data exists (status events) but the board would need all events, not only cards.",
+      "tradeoffs": [
+        "Weak for moving cards; strong for reflection",
+        "Needs width; at phone width the track scrolls",
+        "Color-coded stages need a legend and must not be the only cue"
+      ],
+      "failure": "It is insightful once a week but not useful for daily work, so it becomes a report, not the board.",
+      "validation": "Show the timeline of Larry's real history and ask what he would do differently this week. If no action follows, ship it as a secondary report, not the board.",
+      "cost": "Medium. All-events query, timeline rendering, zoom; no schema change.",
+      "signature": [
+        "lanes over calendar time",
+        "stage-colored segments from history",
+        "today line",
+        "dashed quiet stretches",
+        "serif lane labels"
+      ],
+      "screen": "E"
+    }
+  ],
+  "checks": [
+    {
+      "name": "open card",
+      "action": "click",
+      "target": "[data-fk='card-harbor']",
+      "directions": [
+        "base",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "name": "close detail",
+      "action": "click",
+      "target": "[data-fk='dclose']",
+      "directions": [
+        "base",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "name": "search",
+      "action": "type",
+      "target": "[data-check='search']",
+      "value": "atlas",
+      "directions": [
+        "base",
+        "A"
+      ]
+    },
+    {
+      "name": "toggle Done",
+      "action": "click",
+      "target": "[data-check='done-toggle']",
+      "directions": [
+        "base",
+        "A"
+      ]
+    },
+    {
+      "name": "open Move menu",
+      "action": "click",
+      "target": "[data-check='move-menu']",
+      "directions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Needs Attention filter",
+      "action": "click",
+      "target": "[data-check='attention']",
+      "directions": [
+        "B"
+      ]
+    },
+    {
+      "name": "rate fit",
+      "action": "click",
+      "target": "[data-check='rate']",
+      "directions": [
+        "C"
+      ]
+    },
+    {
+      "name": "pick for compare",
+      "action": "click",
+      "target": "[data-check='compare-pick']",
+      "directions": [
+        "C"
+      ]
+    },
+    {
+      "name": "sort toggle",
+      "action": "click",
+      "target": "[data-check='sort-manual']",
+      "directions": [
+        "C"
+      ]
+    },
+    {
+      "name": "row action",
+      "action": "click",
+      "target": "[data-check='row-action']",
+      "directions": [
+        "D"
+      ]
+    },
+    {
+      "name": "switch to board",
+      "action": "click",
+      "target": "[data-check='view-board']",
+      "directions": [
+        "D"
+      ]
+    },
+    {
+      "name": "zoom",
+      "action": "click",
+      "target": "[data-check='zoom']",
+      "directions": [
+        "E"
+      ]
+    },
+    {
+      "name": "open lane",
+      "action": "click",
+      "target": "[data-check='open-lane']",
+      "expectIn": ".frame",
+      "directions": [
+        "E"
+      ]
+    }
+  ],
+  "recommendation": {
+    "direction": "B",
+    "why": "B addresses the board's biggest gap (no sense of time or next action) using data already stored, keeps every existing behavior and adds the first non-drag move path, which also fixes touch and narrow-width moves. It is the cheapest direction that changes what Larry does.",
+    "counterargument": "If the daily question is really 'what do I do today', D answers it directly and B only decorates the board; warning dots on many cards may become noise.",
+    "combine": "Round 2: B as the base, A's typographic hierarchy for the cards (B's extra row needs the space A saves), and C's fit pips on Prospects cards only. Keep E as a separate weekly view.",
+    "nextValidation": "Replay real status history through B's rules and count weekly flags; tune thresholds until under 40% of open cards flag, then live with it for two weeks."
+  },
+  "prototype": {
+    "url": "https://claude.ai/artifact/DUYTFbMjFiWZhsQ6KRZsBK",
+    "file": "explorations/prospect-board/round-1.html"
+  },
+  "selected": null
+}
