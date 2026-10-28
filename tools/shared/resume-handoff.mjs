@@ -2,7 +2,8 @@
 export const HANDOFF_TTL = 5 * 60 * 1000;
 export const HANDOFF_PARAM = 'radar-handoff';
 const TOKEN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-/** @typedef {{company: string, title: string, description: string}} Job */
+/** @typedef {{name:string,status:'manual'|'suggested'|'user_selected'|'user_verified'}} Contact */
+/** @typedef {{company: string, title: string, description: string, hiring_manager?: Contact}} Job */
 /** @typedef {{version: number, createdAt: number, job: Job}} Payload */
 /** @param {URL} url */
 const prefix = url => `career-resume-handoff:${url.pathname}:`;
@@ -11,6 +12,9 @@ const prefix = url => `career-resume-handoff:${url.pathname}:`;
 function valid(value, now) {
   if (!value || typeof value !== 'object') return false;
   const payload = /** @type {Payload} */ (value);
+  if (payload.job && Object.keys(payload.job).some(key => !['company','title','description','hiring_manager'].includes(key))) return false;
+  const contact = payload.job?.hiring_manager;
+  if (contact !== undefined && (!contact || typeof contact !== 'object' || Array.isArray(contact) || Object.keys(contact).some(key => !['name','status'].includes(key)) || typeof contact.name !== 'string' || !contact.name.trim() || contact.name.length > 120 || !['manual','suggested','user_selected','user_verified'].includes(contact.status))) return false;
   return payload?.version === 1 && Number.isFinite(payload.createdAt)
     && payload.createdAt <= now && now - payload.createdAt < HANDOFF_TTL
     && !!payload.job && ['company', 'title', 'description'].every(field => typeof payload.job[/** @type {keyof Job} */ (field)] === 'string');
@@ -66,11 +70,19 @@ export function readHandoff(storage, url, now = Date.now()) {
 
 /** Delete before applying fields: failed deletion must not allow replay or partial replacement.
  * @param {Storage} storage @param {{key: string, job: Job}} handoff
- * @param {Record<keyof Job, {value: string}>} fields @param {() => boolean} confirmReplace */
+ * @param {Record<'company'|'title'|'description', {value: string}>} fields @param {() => boolean} confirmReplace */
 export function consumeHandoff(storage, handoff, fields, confirmReplace) {
   const replace = !Object.values(fields).some(field => field.value !== '') || confirmReplace();
   storage.removeItem(handoff.key);
   if (!replace) return false;
-  for (const [name, field] of Object.entries(fields)) field.value = handoff.job[/** @type {keyof Job} */ (name)];
+  for (const [name, field] of Object.entries(fields)) field.value = handoff.job[/** @type {'company'|'title'|'description'} */ (name)];
+  return true;
+}
+
+/** Called only by the explicit Use as Recipient action, never during handoff consumption.
+ * @param {Contact} contact @param {{value:string}} field @param {()=>boolean} confirmReplace */
+export function useHandoffContact(contact, field, confirmReplace) {
+  if (field.value.trim() && field.value !== contact.name && !confirmReplace()) return false;
+  field.value = contact.name;
   return true;
 }

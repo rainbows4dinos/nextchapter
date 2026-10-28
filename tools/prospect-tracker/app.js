@@ -13,9 +13,9 @@ import { validateStatus, validateHttpUrl } from './model.js';
 import { mountProspectDelete } from './prospect-delete.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261027-find-people';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261028-hiring-manager';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { mountIngestion } from './ingestion-ui.js?v=20261026-editor-actions';
+import { mountIngestion } from './ingestion-ui.js?v=20261028-hiring-manager';
 
 /** @param {import('@supabase/supabase-js').SupabaseClient<import('./database.types.js').Database>} client */
 export async function startRadar(client) {

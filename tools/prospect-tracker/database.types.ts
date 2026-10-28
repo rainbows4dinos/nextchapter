@@ -78,6 +78,7 @@ export type Database = {
       }
       prospects: {
         Row: {
+          hiring_manager: Json | null
           applied_on: string | null
           assessment_concerns: string | null
           assessment_rationale: string | null
@@ -116,6 +117,7 @@ export type Database = {
           work_style_fit: number | null
         }
         Insert: {
+          hiring_manager?: Json | null
           applied_on?: string | null
           assessment_concerns?: string | null
           assessment_rationale?: string | null
@@ -154,6 +156,7 @@ export type Database = {
           work_style_fit?: number | null
         }
         Update: {
+          hiring_manager?: Json | null
           applied_on?: string | null
           assessment_concerns?: string | null
           assessment_rationale?: string | null

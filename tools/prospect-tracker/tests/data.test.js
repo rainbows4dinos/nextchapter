@@ -9,7 +9,7 @@ const id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const revision = '2026-10-06T12:00:00.123456+00:00';
 const row = {
   id, owner_id: '11111111-1111-4111-8111-111111111111', company: 'Example', title: 'Designer',
-  job_url: null, source: null, location: null, work_arrangement: null, employment_type: null,
+  hiring_manager: null, job_url: null, source: null, location: null, work_arrangement: null, employment_type: null,
   compensation_text: null, job_description: null, posted_on: null, discovered_on: null,
   applied_on: null, status: 'prospect', notes: null, connections: [],
   ...Object.fromEntries(SCORE_FIELDS.map(field => [field, null])),

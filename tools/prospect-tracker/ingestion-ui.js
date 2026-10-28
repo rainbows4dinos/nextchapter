@@ -95,7 +95,7 @@ export function mountIngestion(form, options) {
         logo.value = merged.company_logo_url ?? ''; override.value = String(merged.company_logo_override);
         logo.dispatchEvent(new window.Event('logo-candidate'));
       }
-      const details = form.querySelector('details'); if (details) details.open = true;
+      const details = /** @type {HTMLDetailsElement|null} */ (form.querySelector('details.prospect-job-details'));  if (details) details.open = true;
       const save = form.querySelector('button[type="submit"]'); if (save) save.textContent = 'Save prospect';
       hasPreview = true; options.markDirty();
       const warnings = el('ul', '', 'muted'); for (const warning of preview.warnings) warnings.append(el('li', warning.replace('does not change Radar status', 'does not change Prospect Tracker status')));
