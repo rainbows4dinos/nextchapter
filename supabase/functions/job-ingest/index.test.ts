@@ -61,23 +61,25 @@ Deno.test('Deno handler authenticates and makes only a bounded public retrieval'
   assert.equal(response.headers.get('cache-control'), 'no-store');
 });
 
-Deno.test('Ashby space-board handler encodes destinations once and matches equivalent upstream URLs', async () => {
-  const id = '721cea00-1234-4567-89ab-0123456789ab';
-  const url = `https://jobs.ashbyhq.com/jasper%20ai/${id}`;
-  const destinations: string[] = [];
-  const handler = createIngestionHandler({ ownerId, allowedOrigins: ['https://example.github.io'], authenticate: () => Promise.resolve(ownerId),
-    fetcher: (target, init) => {
-      destinations.push(String(target));
-      assert.equal(init!.redirect, 'manual');
-      return Promise.resolve(destinations.length === 1 ? Response.json({ apiVersion: '1', jobs: [{ id, jobUrl: url.replace('jasper', 'j%61sper'), title: 'Fixture Designer', descriptionPlain: 'Fixture description.' }] }) : new Response(`<script type="application/ld+json">${JSON.stringify({ '@type': 'JobPosting', url, title: 'Fixture Designer', hiringOrganization: { name: 'Fixture Company' } })}</script>`, { headers: { 'content-type': 'text/html' } }));
-    }
+for (const board of ['jasper%20ai', 'example.com']) {
+  Deno.test(`Ashby ${board} handler encodes destinations once and matches equivalent upstream URLs`, async () => {
+    const id = '721cea00-1234-4567-89ab-0123456789ab';
+    const url = `https://jobs.ashbyhq.com/${board}/${id}`;
+    const destinations: string[] = [];
+    const handler = createIngestionHandler({ ownerId, allowedOrigins: ['https://example.github.io'], authenticate: () => Promise.resolve(ownerId),
+      fetcher: (target, init) => {
+        destinations.push(String(target));
+        assert.equal(init!.redirect, 'manual');
+        return Promise.resolve(destinations.length === 1 ? Response.json({ apiVersion: '1', jobs: [{ id, jobUrl: url.replace('jasper', 'j%61sper').replace('example.com', 'example%2Ecom'), title: 'Fixture Designer', descriptionPlain: 'Fixture description.' }] }) : new Response(`<script type="application/ld+json">${JSON.stringify({ '@type': 'JobPosting', url, title: 'Fixture Designer', hiringOrganization: { name: 'Fixture Company' } })}</script>`, { headers: { 'content-type': 'text/html' } }));
+      }
+    });
+    const response = await handler(new Request('https://example.invalid/', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer synthetic' }, body: JSON.stringify({ url }) }));
+    assert.equal(response.status, 200);
+    assert.deepEqual(destinations, [`https://api.ashbyhq.com/posting-api/job-board/${board}?includeCompensation=true`, url]);
+    const preview = await response.json();
+    assert.equal(preview.identity.board, decodeURIComponent(board));
+    assert.equal(preview.draft.company, 'Fixture Company');
+    assert.equal(preview.draft.title, 'Fixture Designer');
+    assert.equal(preview.draft.job_description, 'Fixture description.');
   });
-  const response = await handler(new Request('https://example.invalid/', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer synthetic' }, body: JSON.stringify({ url }) }));
-  assert.equal(response.status, 200);
-  assert.deepEqual(destinations, ['https://api.ashbyhq.com/posting-api/job-board/jasper%20ai?includeCompensation=true', url]);
-  const preview = await response.json();
-  assert.equal(preview.identity.board, 'jasper ai');
-  assert.equal(preview.draft.company, 'Fixture Company');
-  assert.equal(preview.draft.title, 'Fixture Designer');
-  assert.equal(preview.draft.job_description, 'Fixture description.');
-});
+}

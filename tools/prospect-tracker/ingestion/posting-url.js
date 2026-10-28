@@ -6,7 +6,7 @@ import { recognizeWorkable } from './workable-url.js';
 export const PROVIDER_NAMES = /** @type {const} */ ({ greenhouse: 'Greenhouse', ashby: 'Ashby', lever: 'Lever', workday: 'Workday', workable: 'Workable' });
 export const INGESTION_METHODS = /** @type {const} */ ({ greenhouse: 'greenhouse-job-board-api', ashby: 'ashby-job-posting-api', lever: 'lever-postings-api', workday: 'workday-cxs-detail', workable: 'workable-public-job-detail' });
 const UUID = '[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}';
-const ASHBY = new RegExp(`^/((?:[A-Za-z0-9_-]|%[0-9a-fA-F]{2})+)/(${UUID})(?:/application)?/?$`);
+const ASHBY = new RegExp(`^/((?:[A-Za-z0-9_.-]|%[0-9a-fA-F]{2})+)/(${UUID})(?:/application)?/?$`);
 const LEVER = new RegExp(`^/([A-Za-z0-9_-]{1,100})/(${UUID})(?:/apply)?/?$`);
 
 /** Unknown parameters remain intact. They are never forwarded upstream.
@@ -45,7 +45,7 @@ export function recognizePosting(input) {
     const [, segment, id] = match;
     let board;
     try { board = decodeURIComponent(segment); } catch { throw unsupported(); }
-    if (!/^[A-Za-z0-9_ -]{1,100}$/.test(board)) throw unsupported();
+    if (!/^[A-Za-z0-9_. -]{1,100}$/.test(board)) throw new IngestionError('unsupported_url', 'This Ashby board name contains unsupported characters. Use letters, digits, spaces, periods, underscores or hyphens.');
     const encodedBoard = encodeURIComponent(board);
     const posting_id = id.toLowerCase();
     return { provider: /** @type {const} */ ('ashby'), board, posting_id,
