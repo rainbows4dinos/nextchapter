@@ -1,3 +1,4 @@
+import { readHiringManager } from './hiring-manager.js';
 import { matchesDate } from './board-dates.js';
 import { normalizePatch, validateId } from './model.js';
 
@@ -91,7 +92,7 @@ export function readDetails(form, { includeLogo = true } = {}) {
     patch[key] = String(form.get(key) ?? '');
   }
   const logo = includeLogo && form.has('company_logo_url') ? { company_logo_url: String(form.get('company_logo_url') ?? ''), company_logo_override: form.get('company_logo_override') === 'true' } : {};
-  return /** @type {import('./model.js').DetailsPatch} */ (normalizePatch({ ...patch, ...logo }));
+  return /** @type {import('./model.js').DetailsPatch} */ (normalizePatch({ ...patch, ...logo, ...(form.has('hiring_manager_name') ? { hiring_manager: readHiringManager(form) } : {}) }));
 }
 /** @param {unknown} error */
 export function errorMessage(error) {

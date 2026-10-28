@@ -264,7 +264,7 @@
 <!-- docx loaded lazily on first download click -->
 <script type="module">
 import { setAlert } from './shared/status.mjs?v=20261013-dismiss';
-import { HANDOFF_PARAM, clearExpiredHandoffs, readHandoff, consumeHandoff } from './shared/resume-handoff.mjs';
+import { HANDOFF_PARAM, clearExpiredHandoffs, readHandoff, consumeHandoff, useHandoffContact } from './shared/resume-handoff.mjs?v=20261028-hiring-manager';
 
 function receiveRadarJob() {
   const url = new URL(location.href);
@@ -281,7 +281,22 @@ function receiveRadarJob() {
         description: document.getElementById('jobDesc')
       }, () => window.confirm('Replace the company, job title and job description already entered here with the job sent from Prospect Tracker? Other content and settings will be kept.'));
       notice.hidden = false;
-      setAlert(notice, { message: applied ? 'Job details received from Prospect Tracker. Review them before generating.' : 'Transfer declined. Your existing job details were kept.', variant: 'info', dismissible: true });
+      setAlert(notice, { message: applied ? 'Job details received from Prospect Tracker. Review them and your hiring contact before generating.' : 'Transfer declined. Your existing job details were kept.', variant: 'info', dismissible: true });
+      if (applied && handoff.job.hiring_manager) {
+        const contact = handoff.job.hiring_manager;
+        const suggestion = document.createElement('p');
+        suggestion.textContent = `Potential contact: ${contact.name} (${contact.status.replaceAll('_', ' ')}). This is not confirmation of who should receive your cover letter. Your current hiring contact has been kept.`;
+        const use = document.createElement('button'); use.type = 'button'; use.className = 'nc-button nc-button--tertiary nc-button--sm';
+        use.textContent = `Use ${contact.name} as Recipient`;
+        use.addEventListener('click', () => {
+          const field = document.getElementById('hiringContact');
+          if (useHandoffContact(contact, field, () => window.confirm(`Replace your current hiring contact, ${field.value}, with ${contact.name}?`))) {
+            suggestion.textContent = `You chose ${contact.name} as the cover-letter recipient. The hiring contact field remains editable.`;
+            use.remove();
+          }
+        });
+        notice.querySelector('.nc-alert__message')?.append(suggestion, use);
+      }
     }
     try { clearExpiredHandoffs(storage, url); } catch { /* abandoned-payload cleanup is best effort */ }
   } catch (error) {

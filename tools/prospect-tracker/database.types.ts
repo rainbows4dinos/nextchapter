@@ -95,6 +95,7 @@ export type Database = {
           domain_fit: number | null
           employment_type: string | null
           experience_fit: number | null
+          hiring_manager: Json | null
           id: string
           job_description: string | null
           job_url: string | null
@@ -133,6 +134,7 @@ export type Database = {
           domain_fit?: number | null
           employment_type?: string | null
           experience_fit?: number | null
+          hiring_manager?: Json | null
           id?: string
           job_description?: string | null
           job_url?: string | null
@@ -171,6 +173,7 @@ export type Database = {
           domain_fit?: number | null
           employment_type?: string | null
           experience_fit?: number | null
+          hiring_manager?: Json | null
           id?: string
           job_description?: string | null
           job_url?: string | null

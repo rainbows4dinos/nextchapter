@@ -51,7 +51,16 @@ try {
     if (!rpcTypes[fn.result] || fn.types.some(type => !rpcTypes[type])) throw new Error('Unsupported RPC type');
     return `      ${fn.proname}: {\n        Args: {\n${fn.names.map((name, index) => `          ${name}: ${rpcTypes[fn.types[index]]}\n`).join('')}        }\n        Returns: ${rpcTypes[fn.result]}\n      }\n`;
   }).join('');
-  if (process.argv.includes('--functions-only')) {
+  if (process.argv.includes('--hiring-manager-only')) {
+    const column = rows.find(row => row.table_name === 'prospects' && row.column_name === 'hiring_manager');
+    if (!column || column.udt_name !== 'jsonb' || column.is_nullable !== 'YES') throw new Error('Unexpected hiring manager column');
+    const existing = await readFile(new URL('../database.types.ts', import.meta.url), 'utf8');
+    const start = existing.indexOf('      prospects: {'), end = existing.indexOf('        Relationships:', start);
+    if (start < 0 || end < 0) throw new Error('Missing prospect type block');
+    const block = existing.slice(start, end).replace(/ {10}hiring_manager\??: Json \| null\n/g, '')
+      .replace(/( {8}(Row|Insert|Update): \{\n)/g, (_, heading, operation) => heading + `          hiring_manager${operation === 'Row' ? '' : '?'}: Json | null\n`);
+    output = existing.slice(0, start) + block + existing.slice(end);
+  } else if (process.argv.includes('--functions-only')) {
     const existing = await readFile(new URL('../database.types.ts', import.meta.url), 'utf8');
     output = existing.replace(/ {4}Functions: \{[\s\S]*? {4}Enums:/, `    Functions: {\n${rpc}    }\n    Enums:`);
     if (!/ {4}Functions: \{/.test(existing)) throw new Error('Missing Functions type block');

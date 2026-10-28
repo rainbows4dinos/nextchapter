@@ -1,4 +1,6 @@
-# Find People — issue #30
+# Find People — issue #30 (historical external-search phase)
+
+The pending [manual hiring manager phase](prospect-tracker-hiring-manager.md) removes this UI and its obsolete browser fixture. This document records the prior phase; the pure query builder remains for future research.
 
 Implemented locally, 27 October 2026. No commit, push, deployment, schema/backend change, paid API, AI call or added dependency. [Issue #30](https://github.com/rainbows4dinos/nextchapter/issues/30).
 

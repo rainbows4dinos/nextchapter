@@ -1,3 +1,4 @@
+import { validateHiringManager } from './hiring-manager.js';
 import { logoUrl } from './company-logo.js';
 /** @typedef {import('./database.types.ts').Database} Database */
 /** @typedef {Database['public']['Tables']['prospects']['Row']} ProspectRow */
@@ -6,7 +7,7 @@ import { logoUrl } from './company-logo.js';
 /** @typedef {'remote'|'hybrid'|'onsite'|'flexible'} WorkArrangement */
 /** @typedef {1|2|3|4|5} Score */
 /** @typedef {{id: string, name: string, role?: string, relationship?: string, contact?: string, notes?: string}} Connection */
-/** @typedef {Omit<ProspectRow, 'status'|'work_arrangement'|'connections'> & {status: ProspectStatus, work_arrangement: WorkArrangement|null, connections: Connection[]}} Prospect */
+/** @typedef {Omit<ProspectRow, 'status'|'work_arrangement'|'connections'|'hiring_manager'> & {status: ProspectStatus, work_arrangement: WorkArrangement|null, connections: Connection[], hiring_manager: import('./hiring-manager.js').HiringManager|null}} Prospect */
 
 /** @type {readonly ProspectStatus[]} */
 export const STATUSES = Object.freeze([
@@ -26,7 +27,7 @@ export const SCORE_FIELDS = Object.freeze([
 ]);
 /** @typedef {typeof SCORE_FIELDS[number]} ScoreField */
 /** @typedef {Partial<Record<ScoreField, Score|null>> & {assessment_rationale?: string|null, assessment_concerns?: string|null}} AssessmentPatch */
-/** @typedef {{company_logo_url?: string|null, company_logo_override?: boolean, company?: string, title?: string, job_url?: string|null, source?: string|null, location?: string|null, work_arrangement?: WorkArrangement|null, employment_type?: string|null, compensation_text?: string|null, job_description?: string|null, posted_on?: string|null, discovered_on?: string|null, applied_on?: string|null, notes?: string|null}} DetailsPatch */
+/** @typedef {{hiring_manager?: import('./hiring-manager.js').HiringManager|null, company_logo_url?: string|null, company_logo_override?: boolean, company?: string, title?: string, job_url?: string|null, source?: string|null, location?: string|null, work_arrangement?: WorkArrangement|null, employment_type?: string|null, compensation_text?: string|null, job_description?: string|null, posted_on?: string|null, discovered_on?: string|null, applied_on?: string|null, notes?: string|null}} DetailsPatch */
 /** @typedef {DetailsPatch & AssessmentPatch & {connections?: Connection[]}} ProspectPatch */
 /** @typedef {ProspectPatch & {id: string, company: string, title: string, status?: ProspectStatus}} NewProspect */
 
@@ -35,7 +36,7 @@ const TEXT_FIELDS = [
   'compensation_text', 'job_description', 'notes', 'assessment_rationale', 'assessment_concerns'
 ];
 const DATE_FIELDS = ['posted_on', 'discovered_on', 'applied_on'];
-const EDITABLE_FIELDS = new Set([...TEXT_FIELDS, ...DATE_FIELDS, ...SCORE_FIELDS, 'work_arrangement', 'connections', 'company_logo_url', 'company_logo_override']);
+const EDITABLE_FIELDS = new Set([...TEXT_FIELDS, ...DATE_FIELDS, ...SCORE_FIELDS, 'work_arrangement', 'connections', 'company_logo_url', 'company_logo_override', 'hiring_manager']);
 
 /** @param {unknown} value @param {string} [field] @returns {string} */
 export function validateId(value, field = 'id') {
@@ -107,7 +108,9 @@ export function normalizePatch(patch) {
   for (const [key, value] of Object.entries(patch)) {
     if (!EDITABLE_FIELDS.has(key)) throw new Error(`Field cannot be edited: ${key}`);
     if (value === undefined) continue;
-    if (key === 'company_logo_url') {
+    if (key === 'hiring_manager') {
+      result[key] = validateHiringManager(value);
+    } else if (key === 'company_logo_url') {
       result[key] = logoUrl(value);
     } else if (key === 'company_logo_override') {
       if (typeof value !== 'boolean') throw new Error('Invalid logo override');
@@ -146,6 +149,7 @@ export function decodeProspect(row) {
   return {
     ...row, status: validateStatus(row.status),
     work_arrangement: /** @type {WorkArrangement|null} */ (arrangement),
+    hiring_manager: validateHiringManager(row.hiring_manager),
     connections: validateConnections(row.connections)
   };
 }

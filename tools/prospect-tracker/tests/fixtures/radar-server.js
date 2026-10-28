@@ -178,14 +178,14 @@ export async function startFixture(port = 0, options = {}) {
           } else {
             if (!['prospects','career_profiles','radar_opportunities'].includes(table) || !['POST','PATCH'].includes(req.method)) throw new Error('Unsupported fixture write');
             const body = JSON.parse(text);
-            const allowed = table === 'radar_opportunities' ? ['id','owner_id','identity_key','snapshot','decision','pass_reason','pass_note','prospect_id'] : table === 'career_profiles' ? ['explicit_profile','reviewed_at'] : ['company_logo_url','company_logo_override','id','owner_id','company','title','job_url','source','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on','applied_on','notes','status'];
+            const allowed = table === 'radar_opportunities' ? ['id','owner_id','identity_key','snapshot','decision','pass_reason','pass_note','prospect_id'] : table === 'career_profiles' ? ['explicit_profile','reviewed_at'] : ['hiring_manager','company_logo_url','company_logo_override','id','owner_id','company','title','job_url','source','location','work_arrangement','employment_type','compensation_text','job_description','posted_on','discovered_on','applied_on','notes','status'];
             const keys = Object.keys(body);
             if (keys.some(key => !allowed.includes(key))) throw new Error('Unsupported fixture column');
             if (req.method === 'POST') {
-              values.splice(0); values.push(...keys.map(key => ['explicit_profile','snapshot'].includes(key) ? JSON.stringify(body[key]) : body[key]));
+              values.splice(0); values.push(...keys.map(key => ['explicit_profile','snapshot','hiring_manager'].includes(key) ? (body[key] === null ? null : JSON.stringify(body[key])) : body[key]));
               query = `with saved as (insert into ${table} (${keys.join(',')}) values (${keys.map((_, index) => '$' + (index + 1)).join(',')}) returning *) select row_to_json(saved)::text as value from saved`;
             } else {
-              const assignments = keys.map(key => { values.push(['explicit_profile','snapshot'].includes(key) ? JSON.stringify(body[key]) : body[key]); return `"${key}" = $${values.length}`; });
+              const assignments = keys.map(key => { values.push(['explicit_profile','snapshot','hiring_manager'].includes(key) ? (body[key] === null ? null : JSON.stringify(body[key])) : body[key]); return `"${key}" = $${values.length}`; });
               query = `with saved as (update ${table} set ${assignments.join(',')}${where} returning *) select row_to_json(saved)::text as value from saved`;
             }
           }

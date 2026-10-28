@@ -1,3 +1,4 @@
+import { validateHiringManager } from './hiring-manager.js';
 import { gravityIcon } from '../shared/icons.mjs';
 import { WORK_ARRANGEMENTS, validateHttpUrl } from './model.js';
 import { statusLabel } from './view-model.js';
@@ -56,7 +57,7 @@ export function prospectFields(values, { mode }) {
   urlInput.addEventListener('input', updateOpen); urlInput.addEventListener('change', updateOpen); updateOpen();
   fields.append(grid);
   fields.append(jobUrl, field('job_description', 'Job description', values.job_description ?? '', 'textarea'));
-  const details = el('details'); details.append(el('summary', 'More job details'));
+  const details = el('details'); details.className = 'prospect-job-details'; details.append(el('summary', 'More job details'));
   const extra = el('div', '', 'field-grid');
   for (const [name, label] of /** @type {const} */ ([['source','Source'], ['location','Location'], ['employment_type','Employment type'], ['compensation_text','Compensation range / type']])) {
     extra.append(field(name, label, values[name] ?? '', name === 'compensation_text' ? 'textarea' : 'text'));
@@ -84,6 +85,36 @@ export function prospectFields(values, { mode }) {
     fields.append(primaryDetails);
     details.open = true;
   }
+  const manager = values.hiring_manager;
+  const contact = el('fieldset', '', 'hiring-manager-fields');
+  contact.append(el('legend', 'Potential Hiring Manager'));
+  const help = el('p', 'Optional potential contact—not a confirmed hiring manager.', 'nc-field__helper');
+  help.id = 'hiring-manager-help'; contact.append(help);
+  const nameField = field('hiring_manager_name', 'Name', manager?.name ?? '');
+  const nameInput = /** @type {HTMLInputElement} */ (nameField.querySelector('input'));
+  nameInput.maxLength = 120; nameInput.setAttribute('aria-describedby', help.id);
+  const optional = el('details'); optional.append(el('summary', 'Contact Details'));
+  const contactGrid = el('div', '', 'field-grid');
+  for (const [key, label] of /** @type {const} */ ([['title','Title'],['company','Company'],['profile_url','Profile URL']])) {
+    const wrapper = field(`hiring_manager_${key}`, label, manager?.[key] ?? '', key === 'profile_url' ? 'url' : 'text');
+    const input = /** @type {HTMLInputElement} */ (wrapper.querySelector('input'));
+    input.maxLength = key === 'profile_url' ? 2048 : 160; contactGrid.append(wrapper);
+  }
+  optional.open = !!(manager?.title || manager?.company || manager?.profile_url);
+  const status = el('input'); status.type = 'hidden'; status.name = 'hiring_manager_status'; status.value = manager?.status ?? 'manual';
+  optional.append(contactGrid); contact.append(nameField, optional, status); fields.append(contact);
+  const validateContact = () => {
+    const controls = [...contact.querySelectorAll('input')].filter(input => input.type !== 'hidden');
+    nameInput.required = controls.some(input => input !== nameInput && input.value.trim() !== '');
+    const profile = /** @type {HTMLInputElement} */ (contact.querySelector('[name="hiring_manager_profile_url"]'));
+    profile.setCustomValidity('');
+    if (profile.value.trim()) {
+      try { validateHiringManager({ name: 'URL validation', profile_url: profile.value, status: 'manual' }); }
+      catch (error) { profile.setCustomValidity(error instanceof Error ? error.message : 'Use a complete HTTP/HTTPS profile URL.'); }
+    }
+  };
+  contact.addEventListener('input', () => { status.value = 'manual'; validateContact(); });
+  validateContact();
   fields.append(details);
   return { fields, companyInput: /** @type {HTMLInputElement} */ (grid.querySelector('[name="company"]')) };
 }

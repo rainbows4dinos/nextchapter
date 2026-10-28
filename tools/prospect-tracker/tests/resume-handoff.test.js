@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { HANDOFF_TTL, createHandoff, readHandoff, consumeHandoff, clearExpiredHandoffs } from '../../shared/resume-handoff.mjs';
+import { HANDOFF_TTL, createHandoff, readHandoff, consumeHandoff, clearExpiredHandoffs, useHandoffContact } from '../../shared/resume-handoff.mjs';
 
 const destination = new URL('https://example.github.io/career-context/tools/resume-tailor.html');
 const job = { company: 'Example', title: 'Designer', description: 'Full description\n\n• Details <script>inert text</script>' };
@@ -88,4 +88,38 @@ test('storage read/write/delete failures propagate and failed consumption preser
       assert.equal(output.title.value, 'Existing title'); assert.equal(output.company.value, '');
     }
   }
+});
+
+test('contact handoff preserves recipients until explicit use, with replacement consent and later edits',()=>{
+  for(const status of ['manual','suggested','user_selected','user_verified'])for(const approve of [true,false]){
+    const store=storage();const input={...job,hiring_manager:{name:'Alex Example',status}};
+    const sent=createHandoff(store,destination,input,100,token), received=readHandoff(store,sent.url,101);
+    const recipient={value:'My existing recipient'};let prompts=0;
+    consumeHandoff(store,received,fields(),()=>true);
+    assert.equal(recipient.value,'My existing recipient','no automatic recipient use for any provenance');
+    useHandoffContact(received.job.hiring_manager,recipient,()=>{prompts++;return approve;});
+    assert.equal(prompts,1);assert.equal(recipient.value,approve?'Alex Example':'My existing recipient');
+    recipient.value='Edited after transfer';assert.equal(recipient.value,'Edited after transfer');
+    assert.equal(store.length,0);
+  }
+  const recipient={value:''};
+  assert.equal(useHandoffContact({name:'Alex',status:'manual'},recipient,()=>assert.fail('explicit action on blank field needs no extra prompt')),true);
+  assert.equal(recipient.value,'Alex');
+});
+
+test('missing contact and rejected job replacement preserve recipient without another prompt',()=>{
+  for(const hasContact of [false,true]){
+    const store=storage();const sent=createHandoff(store,destination,{...job,...(hasContact?{hiring_manager:{name:'Alex',status:'manual'}}:{})},100,token);
+    const output=fields();if(hasContact)output.company.value='Keep draft';
+    const recipient={value:'Keep recipient'};
+    consumeHandoff(store,readHandoff(store,sent.url,101),output,()=>false);
+    assert.equal(recipient.value,'Keep recipient');
+  }
+});
+
+test('contact transport rejects extra/incompatible fields and malformed provenance',()=>{
+  for(const hiring_manager of [{name:'Alex',status:'manual',profile_url:'https://example.org'},{name:'',status:'manual'},{name:'Alex',status:'confirmed'},'Alex']){
+    assert.throws(()=>createHandoff(storage(),destination,{...job,hiring_manager},100,token));
+  }
+  assert.throws(()=>createHandoff(storage(),destination,{...job,notes:'Do not transfer'},100,token));
 });

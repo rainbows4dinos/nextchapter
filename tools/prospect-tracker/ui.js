@@ -1,4 +1,3 @@
-import { findPeople } from './find-people.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { companyLogoEditor } from './company-logo-editor.js?v=20261026-editor-actions';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
@@ -12,7 +11,8 @@ import { bindFieldValidation } from '../shared/fields.mjs';
 import { setAlert } from '../shared/status.mjs';
 import { BOARD_COLUMNS, formatAppliedDate, searchBoardGroups, statusLabel } from './view-model.js';
 import { STATUSES, SELECTABLE_STATUSES } from './model.js';
-import { createHandoff, HANDOFF_TTL } from '../shared/resume-handoff.mjs';
+// @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
+import { createHandoff, HANDOFF_TTL } from '../shared/resume-handoff.mjs?v=20261028-hiring-manager';
 import { STATUS_BADGE_TONES } from './prospect-status.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { mountBoardDrag } from './kanban.js?v=20261019-filtered-order';
@@ -260,7 +260,8 @@ export function editorView(root, row, options = {}) {
       try {
         const destination = new URL('../resume-tailor.html', window.location.href);
         const handoff = createHandoff(window.localStorage, destination, {
-          company: row.company, title: row.title, description: row.job_description ?? ''
+          company: row.company, title: row.title, description: row.job_description ?? '',
+          ...(row.hiring_manager ? { hiring_manager: { name: row.hiring_manager.name, status: row.hiring_manager.status } } : {})
         });
         key = handoff.key;
         // Open synchronously from the click, then detach the opener before navigation.
@@ -280,7 +281,7 @@ export function editorView(root, row, options = {}) {
         setAlert(feedback, { message, variant: 'danger' });
       }
     }, 'secondary nc-button nc-button--tertiary nc-button--lg');
-    const actions = el('div', '', 'actions'); actions.append(send, findPeople({ company: row.company, title: row.title }));
+    const actions = el('div', '', 'actions'); actions.append(send);
     fields.append(actions, feedback);
   }
   form.append(fields, footer); bindFieldValidation(form);
