@@ -1,0 +1,13 @@
+{
+  "id": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+  "createdAt": "2026-10-29T18:09:53.098Z",
+  "createdBy": "Larry Reynolds",
+  "updatedAt": "2026-10-29T18:09:53.098Z",
+  "updatedById": "Larry Reynolds",
+  "deletedAt": null,
+  "deletedById": null,
+  "order": 10000,
+  "backgroundColor": "#333739",
+  "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+  "name": "Basics"
+}

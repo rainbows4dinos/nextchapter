@@ -1,0 +1,27 @@
+{
+  "id": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+  "createdAt": "2026-10-29T18:09:53.098Z",
+  "createdBy": "Larry Reynolds",
+  "updatedAt": "2026-10-29T18:09:53.101Z",
+  "updatedById": "Larry Reynolds",
+  "deletedAt": null,
+  "deletedById": null,
+  "order": 10000,
+  "backgroundColor": "var(--nc-background-page)",
+  "category": "",
+  "description": "",
+  "height": 800,
+  "width": 1440,
+  "position": [
+    0,
+    0
+  ],
+  "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+  "name": "Welcome",
+  "state": {},
+  "tags": [],
+  "theme": "",
+  "purpose": "regular",
+  "patternEventsDefinition": {},
+  "patternPropsDefinition": {}
+}

@@ -1,0 +1,656 @@
+[
+  {
+    "id": "21f177da-3dbf-48b9-b62d-90b3cc96b482",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1000,
+    "name": "Wrapper",
+    "parentId": null,
+    "props": {},
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "height": "100%",
+      "display": "flex",
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "gap": "32px 32px",
+      "padding": "48px"
+    }
+  },
+  {
+    "id": "b001c85c-dab8-4239-be78-93d066862e24",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": -9000,
+    "name": "Wrapper Steps",
+    "parentId": "21f177da-3dbf-48b9-b62d-90b3cc96b482",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "320px",
+      "flexShrink": "0",
+      "borderRadius": "16px",
+      "backgroundColor": "var(--nc-surface-raised)",
+      "padding": "24px",
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "gap": "24px",
+      "maxHeight": "100%"
+    }
+  },
+  {
+    "id": "fcce0ef8-2ef4-4c2c-bb3f-f2ca118ef5d2",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 21000,
+    "name": "Example container",
+    "parentId": "21f177da-3dbf-48b9-b62d-90b3cc96b482",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "height": "100%",
+      "backgroundColor": "var(--nc-background-page)",
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "paddingBottom": "48px",
+      "borderRadius": "32px",
+      "overflow": "hidden"
+    }
+  },
+  {
+    "id": "d640fdc5-5ee3-4ef6-a7c2-8a36eefdfd05",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Title",
+    "parentId": "b001c85c-dab8-4239-be78-93d066862e24",
+    "props": {
+      "content": "Agents",
+      "__slot__": "children"
+    },
+    "type": "primitives/h3",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "f3dc24cf-9448-41a0-b8e4-990f60e3e086",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 20000,
+    "name": "Description",
+    "parentId": "b001c85c-dab8-4239-be78-93d066862e24",
+    "props": {
+      "content": "Point your agents to anything in the design view.",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "16px",
+      "textAlign": "left",
+      "lineHeight": "24px",
+      "fontWeight": "500",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "6de3e92a-967f-4223-9674-5ea8a8d219ed",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 21000,
+    "name": "Step wrapper",
+    "parentId": "b001c85c-dab8-4239-be78-93d066862e24",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "flex-start",
+      "alignItems": "flex-start",
+      "gap": "8px"
+    }
+  },
+  {
+    "id": "26546961-ba2e-4e18-a58f-a336c2f8fa4b",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 31000,
+    "name": "Step wrapper",
+    "parentId": "b001c85c-dab8-4239-be78-93d066862e24",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "flex-start",
+      "alignItems": "flex-start",
+      "gap": "8px"
+    }
+  },
+  {
+    "id": "0d714d2f-09c9-4f34-8300-791b820f2064",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Step title",
+    "parentId": "6de3e92a-967f-4223-9674-5ea8a8d219ed",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "display": "flex",
+      "flexDirection": "row",
+      "justifyContent": "flex-start",
+      "alignItems": "center",
+      "gap": "8px"
+    }
+  },
+  {
+    "id": "c188b2e8-01d4-491a-8556-1d987e7cb46c",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 20000,
+    "name": "Description",
+    "parentId": "6de3e92a-967f-4223-9674-5ea8a8d219ed",
+    "props": {
+      "content": "Activate the selection tool and click the span to the right.",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "20px",
+      "opacity": 0.5,
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "5b9d7420-0d00-4b16-807c-06863a5debe0",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Step title",
+    "parentId": "26546961-ba2e-4e18-a58f-a336c2f8fa4b",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "100%",
+      "display": "flex",
+      "flexDirection": "row",
+      "justifyContent": "flex-start",
+      "alignItems": "center",
+      "gap": "8px"
+    }
+  },
+  {
+    "id": "ed437da1-6921-4f7c-879b-a66398d9aa66",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 20000,
+    "name": "Description",
+    "parentId": "26546961-ba2e-4e18-a58f-a336c2f8fa4b",
+    "props": {
+      "content": "In the chat box now tell the agent what to update.",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "20px",
+      "opacity": 0.5,
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "0ad1e570-f1f8-45a4-ace8-8dced3dfe05c",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 20000,
+    "name": "Description",
+    "parentId": "0d714d2f-09c9-4f34-8300-791b820f2064",
+    "props": {
+      "content": "Select the span",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "24px",
+      "fontWeight": "500",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "f284b22f-a218-4c7e-9799-4624152b86af",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Step badge",
+    "parentId": "0d714d2f-09c9-4f34-8300-791b820f2064",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "20px",
+      "height": "20px",
+      "borderRadius": "24px",
+      "backgroundColor": "var(--nc-secondary-700)",
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "center"
+    }
+  },
+  {
+    "id": "53d2f39e-7412-43f1-a400-c71b3f7498ac",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 20000,
+    "name": "Description",
+    "parentId": "5b9d7420-0d00-4b16-807c-06863a5debe0",
+    "props": {
+      "content": "Click the chat icon in the top right",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "24px",
+      "fontWeight": "500",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "c6ee6e13-218c-4f32-ae45-d425f1ccbda1",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Step badge",
+    "parentId": "5b9d7420-0d00-4b16-807c-06863a5debe0",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "width": "20px",
+      "height": "20px",
+      "borderRadius": "24px",
+      "backgroundColor": "var(--nc-secondary-700)",
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "center"
+    }
+  },
+  {
+    "id": "dc247aa4-4576-451d-96e5-9605adc6f110",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Description",
+    "parentId": "f284b22f-a218-4c7e-9799-4624152b86af",
+    "props": {
+      "content": "1",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "24px",
+      "fontWeight": "600",
+      "color": "#ffffff"
+    }
+  },
+  {
+    "id": "6c5049c8-4e5e-4c01-8c06-c3c4bc4e454b",
+    "createdAt": "2026-10-29T18:09:53.115Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.115Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Description",
+    "parentId": "c6ee6e13-218c-4f32-ae45-d425f1ccbda1",
+    "props": {
+      "content": "2",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "fontSize": "14px",
+      "textAlign": "left",
+      "lineHeight": "24px",
+      "fontWeight": "600",
+      "color": "#ffffff"
+    }
+  },
+  {
+    "id": "b847b2d9-7628-4538-9f89-ce07cb8c154e",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Prospect card",
+    "parentId": "fcce0ef8-2ef4-4c2c-bb3f-f2ca118ef5d2",
+    "props": {
+      "href": "#",
+      "__slot__": "children"
+    },
+    "type": "primitives/a",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "position": "relative",
+      "display": "flex",
+      "flexDirection": "column",
+      "gap": "var(--nc-space-1)",
+      "width": "280px",
+      "padding": "var(--nc-space-3)",
+      "border": "1px solid var(--nc-card-border)",
+      "borderRadius": "var(--nc-radius-default)",
+      "backgroundColor": "var(--nc-card-bg)",
+      "color": "var(--nc-card-fg)",
+      "textDecoration": "none",
+      "fontFamily": "var(--nc-type-body-default-family)",
+      "fontSize": "var(--nc-type-body-default-size)",
+      "fontWeight": "var(--nc-type-body-default-weight)",
+      "lineHeight": "var(--nc-type-body-default-line-height)"
+    }
+  },
+  {
+    "id": "29294504-db52-47cb-bcbe-791e49687d24",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Header",
+    "parentId": "b847b2d9-7628-4538-9f89-ce07cb8c154e",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "display": "flex",
+      "alignItems": "center",
+      "gap": "var(--nc-space-1-5)",
+      "minWidth": "0",
+      "paddingBottom": "var(--nc-space-1-5)"
+    }
+  },
+  {
+    "id": "9901b281-d443-42e0-b8aa-041766539712",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Company avatar",
+    "parentId": "29294504-db52-47cb-bcbe-791e49687d24",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {},
+    "classes": [
+      "nc-avatar",
+      "nc-avatar--company",
+      "nc-avatar--sm"
+    ]
+  },
+  {
+    "id": "2d7c91e9-b071-458f-8d03-371a392bc810",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "span",
+    "parentId": "9901b281-d443-42e0-b8aa-041766539712",
+    "props": {
+      "__slot__": "children",
+      "content": "N"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {}
+  },
+  {
+    "id": "4d9dafdd-6057-47af-a65b-a91f2fec3d77",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Company",
+    "parentId": "29294504-db52-47cb-bcbe-791e49687d24",
+    "props": {
+      "__slot__": "children",
+      "content": "Northwind Labs"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "color": "var(--nc-link-default)",
+      "fontFamily": "var(--nc-type-ui-button-family)",
+      "fontSize": "var(--nc-type-ui-button-size)",
+      "fontWeight": "var(--nc-type-ui-button-weight)",
+      "lineHeight": "var(--nc-type-ui-button-line-height)"
+    }
+  },
+  {
+    "id": "ef73e2f8-115b-4361-8246-da8d4ae734ea",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Role title",
+    "parentId": "b847b2d9-7628-4538-9f89-ce07cb8c154e",
+    "props": {
+      "__slot__": "children",
+      "content": "Principal Product Designer"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "display": "block",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "54c7ce00-d98b-4629-a11b-38fa76ec1364",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 2,
+    "name": "Meta",
+    "parentId": "b847b2d9-7628-4538-9f89-ce07cb8c154e",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "gap": "var(--nc-space-1-5)",
+      "minHeight": "24px",
+      "paddingTop": "var(--nc-space-1)"
+    }
+  },
+  {
+    "id": "2338483f-e97a-44de-aedd-8c53be6d6289",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Status badge",
+    "parentId": "54c7ce00-d98b-4629-a11b-38fa76ec1364",
+    "props": {
+      "__slot__": "children",
+      "content": "Interviewing"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {},
+    "classes": [
+      "nc-status-badge",
+      "nc-status-badge--active"
+    ]
+  },
+  {
+    "id": "d79affd9-db9e-4139-b44a-96aed28141bb",
+    "createdAt": "2026-10-29T18:09:53.117Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.117Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Applied date",
+    "parentId": "54c7ce00-d98b-4629-a11b-38fa76ec1364",
+    "props": {
+      "__slot__": "children",
+      "content": "Applied Oct 21"
+    },
+    "type": "primitives/span",
+    "viewId": "504386f4-5f15-4f5a-b421-0e514375594f",
+    "style": {
+      "color": "var(--nc-text-secondary)",
+      "textAlign": "right",
+      "fontFamily": "var(--nc-type-caption-family)",
+      "fontSize": "var(--nc-type-caption-size)",
+      "fontWeight": "var(--nc-type-caption-weight)",
+      "lineHeight": "var(--nc-type-caption-line-height)"
+    }
+  }
+]

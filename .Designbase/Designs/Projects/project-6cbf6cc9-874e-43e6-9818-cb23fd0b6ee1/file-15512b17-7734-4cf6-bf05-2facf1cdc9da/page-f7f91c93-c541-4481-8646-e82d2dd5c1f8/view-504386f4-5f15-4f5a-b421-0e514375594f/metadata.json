@@ -1,0 +1,27 @@
+{
+  "id": "504386f4-5f15-4f5a-b421-0e514375594f",
+  "createdAt": "2026-10-29T18:09:53.099Z",
+  "createdBy": "Larry Reynolds",
+  "updatedAt": "2026-10-29T18:09:53.105Z",
+  "updatedById": "Larry Reynolds",
+  "deletedAt": null,
+  "deletedById": null,
+  "order": 30000,
+  "backgroundColor": "var(--nc-background-page)",
+  "category": "",
+  "description": "",
+  "height": 800,
+  "width": 1440,
+  "position": [
+    3080,
+    0
+  ],
+  "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+  "name": "Agents",
+  "state": {},
+  "tags": [],
+  "theme": "",
+  "purpose": "regular",
+  "patternEventsDefinition": {},
+  "patternPropsDefinition": {}
+}

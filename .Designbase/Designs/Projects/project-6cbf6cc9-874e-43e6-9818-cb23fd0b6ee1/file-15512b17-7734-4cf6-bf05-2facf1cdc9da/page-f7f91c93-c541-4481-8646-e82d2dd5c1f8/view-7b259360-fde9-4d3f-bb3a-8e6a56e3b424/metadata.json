@@ -1,0 +1,27 @@
+{
+  "id": "7b259360-fde9-4d3f-bb3a-8e6a56e3b424",
+  "createdAt": "2026-10-29T18:09:53.098Z",
+  "createdBy": "Larry Reynolds",
+  "updatedAt": "2026-10-29T18:09:53.103Z",
+  "updatedById": "Larry Reynolds",
+  "deletedAt": null,
+  "deletedById": null,
+  "order": 20000,
+  "backgroundColor": "var(--nc-background-page)",
+  "category": "",
+  "description": "",
+  "height": 800,
+  "width": 1440,
+  "position": [
+    1540,
+    0
+  ],
+  "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+  "name": "Configuring",
+  "state": {},
+  "tags": [],
+  "theme": "",
+  "purpose": "regular",
+  "patternEventsDefinition": {},
+  "patternPropsDefinition": {}
+}

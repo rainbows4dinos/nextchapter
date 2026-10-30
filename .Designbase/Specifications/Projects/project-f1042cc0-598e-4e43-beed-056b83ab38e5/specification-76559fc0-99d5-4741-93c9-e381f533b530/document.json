@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "kind": "specification",
+  "revision": 0,
+  "rows": [
+    {
+      "id": "default-row-heading",
+      "widgets": [
+        {
+          "id": "default-heading",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "How plans work"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 1
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-2",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-1",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "Plans hold the decisions behind your work: why you are building something, what is in scope, and the artifacts that show it. Everything embedded in a plan stays live.\n"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-4",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-3",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "What each artifact is for"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 2
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-6",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-5",
+          "type": "table",
+          "columns": [
+            {
+              "id": "col-1793297393260-6",
+              "name": "Artifact",
+              "wrap": true
+            },
+            {
+              "id": "col-1793297393260-7",
+              "name": "Use it to",
+              "wrap": true
+            },
+            {
+              "id": "col-1793297393260-8",
+              "name": "Example in Onboarding",
+              "wrap": true
+            }
+          ],
+          "rows": [
+            {
+              "id": "trow-1793297393260-9",
+              "cells": [
+                "Whiteboard",
+                "Explore ideas freely",
+                "How whiteboards work"
+              ]
+            },
+            {
+              "id": "trow-1793297393260-10",
+              "cells": [
+                "Plan",
+                "Decide and explain why",
+                "How plans work (this page)"
+              ]
+            },
+            {
+              "id": "trow-1793297393260-11",
+              "cells": [
+                "Flow",
+                "Map the user's journey",
+                "How flows work"
+              ]
+            },
+            {
+              "id": "trow-1793297393260-12",
+              "cells": [
+                "Design",
+                "Build with your real components",
+                "How it works"
+              ]
+            },
+            {
+              "id": "trow-1793297393260-13",
+              "cells": [
+                "Prototype",
+                "Try it for real, in code",
+                "How prototypes work"
+              ]
+            }
+          ],
+          "fitColumns": true
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-8",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-7",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "Explore"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 2
+                }
+              },
+              {
+                "insert": "Embed a whiteboard to keep the exploration next to the decision.\n"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-10",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-9",
+          "type": "whiteboard",
+          "height": 420,
+          "target": {
+            "entityType": "whiteboard-project",
+            "projectId": "c344eb4b-1348-455c-a5b9-e3827c520014",
+            "id": "97d534b2-6fba-4b46-99a3-ac258d9e4007"
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-12",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-11",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "The journey"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 2
+                }
+              },
+              {
+                "insert": "Embed a Flow to show the path users take.\n"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-14",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-13",
+          "type": "flow",
+          "height": 360,
+          "target": {
+            "entityType": "flow-project",
+            "projectId": "c99835ca-1e37-423f-be63-fe4ce069d6e5",
+            "id": "cfee9616-04b6-4ab2-bca4-b4e5992dbfe5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-16",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-15",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "The design"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 2
+                }
+              },
+              {
+                "insert": "Embed a View from a design file. It is live, so it always shows the current design.\n"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-18",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-17",
+          "type": "view",
+          "fit": true,
+          "target": {
+            "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+            "fileType": "project",
+            "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+            "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+            "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "row-1793297393260-20",
+      "widgets": [
+        {
+          "id": "widget-1793297393260-19",
+          "type": "text",
+          "value": {
+            "ops": [
+              {
+                "insert": "Start your own"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "header": 2
+                }
+              },
+              {
+                "insert": "Create a plan from the Plans section in the sidebar."
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "list": "bullet"
+                }
+              },
+              {
+                "insert": "Or ask your agent: “Write a plan for …”"
+              },
+              {
+                "insert": "\n",
+                "attributes": {
+                  "list": "bullet"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "default-row-blank",
+      "widgets": [
+        {
+          "id": "default-blank",
+          "span": 1,
+          "type": "empty"
+        }
+      ]
+    }
+  ]
+}

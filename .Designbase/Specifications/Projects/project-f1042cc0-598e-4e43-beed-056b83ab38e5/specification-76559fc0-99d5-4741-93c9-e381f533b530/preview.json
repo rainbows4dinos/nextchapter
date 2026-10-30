@@ -1,0 +1,34 @@
+{
+  "version": 5,
+  "generatedAt": 1793297456794,
+  "sources": [
+    {
+      "fileType": "project",
+      "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1",
+      "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+      "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+      "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+      "present": true
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "whiteboard",
+      "ref": {
+        "entityType": "whiteboard-project",
+        "projectId": "c344eb4b-1348-455c-a5b9-e3827c520014",
+        "id": "97d534b2-6fba-4b46-99a3-ac258d9e4007"
+      },
+      "previewMtime": 1793297398262
+    },
+    {
+      "kind": "flow",
+      "ref": {
+        "entityType": "flow-project",
+        "projectId": "c99835ca-1e37-423f-be63-fe4ce069d6e5",
+        "id": "cfee9616-04b6-4ab2-bca4-b4e5992dbfe5"
+      },
+      "previewMtime": 1793297399255.474
+    }
+  ]
+}

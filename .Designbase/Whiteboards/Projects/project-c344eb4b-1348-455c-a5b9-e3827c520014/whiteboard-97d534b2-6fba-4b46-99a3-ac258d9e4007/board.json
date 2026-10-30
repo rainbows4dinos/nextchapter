@@ -1,0 +1,602 @@
+{
+  "version": 1,
+  "revision": 1,
+  "shapes": [
+    {
+      "id": "wb-a-title",
+      "color": "#010102",
+      "strokeWidth": 3,
+      "tool": "text",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "text": "What you can put on a whiteboard",
+      "style": {
+        "fontFamily": "sans",
+        "fontSize": 32,
+        "bold": true,
+        "align": "left"
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-sticky",
+      "color": "none",
+      "strokeWidth": 0,
+      "tool": "sticky",
+      "position": {
+        "x": 0,
+        "y": 80
+      },
+      "width": 200,
+      "height": 160,
+      "background": "yellow",
+      "text": {
+        "ops": [
+          {
+            "insert": "Sticky notes. Press P, then double-click to write.\n"
+          }
+        ]
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-box",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 260,
+        "y": 100
+      },
+      "end": {
+        "x": 480,
+        "y": 220
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Shapes with labels",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-oval",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "ellipse",
+      "start": {
+        "x": 560,
+        "y": 100
+      },
+      "end": {
+        "x": 780,
+        "y": 220
+      },
+      "label": {
+        "text": "Any shape you need",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-link",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "line",
+      "variant": "stepped",
+      "startCap": "none",
+      "endCap": "arrow",
+      "start": {
+        "x": 487.5,
+        "y": 160
+      },
+      "end": {
+        "x": 552.5,
+        "y": 160
+      },
+      "bind": {
+        "start": {
+          "shapeId": "wb-a-box",
+          "auto": true,
+          "side": "right"
+        },
+        "end": {
+          "shapeId": "wb-a-oval",
+          "auto": true,
+          "side": "left"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-text",
+      "color": "#010102",
+      "strokeWidth": 3,
+      "tool": "text",
+      "position": {
+        "x": 0,
+        "y": 290
+      },
+      "text": "Free text like this. Press T to type anywhere.",
+      "style": {
+        "fontFamily": "sans",
+        "fontSize": 20,
+        "bold": false,
+        "align": "left"
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-frame-label",
+      "color": "#010102",
+      "strokeWidth": 3,
+      "tool": "text",
+      "position": {
+        "x": 0,
+        "y": 350
+      },
+      "text": "A live frame of the Welcome view. Edit the design and it updates; double-click to open it.",
+      "style": {
+        "fontFamily": "sans",
+        "fontSize": 16,
+        "bold": false,
+        "align": "left"
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-a-frame",
+      "color": "#646468",
+      "strokeWidth": 0,
+      "tool": "viewFrame",
+      "position": {
+        "x": 0,
+        "y": 390
+      },
+      "width": 780,
+      "height": 433,
+      "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+      "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+      "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+      "fileType": "project",
+      "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1",
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-title",
+      "color": "#010102",
+      "strokeWidth": 3,
+      "tool": "text",
+      "position": {
+        "x": 1000,
+        "y": 0
+      },
+      "text": "Where each artifact fits",
+      "style": {
+        "fontFamily": "sans",
+        "fontSize": 32,
+        "bold": true,
+        "align": "left"
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-0",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 1000,
+        "y": 80
+      },
+      "end": {
+        "x": 1320,
+        "y": 176
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Whiteboard: explore ideas freely",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-1",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 1000,
+        "y": 230
+      },
+      "end": {
+        "x": 1320,
+        "y": 326
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Plan: decide and explain why",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-link-1",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "line",
+      "variant": "stepped",
+      "startCap": "none",
+      "endCap": "arrow",
+      "start": {
+        "x": 1160,
+        "y": 183.5
+      },
+      "end": {
+        "x": 1160,
+        "y": 222.5
+      },
+      "bind": {
+        "start": {
+          "shapeId": "wb-b-0",
+          "auto": false,
+          "side": "bottom"
+        },
+        "end": {
+          "shapeId": "wb-b-1",
+          "auto": false,
+          "side": "top"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-2",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 1000,
+        "y": 380
+      },
+      "end": {
+        "x": 1320,
+        "y": 476
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Flow: map the user's journey",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-link-2",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "line",
+      "variant": "stepped",
+      "startCap": "none",
+      "endCap": "arrow",
+      "start": {
+        "x": 1160,
+        "y": 333.5
+      },
+      "end": {
+        "x": 1160,
+        "y": 372.5
+      },
+      "bind": {
+        "start": {
+          "shapeId": "wb-b-1",
+          "auto": false,
+          "side": "bottom"
+        },
+        "end": {
+          "shapeId": "wb-b-2",
+          "auto": false,
+          "side": "top"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-3",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 1000,
+        "y": 530
+      },
+      "end": {
+        "x": 1320,
+        "y": 626
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Design: build with your real components",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-link-3",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "line",
+      "variant": "stepped",
+      "startCap": "none",
+      "endCap": "arrow",
+      "start": {
+        "x": 1160,
+        "y": 483.5
+      },
+      "end": {
+        "x": 1160,
+        "y": 522.5
+      },
+      "bind": {
+        "start": {
+          "shapeId": "wb-b-2",
+          "auto": false,
+          "side": "bottom"
+        },
+        "end": {
+          "shapeId": "wb-b-3",
+          "auto": false,
+          "side": "top"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-4",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "shape",
+      "kind": "rect",
+      "start": {
+        "x": 1000,
+        "y": 680
+      },
+      "end": {
+        "x": 1320,
+        "y": 776
+      },
+      "fill": "#ffffff",
+      "label": {
+        "text": "Prototype: try it for real, in code",
+        "color": "#010102",
+        "style": {
+          "fontFamily": "sans",
+          "fontSize": 20,
+          "bold": false,
+          "align": "center"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-b-link-4",
+      "color": "#5637f9",
+      "strokeWidth": 3,
+      "tool": "line",
+      "variant": "stepped",
+      "startCap": "none",
+      "endCap": "arrow",
+      "start": {
+        "x": 1160,
+        "y": 633.5
+      },
+      "end": {
+        "x": 1160,
+        "y": 672.5
+      },
+      "bind": {
+        "start": {
+          "shapeId": "wb-b-3",
+          "auto": false,
+          "side": "bottom"
+        },
+        "end": {
+          "shapeId": "wb-b-4",
+          "auto": false,
+          "side": "top"
+        }
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-c-title",
+      "color": "#010102",
+      "strokeWidth": 3,
+      "tool": "text",
+      "position": {
+        "x": 1460,
+        "y": 0
+      },
+      "text": "Try this",
+      "style": {
+        "fontFamily": "sans",
+        "fontSize": 32,
+        "bold": true,
+        "align": "left"
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-c-0",
+      "color": "none",
+      "strokeWidth": 0,
+      "tool": "sticky",
+      "position": {
+        "x": 1460,
+        "y": 80
+      },
+      "width": 240,
+      "height": 160,
+      "background": "yellow",
+      "text": {
+        "ops": [
+          {
+            "insert": "Press P and write your own sticky note.\n"
+          }
+        ]
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-c-1",
+      "color": "none",
+      "strokeWidth": 0,
+      "tool": "sticky",
+      "position": {
+        "x": 1460,
+        "y": 270
+      },
+      "width": 240,
+      "height": 160,
+      "background": "blue",
+      "text": {
+        "ops": [
+          {
+            "insert": "Select a few shapes, then send them to chat to ask your agent about them.\n"
+          }
+        ]
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    },
+    {
+      "id": "wb-c-2",
+      "color": "none",
+      "strokeWidth": 0,
+      "tool": "sticky",
+      "position": {
+        "x": 1460,
+        "y": 460
+      },
+      "width": 240,
+      "height": 160,
+      "background": "green",
+      "text": {
+        "ops": [
+          {
+            "insert": "Ask your agent: “Add a frame of the Configuring view to this board.”\n"
+          }
+        ]
+      },
+      "createdBy": "Larry Reynolds",
+      "createdAt": "2026-10-29T18:09:53.199Z",
+      "updatedBy": "Larry Reynolds",
+      "updatedAt": "2026-10-29T18:09:53.199Z"
+    }
+  ]
+}

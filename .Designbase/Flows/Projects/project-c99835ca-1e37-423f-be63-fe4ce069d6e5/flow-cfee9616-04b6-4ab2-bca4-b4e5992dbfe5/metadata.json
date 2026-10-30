@@ -1,0 +1,13 @@
+{
+  "id": "cfee9616-04b6-4ab2-bca4-b4e5992dbfe5",
+  "purpose": "flow",
+  "name": "How flows work",
+  "description": "A user journey made of Steps, Actions and Decisions.",
+  "tags": [],
+  "revision": 0,
+  "createdAt": "2026-10-29T18:09:53.222Z",
+  "updatedAt": "2026-10-29T18:09:53.222Z",
+  "lastModifiedAt": "2026-10-29T18:09:53.222Z",
+  "createdBy": "Larry Reynolds",
+  "updatedById": "Larry Reynolds"
+}

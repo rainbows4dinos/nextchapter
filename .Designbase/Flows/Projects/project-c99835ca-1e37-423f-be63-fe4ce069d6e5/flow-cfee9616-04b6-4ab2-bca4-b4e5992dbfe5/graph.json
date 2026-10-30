@@ -1,0 +1,280 @@
+{
+  "version": 1,
+  "revision": 0,
+  "entryNodeId": "51bfc8cf-5373-452b-affa-73bc8811d3be",
+  "nodes": [
+    {
+      "id": "0b0cab98-9253-43c1-abd8-04592615f68f",
+      "kind": "action",
+      "title": "Ask your agent",
+      "description": "Actions can type text, too. A walkthrough plays them in order.",
+      "actionKind": "input",
+      "position": {
+        "x": 1000,
+        "y": 40
+      },
+      "inputValue": "Make the main button larger"
+    },
+    {
+      "id": "19d92a1d-2bc9-4e3b-bb21-9e82a306def0",
+      "kind": "action",
+      "title": "Select a component",
+      "description": "An Action is what the user does to move on.",
+      "actionKind": "click",
+      "position": {
+        "x": 360,
+        "y": 40
+      }
+    },
+    {
+      "id": "3652a37a-a480-45fb-ac18-d3cf612901fe",
+      "kind": "decision",
+      "title": "Try it in code?",
+      "description": "A Decision splits the journey. Whoever walks through the Flow picks a branch.",
+      "position": {
+        "x": 1640,
+        "y": 30
+      },
+      "branches": [
+        {
+          "id": "yes",
+          "label": "Yes"
+        },
+        {
+          "id": "later",
+          "label": "Not yet"
+        }
+      ]
+    },
+    {
+      "id": "51bfc8cf-5373-452b-affa-73bc8811d3be",
+      "kind": "view",
+      "title": "Welcome",
+      "description": "A Step is one screen. This one is linked to a design View, so it always shows the real design.",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "source": {
+        "kind": "linked",
+        "viewRef": {
+          "fileType": "project",
+          "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1",
+          "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+          "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+          "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc"
+        },
+        "lastKnownName": "Welcome"
+      }
+    },
+    {
+      "id": "5e7b315c-32cd-4419-af87-cef145bf0cbe",
+      "kind": "view",
+      "title": "Agents",
+      "description": "Your agent edits the same design you see.",
+      "position": {
+        "x": 1280,
+        "y": 0
+      },
+      "source": {
+        "kind": "linked",
+        "viewRef": {
+          "fileType": "project",
+          "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1",
+          "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+          "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+          "viewId": "504386f4-5f15-4f5a-b421-0e514375594f"
+        },
+        "lastKnownName": "Agents"
+      }
+    },
+    {
+      "id": "770dd3e0-4316-4a30-b633-e07daf18c04b",
+      "kind": "view",
+      "title": "Keep designing",
+      "description": "A Step without a design is just a description. End markers say how a path finishes.",
+      "position": {
+        "x": 1960,
+        "y": 220
+      },
+      "source": {
+        "kind": "described"
+      },
+      "end": {
+        "label": "Back to the canvas",
+        "outcome": "neutral"
+      }
+    },
+    {
+      "id": "d2bd9b60-6658-47f8-9714-b148efda0e76",
+      "kind": "view",
+      "title": "Configuring",
+      "description": "Selecting a component opens its properties.",
+      "position": {
+        "x": 640,
+        "y": 0
+      },
+      "source": {
+        "kind": "linked",
+        "viewRef": {
+          "fileType": "project",
+          "projectId": "6cbf6cc9-874e-43e6-9818-cb23fd0b6ee1",
+          "fileId": "15512b17-7734-4cf6-bf05-2facf1cdc9da",
+          "pageId": "f7f91c93-c541-4481-8646-e82d2dd5c1f8",
+          "viewId": "7b259360-fde9-4d3f-bb3a-8e6a56e3b424"
+        },
+        "lastKnownName": "Configuring"
+      }
+    },
+    {
+      "id": "fccb3ad2-8bbc-47f0-8000-037dbc8154a4",
+      "kind": "view",
+      "title": "Prototype",
+      "description": "Steps can show a running prototype, too.",
+      "position": {
+        "x": 1960,
+        "y": -160
+      },
+      "source": {
+        "kind": "prototype",
+        "ref": {
+          "entityType": "prototype-project",
+          "projectId": "2552d986-8e6d-456e-82d9-2b2e0196853d",
+          "id": "c118dee4-b77b-4fea-9555-b7d08985c908"
+        },
+        "path": "/",
+        "lastKnownName": "How prototypes work"
+      },
+      "end": {
+        "label": "Running in code",
+        "outcome": "success"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "35082d12-6784-4f51-b20e-e53c5c03b46b",
+      "source": {
+        "nodeId": "0b0cab98-9253-43c1-abd8-04592615f68f",
+        "portId": "out"
+      },
+      "target": {
+        "nodeId": "5e7b315c-32cd-4419-af87-cef145bf0cbe",
+        "portId": "in"
+      },
+      "order": 3
+    },
+    {
+      "id": "59d9b5a2-9637-4f4e-b165-35873b32ef45",
+      "source": {
+        "nodeId": "3652a37a-a480-45fb-ac18-d3cf612901fe",
+        "portId": "yes"
+      },
+      "target": {
+        "nodeId": "fccb3ad2-8bbc-47f0-8000-037dbc8154a4",
+        "portId": "in"
+      },
+      "order": 5
+    },
+    {
+      "id": "71f463d7-7e51-48a3-9826-afd96d624fcf",
+      "source": {
+        "nodeId": "19d92a1d-2bc9-4e3b-bb21-9e82a306def0",
+        "portId": "out"
+      },
+      "target": {
+        "nodeId": "d2bd9b60-6658-47f8-9714-b148efda0e76",
+        "portId": "in"
+      },
+      "order": 1
+    },
+    {
+      "id": "87cde7ee-e43d-48ad-a1e6-8d5dac58c438",
+      "source": {
+        "nodeId": "d2bd9b60-6658-47f8-9714-b148efda0e76",
+        "portId": "out"
+      },
+      "target": {
+        "nodeId": "0b0cab98-9253-43c1-abd8-04592615f68f",
+        "portId": "in"
+      },
+      "order": 2
+    },
+    {
+      "id": "9f72285a-4edb-4964-b864-a8a60aff8c7f",
+      "source": {
+        "nodeId": "3652a37a-a480-45fb-ac18-d3cf612901fe",
+        "portId": "later"
+      },
+      "target": {
+        "nodeId": "770dd3e0-4316-4a30-b633-e07daf18c04b",
+        "portId": "in"
+      },
+      "order": 6
+    },
+    {
+      "id": "bb4c77c3-6a41-4bb2-b8dd-123515b9e4d0",
+      "source": {
+        "nodeId": "5e7b315c-32cd-4419-af87-cef145bf0cbe",
+        "portId": "out"
+      },
+      "target": {
+        "nodeId": "3652a37a-a480-45fb-ac18-d3cf612901fe",
+        "portId": "in"
+      },
+      "order": 4
+    },
+    {
+      "id": "bc09e7ef-b3fe-42f2-b274-d16d84febbba",
+      "source": {
+        "nodeId": "51bfc8cf-5373-452b-affa-73bc8811d3be",
+        "portId": "out"
+      },
+      "target": {
+        "nodeId": "19d92a1d-2bc9-4e3b-bb21-9e82a306def0",
+        "portId": "in"
+      },
+      "order": 0
+    }
+  ],
+  "notes": [
+    {
+      "id": "231096c8-098c-4968-bb09-6331b549e724",
+      "position": {
+        "x": 0,
+        "y": 320
+      },
+      "width": 300,
+      "height": 180,
+      "color": "yellow",
+      "text": {
+        "ops": [
+          {
+            "insert": "Steps are screens, Actions are what the user does, and Decisions are branches. Press Walkthrough to play the Flow from the first Step.\n"
+          }
+        ]
+      },
+      "createdAt": "2026-10-29T18:09:53.217Z",
+      "createdBy": "Larry Reynolds"
+    },
+    {
+      "id": "e56ef60c-5c2c-406e-b02c-9e8631ecf6af",
+      "position": {
+        "x": 1280,
+        "y": 320
+      },
+      "width": 260,
+      "height": 160,
+      "color": "blue",
+      "text": {
+        "ops": [
+          {
+            "insert": "End markers say how a path finishes: success, error or neutral.\n"
+          }
+        ]
+      },
+      "createdAt": "2026-10-29T18:09:53.217Z",
+      "createdBy": "Larry Reynolds"
+    }
+  ]
+}

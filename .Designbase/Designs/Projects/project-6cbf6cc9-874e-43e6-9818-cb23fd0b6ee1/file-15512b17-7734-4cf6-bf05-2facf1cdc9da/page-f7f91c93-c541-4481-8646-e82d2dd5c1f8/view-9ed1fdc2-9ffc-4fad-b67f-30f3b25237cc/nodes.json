@@ -1,0 +1,335 @@
+[
+  {
+    "id": "d2b3a35f-f921-4953-8d94-d8b1fc6a921a",
+    "createdAt": "2026-10-29T18:09:53.107Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.107Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1000,
+    "name": "Wrapper",
+    "parentId": null,
+    "props": {},
+    "type": "primitives/div",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "width": "100%",
+      "height": "100%",
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "paddingTop": "48px",
+      "paddingBottom": "0px",
+      "paddingRight": "128px",
+      "paddingLeft": "128px",
+      "gap": "32px 0px"
+    }
+  },
+  {
+    "id": "71a2876e-2fab-41ac-a445-6a3417729d8b",
+    "createdAt": "2026-10-29T18:09:53.107Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.107Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1000,
+    "name": "Title",
+    "parentId": "d2b3a35f-f921-4953-8d94-d8b1fc6a921a",
+    "props": {
+      "content": "Welcome to the Designbase Editor",
+      "__slot__": "children"
+    },
+    "type": "primitives/h1",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "fontSize": "64px",
+      "maxWidth": "50%",
+      "textAlign": "center",
+      "lineHeight": "68px",
+      "fontWeight": "500",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "f4706e61-4381-4f8c-b28c-65701f9e8f24",
+    "createdAt": "2026-10-29T18:09:53.107Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.107Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 11000,
+    "name": "Description",
+    "parentId": "d2b3a35f-f921-4953-8d94-d8b1fc6a921a",
+    "props": {
+      "content": "This is where ideas turn into real, working interfaces. Everything here is structured, reusable, and ready to ship.",
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "fontSize": "24px",
+      "maxWidth": "50%",
+      "textAlign": "center",
+      "lineHeight": "28px",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "b3c32d00-f294-40bf-8b76-2aac371c8a36",
+    "createdAt": "2026-10-29T18:09:53.107Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.107Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 21000,
+    "name": "Example container",
+    "parentId": "d2b3a35f-f921-4953-8d94-d8b1fc6a921a",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/div",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "width": "100%",
+      "height": "100%",
+      "borderTopLeftRadius": "32px",
+      "borderTopRightRadius": "32px",
+      "backgroundColor": "var(--nc-background-page)",
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "paddingTop": "48px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "overflow": "hidden"
+    }
+  },
+  {
+    "id": "270c6000-c306-4eeb-9298-8b95f14464ae",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 10000,
+    "name": "Prospect card",
+    "parentId": "b3c32d00-f294-40bf-8b76-2aac371c8a36",
+    "props": {
+      "href": "#",
+      "__slot__": "children"
+    },
+    "type": "primitives/a",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "position": "relative",
+      "display": "flex",
+      "flexDirection": "column",
+      "gap": "var(--nc-space-1)",
+      "width": "280px",
+      "padding": "var(--nc-space-3)",
+      "border": "1px solid var(--nc-card-border)",
+      "borderRadius": "var(--nc-radius-default)",
+      "backgroundColor": "var(--nc-card-bg)",
+      "color": "var(--nc-card-fg)",
+      "textDecoration": "none",
+      "fontFamily": "var(--nc-type-body-default-family)",
+      "fontSize": "var(--nc-type-body-default-size)",
+      "fontWeight": "var(--nc-type-body-default-weight)",
+      "lineHeight": "var(--nc-type-body-default-line-height)"
+    }
+  },
+  {
+    "id": "998a1f1c-d68b-4e44-9b03-9b4022aac494",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Header",
+    "parentId": "270c6000-c306-4eeb-9298-8b95f14464ae",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "display": "flex",
+      "alignItems": "center",
+      "gap": "var(--nc-space-1-5)",
+      "minWidth": "0",
+      "paddingBottom": "var(--nc-space-1-5)"
+    }
+  },
+  {
+    "id": "e863360a-2ba3-40f8-9691-4078ec7103d0",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Company avatar",
+    "parentId": "998a1f1c-d68b-4e44-9b03-9b4022aac494",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {},
+    "classes": [
+      "nc-avatar",
+      "nc-avatar--company",
+      "nc-avatar--sm"
+    ]
+  },
+  {
+    "id": "2a16ed28-fb11-4776-ba07-f96cabdd3b89",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "span",
+    "parentId": "e863360a-2ba3-40f8-9691-4078ec7103d0",
+    "props": {
+      "__slot__": "children",
+      "content": "N"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {}
+  },
+  {
+    "id": "1bb2f23a-fa2a-419e-964e-0c214c64cad6",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Company",
+    "parentId": "998a1f1c-d68b-4e44-9b03-9b4022aac494",
+    "props": {
+      "__slot__": "children",
+      "content": "Northwind Labs"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "color": "var(--nc-link-default)",
+      "fontFamily": "var(--nc-type-ui-button-family)",
+      "fontSize": "var(--nc-type-ui-button-size)",
+      "fontWeight": "var(--nc-type-ui-button-weight)",
+      "lineHeight": "var(--nc-type-ui-button-line-height)"
+    }
+  },
+  {
+    "id": "aba08625-9934-4242-927d-2648b5158113",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Role title",
+    "parentId": "270c6000-c306-4eeb-9298-8b95f14464ae",
+    "props": {
+      "__slot__": "children",
+      "content": "Principal Product Designer"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "display": "block",
+      "color": "var(--nc-text-primary)"
+    }
+  },
+  {
+    "id": "034c475b-69d2-4abb-8fc6-484b2c4a921a",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 2,
+    "name": "Meta",
+    "parentId": "270c6000-c306-4eeb-9298-8b95f14464ae",
+    "props": {
+      "__slot__": "children"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "gap": "var(--nc-space-1-5)",
+      "minHeight": "24px",
+      "paddingTop": "var(--nc-space-1)"
+    }
+  },
+  {
+    "id": "0f12481c-0b08-45f7-b3a9-67bc7f0a1061",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 0,
+    "name": "Status badge",
+    "parentId": "034c475b-69d2-4abb-8fc6-484b2c4a921a",
+    "props": {
+      "__slot__": "children",
+      "content": "Interviewing"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {},
+    "classes": [
+      "nc-status-badge",
+      "nc-status-badge--active"
+    ]
+  },
+  {
+    "id": "69c1b291-9536-4cd3-aba1-2e2a6e88bd9b",
+    "createdAt": "2026-10-29T18:09:53.109Z",
+    "createdBy": "Larry Reynolds",
+    "updatedAt": "2026-10-29T18:09:53.109Z",
+    "updatedById": "Larry Reynolds",
+    "deletedAt": null,
+    "deletedById": null,
+    "order": 1,
+    "name": "Applied date",
+    "parentId": "034c475b-69d2-4abb-8fc6-484b2c4a921a",
+    "props": {
+      "__slot__": "children",
+      "content": "Applied Oct 21"
+    },
+    "type": "primitives/span",
+    "viewId": "9ed1fdc2-9ffc-4fad-b67f-30f3b25237cc",
+    "style": {
+      "color": "var(--nc-text-secondary)",
+      "textAlign": "right",
+      "fontFamily": "var(--nc-type-caption-family)",
+      "fontSize": "var(--nc-type-caption-size)",
+      "fontWeight": "var(--nc-type-caption-weight)",
+      "lineHeight": "var(--nc-type-caption-line-height)"
+    }
+  }
+]
