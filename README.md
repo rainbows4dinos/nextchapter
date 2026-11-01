@@ -4,6 +4,22 @@ Shared professional context and personal career tools for Larry Reynolds: résum
 
 nextchapter connects three applications: Career Radar for reviewing a structured career profile (discovery and evaluation planned), Prospect Tracker for managing prospects and applications, and Résumé Builder for tailored application materials. Prospect Tracker retains existing manual tracking and editable job URL previews (Greenhouse, Ashby, Lever, account-qualified Workable and limited Workday).
 
+## Screenshots
+
+Captured from the local test fixture with made-up companies and roles.
+
+**Prospect Tracker board**
+
+![Prospect Tracker board with Prospects, Applied, In-Process and Done columns](docs/images/readme/prospect-tracker-board.png)
+
+**Prospect details and status history**
+
+![Prospect details form with the status sidebar and status history](docs/images/readme/prospect-tracker-details.png)
+
+**Résumé Builder**
+
+![Résumé Builder job details step with emphasis focus options](docs/images/readme/resume-builder.png)
+
 ## Shared career context
 
 Shared career facts, supporting experience, writing guidance, and application-document rules live in `docs/career-context/`. The tools read these canonical sources directly.
