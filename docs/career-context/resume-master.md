@@ -6,7 +6,8 @@ Larry Reynolds
 Product Design Leader
 
 Portland, OR  
-https://www.larryjr.design  
+https://www.larryjr.design
+https://github.com/rainbows4dinos  
 https://www.linkedin.com/in/larryjrdesign  
 larry.jr.design@gmail.com  
 503-475-7438
