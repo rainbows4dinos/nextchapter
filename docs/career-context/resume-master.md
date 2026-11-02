@@ -22,7 +22,7 @@ Product design leader focused on complex product ecosystems, workflow orchestrat
 Hands-on design leader ready to take on people management again. Combines product direction, mentorship, collaboration, and executional craft. Leadership roles should include clear people-management responsibility; IC roles offer strategic ownership and influence across teams.
 
 ## Hands-on Software Building and AI
-Uses AI-assisted coding to build functional software and prototypes, then hand-edits and iterates on the results. Connects product design with frontend implementation and systems thinking. Separately explores how AI changes interaction models, onboarding, trust, and product behavior. Describe the actual work and release status; do not imply autonomous engineering or shipped outcomes from prototypes.
+Product design leader extending his practice into hands-on, end-to-end product building with AI assistance. Uses AI-generated code as a starting point, then hand-edits, reviews, tests, and iterates. Seeens, nextchapter, and Esatto are central evidence: a released closed-alpha application, a working suite of personal career tools with staged features, and reusable design-agent skills with verification scripts. His work now spans product definition and interaction design through implementation, data access, validation, deployment, and iteration. Designing AI product behavior remains distinct from using AI to build software. Match each claim to the project's actual release stage; these projects do not establish broad adoption or general full-stack expertise.
 
 ---
 
@@ -66,7 +66,7 @@ Has built or matured a design system in every role he has held, across ecommerce
 
 Product design leader and hands-on builder focused on systems thinking, practical AI-assisted workflows, and human-centered experiences. Experienced leading cross-functional initiatives across product, engineering, marketing, and data teams to transform fragmented platforms into cohesive, scalable ecosystems.
 
-Combines UX strategy, interaction design, visual craft, design systems thinking, and functional prototyping to rapidly explore ideas and align teams under ambiguity.
+Combines UX strategy, interaction design, visual craft, and design systems with AI-assisted implementation. Independent projects make that approach concrete: scoping useful workflows, building the supporting software, checking behavior and access boundaries, and carrying selected work into release.
 
 Comfortable moving between strategy and execution, including AI-assisted software building, functional prototyping, frontend implementation, and systems-level product thinking. Equally interested in Director / Head of Design roles with people management and Staff / Principal IC roles. Prior people-management details should be confirmed by employer before adding direct-report, hiring, or performance-management accomplishments.
 
@@ -127,12 +127,44 @@ Approved descriptive public framing for independent work spanning paid product d
 ## Public Scope
 - Provided product design consulting for a consumer mobile app rebuild, spanning interaction design, functional prototyping, and design systems.
 - Produced a promotional film for PDX Pop Now!'s 2026 compilation, combining visual concept development and motion design as a volunteer.
-- Developing custom tools, workflows, and methodologies that use AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
+- Designs and builds Seeens, nextchapter, and Esatto with AI assistance and hand editing, connecting product decisions and design systems to implementation, verification, and delivery. Their release stages differ; use the project evidence below.
 
 ## AI Tooling and Methods (Self-Employed / Consulting)
-Developing custom tools, workflows, and methodologies that leverage AI to accelerate and enhance product design and software development, from early exploration and rapid prototyping through implementation and delivery.
+Builds custom software and reusable design-agent workflows with AI assistance, then hand-edits and verifies the results. Seeens, nextchapter, and Esatto are the primary examples, in that order. They show an expanding product design practice that includes implementation and release responsibilities. Acceleration is an aim of the approach, with no measured time savings claimed.
 
-This is ongoing independent practice and capability development, including work that is not currently generating income. It does not extend the completed project or paid contract dates or establish client delivery, measured improvements, or shipped outcomes.
+This is ongoing independent practice, including work that is not currently generating income. Personal-project releases are separate from paid client delivery. They do not extend the completed paid contract or volunteer project dates.
+
+### Seeens: Released Closed Alpha
+Private, shared music-network workspace for Merwulf. After a smaller MVP restart on October 27, 2026, the repository records a November 1, 2026 launch at https://www.seeens.com. The closed launch issue records two-member, cross-device workflow and access checks. This is a narrow production release serving an initial band, not evidence of a mature multi-customer platform.
+
+Built workflows for connections and affiliations, local and nested scenes, search and filters, relationship status, manually curated prospects, outreach history, assigned next actions and follow-ups, and CSV export. Next.js, TypeScript, Tailwind, Supabase Auth/Postgres with workspace Row Level Security, and Vercel connect the interface to persistent shared data. Reviewed action handlers, export code, and database access tests support the implementation claims.
+
+Design evidence: reduced the earlier discovery concept to a usable shared workflow; separated relationship status from whether bands have played together; preserved outreach and next-action history; kept sensitive band judgments private. Automated discovery, AI recommendations, automatic messaging, graph visualization, and multi-band customer support remain outside the MVP. The next visual pass is still pending.
+
+Source: https://github.com/rainbows4dinos/Seeens
+
+### nextchapter: Working Personal Career Tool Suite
+Connects shared career context to a Résumé Builder, private Prospect Tracker, and Career Radar profile and opportunity-review workflow. The repository documents GitHub Pages hosting, a separately deployed Anthropic proxy Worker, and Supabase-backed private records.
+
+Built résumé and cover-letter tailoring, revision and QA flows, plus PDF/DOCX/ZIP exports and an ATS-plain résumé. The builder consumes canonical career files, with code enforcing fixed identity and employment facts. Prospect Tracker supports manual tracking, a status board, editable details, status history, and reviewable job URL previews for Greenhouse, Ashby, Lever, account-qualified Workable, and limited Workday sites.
+
+Career Radar includes a structured profile editor and persistent Accept/Pass decisions with an explicit Add to Prospects handoff. Live opportunity discovery remains disabled in the reviewed code; deeper automated evaluation remains future work. Do not describe the suite as autonomously finding, evaluating, or applying to jobs.
+
+Design evidence: carried a personal workflow into connected tools; separated public context from private application data; kept imported information editable; distinguished accepting an opportunity from adding a tracking record; aligned shared Figma-based tokens and components across the interface. Reviewed code supports these capabilities; no usage, hiring-outcome, or productivity metrics are established.
+
+Source: https://github.com/rainbows4dinos/nextchapter
+
+### Esatto: Packaged Design-Agent Skills and Tooling
+Reusable Claude Code skills for inspecting Figma, exploring design directions, constructing editable Figma designs, and syncing design systems into code. The repository includes a plugin marketplace manifest, installation and packaging instructions, shared conventions, and executable helper scripts. This is published workflow tooling, not a hosted SaaS application.
+
+The approach captures an evidence-backed baseline, carries decisions between sessions through round files and build manifests, and tracks design-system sync in an item-level ledger. Reviewed scripts check prototype interactions, compare Figma variables with CSS tokens, and validate ledger coverage against the source inventory. Skill instructions define editable-layer construction and human approval boundaries; scripts alone do not prove every generated design meets them.
+
+Design evidence: turns design judgment into inspectable instructions and repeatable checks, making source fidelity, uncertainty, and incomplete work visible. Do not claim universal Figma/code parity, guaranteed accessible output, marketplace adoption, or measured speed gains. No end-to-end skill execution was performed in this review.
+
+Source: https://github.com/rainbows4dinos/Esatto
+
+### Evidence Boundaries
+Project status was reviewed through the connected GitHub plugin on November 2, 2026 using READMEs, selected implementation files, and release records. Source review is not an independent live deployment test. AI-assisted authorship and Larry's hand-editing practice come from the supplied career context; repository contents support artifact capabilities, not a per-line attribution audit. Do not infer exact project start dates from repository creation dates. See project-evidence.md in this delivery for pinned sources and claim boundaries.
 
 ## Underlying Facts and Scope Boundaries
 The paid engagement was Fractional Head of Design (contract), Jun 2026 through Sep 2026. It ended before launch, with shipped implementation unknown. Claim no launch credit, metrics, outcomes, or formal people management from that title alone. Keep the client unnamed and do not use the engagement as the main resume or cover-letter story. Private client and departure context is maintained outside this public repository and is not input for public application generation.
@@ -309,10 +341,11 @@ Emphasize:
 
 ## AI Product and Hands-on Building Roles
 Emphasize:
-- functional software and prototypes built with AI assistance and hand editing
-- frontend fluency and systems orchestration
-- concrete examples and accurate prototype, testing, or release status
-- human judgment about trust, quality, and user needs
+- Seeens, nextchapter, and Esatto as central examples, in that order
+- AI-assisted end-to-end product building, with hand editing, review, and verification
+- Seeens as a released closed alpha; nextchapter as working tools with discovery disabled; Esatto as packaged agent workflows and scripts
+- decisions about scope, data ownership, history, source fidelity, and human control
+- production implementation evidence without claims of scale, measured speed gains, or autonomous engineering
 
 ## Director / Head of Design Roles
 Emphasize:

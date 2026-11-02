@@ -82,15 +82,21 @@ Give Director / Head of Design and Staff / Principal IC roles equal priority. Ta
 
 People management belongs explicitly in leadership positioning. Readiness to manage again is confirmed. Historical direct reports, hiring, performance management, and team size require role-specific facts; do not infer them from a Head or Director title or replace them with generic leadership claims.
 
-Use “Independent Design Consultant” as the public role, “Product Design & Creative Projects” as the organization label, and May 2026 through Sep 2026 as the combined project period. Describe the product design consulting and PDX Pop Now! promotional film within the cap in rules.json. Explicitly identify the film as volunteer work. Include that project here or in a separate volunteer section, never both.
+Use “Independent Design Consultant” as the public role, “Product Design & Creative Projects” as the organization label, and May 2026 – Present for the ongoing independent practice, matching resume-master.md. LinkedIn uses “Larry Jr. Design” as the organization label. Lead current building claims with Seeens, nextchapter, and Esatto, in that order, choosing evidence relevant to the role within the cap in rules.json. Retain the completed consulting and PDX Pop Now! projects as distinct supporting work. Explicitly identify the film as volunteer work and include it only once in public output.
 
-The paid contract itself ran Jun 2026 through Sep 2026 and ended before launch; claim no shipped outcomes or metrics for it. Keep its client unnamed and do not make it the cover-letter story. The PDX Pop Now! volunteer work ran May 2026 through Jul 2026 and produced a delivered film. Do not imply multiple paid clients, an ongoing business, or a longer paid contract. The fractional title remains an underlying career fact, while the approved public role describes the broader independent work.
+The paid contract itself ran Jun 2026 through Sep 2026 and ended before launch; claim no shipped outcomes or metrics for it. Keep its client unnamed and do not make it the cover-letter story. The PDX Pop Now! volunteer work ran May 2026 through Jul 2026 and produced a delivered film. Do not imply multiple paid clients, a current paying client, continuous paid engagements, or a longer paid contract. The ongoing independent practice includes unpaid personal projects. The fractional title remains an underlying career fact, while the approved public role describes the broader independent work.
 
 Keep private client and departure context outside this public repository and out of application-generation inputs. Answer complete-history or direct client questions accurately using the private record. Do not manufacture continuity or move accomplishments to another employer.
 
 # Practical AI and Building Language
 
-Describe functional software, prototypes, and systems Larry built with AI assistance and hand editing. Name the artifact and contribution. Keep the code-credit policy above. Avoid claims of autonomous building, full-stack expertise, production ownership, or speed improvements without evidence. Distinguish speculative work, tested prototypes, and released features.
+Describe what Larry designed and built with AI assistance, then hand-edited, reviewed, and verified. Name the artifact, a meaningful product decision, and its release stage. Use the code-credit policy above.
+
+Lead recent AI-assisted building evidence with Seeens, nextchapter, and Esatto. Seeens supports a narrow claim of building and releasing a closed-alpha application, with deployment and access-validation work documented in the repository. nextchapter supports working career tools and staged Radar functionality; live discovery remains disabled. Esatto supports packaged design-agent workflows and executable checks, with end-to-end outcomes still dependent on execution and verification.
+
+"Hands-on, end-to-end product design and building" describes the scope of the practice. "Released a closed-alpha app" is appropriate for Seeens. Avoid blanket claims that all three are production software, autonomous engineering, general full-stack expertise, proven security or accessibility, scaled operations, external adoption, or measured productivity gains. Separate repository-reported deployment and test results from checks independently performed for the current task.
+
+Using AI to build software and designing a product that uses AI are different claims. Seeens' MVP has no AI recommendation feature. nextchapter's résumé generation uses AI; its live discovery is disabled. Esatto defines agent workflows and verification methods. Do not give every project the same AI feature story.
 
 # LinkedIn Approval
 

@@ -14,13 +14,32 @@ For Staff / Principal roles, emphasize strategic ownership, complex systems, cra
 
 ## Independent Consulting and Creative Projects
 
-Use the approved public role “Independent Design Consultant,” organization label “Product Design & Creative Projects,” and dates May 2026 – Present for the ongoing independent practice. LinkedIn uses “Larry Jr. Design” as the organization label. The practice includes continued project work and AI tooling development, even when it is not generating income. Show broad design expertise through the paid consumer mobile app consulting and the volunteer PDX Pop Now! promotional film, within the cap in rules.json.
+Use the approved public role “Independent Design Consultant,” organization label “Product Design & Creative Projects,” and dates May 2026 – Present for the ongoing independent practice. LinkedIn uses “Larry Jr. Design” as the organization label. The practice includes continued project work and AI tooling development, even when it is not generating income. Lead recent positioning with Seeens, nextchapter, and Esatto as evidence of hands-on product building. Keep the paid consumer mobile app consulting and volunteer PDX Pop Now! promotional film available as distinct supporting work. Select the most relevant evidence within the cap in rules.json; the context file is an evidence bank, not a requirement to fit every project into one résumé entry.
 
 The paid fractional contract ran Jun 2026 through Sep 2026. Its client stays unnamed; the engagement ended before launch, and shipped outcomes are unknown. The PDX Pop Now! project ran May 2026 through Jul 2026 and must be identified as volunteer work. Do not describe both projects as paid consulting, imply a current paying client or continuous paid engagements, or duplicate PDX Pop Now! in a separate public volunteer entry. Preserve the underlying titles, dates, and scope in the master; keep private client-specific disclosure and departure guidance outside this public repository.
 
 ### AI Tooling and Methods
 
-Under Self-Employed / Consulting, include the development of custom tools, workflows, and methodologies that use AI across product design and software development, from early exploration and rapid prototyping through implementation and delivery. Use the wording in resume-master.md as the factual source. Frame acceleration and enhancement as the purpose of this work; do not imply verified client results, measured time savings, or shipped client software. This independent practice does not change the documented project or contract dates. Follow voice-and-format.md when describing AI-assisted code contributions.
+Under Self-Employed / Consulting, make the personal projects the main evidence of the current shift in practice. Use resume-master.md for capabilities and release stages, and project-evidence.md for the reviewed sources. Follow voice-and-format.md for code credit: AI-generated first, then hand-edited. Personal-project releases establish neither client delivery nor measured time savings. Preserve the documented contract and volunteer dates.
+
+### The Project Story, in Order
+
+**Seeens: carrying a useful workflow into release.** Start with the band's need to remember relationships and follow through on outreach. Explain the choice to restart with a smaller private workspace, then connect the interface decisions to the data model, workspace access, preserved history, and CSV portability. The strongest concrete endpoint is the documented November 1 closed-alpha launch and two-member validation. Keep the scope modest: one initial band, manually added members, manual prospect curation, and visual refinement still ahead.
+
+**nextchapter: building the system around a personal workflow.** Explain how shared career facts support tailored documents while private opportunity records live separately in Supabase. Focus on the path from an editable posting preview to a tracking record and on the separate Radar decision and Tracker handoff. The working builder, tracking tools, and export code demonstrate implementation beyond prototyping. Live discovery is disabled, so the story must stop short of autonomous job research or application submission.
+
+**Esatto: making the method reusable and checkable.** Explain how inspection, exploration, editable construction, and design-system sync are connected by saved evidence and handoff files. Use the prototype checker, token comparison, and ledger validation as concrete examples. Distinguish what the skill instructs an agent to do from what helper scripts mechanically check. The repository establishes a packaged workflow; external adoption and end-to-end reliability remain unverified.
+
+### What Is Changing in the Design Practice
+
+These projects make implementation part of the design feedback loop. Larry can test a workflow in working software and see how interface choices affect persistence, permissions, failure recovery, and maintenance. A design decision now includes what happens after a save fails, who can see a record, which facts survive later edits, and how another session resumes unfinished work.
+
+AI broadens the range of work he can carry forward. Product judgment remains his contribution: choosing the problem, narrowing scope, directing interactions and visual systems, reviewing generated implementation, and deciding what evidence supports release. This is an extension of the systems thinking in his employed roles. It supports both leadership and Staff / Principal positioning without replacing the career history.
+
+### Interview Opening
+"I've been taking more of my product design work through implementation and release with AI assistance. Seeens is now a closed-alpha shared workspace for my band. nextchapter connects career context to application documents and private tracking. With Esatto, I'm packaging the design workflows and checks so I can reuse them. The shift is that I can work through the behavior in software and take responsibility for checking what actually works."
+
+Use this as a framing draft, then choose one project and one decision to explain. For a production example, lead with Seeens. For AI product behavior, use the nextchapter builder and its evidence boundaries. For design systems and agent workflow design, use Esatto. Do not turn these into a claim that every project is production-ready.
 
 ## Earlier History
 
