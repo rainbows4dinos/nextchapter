@@ -46,10 +46,18 @@ jobs:
             echo "::notice::Set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY repository variables to enable Prospect Tracker."
           fi
 
-      # The repo is already a static site, so the root is uploaded as-is.
+      # Keep existing URLs, but exclude local prototypes and untracked files.
+      # upload-pages-artifact dereferences symlinks; the prototype node_modules
+      # link points outside the runner checkout and previously broke deployment.
+      - name: Validate Pages artifact preparation
+        run: node --test tools/prospect-tracker/tests/pages-artifact.test.js
+
+      - name: Prepare Pages artifact
+        run: node tools/prospect-tracker/scripts/prepare-pages.mjs "$RUNNER_TEMP/nextchapter-pages"
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ${{ runner.temp }}/nextchapter-pages
 
       - id: deployment
         uses: actions/deploy-pages@v4

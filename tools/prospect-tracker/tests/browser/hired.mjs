@@ -64,7 +64,10 @@ try {
     const auth=await client.auth.signInWithPassword({email:'radar@example.invalid',password:'fixture-only-password'});if(auth.error)throw auth.error;
     const data=${store}; await data.createProspect({id:'${first}',company:'New Chapter Studio',title:'Principal Product Designer'});
   })()`);
+  await navigate(board); await wait("!!document.querySelector('.board')");
+  assert.equal(await evaluate("!!document.querySelector('#board-status option[value=hired]')"), true, 'Hired is present in the rendered filter dropdown');
   await navigate(detail(first)); await wait("!!document.querySelector('#status-form select')");
+  assert.equal(await evaluate("!!document.querySelector('#status-form option[value=hired]')"), true, 'Hired is present in the rendered editor dropdown');
   await evaluate("document.querySelector('#status-form select').focus();fetch('/__fixture/fail-next-save',{method:'POST'})");
   await status('hired');
   await wait("document.querySelector('#status-feedback').textContent.includes('Synthetic save failure')");

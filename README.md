@@ -59,7 +59,7 @@ Repository agents should read `AGENTS.md` and the career files relevant to their
 - [tools/about.html](tools/about.html): a public introduction to nextchapter, its tools, and shared professional context.
 - [tools/proxy-worker.js](tools/proxy-worker.js): Cloudflare Worker that proxies Anthropic API requests using a server-side secret.
 - [tools/wrangler.toml](tools/wrangler.toml): configuration for the separately deployed Worker.
-- [.github/workflows/pages.yml](.github/workflows/pages.yml): publishes the repository root to GitHub Pages on pushes to `main` or manual dispatch.
+- [.github/workflows/pages.yml](.github/workflows/pages.yml): publishes the repository’s static root layout to GitHub Pages on pushes to `main` or manual dispatch, staging tracked files plus generated public configuration and excluding local `.Designbase` prototypes.
 - `Claude outputs/`: generated résumés and export samples, kept as reference.
 
 The builder produces one download per application: a **Download Package** zip holding the résumé and cover letter as PDF and `.docx`, an ATS-plain résumé for Workday autofill, and a README describing them.
@@ -78,7 +78,7 @@ For the current implementation baseline, validation commands, and continuation b
 
 ## Deployment and editing
 
-The site, résumé Worker and Radar ingestion function deploy separately. Pushing to `main` publishes the repository root to GitHub Pages; the Worker ships on its own with `wrangler deploy`, and the ingestion function uses the Supabase CLI.
+The site, résumé Worker and Radar ingestion function deploy separately. Pushing to `main` stages tracked site files (excluding `.Designbase` and `.github`) plus generated public configuration and publishes the same root URL layout to GitHub Pages; the Worker ships on its own with `wrangler deploy`, and the ingestion function uses the Supabase CLI.
 
 The hosted builder fetches the shared career context from `main` at runtime. When served on localhost or a loopback address, it loads `docs/career-context/` from the local checkout so changes can be tested before pushing.
 
