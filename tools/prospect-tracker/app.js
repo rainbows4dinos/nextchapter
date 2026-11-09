@@ -11,9 +11,10 @@ import { createRadarDataAccess, StaleProspectError } from './data.js';
 import { errorMessage, parseRoute, readDetails } from './view-model.js';
 import { validateStatus, validateHttpUrl } from './model.js';
 import { mountProspectDelete } from './prospect-delete.js';
+import { isHiredTransition, showHiredCelebration } from './hired-celebration.js';
 import { createStatusSaver } from './status-save.js';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
-import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261028-hiring-manager';
+import { boardView, button, editorView, historyView, messageView, setProspectStatusBadge } from './ui.js?v=20261109-hired';
 // @ts-expect-error Browser asset revision; TypeScript does not resolve URL query strings.
 import { mountIngestion } from './ingestion-ui.js?v=20261028-hiring-manager';
 
@@ -45,7 +46,16 @@ export async function startRadar(client) {
   /** @type {import('./ui.js').BoardState} */
   let boardState = { query: '', doneOpen: false, scrollLeft: 0, scrollTop: {} };
 
+  /** @type {(()=>void)|null} */
+  let celebrationCleanup = null;
+  /** @param {string} previousStatus @param {import('./model.js').Prospect} saved @param {Element|null} [returnFocus] */
+  const celebrate = (previousStatus, saved, returnFocus) => {
+    if (!isHiredTransition(previousStatus, saved)) return;
+    celebrationCleanup?.();
+    celebrationCleanup = showHiredCelebration(saved, returnFocus);
+  };
   const clear = () => {
+    celebrationCleanup?.(); celebrationCleanup = null;
     boardCleanup?.(); boardCleanup = null;
     editorCleanup?.(); editorCleanup = null;
     epoch++; dirty = false; mounted = false; activeHash = '';
@@ -59,7 +69,7 @@ export async function startRadar(client) {
     userId = nextId;
     if (nextId) lastUserId = nextId;
     login.hidden = !!nextId; workspace.hidden = !nextId;
-    if (!nextId) node('tracker-heading').hidden = false;
+    if (!nextId) { node('tracker-heading').hidden = false; celebrationCleanup?.(); celebrationCleanup = null; }
     if (!nextId) { boardCleanup?.(); boardCleanup = null; }
     if (nextId) returnAfterLogin();
     if (nextId && (!mounted || activeHash !== (window.location.hash || '#/board') || !boardCleanup && !!workspace.querySelector('.board'))) void renderRoute();
@@ -94,6 +104,7 @@ export async function startRadar(client) {
   const saveProspectStatus = createStatusSaver(data, { canSave: () => !!userId && !pending, busy });
   async function renderRoute() {
     if (!userId) return;
+    celebrationCleanup?.(); celebrationCleanup = null;
     const thisEpoch = ++epoch;
     const owner = userId;
     activeHash = window.location.hash || '#/board';
@@ -130,6 +141,7 @@ export async function startRadar(client) {
             if (current()) {
               cards = cards.map(item => item.id === saved.id ? { ...item, ...saved } : item);
               renderBoard(); boardViewController?.revealCard(saved.id); showToast({ message: 'Status saved.', variant: 'success' });
+              celebrate(card.status, saved, workspace.querySelector(`[data-prospect-id="${saved.id}"]`) ?? workspace);
             }
           } catch (error) {
             if (!current()) return;
@@ -288,9 +300,10 @@ export async function startRadar(client) {
             const dateUnedited = appliedInput.value === (row.applied_on ?? '');
             setAlert(feedback, { message: 'Saving status…' });
             try {
+              const previousStatus = row.status;
               row = await saveProspectStatus(row, status);
               if (current() && dateUnedited) appliedInput.value = row.applied_on ?? '';
-              if (current()) { setProspectStatusBadge(node('current-status-badge'), row.status); setAlert(feedback, { message: '' }); showToast({ message: 'Status saved.', variant: 'success' }); void loadHistory(); }
+              if (current()) { setProspectStatusBadge(node('current-status-badge'), row.status); setAlert(feedback, { message: '' }); showToast({ message: 'Status saved.', variant: 'success' }); void loadHistory(); celebrate(previousStatus, row, statusSelect); }
             } catch (error) { if (current()) { statusSelect.value = row.status; showError(error, feedback); } }
             finally {
               if (current() && restoreFocus && statusSelect.isConnected && document.activeElement === document.body) statusSelect.focus();

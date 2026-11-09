@@ -55,7 +55,7 @@ button:disabled { opacity:.5; cursor:wait }
 .board-search .board-search-clear:hover { background:var(--nc-input-hover) }
 .board-search-results { flex:none; margin:0; white-space:nowrap; color:var(--nc-text-secondary); font:var(--nc-type-body-default-weight) var(--nc-type-body-default-size)/var(--nc-type-body-default-line-height) var(--nc-type-body-default-family) }
 .column-cards:focus-visible { outline:var(--nc-focus-width) solid var(--nc-focus-ring); outline-offset:var(--nc-focus-offset) }
-.board { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; overflow-x:auto; padding:0px 0px 1rem; min-height:300px; align-items:start }
+.board { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; overflow-x:auto; padding:0px 0px 1rem; min-height:300px; align-items:start }
 .column { min-width:0; background:var(--surface); border-radius:var(--radius); padding:16px }
 .column h3 { font:500 14px var(--sans); display:flex; justify-content:space-between; margin-bottom:1rem }
 .column { transition:border-color var(--nc-transition-general-sm),background-color var(--nc-transition-general-sm) }
@@ -149,11 +149,11 @@ html:has(.editor__actions) { scroll-padding-block-end:calc(var(--editor-action-h
 time { display:block; font-size:13px; color:var(--muted) }
 /* A closed Done column takes only its summary width on desktop. */
 @media(min-width:1001px) {
-  .board:has(.column-done:not([open])) { grid-template-columns:repeat(3,minmax(0,1fr)) max-content }
+  .board:has(.column-done:not([open])) { grid-template-columns:repeat(4,minmax(0,1fr)) max-content }
   .column-done:not([open]) summary { white-space:nowrap }
 }
-@media(max-width:1000px) { .board { grid-template-columns:repeat(4,200px) } }
-@media(max-width:600px) { .field-grid { grid-template-columns:1fr } .panel { padding:1rem } .board { grid-template-columns:repeat(4,82vw) } nav { gap:.75rem } }
+@media(max-width:1000px) { .board { grid-template-columns:repeat(5,200px) } }
+@media(max-width:600px) { .field-grid { grid-template-columns:1fr } .panel { padding:1rem } .board { grid-template-columns:repeat(5,82vw) } nav { gap:.75rem } }
 @media(max-width:899px) { .board-search { flex-basis:100%; max-width:none; margin-left:0 } }
 /* Desktop board occupies remaining page space; short/mobile viewports retain document scrolling. */
 @media(min-width:900px) and (min-height:600px) {
@@ -284,3 +284,16 @@ time { display:block; font-size:13px; color:var(--muted) }
 .hiring-manager-fields legend { font:var(--nc-type-ui-label-weight) var(--nc-type-ui-label-size)/var(--nc-type-ui-label-line-height) var(--nc-type-ui-label-family) }
 .hiring-manager-fields > p { margin:0 0 var(--nc-space-3) }
 .hiring-manager-fields details { margin:0 }
+
+/* Milestone reuses the canonical modal, success colors, and typography. */
+.hired-celebration { text-align:center; overflow-x:hidden }
+.hired-celebration__symbol { color:var(--nc-success-fg); font-size:var(--nc-space-8); line-height:1; margin-bottom:var(--nc-space-4) }
+.hired-celebration h2 { position:relative; margin:0 0 var(--nc-space-4) }
+.hired-celebration__prospect { font-weight:500; overflow-wrap:anywhere }
+.hired-celebration .actions { justify-content:center }
+.hired-confetti { position:absolute; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit }
+.hired-confetti i { position:absolute; top:-16px; left:var(--x); width:7px; height:12px; background:var(--nc-success-fg); animation:hired-confetti-fall 2200ms ease-in var(--delay) both }
+.hired-confetti i:nth-child(3n) { background:var(--nc-focus-ring); border-radius:50% }
+.hired-confetti i:nth-child(3n + 1) { background:var(--ds-badge-highlight-bg) }
+@keyframes hired-confetti-fall { from { transform:translateY(-16px) rotate(0); opacity:1 } to { transform:translateY(480px) rotate(var(--turn)); opacity:0 } }
+@media(prefers-reduced-motion:reduce) { .hired-confetti { display:none } .hired-confetti i { animation:none } }

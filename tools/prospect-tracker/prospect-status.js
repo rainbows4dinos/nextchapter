@@ -4,6 +4,6 @@
  * @type {Readonly<Record<import('./model.js').ProspectStatus, BadgeTone>>} */
 export const STATUS_BADGE_TONES = Object.freeze({
   prospect: 'neutral', interested: 'accent', applying: 'active', applied: 'accent',
-  recruiter: 'active', interviewing: 'active', final: 'highlight', offer: 'positive',
+  recruiter: 'active', interviewing: 'active', final: 'highlight', offer: 'positive', hired: 'positive',
   passed: 'neutral', rejected: 'negative', withdrawn: 'neutral', closed: 'neutral'
 });

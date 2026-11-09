@@ -9,6 +9,7 @@ export const BOARD_COLUMNS = [
   { id: 'prospects', label: 'Prospects', statuses: ['prospect', 'interested', 'applying'], dropStatus: 'prospect' },
   { id: 'applied', label: 'Applied', statuses: ['applied'], dropStatus: 'applied' },
   { id: 'in-process', label: 'In-Process', statuses: ['recruiter', 'interviewing', 'final', 'offer'], dropStatus: 'recruiter' },
+  { id: 'hired', label: 'Hired', statuses: ['hired'], dropStatus: 'hired' },
   { id: 'done', label: 'Done', statuses: ['passed', 'rejected', 'withdrawn', 'closed'], dropStatus: null }
 ];
 

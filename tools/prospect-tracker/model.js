@@ -3,7 +3,7 @@ import { logoUrl } from './company-logo.js';
 /** @typedef {import('./database.types.ts').Database} Database */
 /** @typedef {Database['public']['Tables']['prospects']['Row']} ProspectRow */
 /** @typedef {Database['public']['Tables']['prospect_status_events']['Row']} StatusEvent */
-/** @typedef {'prospect'|'interested'|'applying'|'applied'|'recruiter'|'interviewing'|'final'|'offer'|'passed'|'rejected'|'withdrawn'|'closed'} ProspectStatus */
+/** @typedef {'prospect'|'interested'|'applying'|'applied'|'recruiter'|'interviewing'|'final'|'offer'|'hired'|'passed'|'rejected'|'withdrawn'|'closed'} ProspectStatus */
 /** @typedef {'remote'|'hybrid'|'onsite'|'flexible'} WorkArrangement */
 /** @typedef {1|2|3|4|5} Score */
 /** @typedef {{id: string, name: string, role?: string, relationship?: string, contact?: string, notes?: string}} Connection */
@@ -12,7 +12,7 @@ import { logoUrl } from './company-logo.js';
 /** @type {readonly ProspectStatus[]} */
 export const STATUSES = Object.freeze([
   'prospect', 'interested', 'applying', 'applied', 'recruiter', 'interviewing',
-  'final', 'offer', 'passed', 'rejected', 'withdrawn', 'closed'
+  'final', 'offer', 'hired', 'passed', 'rejected', 'withdrawn', 'closed'
 ]);
 // Retain retired values for reading saved records and status history.
 export const SELECTABLE_STATUSES = Object.freeze(STATUSES.filter(status => status !== 'applying'));

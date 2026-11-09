@@ -26,6 +26,7 @@ export async function createLocalDatabase({ boardOrder = true } = {}) {
     await db.exec(await readFile(new URL('../../../supabase/migrations/20261025000000_prospect_company_logos.sql', import.meta.url), 'utf8'));
     await db.exec(await readFile(new URL('../../../supabase/migrations/20261027000000_delete_prospect.sql', import.meta.url), 'utf8'));
     await db.exec(await readFile(new URL('../../../supabase/migrations/20261028000000_prospect_hiring_manager.sql', import.meta.url), 'utf8'));
+    if (boardOrder) await db.exec(await readFile(new URL('../../../supabase/migrations/20261109000000_prospect_hired.sql', import.meta.url), 'utf8'));
     return db;
   } catch (error) {
     await db.close();

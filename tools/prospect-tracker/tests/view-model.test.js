@@ -42,12 +42,13 @@ test('hash routes work under a Pages subdirectory and reject malformed prospect 
     assert.deepEqual(parseRoute(route), { kind: 'missing' });
   }
 });
-test('board groups every canonical status exactly once into four ordered lifecycle columns', () => {
+test('board groups every canonical status exactly once into five ordered lifecycle columns', () => {
   const groups = groupCards([]);
   assert.deepEqual(groups.map(({ id, label, statuses }) => ({ id, label, statuses })), [
     { id: 'prospects', label: 'Prospects', statuses: ['prospect', 'interested', 'applying'] },
     { id: 'applied', label: 'Applied', statuses: ['applied'] },
     { id: 'in-process', label: 'In-Process', statuses: ['recruiter', 'interviewing', 'final', 'offer'] },
+    { id: 'hired', label: 'Hired', statuses: ['hired'] },
     { id: 'done', label: 'Done', statuses: ['passed', 'rejected', 'withdrawn', 'closed'] }
   ]);
   assert.deepEqual(groups.flatMap(group => group.statuses), STATUSES);
@@ -59,7 +60,7 @@ test('board groups cards without changing records or revisions and retains saved
   }));
   Object.freeze(cards);
   const groups = groupCards(cards);
-  assert.deepEqual(groups.map(group => group.cards.length), [3, 1, 4, 4]);
+  assert.deepEqual(groups.map(group => group.cards.length), [3, 1, 4, 1, 4]);
   assert.equal(groups.reduce((sum, group) => sum + group.cards.length, 0), cards.length);
   for (const group of groups) {
     const expected = cards.filter(card => group.statuses.includes(card.status));
@@ -72,8 +73,8 @@ test('board groups cards without changing records or revisions and retains saved
 test('board keeps empty lifecycle columns when all prospects are done', () => {
   const card = { id, status: 'rejected' };
   const groups = groupCards([card]);
-  assert.deepEqual(groups.map(group => group.cards.length), [0, 0, 0, 1]);
-  assert.equal(groups[3].cards[0], card);
+  assert.deepEqual(groups.map(group => group.cards.length), [0, 0, 0, 0, 1]);
+  assert.equal(groups[4].cards[0], card);
 });
 test('manual positions override dates in every column with deterministic creation/id ties', () => {
   for (const status of ['prospect', 'applied', 'recruiter', 'closed']) {
@@ -106,8 +107,8 @@ test('search matches only company/title, trims whitespace and ignores case witho
     Object.freeze({ id: 'd', status: 'rejected', company: 'Other', title: 'Engineer', job_description: 'design' })
   ]);
   const groups = searchBoardGroups(records, '  DeSiGn  ');
-  assert.equal(groups.length, 4);
-  assert.deepEqual(groups.map(group => [group.cards.length, group.total]), [[2, 3], [0, 0], [0, 0], [0, 1]]);
+  assert.equal(groups.length, 5);
+  assert.deepEqual(groups.map(group => [group.cards.length, group.total]), [[2, 3], [0, 0], [0, 0], [0, 0], [0, 1]]);
   assert.deepEqual(groups[0].cards.map(card => card.id), ['b', 'c']);
   assert.equal(groups[0].cards[0], records[1]);
   assert.equal(searchBoardGroups(records, 'labs')[0].cards[0], records[0]);

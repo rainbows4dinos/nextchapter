@@ -21,6 +21,10 @@ import { mountBoardDrag } from './kanban.js?v=20261019-filtered-order';
 export function setProspectStatusBadge(element, status) {
   element.className = `nc-status-badge nc-status-badge--${STATUS_BADGE_TONES[status]}`;
   element.textContent = statusLabel(status);
+  if (status === 'hired') {
+    const icon = el('span', '✦'); icon.setAttribute('aria-hidden', 'true');
+    element.prepend(icon, ' ');
+  }
 }
 /** @param {import('./model.js').ProspectStatus} status */
 function statusBadge(status) {
